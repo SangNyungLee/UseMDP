@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import MyApp from '../post/MyApp';
 
 function StaticExample() {
     return (
@@ -11,6 +12,7 @@ function StaticExample() {
 
                 <Modal.Body>
                     <p>Modal body text goes here.</p>
+                    <MyApp></MyApp>
                 </Modal.Body>
 
                 <Modal.Footer>
