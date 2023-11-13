@@ -8,12 +8,13 @@ function App() {
   return (
     <>
       <Header/>
-               <NewButton></NewButton>
-            <Example />
-            <CardEditor />
+      <NewButton></NewButton>
+      <Example />
+      <CardEditor />
       <Outlet/>
     </>
   );
 
+}
 
 export default App;
