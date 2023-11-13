@@ -1,15 +1,18 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
-import MyAdapter from './adapter/MyAdapter';
-
+import Base64UploaderPlugin from './plugin/Plugin';
 const PostContainer = styled.div`
     height: 400px;
 `;
 
-export default function MyApp() {
+export default function CardEditor() {
     const [EditArea, setEditArea] = useState('');
+    function saveEditArea() {
+        //객체 로직으로 저장
+        console.log('EditArea', EditArea);
+    }
 
     return (
         <PostContainer className="App">
@@ -19,20 +22,20 @@ export default function MyApp() {
                     editor={ClassicEditor}
                     config={{
                         // (4)
-                        // plugins: [MyUploadAdapter],
-                        extraPlugins: [MyAdapter],
+                        // plugins: [MyAdapter],
+                        extraPlugins: [Base64UploaderPlugin],
                     }}
                     //뭔가 쓰고 싶으면 html 형식으로
                     data="asd"
                     onReady={(editor) => {
-                        console.log('에디터 세팅', editor);
+                        // console.log('에디터 세팅', editor);
                         editor.editing.view.change((writer) => {
                             writer.setStyle('min-height', '300px', editor.editing.view.document.getRoot());
                         });
                     }}
                     onChange={(event, editor) => {
                         const data = editor.getData();
-                        setEditArea(editor);
+                        setEditArea(data);
                         console.log({ event, editor, data });
                     }}
                     onBlur={(event, editor) => {
@@ -43,7 +46,9 @@ export default function MyApp() {
                     }}
                 />
             </div>
-            <button className="submit-button">입력</button>
+            <button className="submit-button" onClick={saveEditArea}>
+                입력
+            </button>
         </PostContainer>
     );
 }

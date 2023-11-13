@@ -1,12 +1,12 @@
 import NewButton from './button';
 import Example from './modal/ModalExample';
-import MyApp from './post/MyApp';
+import CardEditor from './post/Editor/CardEditor';
 function App() {
     return (
         <div>
             <NewButton></NewButton>
             <Example />
-            <MyApp />
+            <CardEditor />
         </div>
     );
 }

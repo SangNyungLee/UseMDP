@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import MyApp from '../post/MyApp';
+import CardEditor from '../post/Editor/CardEditor';
 
 function Example() {
     const [show, setShow] = useState(false);
@@ -20,7 +20,7 @@ function Example() {
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <MyApp></MyApp>
+                    <CardEditor></CardEditor>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
