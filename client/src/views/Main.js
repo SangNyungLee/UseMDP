@@ -3,9 +3,10 @@ import styled from "styled-components";
 import DataDownload from "../utils/DataDownload";
 import DataReader from "../component/DataReader";
 import { useForm } from "react-hook-form";
-import Canvas from "../component/Canvas";
 import useComponentCompress from "../hook/useComponentCompress";
 import ImageConvert from "../component/ImageConvert";
+import useComponentMove from "../hook/useComponenetMove";
+import ComponenetMoveEx from "../component/ComponetMoveEx";
 
 const _Modal = styled.div`
   position: fixed;
@@ -71,9 +72,12 @@ export default function Main(){
 
     const [ dataArr, setDataArr ] = useState([]);
 
+    const moveRegister = useComponentMove();
+
     return(
         <>
             <h1>메인 페이지</h1>
+            <ComponenetMoveEx {...moveRegister}/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="text" placeholder='이름을 입력해주세요' {...register('name')}/><br/>
                 <input type="text" placeholder='나이를 입력해주세요' {...register('age')}/><br/>
