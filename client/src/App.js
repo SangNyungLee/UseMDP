@@ -9,8 +9,8 @@ function App() {
         <>
             <Header />
             {/* <NewButton></NewButton>
-      <Example /> */}
-            <CardEditor />
+      <Example />
+      <CardEditor /> */}
             <Outlet />
         </>
     );

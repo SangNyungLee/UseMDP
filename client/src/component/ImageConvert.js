@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function ImageConvert(){
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [ selectedFile, setSelectedFile ] = useState(null);
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file && file.type.startsWith('image')) {
