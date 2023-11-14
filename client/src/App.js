@@ -6,9 +6,9 @@ function App() {
     return (
         <>
             <Header />
-            <MyDayPicker></MyDayPicker>
-            <MyDayPicker></MyDayPicker>
-            <MyDivBox></MyDivBox>
+            {/* <NewButton></NewButton>
+      <Example />
+      <CardEditor /> */}
             <Outlet />
         </>
     );

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { moveAction } from "../store/move";
 
-export default function useComponentMove(){
+export default function useComponentMove(targetId,targetType){
     const [ isMove, setIsMove ] = useState(false);
     const [ targetLeft, setTargetLeft ] = useState();
     const [ targetTop, setTargetTop ] = useState();
@@ -11,6 +13,8 @@ export default function useComponentMove(){
         width: window.innerWidth,
         height: window.innerHeight,
     });
+
+    const dispatch = useDispatch();
 
 
     useEffect(()=>{
@@ -38,7 +42,7 @@ export default function useComponentMove(){
     useEffect(()=>{
         if(isMove){
             window.addEventListener("mousemove", handleWindowMouseMove)
-            window.addEventListener("mouseup",()=>{
+            window.addEventListener("mouseup",(e)=>{
                 setIsMove(false);
                 setStartX(null);
                 setStartY(null);
@@ -63,6 +67,8 @@ export default function useComponentMove(){
         setIsMove(true);
         setStartX(e.clientX);
         setStartY(e.clientY);
+        dispatch(moveAction.setTarget(targetId));
+        targetRef.current.style.position = 'absolute';
     }
 
     const handleWindowMouseMove = (e) => {
@@ -81,9 +87,6 @@ export default function useComponentMove(){
     const moveRegister = {
         ref: targetRefSet,
         onMouseDown: targetMoveTrue,
-        style:{
-            position:"absolute"
-        }
     }
 
     return moveRegister
