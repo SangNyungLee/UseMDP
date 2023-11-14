@@ -8,9 +8,9 @@ function App() {
   return (
     <>
       <Header/>
-      <NewButton></NewButton>
+      {/* <NewButton></NewButton>
       <Example />
-      <CardEditor />
+      <CardEditor /> */}
       <Outlet/>
     </>
   );
