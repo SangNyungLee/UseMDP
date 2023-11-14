@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit"
-import example from "./example";
+import move from './move';
 
 const store = configureStore({
-    reducer:{ example, }
+    reducer:{ move }
 })
 
 export default store;
