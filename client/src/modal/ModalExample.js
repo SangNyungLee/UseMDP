@@ -47,9 +47,9 @@ function Example(props) {
                 <Modal.Body>
                     <CardEditor></CardEditor>
                     <FlexContainer>
-                        <MyDayPicker date={start_date} />
+                        <MyDayPicker date={new Date()} />
                         <span>~</span>
-                        <MyDayPicker date={end_date} />
+                        <MyDayPicker date={new Date()} />
                     </FlexContainer>
                     <div>
                         {list.map((item, index) => (
