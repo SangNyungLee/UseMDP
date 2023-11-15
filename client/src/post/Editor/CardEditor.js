@@ -3,12 +3,14 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
 import Base64UploaderPlugin from './plugin/Plugin';
+import { useSelector } from 'react-redux';
 const PostContainer = styled.div`
     height: 400px;
 `;
 
 export default function CardEditor() {
     const [EditArea, setEditArea] = useState('');
+
     function saveEditArea() {
         //객체 로직으로 저장
         console.log('EditArea', EditArea);
@@ -17,7 +19,7 @@ export default function CardEditor() {
     return (
         <PostContainer className="App">
             <div className="form-wrapper">
-                <input className="title-input" type="text" placeholder="제목" />
+                <div>내용</div>
                 <CKEditor
                     editor={ClassicEditor}
                     config={{
