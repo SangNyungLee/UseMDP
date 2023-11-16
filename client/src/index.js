@@ -10,3 +10,4 @@ root.render(
 		<RouterProvider router={Router} />
 	</React.StrictMode>
 );
+
