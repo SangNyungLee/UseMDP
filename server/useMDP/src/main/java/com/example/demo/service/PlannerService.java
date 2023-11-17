@@ -31,6 +31,10 @@ public class PlannerService {
 
 
         for(MemberEntity member : members) {
+            if(member.getPlannerEntityLists().size()>0){
+                System.out.println(member.getPlannerEntityLists());
+            }
+
             MemberDTO memberDTO = MemberDTO.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
