@@ -34,7 +34,14 @@ const planSlice = createSlice({
         //시작지에서는 droppableid로 접근하고, index초과인 친구들의 intOrder를 -1하면 된다.
         // 도착지에서는 droppableid로 접근하고, index초과인 친구들의 intOrder를 +1하면 된다.
         moveCardByIdx(state, action) {
-            console.log('moveCardByIdx', action.payload);
+            let { start_index, start_id } = action.payload.source;
+            let { end_index, end_id } = action.payload.destination;
+            for (let i = start_index + 1; i < state[parseInt(start_id)]; i++) {
+                state[parseInt(start_id)][i].intOrder--;
+            }
+            for (let i = end_index + 1; i < state[parseInt(end_id)]; i++) {
+                state[parseInt(end_id)][i].intOrder++;
+            }
         },
 
         //reOrder

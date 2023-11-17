@@ -113,6 +113,7 @@ export default function QuoteApp() {
         const dInd = +destination.droppableId;
 
         if (sInd === dInd) {
+            dispatch(planActions.reOrderCardByIdx({ sInd, source: source.index, destination: destination.idx }));
             const items = reorder(state[sInd], source.index, destination.index);
             const newState = [...state];
             newState[sInd] = items;
