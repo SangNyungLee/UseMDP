@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.2",
     "ckeditor5-custom-build": "^0.0.6",
+    "fast-copy": "^3.0.1",
     "file-saver": "^2.0.5",
     "html-react-parser": "^5.0.6",
     "html2canvas": "^1.4.1",
