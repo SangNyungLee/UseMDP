@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     id: 0,
-    content: '',
+    description: '',
     title: '',
     cover_Color: '#FFD6DA',
     start_date: new Date().toString(),
@@ -17,7 +17,7 @@ const cardSlice = createSlice({
     reducers: {
         setInitialState(state, action) {
             state.title = action.payload.title;
-            state.content = action.payload.title;
+            state.description = action.payload.description;
             state.cover_Color = action.payload.cover_Color;
             state.start_date = action.payload.start_date;
             state.end_date = action.payload.end_date;
@@ -25,8 +25,8 @@ const cardSlice = createSlice({
             state.id = action.payload.id;
         },
         setTitle(state, action) {
-            state.title = action.payload;
-            state.content = action.payload;
+            state.title = action.payload.title;
+            state.description = action.payload.description;
         },
         setCover(state, action) {
             state.cover_Color = action.payload;
