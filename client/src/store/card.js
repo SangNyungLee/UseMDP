@@ -1,14 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import copy from 'fast-copy';
 const initialState = {
     id: 0,
     description: '',
     title: '',
     cover_Color: '#FFD6DA',
-    start_date: new Date().toString(),
-    end_date: new Date().toString(),
+    start_date: new Date().toISOString(),
+    end_date: new Date().toISOString(),
     todolist: [{}],
-    separtar: [],
+    intOrder: 0,
+    separator: [],
 };
 
 const cardSlice = createSlice({
@@ -23,6 +24,13 @@ const cardSlice = createSlice({
             state.end_date = action.payload.end_date;
             state.todolist = action.payload.todolist;
             state.id = action.payload.id;
+            state.intOrder = action.payload.intOrder;
+            state.separator = action.payload.separator;
+        },
+        setCard(state, action) {
+            console.log('action.payload', action.payload);
+            state = copy(action.payload);
+            return state;
         },
         setTitle(state, action) {
             state.title = action.payload.title;
