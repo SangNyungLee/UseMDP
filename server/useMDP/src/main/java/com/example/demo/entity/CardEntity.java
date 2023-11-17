@@ -32,6 +32,8 @@ public class CardEntity {
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String post;
 
+    @Column(nullable = false)
+    private int intOrder;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-mm-dd")
