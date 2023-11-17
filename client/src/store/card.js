@@ -8,6 +8,7 @@ const initialState = {
     start_date: new Date().toString(),
     end_date: new Date().toString(),
     todolist: [{}],
+    separtar: [],
 };
 
 const cardSlice = createSlice({

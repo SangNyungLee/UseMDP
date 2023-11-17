@@ -4,7 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Example from '../modal/ModalExample';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
 import { useDispatch, useSelector } from 'react-redux';
-import { cardActions } from '../store/card';
+import { cardActions } from '../../store/card';
 
 // 가짜 데이터 생성기, cover_color, title이 있음.
 //title이야 content 바꿔쓰면 되지만, cover_color를 제공하는 것을 해볼것.
