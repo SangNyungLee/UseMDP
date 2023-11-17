@@ -14,6 +14,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true);
         // 있어야 쿠키나 세션, jwt 같은걸 헤더에 담고 보내는 요청을 허용하는듯, 없으면 네트워크 에러
+
+        registry.addMapping("/oauth2/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET","POST","PATCH","PUT","DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+
 //
 
 //        registry.addMapping("/test1","test2");

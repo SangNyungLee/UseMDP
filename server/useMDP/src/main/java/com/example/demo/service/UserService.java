@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,18 +36,18 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
         // 사용자의 역할 정보도 함께 로드
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
+        Set<GrantedAuthority> authorities = user.get().getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
+                user.get().getUsername(),
+                user.get().getPassword(),
                 authorities
         );
     }
@@ -54,40 +55,45 @@ public class UserService implements UserDetailsService {
 
     public UserDetails loadUserByUsernameAndPassword(String username, String password) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()){
             throw new UsernameNotFoundException("User not found");
         }
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.get().getPassword())) {
             throw new BadCredentialsException("Bad credentials");
         }
 
         // 사용자의 역할 정보도 함께 로드
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
+        Set<GrantedAuthority> authorities = user.get().getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
+                user.get().getUsername(),
+                user.get().getPassword(),
                 authorities
         );
     }
 
     public void registerUser(LoginDTO loginDTO) {
-        User user = new User();
         // 비밀번호를 해싱하여 저장
 
-        if(userRepository.findByUsername(loginDTO.getUsername()) != null){
+        if(userRepository.findByUsername(loginDTO.getUsername()).isPresent()){
             throw new DuplicateUsernameException(loginDTO.getUsername());
         }
 
-        user.setUsername(loginDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+
+        User user = User.builder()
+                .username(loginDTO.getUsername())
+                .password(passwordEncoder.encode(loginDTO.getPassword()))
+                .build();
+
         Role defaultRole = roleRepository.findByName("ROLE_USER")
                 .orElseGet(() -> roleRepository.save(new Role("ROLE_USER")));
+
         user.getRoles().add(defaultRole);
+
         userRepository.save(user);
     }
 
