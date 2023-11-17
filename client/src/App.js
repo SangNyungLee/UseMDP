@@ -1,17 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import Header from './views/Header';
-import MyDivBox from './post/RightClicker/MyDivBox';
-import MyDayPicker from './post/RightClicker/MyDayPicker';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
-    return (
-        <>
-            <Header />
-            {/* <NewButton></NewButton>
-      <Example />
-      <CardEditor /> */}
-            <Outlet />
-        </>
-    );
+	return (
+		<>
+			<Outlet></Outlet>
+		</>
+	);
 }
 
 export default App;

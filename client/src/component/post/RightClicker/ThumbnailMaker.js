@@ -1,6 +1,5 @@
 import html2canvas from 'html2canvas';
 import saveAs from 'file-saver';
-import { useRef } from 'react';
 
 //사용법,ThumnbnailMaker에 Ref를 넣어주면, 그걸 그대로 png파일로 변환한다.
 // Ref란, <div ref = {customRef}> 에서 customRef는 useRef()로 만든 객체이다.

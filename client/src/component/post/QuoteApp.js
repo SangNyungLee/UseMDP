@@ -4,18 +4,23 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Example from '../modal/ModalExample';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
 import { useDispatch, useSelector } from 'react-redux';
-import { cardActions } from '../store/card';
+import { planActions } from '../../store/planner';
+import { cardActions } from '../../store/card';
+import copy from 'fast-copy';
 
 // 가짜 데이터 생성기, cover_color, title이 있음.
 //title이야 content 바꿔쓰면 되지만, cover_color를 제공하는 것을 해볼것.
 const getItems = (count, offset = 0) =>
     Array.from({ length: count }, (v, k) => k).map((k) => ({
         id: `item-${k + offset}-${new Date().getTime()}`,
-        content: `item ${k + offset}`,
+        description: ``,
         title: `title ${k + offset}`,
         cover_Color: '#FFD6DA',
-        date: new Date(2023, 0, 1).toString(),
+        start_date: new Date(2023, 0, 1).toISOString(),
+        end_date: new Date(2023, 0, 1).toISOString(),
         todolist: [{ done: false }, { jpa: false }],
+        intOrder: k,
+        separator: offset < 10 ? 'TODO' : offset < 15 ? 'DOING' : 'DONE',
     }));
 
 const reorder = (list, startIndex, endIndex) => {
@@ -29,6 +34,7 @@ const reorder = (list, startIndex, endIndex) => {
  * Moves an item from one list to another list.
  */
 const move = (source, destination, droppableSource, droppableDestination) => {
+    console.log('move : ', source, destination, droppableSource, droppableDestination);
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
     const [removed] = sourceClone.splice(droppableSource.index, 1);
@@ -65,13 +71,13 @@ const getListStyle = (isDraggingOver) => ({
 
 export default function QuoteApp() {
     //페이크 아이템을 10개, 5개를 만드는데, 두번쨰는 10부터,세번째는 15부터 시작하도록
-    const [state, setState] = useState([getItems(10), getItems(5, 10), getItems(5, 15)]);
+    const state = useSelector((state) => state.planner);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [cardItem, setCardItem] = useState({});
     const thumnnailRef = useRef(null);
-
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
+
+    useEffect(() => {}, []);
 
     function handleThumbnailDownload() {
         console.log('download', thumnnailRef.current);
@@ -89,8 +95,10 @@ export default function QuoteApp() {
     function handleClick(ind, index) {
         // console.log(ind, index);
         // console.log(state[ind][index]);
-        dispatch(cardActions.setInitialState(state[ind][index]));
-        setCardItem(state[ind][index]);
+        // dispatch(cardActions.setInitialState(state[ind][index]));
+
+        dispatch(cardActions.setCard(state[ind][index]));
+        // console.log(state[ind][index]);
         openModal();
     }
     //dnd에서는, dragend와 onclick이 구분되게 됨.
@@ -105,31 +113,35 @@ export default function QuoteApp() {
         const dInd = +destination.droppableId;
 
         if (sInd === dInd) {
+            dispatch(planActions.reOrderCardByIdx({ sInd, source: source.index, destination: destination.idx }));
             const items = reorder(state[sInd], source.index, destination.index);
             const newState = [...state];
             newState[sInd] = items;
-            setState(newState);
+            //setState(newState);
+            dispatch(planActions.setPlans(newState));
         } else {
+            dispatch(planActions.moveCardByIdx({ source, destination }));
             const result = move(state[sInd], state[dInd], source, destination);
             const newState = [...state];
             newState[sInd] = result[sInd];
             newState[dInd] = result[dInd];
-
-            setState(newState.filter((group) => group.length));
+            dispatch(planActions.setPlans(newState.filter((group) => group.length)));
+            //setState(newState.filter((group) => group.length));
         }
     }
-
     // ...state, getItems(1)
     return (
         <div ref={thumnnailRef}>
             {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
-            <Example modalStatus={isModalOpen} cardItem={cardItem}></Example>
+            <Example modalStatus={isModalOpen} modalClose={closeModal}></Example>
             <button
                 type="button"
                 onClick={() => {
                     handleThumbnailDownload();
-                    state[0].push(...getItems(1, state.length));
-                    setState([state[0], state[1], state[2]]);
+                    const newState = copy(state);
+                    newState[0].push(...getItems(1, newState.length));
+                    //setState([state[0], state[1], state[2]]);
+                    dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
                 }}
             >
                 Add new item
@@ -153,30 +165,31 @@ export default function QuoteApp() {
                                             {el.map((item, index) => (
                                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                                     {(provided, snapshot) => (
-                                                        <>
-                                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)} onClick={() => handleClick(ind, index)}>
-                                                                <div style={{ position: 'relative', backgroundColor: item.cover_Color, height: '20px', borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}></div>
-                                                                <div
-                                                                    style={{
-                                                                        paddingTop: '8px',
-                                                                        display: 'flex',
-                                                                        justifyContent: 'space-around',
+                                                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)} onClick={() => handleClick(ind, index)}>
+                                                            <div style={{ position: 'relative', backgroundColor: item.cover_Color, height: '20px', borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}></div>
+                                                            <div
+                                                                style={{
+                                                                    paddingTop: '8px',
+                                                                    display: 'flex',
+                                                                    justifyContent: 'space-around',
+                                                                }}
+                                                            >
+                                                                {item.title}
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        // const newState = [...state];
+                                                                        const newState = copy(state);
+                                                                        //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
+                                                                        newState[ind].splice(index, 1);
+                                                                        dispatch(planActions.setPlans(newState));
+                                                                        // setState(newState.filter((group) => group.length));
                                                                     }}
                                                                 >
-                                                                    {item.title}
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => {
-                                                                            const newState = [...state];
-                                                                            newState[ind].splice(index, 1);
-                                                                            setState(newState.filter((group) => group.length));
-                                                                        }}
-                                                                    >
-                                                                        delete
-                                                                    </button>
-                                                                </div>
+                                                                    delete
+                                                                </button>
                                                             </div>
-                                                        </>
+                                                        </div>
                                                     )}
                                                 </Draggable>
                                             ))}
