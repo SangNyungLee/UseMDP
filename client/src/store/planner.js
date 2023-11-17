@@ -45,7 +45,11 @@ const planSlice = createSlice({
         },
 
         //reOrder
-        reOrderCardByIdx(state, action) {},
+        //2) 같은 칸톤 보드에서 위치 바꿈
+        //3
+        reOrderCardByIdx(state, action) {
+            let { sInd, source, destination } = action.payload;
+        },
         //idx를 받고, state에서 idx에 해당하는 카드를 지워야한다.
         delCardsByIdx(state, action) {},
         //idx를 받고, idx에 해당하는 카드로 접근해 내용을 바꿔야한다.
