@@ -3,8 +3,8 @@ import { useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Example from '../modal/ModalExample';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
-import { useDispatch, useSelector } from 'react-redux';
-import { cardActions } from '../../store/card';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { cardActions } from '../../store/card';
 
 // 가짜 데이터 생성기, cover_color, title이 있음.
 //title이야 content 바꿔쓰면 되지만, cover_color를 제공하는 것을 해볼것.
@@ -70,8 +70,8 @@ export default function QuoteApp() {
     const [cardItem, setCardItem] = useState({});
     const thumnnailRef = useRef(null);
 
-    //dispatch 선언
-    const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
+    // //dispatch 선언
+    // const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
 
     function handleThumbnailDownload() {
         console.log('download', thumnnailRef.current);
@@ -89,7 +89,7 @@ export default function QuoteApp() {
     function handleClick(ind, index) {
         // console.log(ind, index);
         // console.log(state[ind][index]);
-        dispatch(cardActions.setInitialState(state[ind][index]));
+        // dispatch(cardActions.setInitialState(state[ind][index]));
         setCardItem(state[ind][index]);
         openModal();
     }
