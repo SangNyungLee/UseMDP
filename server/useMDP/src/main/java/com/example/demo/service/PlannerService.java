@@ -32,7 +32,8 @@ public class PlannerService {
 
         for(MemberEntity member : members) {
             if(member.getPlannerEntityLists().size()>0){
-                System.out.println(member.getPlannerEntityLists());
+                System.out.println(member.getPlannerEntityLists().size());
+                System.out.println(member.getPlannerEntityLists().get(0).getTitle());
             }
 
             MemberDTO memberDTO = MemberDTO.builder()
