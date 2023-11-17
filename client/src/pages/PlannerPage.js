@@ -1,7 +1,10 @@
+import QuoteApp from '../component/post/QuoteApp';
+import { Provider } from 'react-redux';
+import store from '../store';
 export default function PlannerPage() {
-	return (
-		<>
-			<div>PlannerPage</div>
-		</>
-	);
+    return (
+        <Provider store={store}>
+            <QuoteApp></QuoteApp>
+        </Provider>
+    );
 }

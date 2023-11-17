@@ -8,12 +8,13 @@ const PostContainer = styled.div`
     height: 400px;
 `;
 
-export default function CardEditor() {
-    const [EditArea, setEditArea] = useState('');
-
+export default function CardEditor(props) {
+    const [EditArea, setEditArea] = useState(props.editDescription[0] ? props.editDescription[0] : 'default');
+    // console.log(props.editDescription);
     function saveEditArea() {
         //객체 로직으로 저장
         console.log('EditArea', EditArea);
+        props.editDescription[1](EditArea);
     }
 
     return (
@@ -28,7 +29,7 @@ export default function CardEditor() {
                         extraPlugins: [Base64UploaderPlugin],
                     }}
                     //뭔가 쓰고 싶으면 html 형식으로
-                    data="asd"
+                    data={props.description}
                     onReady={(editor) => {
                         // console.log('에디터 세팅', editor);
                         editor.editing.view.change((writer) => {
@@ -38,13 +39,13 @@ export default function CardEditor() {
                     onChange={(event, editor) => {
                         const data = editor.getData();
                         setEditArea(data);
-                        console.log({ event, editor, data });
+                        // console.log({ event, editor, data });
                     }}
                     onBlur={(event, editor) => {
-                        console.log('Blur.', editor);
+                        // console.log('Blur.', editor);
                     }}
                     onFocus={(event, editor) => {
-                        console.log('Focus.', editor);
+                        // console.log('Focus.', editor);
                     }}
                 />
             </div>

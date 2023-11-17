@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,10 +25,10 @@ public class PlannerEntity {
     private String creator;
 
     @Column(nullable = false)
-    private int likePlanner;
+    private String title;
 
     @Column(nullable = false)
-    private String email;
+    private int likePlanner;
 
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String thumbnail;
@@ -37,6 +36,11 @@ public class PlannerEntity {
     @CreationTimestamp
     @Column(nullable = false)
     private Timestamp createAt;
+
+    //외래키 -> 한명의 유저는 여러개의 플래너를 가질 수 있음
+    @ManyToOne
+    @JoinColumn(name="memberId")
+    private MemberEntity memberEntity;
 
 
 }
