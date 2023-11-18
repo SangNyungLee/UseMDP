@@ -22,7 +22,7 @@ function Example(props) {
     //카드 아이템을 만든다.
     const cardItem = useSelector((state) => state.card);
     //구조 분해할당
-    const { id, description, title, cover_Color, start_date, end_date, todolist, intOrder, separator } = cardItem;
+    const { id, post, title, cover_Color, start_date, end_date, todolist, intOrder, separator } = cardItem;
     const [show, setShow] = useState(false);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
@@ -30,7 +30,7 @@ function Example(props) {
     //checkList
     const [list, setList] = useState(todolist ? todolist : []);
     //에디터
-    const Edits = useState(description ? description : '');
+    const Edits = useState(post ? post : '');
 
     //디스패치
     const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function Example(props) {
         const newCardItem = {
             ...cardItem,
             todolist: list,
-            description: Edits[0],
+            post: Edits[0],
         };
         // console.log(newCardItem);
         dispatch(planActions.patchCardsByIdx({ idx1, idx2, cardItem: newCardItem }));
@@ -77,7 +77,7 @@ function Example(props) {
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <CardEditor editDescription={Edits} description={description}></CardEditor>
+                    <CardEditor editpost={Edits} post={post}></CardEditor>
                     <FlexContainer>
                         <MyDayPicker date={parseISOString(start_date)} />
                         <span>~</span>
