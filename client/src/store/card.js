@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import copy from 'fast-copy';
 const initialState = {
-    id: 0,
+    cardId: 0,
     description: '',
     title: '',
-    cover_Color: '#FFD6DA',
+    coverColor: '#FFD6DA',
     start_date: new Date().toISOString(),
     end_date: new Date().toISOString(),
     todolist: [{}],
@@ -19,11 +19,11 @@ const cardSlice = createSlice({
         setInitialState(state, action) {
             state.title = action.payload.title;
             state.description = action.payload.description;
-            state.cover_Color = action.payload.cover_Color;
+            state.coverColor = action.payload.coverColor;
             state.start_date = action.payload.start_date;
             state.end_date = action.payload.end_date;
             state.todolist = action.payload.todolist;
-            state.id = action.payload.id;
+            state.cardId = action.payload.cardId;
             state.intOrder = action.payload.intOrder;
             state.separator = action.payload.separator;
         },
@@ -37,7 +37,7 @@ const cardSlice = createSlice({
             state.description = action.payload.description;
         },
         setCover(state, action) {
-            state.cover_Color = action.payload;
+            state.coverColor = action.payload;
         },
         setStartDate(state, action) {
             state.start_date = action.payload;

@@ -9,12 +9,12 @@ const PostContainer = styled.div`
 `;
 
 export default function CardEditor(props) {
-    const [EditArea, setEditArea] = useState(props.editDescription[0] ? props.editDescription[0] : 'default');
-    // console.log(props.editDescription);
+    const [EditArea, setEditArea] = useState(props.editpost[0] ? props.editpost[0] : 'default');
+    // console.log(props.editpost);
     function saveEditArea() {
         //객체 로직으로 저장
         console.log('EditArea', EditArea);
-        props.editDescription[1](EditArea);
+        props.editpost[1](EditArea);
     }
 
     return (
@@ -29,7 +29,7 @@ export default function CardEditor(props) {
                         extraPlugins: [Base64UploaderPlugin],
                     }}
                     //뭔가 쓰고 싶으면 html 형식으로
-                    data={props.description}
+                    data={props.post}
                     onReady={(editor) => {
                         // console.log('에디터 세팅', editor);
                         editor.editing.view.change((writer) => {
