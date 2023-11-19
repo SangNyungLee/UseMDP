@@ -7,8 +7,8 @@ const getItems = (count, offset = 0) =>
         post: '',
         title: `title ${k + offset}`,
         coverColor: '#FFD6DA',
-        start_date: new Date(2023, 0, 1).toISOString(),
-        end_date: new Date(2023, 0, 1).toISOString(),
+        startDate: new Date(2023, 0, 1).toISOString(),
+        endDate: new Date(2023, 0, 1).toISOString(),
         todolist: [{ done: false }, { jpa: false }],
         intOrder: k,
         separator: 'TODO',
@@ -31,7 +31,7 @@ const planSlice = createSlice({
             return state;
         },
         patchCardsByIdx(state, action) {
-            // console.log('patchCardByIdx', action.payload);
+            console.log('patchCardByIdx', action.payload);
             state[action.payload.idx1][action.payload.idx2] = action.payload.cardItem;
         },
     },
