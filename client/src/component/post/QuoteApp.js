@@ -11,6 +11,9 @@ import copy from 'fast-copy';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
+// getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
+// Array.from({ length: count }, (v, k) => k) : 길이가 count인 배열을 생성하는데
+// (v,k) => k 를 적어 넣으면 k 값을 0부터 count - 1 까지 for문 돌리듯 대응시킨다 (관용적으로 쓴다 봐도 될듯)
 const getItems = (count, offset = 0) =>
     Array.from({ length: count }, (v, k) => k).map((k) => ({
         cardId: `item-${k + offset}-${new Date().getTime()}`,
@@ -23,6 +26,7 @@ const getItems = (count, offset = 0) =>
         intOrder: k,
         separatorPlan: offset < 10 ? 'TODO' : offset < 15 ? 'DOING' : 'DONE',
     }));
+    
 //reOrder
 //2) 같은 칸톤 보드에서 위치 바꿈
 //3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
@@ -75,7 +79,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     const result = {};
     result[droppableSource.droppableId] = sourceClone;
     result[droppableDestination.droppableId] = destClone;
-
     return result;
 };
 
@@ -94,6 +97,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // styles we need to apply on draggables
     ...draggableStyle,
 });
+
 const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     padding: grid,
@@ -112,23 +116,30 @@ export default function QuoteApp() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get('/plannerTest');
-            const data = response.data[0].cardList;
 
-            const newState = [[], [], []];
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].separatorPlan === 'TODO') {
-                    data[i].cardId = 'a' + data[i].cardId;
-                    newState[0].push(data[i]);
-                } else if (data[i].separatorPlan === 'DOING') {
-                    data[i].cardId = 'a' + data[i].cardId;
-                    newState[1].push(data[i]);
-                } else {
-                    data[i].cardId = 'a' + data[i].cardId;
-                    newState[2].push(data[i]);
+            // 혹시나 테스트중 데이터가 비어있을 경우
+            if(response.data[0]){
+                const data = response.data[0].cardList;
+
+                const newState = [[], [], []];
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].separatorPlan === 'TODO') {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[0].push(data[i]);
+                    } else if (data[i].separatorPlan === 'DOING') {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[1].push(data[i]);
+                    } else {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[2].push(data[i]);
+                    }
                 }
+                console.log(newState);
+                dispatch(planActions.setPlansInit(newState));
+            } else {
+                dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
             }
-            console.log(newState);
-            dispatch(planActions.setPlansInit(newState));
+
         };
         fetchData();
     }, []);
@@ -139,6 +150,7 @@ export default function QuoteApp() {
     }
 
     const openModal = () => {
+        console.log("open")
         setIsModalOpen(true);
     };
 
@@ -150,19 +162,22 @@ export default function QuoteApp() {
         // console.log(ind, index);
         // console.log(state[ind][index]);
         // dispatch(cardActions.setInitialState(state[ind][index]));
-
         dispatch(cardActions.setCard(state[ind][index]));
         // console.log(state[ind][index]);
         openModal();
     }
     //dnd에서는, dragend와 onclick이 구분되게 됨.
+
     function onDragEnd(result) {
         const { source, destination } = result;
+
+        console.log(result);
 
         // dropped outside the list
         if (!destination) {
             return;
         }
+
         const sInd = +source.droppableId;
         const dInd = +destination.droppableId;
 

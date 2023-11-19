@@ -8,13 +8,16 @@ import { planActions } from '../../store/planner';
 import MyDayPicker from '../post/RightClicker/MyDayPicker';
 import { useSelector } from 'react-redux';
 import copy from 'fast-copy';
+
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
 `;
 
 function parseISOString(s) {
+    console.log(s)
     var b = s.split(/\D+/);
+    console.log(b)
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
 }
 
