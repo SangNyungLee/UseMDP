@@ -11,20 +11,24 @@ import copy from 'fast-copy';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
+<<<<<<< HEAD
 // getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
 // Array.from({ length: count }, (v, k) => k) : 길이가 count인 배열을 생성하는데
 // (v,k) => k 를 적어 넣으면 k 값을 0부터 count - 1 까지 for문 돌리듯 대응시킨다 (관용적으로 쓴다 봐도 될듯)
 const getItems = (count, offset = 0) =>
+=======
+const getItems = (count, offset = 0, separatorStr = 'TODO') =>
+>>>>>>> 115c0cbe9f53f8ee0c0e609afa0a73b5d61ccc1b
     Array.from({ length: count }, (v, k) => k).map((k) => ({
-        cardId: `item-${k + offset}-${new Date().getTime()}`,
+        cardId: `item-${k + offset}-${new Date().getTime()}-${separatorStr}`,
         post: ``,
         title: `title ${k + offset}`,
         coverColor: '#FFD6DA',
-        start_date: new Date(2023, 0, 1).toISOString(),
-        end_date: new Date(2023, 0, 1).toISOString(),
+        startDate: new Date(2023, 0, 1).toISOString(),
+        endDate: new Date(2023, 0, 1).toISOString(),
         todolist: [{ done: false }, { jpa: false }],
-        intOrder: k,
-        separatorPlan: offset < 10 ? 'TODO' : offset < 15 ? 'DOING' : 'DONE',
+        intOrder: offset,
+        separatorPlan: separatorStr,
     }));
     
 //reOrder
@@ -71,6 +75,8 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     }
     //그리고 옮길 source card의 intOrder는, 도착지의 index로 재조정
     sourceClone[droppableSource.index].intOrder = droppableDestination.index;
+    //separtorPlan도 수정해주자.
+    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
 
     const [removed] = sourceClone.splice(droppableSource.index, 1);
 
@@ -269,7 +275,8 @@ export default function QuoteApp() {
                                                     type="button"
                                                     onClick={() => {
                                                         const newState = copy(state);
-                                                        newState[ind].push(...getItems(1, newState.length));
+                                                        const separatorStr = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
+                                                        newState[ind].push(...getItems(1, newState[ind].length, separatorStr));
                                                         //setState([state[0], state[1], state[2]]);
                                                         dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
                                                     }}

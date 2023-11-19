@@ -15,17 +15,30 @@ const FlexContainer = styled.div`
 `;
 
 function parseISOString(s) {
+<<<<<<< HEAD
     console.log(s)
     var b = s.split(/\D+/);
     console.log(b)
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+=======
+    if (s.length > 10) {
+        var b = s.split(/\D+/);
+        return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+    } else {
+        // 데이터가 혼용되는 경우(데이터를 임의로 넣어서 그렇다)
+        // 날짜 문자열을 년, 월, 일로 분리
+        const [year, month, day] = s.split('-');
+        // JavaScript Date 객체 생성
+        return new Date(year, month - 1, day);
+    }
+>>>>>>> 115c0cbe9f53f8ee0c0e609afa0a73b5d61ccc1b
 }
 
 function Example(props) {
     //카드 아이템을 만든다.
     const cardItem = useSelector((state) => state.card);
     //구조 분해할당
-    const { id, post, title, cover_Color, start_date, end_date, todolist, intOrder, separator } = cardItem;
+    const { id, post, title, cover_Color, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
@@ -40,7 +53,7 @@ function Example(props) {
 
     //모달끄기
     const handleClose = () => {
-        const idx1 = separator === 'TODO' ? 0 : separator === 'DOING' ? 1 : 2;
+        const idx1 = separatorPlan === 'TODO' ? 0 : separatorPlan === 'DOING' ? 1 : 2;
         const idx2 = intOrder;
 
         const newCardItem = {
@@ -82,9 +95,9 @@ function Example(props) {
                 <Modal.Body>
                     <CardEditor editpost={Edits} post={post}></CardEditor>
                     <FlexContainer>
-                        <MyDayPicker date={parseISOString(start_date)} />
+                        <MyDayPicker date={parseISOString(startDate)} />
                         <span>~</span>
-                        <MyDayPicker date={parseISOString(end_date)} />
+                        <MyDayPicker date={parseISOString(endDate)} />
                     </FlexContainer>
                     <div>
                         {list.map((item, index) => (

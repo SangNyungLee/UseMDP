@@ -5,8 +5,8 @@ const initialState = {
     description: '',
     title: '',
     coverColor: '#FFD6DA',
-    start_date: new Date().toISOString(),
-    end_date: new Date().toISOString(),
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
     todolist: [{}],
     intOrder: 0,
     separator: [],
@@ -20,8 +20,8 @@ const cardSlice = createSlice({
             state.title = action.payload.title;
             state.description = action.payload.description;
             state.coverColor = action.payload.coverColor;
-            state.start_date = action.payload.start_date;
-            state.end_date = action.payload.end_date;
+            state.startDate = action.payload.startDate;
+            state.endDate = action.payload.endDate;
             state.todolist = action.payload.todolist;
             state.cardId = action.payload.cardId;
             state.intOrder = action.payload.intOrder;
@@ -40,10 +40,10 @@ const cardSlice = createSlice({
             state.coverColor = action.payload;
         },
         setStartDate(state, action) {
-            state.start_date = action.payload;
+            state.startDate = action.payload;
         },
         setEndDate(state, action) {
-            state.end_date = action.payload;
+            state.endDate = action.payload;
         },
         setTodoList(state, action) {
             state.todolist = action.payload;
