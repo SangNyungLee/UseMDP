@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CardDTO;
 import com.example.demo.dto.MemberDTO;
 import com.example.demo.dto.PlannerDTO;
+import com.example.demo.entity.CardEntity;
 import com.example.demo.entity.MemberEntity;
 import com.example.demo.entity.PlannerEntity;
+import com.example.demo.repository.CardRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PlannerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,8 @@ public class PlannerService {
     @Autowired
     MemberRepository memberRepository;
 
-
+    @Autowired
+    CardRepository cardRepository;
     //로드맵 리스트 모두 가져오기+해당 로드맵을 작성한 유저 정보도 가져오기
     public List<MemberDTO> getPlannerList() {
 
@@ -81,6 +85,50 @@ public class PlannerService {
 
 //        return resultMap;
 
+    }
+
+    public List<PlannerDTO> getPlannerById() {
+
+        List<PlannerEntity> ce = plannerRepository.getPlannerEntityByPlannerId(1L);
+        List<PlannerDTO> plannerDTOs = new ArrayList<>();
+
+        for(PlannerEntity plan : ce) {
+            List<CardDTO> cards =new ArrayList<>();
+            if(plan.getCardEntityList().size()>0){
+               List<CardEntity> cardsEntity = plan.getCardEntityList();
+                System.out.println("Test DTO : "+cardsEntity.size());
+
+                for(CardEntity card : cardsEntity){
+                    CardDTO cardDTO= CardDTO.builder()
+                            .title(card.getTitle())
+                            .separatorPlan(card.getSeparatorPlan())
+                            .cardId(card.getCardId())
+                            .coverColor(card.getCoverColor())
+                            .endDate(card.getEndDate())
+                            .intOrder(card.getIntOrder())
+                            .post(card.getPost())
+                            .startDate(card.getStartDate())
+                            .build();
+                    cards.add(cardDTO);
+
+                }
+
+            }
+
+            PlannerDTO ptdo = PlannerDTO.builder()
+                    .plannerId(plan.getPlannerId())
+                    .likePlanner(plan.getLikePlanner())
+                    .title(plan.getTitle())
+                    .creator(plan.getCreator())
+                    .createAt(plan.getCreateAt())
+                    .thumbnail(plan.getThumbnail())
+                    .cardList(cards)
+                    .build();
+            plannerDTOs.add(ptdo);
+        }
+
+
+        return plannerDTOs;
     }
 
     //내 로드맵 리스트 가져오기

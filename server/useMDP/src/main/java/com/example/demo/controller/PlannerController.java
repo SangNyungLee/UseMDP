@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.MemberDTO;
 import com.example.demo.dto.PlannerDTO;
 import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.PlannerEntity;
 import com.example.demo.service.PlannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ public class PlannerController {
         return plannerService.getPlannerList();
     }
 
+    @GetMapping("/plannerTest")
+    @ResponseBody
+    public List<PlannerDTO> getPlannerById(){return plannerService.getPlannerById();}
 
     //내 로드맵 가져오기
     //test 위해 RequestParam 사용

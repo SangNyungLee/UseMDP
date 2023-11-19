@@ -1,7 +1,10 @@
 package com.example.demo.repository;
 
 import com.example.demo.dto.PlannerDTO;
+import com.example.demo.entity.CardEntity;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.entity.PlannerEntity;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,7 +19,8 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity,Long> {
     @Query(nativeQuery = true, value= "select * from planner order by like_planner desc")
     List<PlannerEntity> getplannerList();
 
-
+    @EntityGraph(attributePaths = {"cardEntityList"})
+    List<PlannerEntity> getPlannerEntityByPlannerId(Long id);
     //내 로드맵 가져오기
 //    @Query
 //    List<PlannerEntity> findByMemberId(long memberId);

@@ -68,7 +68,8 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     //그리고 옮길 source card의 intOrder는, 도착지의 index로 재조정
     sourceClone[droppableSource.index].intOrder = droppableDestination.index;
     //separtorPlan도 수정해주자.
-    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
+    console.log(droppableDestination.droppableId == '1');
+    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == '0' ? 'TODO' : droppableDestination.droppableId == '1' ? 'DOING' : 'DONE';
 
     const [removed] = sourceClone.splice(droppableSource.index, 1);
 
@@ -179,7 +180,7 @@ export default function QuoteApp() {
             const newState = [...state];
             newState[sInd] = result[sInd];
             newState[dInd] = result[dInd];
-            dispatch(planActions.setPlans(newState.filter((group) => group.length)));
+            dispatch(planActions.setPlans(newState));
             //setState(newState.filter((group) => group.length));
         }
     }

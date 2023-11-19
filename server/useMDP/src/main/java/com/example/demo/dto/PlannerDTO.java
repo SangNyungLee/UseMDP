@@ -3,6 +3,9 @@ package com.example.demo.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -13,6 +16,8 @@ public class PlannerDTO {
     private String title;
     private int likePlanner;
     private String thumbnail;
-    private String createAt;
+    private Timestamp createAt;
+
+    private List<CardDTO> cardList;
 
 }
