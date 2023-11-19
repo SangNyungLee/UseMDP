@@ -1,11 +1,15 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,5 +29,5 @@ public class MemberEntity {
     private String nickname;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "memberEntity")
-    private List<PlannerEntity> plannerEntityLists;
+    private List<PlannerEntity> plannerEntityLists ;
 }

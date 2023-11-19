@@ -19,4 +19,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity,Long> {
     @Override
     @EntityGraph(attributePaths = {"plannerEntityLists"})
     List<MemberEntity> findAll();
+
+
 }

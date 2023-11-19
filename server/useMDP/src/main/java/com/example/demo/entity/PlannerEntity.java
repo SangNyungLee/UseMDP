@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.sql.Timestamp;
 
@@ -15,6 +18,7 @@ import java.sql.Timestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 @Table(name="planner")
 public class PlannerEntity {
     @Id
@@ -27,9 +31,11 @@ public class PlannerEntity {
     @Column(nullable = false)
     private String title;
 
+    @ColumnDefault("0")
     @Column(nullable = false)
     private int likePlanner;
 
+    @ColumnDefault("defaultImage")
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String thumbnail;
 
@@ -37,10 +43,16 @@ public class PlannerEntity {
     @Column(nullable = false)
     private Timestamp createAt;
 
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private int defaultPlanner;
+
     //외래키 -> 한명의 유저는 여러개의 플래너를 가질 수 있음
     @ManyToOne
-    @JoinColumn(name="memberId")
+    @JoinColumn(name="m_id")
     private MemberEntity memberEntity;
+
+
 
 
 }
