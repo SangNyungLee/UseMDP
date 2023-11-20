@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage';
 import MyPage from '../pages/MyPage';
 import PlannerPage from '../pages/PlannerPage';
 import App from '../App';
+import MyCalendar from '../component/MyCalendar';
 
 const Router = createBrowserRouter([
 	{
@@ -15,10 +16,6 @@ const Router = createBrowserRouter([
 				element: <WelcomePage />,
 			},
 			{
-				path: 'home',
-				element: <HomePage />,
-			},
-			{
 				path: 'mypage',
 				element: <MyPage />,
 			},
@@ -27,7 +24,21 @@ const Router = createBrowserRouter([
 	{
 		path: '/planner',
 		element: <PlannerPage />
-	}
+	},
+	{
+		path: 'home',
+		element: <HomePage />,
+		children: [
+			{
+				index: true,
+				element: <WelcomePage />,
+			},
+			{
+				path: 'calender',
+				element: <MyCalendar/>,
+			},
+		],
+	},
 ]);
 
 export default Router;

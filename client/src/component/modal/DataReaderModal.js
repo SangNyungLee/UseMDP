@@ -17,7 +17,7 @@ export default function DataReaderModal({setState}){
             <button type="button" onClick={handleMouseClick}> 데이터 읽기 </button>
             { modalVisible &&
                 <div style={{...modalPosition,position:"absolute", zIndex: 1}}>
-                    <DataReader setState={setState}/>
+                    <DataReader setState={setState} onRead={setModalVisible}/>
                 </div> }
         </>
     )
