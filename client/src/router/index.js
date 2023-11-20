@@ -22,12 +22,12 @@ const Router = createBrowserRouter([
 				path: 'mypage',
 				element: <MyPage />,
 			},
-			{
-				path: 'planner',
-				element: <PlannerPage />,
-			},
 		],
 	},
+	{
+		path: '/planner',
+		element: <PlannerPage />
+	}
 ]);
 
 export default Router;

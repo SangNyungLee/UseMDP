@@ -8,6 +8,7 @@ import { planActions } from '../../store/planner';
 import MyDayPicker from '../post/RightClicker/MyDayPicker';
 import { useSelector } from 'react-redux';
 import copy from 'fast-copy';
+
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -29,9 +30,12 @@ function parseISOString(s) {
 function Example(props) {
     //카드 아이템을 만든다.
     const cardItem = useSelector((state) => state.card);
+    console.log("cardItem",cardItem);
     //구조 분해할당
     const { id, post, title, cover_Color, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
+
+    console.log('plan',separatorPlan);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
 
