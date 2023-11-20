@@ -32,7 +32,7 @@ function Example(props) {
     const cardItem = useSelector((state) => state.card);
     console.log('cardItem', cardItem);
     //구조 분해할당
-    const { id, post, title, cover_Color, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
+    const { id, post, title, coverColor, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
 
     console.log('plan', separatorPlan);
@@ -91,7 +91,7 @@ function Example(props) {
     return (
         <>
             <Modal show={show} onHide={handleClose}>
-                <Modal.Header style={{ backgroundColor: cover_Color }} closeButton>
+                <Modal.Header style={{ backgroundColor: coverColor }} closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

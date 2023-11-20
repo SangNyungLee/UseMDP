@@ -16,9 +16,11 @@ import DataReaderModal from '../modal/DataReaderModal';
 // Array.from({ length: count }, (v, k) => k) : 길이가 count인 배열을 생성하는데
 // (v,k) => k 를 적어 넣으면 k 값을 0부터 count - 1 까지 for문 돌리듯 대응시킨다 (관용적으로 쓴다 봐도 될듯)
 
+// 가짜 데이터 생성기, coverColor, title이 있음.
+//title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
 const getItems = (count, offset = 0, separatorStr = 'TODO') =>
     Array.from({ length: count }, (v, k) => k).map((k) => ({
-        cardId: `item-${k + offset}-${new Date().getTime()}`,
+        cardId: `item-${k + offset}-${new Date().getTime()}-${separatorStr}`,
         post: ``,
         title: `title ${k + offset}`,
         coverColor: '#FFD6DA',
@@ -28,7 +30,6 @@ const getItems = (count, offset = 0, separatorStr = 'TODO') =>
         intOrder: offset,
         separatorPlan: separatorStr,
     }));
-
 //reOrder
 //2) 같은 칸톤 보드에서 위치 바꿈
 //3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
@@ -74,8 +75,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     //그리고 옮길 source card의 intOrder는, 도착지의 index로 재조정
     sourceClone[droppableSource.index].intOrder = droppableDestination.index;
     //separtorPlan도 수정해주자.
-    console.log(droppableDestination.droppableId == '1');
-    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == '0' ? 'TODO' : droppableDestination.droppableId == '1' ? 'DOING' : 'DONE';
+    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
 
     const [removed] = sourceClone.splice(droppableSource.index, 1);
 
@@ -84,6 +84,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     const result = {};
     result[droppableSource.droppableId] = sourceClone;
     result[droppableDestination.droppableId] = destClone;
+
     return result;
 };
 
@@ -102,7 +103,6 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // styles we need to apply on draggables
     ...draggableStyle,
 });
-
 const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     padding: grid,
@@ -115,8 +115,6 @@ export default function QuoteApp() {
     console.log('state:', state);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const thumnnailRef = useRef(null);
-    const [readData, setReadData] = useState();
-
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
 
@@ -166,22 +164,19 @@ export default function QuoteApp() {
         // console.log(ind, index);
         // console.log(state[ind][index]);
         // dispatch(cardActions.setInitialState(state[ind][index]));
+
         dispatch(cardActions.setCard(state[ind][index]));
         // console.log(state[ind][index]);
         openModal();
     }
     //dnd에서는, dragend와 onclick이 구분되게 됨.
-
     function onDragEnd(result) {
         const { source, destination } = result;
-
-        console.log(result);
 
         // dropped outside the list
         if (!destination) {
             return;
         }
-
         const sInd = +source.droppableId;
         const dInd = +destination.droppableId;
 
@@ -201,20 +196,6 @@ export default function QuoteApp() {
         }
     }
     // ...state, getItems(1)
-
-    const saveState = () => {
-        DataDownload(plannerTitle, state);
-    };
-
-    useEffect(() => {
-        if (readData) {
-            const data = JSON.parse(readData);
-            dispatch(planActions.setPlansInit(data));
-        }
-    }, [readData]);
-
-    const [plannerTitle, setPlannerTitle] = useState('MDP');
-
     return (
         <div ref={thumnnailRef}>
             {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
@@ -227,11 +208,6 @@ export default function QuoteApp() {
             >
                 ThumbnailMaker
             </button>
-            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} />
-            <button type="button" onClick={saveState}>
-                저장하기
-            </button>
-            <DataReaderModal setState={setReadData} />
             <div style={{ display: 'flex' }}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {/* DragDropContext에서는 drag가 가능한 공간임. 여기서 state를 map으로 푼다. */}
@@ -292,7 +268,8 @@ export default function QuoteApp() {
                                                     type="button"
                                                     onClick={() => {
                                                         const newState = copy(state);
-                                                        newState[ind].push(...getItems(1, newState.length));
+                                                        const separatorStr = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
+                                                        newState[ind].push(...getItems(1, newState[ind].length, separatorStr));
                                                         //setState([state[0], state[1], state[2]]);
                                                         dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
                                                     }}
