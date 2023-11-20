@@ -116,7 +116,7 @@ export default function QuoteApp() {
         const fetchData = async () => {
             const response = await axios.get('/plannerTest');
             const data = response.data[0].cardList;
-
+            const plannerId = response.data[0].plannerId;
             const newState = [[], [], []];
             for (let i = 0; i < data.length; i++) {
                 if (data[i].separatorPlan === 'TODO') {
