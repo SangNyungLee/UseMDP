@@ -15,12 +15,6 @@ const FlexContainer = styled.div`
 `;
 
 function parseISOString(s) {
-<<<<<<< HEAD
-    console.log(s)
-    var b = s.split(/\D+/);
-    console.log(b)
-    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
-=======
     if (s.length > 10) {
         var b = s.split(/\D+/);
         return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
@@ -31,15 +25,17 @@ function parseISOString(s) {
         // JavaScript Date 객체 생성
         return new Date(year, month - 1, day);
     }
->>>>>>> 115c0cbe9f53f8ee0c0e609afa0a73b5d61ccc1b
 }
 
 function Example(props) {
     //카드 아이템을 만든다.
     const cardItem = useSelector((state) => state.card);
+    console.log("cardItem",cardItem);
     //구조 분해할당
     const { id, post, title, cover_Color, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
+
+    console.log('plan',separatorPlan);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
 

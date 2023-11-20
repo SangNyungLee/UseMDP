@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import copy from 'fast-copy';
+
 const initialState = {
     cardId: 0,
     description: '',

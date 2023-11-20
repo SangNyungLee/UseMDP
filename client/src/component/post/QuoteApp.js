@@ -8,19 +8,19 @@ import { planActions } from '../../store/planner';
 import { cardActions } from '../../store/card';
 import axios from 'axios';
 import copy from 'fast-copy';
+import DataDownload from '../../utils/DataDownload';
+import DataReader from '../DataReader';
+import DataReaderModal from '../modal/DataReaderModal';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
-<<<<<<< HEAD
 // getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
 // Array.from({ length: count }, (v, k) => k) : 길이가 count인 배열을 생성하는데
 // (v,k) => k 를 적어 넣으면 k 값을 0부터 count - 1 까지 for문 돌리듯 대응시킨다 (관용적으로 쓴다 봐도 될듯)
-const getItems = (count, offset = 0) =>
-=======
+
 const getItems = (count, offset = 0, separatorStr = 'TODO') =>
->>>>>>> 115c0cbe9f53f8ee0c0e609afa0a73b5d61ccc1b
     Array.from({ length: count }, (v, k) => k).map((k) => ({
-        cardId: `item-${k + offset}-${new Date().getTime()}-${separatorStr}`,
+        cardId: `item-${k + offset}-${new Date().getTime()}`,
         post: ``,
         title: `title ${k + offset}`,
         coverColor: '#FFD6DA',
@@ -75,8 +75,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     }
     //그리고 옮길 source card의 intOrder는, 도착지의 index로 재조정
     sourceClone[droppableSource.index].intOrder = droppableDestination.index;
-    //separtorPlan도 수정해주자.
-    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
 
     const [removed] = sourceClone.splice(droppableSource.index, 1);
 
@@ -116,17 +114,18 @@ export default function QuoteApp() {
     console.log('state:', state);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const thumnnailRef = useRef(null);
+    const [ readData, setReadData ] = useState();
+
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get('/plannerTest');
-
+            
             // 혹시나 테스트중 데이터가 비어있을 경우
             if(response.data[0]){
                 const data = response.data[0].cardList;
-
                 const newState = [[], [], []];
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].separatorPlan === 'TODO') {
@@ -156,7 +155,6 @@ export default function QuoteApp() {
     }
 
     const openModal = () => {
-        console.log("open")
         setIsModalOpen(true);
     };
 
@@ -203,6 +201,22 @@ export default function QuoteApp() {
         }
     }
     // ...state, getItems(1)
+
+
+    const saveState = () => {
+        DataDownload(plannerTitle,state);
+    }
+
+
+    useEffect(()=>{
+        if(readData){
+            const data = JSON.parse(readData);
+            dispatch(planActions.setPlansInit(data));
+        }
+    },[readData])
+
+    const [plannerTitle, setPlannerTitle] = useState('MDP');
+
     return (
         <div ref={thumnnailRef}>
             {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
@@ -215,6 +229,9 @@ export default function QuoteApp() {
             >
                 ThumbnailMaker
             </button>
+            <input value={plannerTitle} onChange={e=>setPlannerTitle(e.target.value)}/>
+            <button type='button' onClick={saveState}>저장하기</button>
+            <DataReaderModal setState={setReadData}/>
             <div style={{ display: 'flex' }}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {/* DragDropContext에서는 drag가 가능한 공간임. 여기서 state를 map으로 푼다. */}
@@ -275,8 +292,7 @@ export default function QuoteApp() {
                                                     type="button"
                                                     onClick={() => {
                                                         const newState = copy(state);
-                                                        const separatorStr = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
-                                                        newState[ind].push(...getItems(1, newState[ind].length, separatorStr));
+                                                        newState[ind].push(...getItems(1, newState.length));
                                                         //setState([state[0], state[1], state[2]]);
                                                         dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
                                                     }}
