@@ -1,4 +1,4 @@
-export default function DataReader({setState}){
+export default function DataReader({setState, onRead}){
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -11,6 +11,7 @@ export default function DataReader({setState}){
         reader.onload = (e) => {
             const fileContents = e.target.result;
             setState(fileContents)
+            onRead(false);
         };
         reader.readAsText(file);
     };

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 import { useState } from 'react';
 import DefaultComponent from '../component/DefaultComponent';
@@ -46,4 +47,19 @@ export default function HomePage() {
             {renderComponent()}
         </div>
     );
+=======
+import { Outlet } from "react-router";
+import HomeSideBar from "../component/HomeSideBar";
+
+export default function HomePage() {
+	return (
+		<>
+			<div>HomePage</div>
+			<div style={{display:"flex"}}>
+				<HomeSideBar/>
+				<Outlet/>
+			</div>
+		</>
+	);
+>>>>>>> develop
 }
