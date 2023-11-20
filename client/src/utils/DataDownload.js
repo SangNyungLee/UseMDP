@@ -1,7 +1,11 @@
 import LZUTF8 from "lzutf8";
 
-export default function DataDownload(content){
-    const jsonContent = JSON.stringify(content,null,2)
+export default function DataDownload(title,content){
+    const newContent = {
+        title,
+        dataContent: content
+    }
+    const jsonContent = JSON.stringify(newContent,null,2)
     // null 자리는 특정 키를 제외할 경우 추가
     // 2는 json 문자열이 읽히기 쉽도록 2칸씩 들여쓰기 되게 하는것
     const blob = new Blob([jsonContent], { type: 'application/json' });
@@ -15,16 +19,16 @@ export default function DataDownload(content){
     document.body.removeChild(a);
 }
 
-export function lzutf8ImgCompress(img){
-    console.log(img)
-    const textDecoder = new TextDecoder('utf-8'); // 또는 다른 인코딩 설정 가능
-    const decodedString = textDecoder.decode(img);
-    console.log(decodedString.length);
-    const compressedString = LZUTF8.compress(decodedString,{outputEncoding: "Base64"});
-    const twoCompressedString = LZUTF8.compress(compressedString,{outputEncoding: "Base64"});
-    console.log(compressedString.length);
-    return compressedString;
-}
+// export function lzutf8ImgCompress(img){
+//     console.log(img)
+//     const textDecoder = new TextDecoder('utf-8'); // 또는 다른 인코딩 설정 가능
+//     const decodedString = textDecoder.decode(img);
+//     console.log(decodedString.length);
+//     const compressedString = LZUTF8.compress(decodedString,{outputEncoding: "Base64"});
+//     const twoCompressedString = LZUTF8.compress(compressedString,{outputEncoding: "Base64"});
+//     console.log(compressedString.length);
+//     return compressedString;
+// }
 
 export function lzutf8Compress(originArr){
     // 객체 배열 압축 참고용

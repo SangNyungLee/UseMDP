@@ -20,7 +20,11 @@ export default function DataReader({setState}){
         <div
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
-            style={{ width: '200px', height: '200px', border: '2px dashed #ccc' }}
+            style={{
+                width: '200px',
+                height: '200px',
+                border: '2px dashed #ccc',
+                backgroundColor: 'white'}}
             >
             Drag and drop a file here
         </div>
