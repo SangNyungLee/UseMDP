@@ -110,11 +110,8 @@ public class PlannerService {
                             .startDate(card.getStartDate())
                             .build();
                     cards.add(cardDTO);
-
                 }
-
             }
-
             PlannerDTO ptdo = PlannerDTO.builder()
                     .plannerId(plan.getPlannerId())
                     .likePlanner(plan.getLikePlanner())
@@ -145,7 +142,8 @@ public class PlannerService {
                     .title(plan.getTitle())
                     .creator(plan.getCreator())
                     .createAt(plan.getCreateAt())
-                    .thumbnail(plan.getThumbnail())
+                   .thumbnail(plan.getThumbnail())
+//                    .thumbnail("qwe")
                     .build();
             PDTO.add(ptdo);
         }
