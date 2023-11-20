@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
+
 import Modal from 'react-bootstrap/Modal';
 import CardEditor from '../post/Editor/CardEditor';
-import { useDispatch } from 'react-redux';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import { useDispatch, useSelector } from 'react-redux';
 import { planActions } from '../../store/planner';
 import MyDayPicker from '../post/RightClicker/MyDayPicker';
-import { useSelector } from 'react-redux';
 import copy from 'fast-copy';
-
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -30,12 +30,12 @@ function parseISOString(s) {
 function Example(props) {
     //카드 아이템을 만든다.
     const cardItem = useSelector((state) => state.card);
-    console.log("cardItem",cardItem);
+    console.log('cardItem', cardItem);
     //구조 분해할당
-    const { id, post, title, cover_Color, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
+    const { id, post, title, coverColor, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
 
-    console.log('plan',separatorPlan);
+    console.log('plan', separatorPlan);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
 
@@ -72,6 +72,12 @@ function Example(props) {
             return updatedTodoList;
         });
     };
+    const handleProgessBar = () => {
+        const done = list.filter((item) => Object.values(item).every((value) => value)).length;
+        const total = list.length;
+        const progress = (done / total) * 100;
+        return progress;
+    };
 
     useEffect(() => {
         setShow(props.modalStatus);
@@ -85,10 +91,11 @@ function Example(props) {
     return (
         <>
             <Modal show={show} onHide={handleClose}>
-                <Modal.Header style={{ backgroundColor: cover_Color }} closeButton>
+                <Modal.Header style={{ backgroundColor: coverColor }} closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <ProgressBar now={handleProgessBar()} label={`${handleProgessBar()}%`}></ProgressBar>
                     <CardEditor editpost={Edits} post={post}></CardEditor>
                     <FlexContainer>
                         <MyDayPicker date={parseISOString(startDate)} />

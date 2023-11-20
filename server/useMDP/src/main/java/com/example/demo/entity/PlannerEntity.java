@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +31,7 @@ public class PlannerEntity {
     @Column(nullable = false)
     private int likePlanner;
 
+
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String thumbnail;
 
@@ -41,6 +43,9 @@ public class PlannerEntity {
     @ManyToOne
     @JoinColumn(name="memberId")
     private MemberEntity memberEntity;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "plannerEntity")
+    private List<CardEntity> cardEntityList;
 
 
 }

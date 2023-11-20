@@ -49,7 +49,7 @@ public class CardEntity {
     private PlannerEntity plannerEntity;
 
 
-    @Column(columnDefinition = "ENUM('TODO','DOING','DONE')", nullable = false)
+//    @Column(columnDefinition = "ENUM('TODO','DOING','DONE')", nullable = false)
     @Enumerated(EnumType.STRING)
     private separatorPlan separatorPlan;
 
