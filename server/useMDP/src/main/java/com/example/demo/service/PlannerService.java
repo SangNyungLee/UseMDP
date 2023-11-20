@@ -131,6 +131,28 @@ public class PlannerService {
         return plannerDTOs;
     }
 
+
+    public List<PlannerDTO> getPlanner() {
+        List<PlannerDTO> PDTO = new ArrayList<>();
+        List<PlannerEntity> ce = plannerRepository.findAll();
+
+
+
+        for(PlannerEntity plan : ce) {
+            PlannerDTO ptdo = PlannerDTO.builder()
+                    .plannerId(plan.getPlannerId())
+                    .likePlanner(plan.getLikePlanner())
+                    .title(plan.getTitle())
+                    .creator(plan.getCreator())
+                    .createAt(plan.getCreateAt())
+                    .thumbnail(plan.getThumbnail())
+                    .build();
+            PDTO.add(ptdo);
+        }
+
+
+        return PDTO;
+    }
     //내 로드맵 리스트 가져오기
 //    public List<PlannerDTO> getMyPlannerList(long userId) {
 //        List<PlannerEntity> result = plannerRepository.findByMemberId(userId);

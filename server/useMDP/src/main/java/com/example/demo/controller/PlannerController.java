@@ -22,7 +22,7 @@ public class PlannerController {
 
     //로드맵 리스트 모두 가져오기
     //외래키로 유저 정보까지 가져옴
-    @GetMapping("/plannerTest")
+    @GetMapping("/planner")
     @ResponseBody
     public List<MemberDTO> getPlannerAll() {
         System.out.println("플래너 요청");
@@ -32,6 +32,11 @@ public class PlannerController {
     @GetMapping("/plannerTest")
     @ResponseBody
     public List<PlannerDTO> getPlannerById(){return plannerService.getPlannerById();}
+
+
+    @GetMapping("/planner/default")
+    @ResponseBody
+    public List<PlannerDTO> getPlanner(){return plannerService.getPlanner();}
 
     //내 로드맵 가져오기
     //test 위해 RequestParam 사용

@@ -1,7 +1,9 @@
+import DefaultLoadMap from '../component/home/DefaultLoadMap';
+
 export default function HomePage() {
-	return (
-		<>
-			<div>HomePage</div>
-		</>
-	);
+    return (
+        <>
+            <DefaultLoadMap></DefaultLoadMap>
+        </>
+    );
 }
