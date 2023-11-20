@@ -36,6 +36,7 @@ public class PlannerService {
         Map<String, List> result = new HashMap<>();
 
 
+
         for (PlannerEntity planner : joinResult) {
             PlannerDTO plannerDTO = PlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
