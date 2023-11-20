@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import base64Str from '../constant/ImageBase64';
-import LoadMap from './LoadMap';
+import base64Str from '../../constant/ImageBase64';
+import LoadMap from '../LoadMap';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 export default function DefaultComponent() {
     const [data, setData] = useState([]);

@@ -5,6 +5,7 @@ import MyPage from '../pages/MyPage';
 import PlannerPage from '../pages/PlannerPage';
 import App from '../App';
 import MyCalendar from '../component/MyCalendar';
+import DefaultLoadMap from '../component/defaultLoadMap/DefaultLoadMap';
 
 const Router = createBrowserRouter([
     {
@@ -31,7 +32,7 @@ const Router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <WelcomePage />,
+                element: <DefaultLoadMap />,
             },
             {
                 path: 'calender',
