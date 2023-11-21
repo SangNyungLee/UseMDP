@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
 import StarComponent from '../StarComponent';
+import HomeComponent from '../homeComponent/HomeComponent';
+
 export default function DefaultLoadMap() {
     const [menuNumber, setMenuNumber] = useState();
     const renderComponent = () => {
         switch (menuNumber) {
             case 1:
-                return <DefaultComponent />;
+                return <HomeComponent />;
             case 2:
                 return <StarComponent />;
             case 3:
@@ -17,7 +19,7 @@ export default function DefaultLoadMap() {
             case 5:
                 return <DefaultComponent />;
             default:
-                return <DefaultComponent />;
+                return <HomeComponent />;
         }
     };
     const handleNumber = (number) => {
