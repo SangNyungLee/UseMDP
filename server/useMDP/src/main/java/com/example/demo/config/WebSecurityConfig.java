@@ -39,7 +39,7 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("https://www.usemdp.site"));
+        config.setAllowedOrigins(Arrays.asList("https://www.usemdp.site", "http://localhost:3000"));
         config.setAllowedMethods(Arrays.asList("HEAD", "POST", "GET", "DELETE", "PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
 
