@@ -11,29 +11,33 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "member")
+@Table(name = "checklist")
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberEntity {
+public class ChecklistEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long memberId;
+    private long checklistId;
+
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int checked;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String nickname;
+    private String title;
 
     @Column
     @CreationTimestamp
-    private Timestamp createdAt;
+    private Timestamp createAt;
 
     @Column
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "cardId")
+    private CardEntity cardEntity;
 
 }

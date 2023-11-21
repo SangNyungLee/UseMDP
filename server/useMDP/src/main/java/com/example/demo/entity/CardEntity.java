@@ -5,18 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Date;
-
+import java.util.List;
 
 @Entity
-@Getter
+@Table(name = "card")
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="card")
+@DynamicInsert
 public class CardEntity {
 
     @Id
@@ -43,16 +47,27 @@ public class CardEntity {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date endDate;
 
-    //외래키 -> 하나의 플래너는 여러개의 카드를 가질 수 있음
+    @Column(columnDefinition = "ENUM('TODO','DOING','DONE') DEFAULT 'TODO'")
+    @Enumerated(EnumType.STRING)
+    private CardStatus cardStatus;
+
+    @Column
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @Column
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
     @ManyToOne
-    @JoinColumn(name="plannerId")
+    @JoinColumn(name = "plannerId")
     private PlannerEntity plannerEntity;
 
+    @OneToMany(mappedBy = "cardEntity", fetch = FetchType.LAZY)
+    private List<ChecklistEntity> checklists;
 
-    @Column(columnDefinition = "ENUM('TODO','DOING','DONE')", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private separatorPlan separatorPlan;
-
-
-
+    @Getter
+    public enum CardStatus {
+        TODO, DOING, DONE;
+    }
 }

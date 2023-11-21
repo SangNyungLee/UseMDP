@@ -1,58 +1,64 @@
 package com.example.demo.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
-@Getter
+@Table(name = "planner")
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
-@Table(name="planner")
 public class PlannerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long plannerId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Creator'")
     private String creator;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Title'")
     private String title;
 
-    @ColumnDefault("0")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private int likePlanner;
 
-    @ColumnDefault("defaultImage")
-    @Column(columnDefinition = "LONGTEXT", nullable = false)
+    @Column(columnDefinition = "LONGTEXT", nullable = true)
     private String thumbnail;
 
+    @Column(columnDefinition = "ENUM('PRIVATE', 'PUBLIC') DEFAULT 'PRIVATE'")
+    @Enumerated(EnumType.STRING)
+    private PlannerAccess plannerAccess;
+
+    @Column(columnDefinition = "INTEGER DEFAULT 0")
+    private int isDefault;
+
+    @Column
     @CreationTimestamp
-    @Column(nullable = false)
-    private Timestamp createAt;
+    private Timestamp createdAt;
 
-    @ColumnDefault("0")
-    @Column(nullable = false)
-    private int defaultPlanner;
+    @Column
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
-    //외래키 -> 한명의 유저는 여러개의 플래너를 가질 수 있음
-    @ManyToOne
-    @JoinColumn(name="m_id")
-    private MemberEntity memberEntity;
+    @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY)
+    private List<CardEntity> cards;
 
-
-
-
+    @Getter
+    public enum PlannerAccess {
+        PRIVATE,
+        PUBLIC
+    }
 }
+
+
