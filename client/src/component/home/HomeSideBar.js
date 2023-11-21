@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { useDispatch } from "react-redux";
-import { plannerListActions } from "../store/plannerList";
-import DataReaderModal from "./modal/DataReaderModal";
-import PlannerListLi from "./PlannerListLi";
+import { plannerListActions } from "../../store/plannerList";
+import DataReaderModal from "../reader/DataReaderModal";
+import PlannerListLi from "./calendar/PlannerListLi";
 
 const _Container = styled.div`
     background-color: skyblue;
@@ -24,6 +24,8 @@ export default function HomeSideBar(){
             setReadData();
         }
     },[readData])
+
+    console.log("plannerList",plannerList)
 
 
     return(<>

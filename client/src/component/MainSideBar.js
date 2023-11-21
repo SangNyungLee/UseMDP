@@ -4,7 +4,7 @@ import styled from "styled-components";
 const _Modal = styled.div`
     position: fixed;
     top: 0;
-    height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     transition: left 0.5s; /* left 속성에 애니메이션 적용 */
