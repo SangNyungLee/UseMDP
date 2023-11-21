@@ -112,12 +112,13 @@ const getListStyle = (isDraggingOver) => ({
 export default function QuoteApp() {
     //페이크 아이템을 10개, 5개를 만드는데, 두번쨰는 10부터,세번째는 15부터 시작하도록
     const state = useSelector((state) => state.planner);
-    console.log('state:', state);
+    // console.log('state:', state);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const thumnnailRef = useRef(null);
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
-
+    const [readData, setReadData] = useState();
+    const [plannerTitle, setPlannerTitle] = useState('MDP');
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get('/plannerTest');
@@ -138,7 +139,7 @@ export default function QuoteApp() {
                         newState[2].push(data[i]);
                     }
                 }
-                console.log(newState);
+                // console.log(newState);
                 dispatch(planActions.setPlansInit(newState));
             } else {
                 dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
@@ -159,14 +160,11 @@ export default function QuoteApp() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
+    const saveState = () => {
+        DataDownload(plannerTitle, state);
+    };
     function handleClick(ind, index) {
-        // console.log(ind, index);
-        // console.log(state[ind][index]);
-        // dispatch(cardActions.setInitialState(state[ind][index]));
-
         dispatch(cardActions.setCard(state[ind][index]));
-        // console.log(state[ind][index]);
         openModal();
     }
     //dnd에서는, dragend와 onclick이 구분되게 됨.
@@ -208,6 +206,11 @@ export default function QuoteApp() {
             >
                 ThumbnailMaker
             </button>
+            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} />
+            <button type="button" onClick={saveState}>
+                저장하기
+            </button>
+            <DataReaderModal setState={setReadData} />
             <div style={{ display: 'flex' }}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {/* DragDropContext에서는 drag가 가능한 공간임. 여기서 state를 map으로 푼다. */}

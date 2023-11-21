@@ -2,7 +2,7 @@ import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
 
 export default function LoadMap(props) {
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
-    console.log(props);
+    // console.log(props);
 
     return (
         <>
