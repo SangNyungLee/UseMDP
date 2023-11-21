@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import base64Str from '../../constant/ImageBase64';
 import LoadMap from '../LoadMap';
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
 export default function DefaultComponent() {
     const [data, setData] = useState([]);
+    const [hide, setHide] = useState(false);
     useEffect(() => {
         async function getData() {
             try {
@@ -57,21 +58,74 @@ export default function DefaultComponent() {
                                 <LoadMap datas={data[2]}></LoadMap>
                             </div>
                         </Col>
-                    </Row>
-                    <Row style={{ marginTop: '30px' }}>
                         <Col>
                             <div key={data[3].plannerId}>
                                 <LoadMap datas={data[3]}></LoadMap>
                             </div>
                         </Col>
+                    </Row>
+                    <Row style={{ marginTop: '30px' }}>
+                        {hide ? (
+                            <>
+                                <Col>
+                                    <div key={data[4].plannerId}>
+                                        <LoadMap datas={data[4]}></LoadMap>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <div key={data[5].plannerId}>
+                                        <LoadMap datas={data[5]}></LoadMap>
+                                    </div>
+                                </Col>
+                                <Col></Col>
+                                <Col></Col>
+                                <div>
+                                    <Button
+                                        className="w-25 float-end"
+                                        onClick={() => {
+                                            setHide(false);
+                                        }}
+                                    >
+                                        접기
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
+                            <div>
+                                <Button
+                                    className="w-25 float-end"
+                                    onClick={() => {
+                                        setHide(true);
+                                    }}
+                                >
+                                    더보기
+                                </Button>
+                            </div>
+                        )}
+                    </Row>
+                </Container>
+
+                <h2>내 로드맵</h2>
+                <Container>
+                    <Row style={{ marginTop: '30px' }}>
                         <Col>
-                            <div key={data[4].plannerId}>
-                                <LoadMap datas={data[4]}></LoadMap>
+                            <div key={data[0].plannerId}>
+                                <LoadMap datas={data[0]}></LoadMap>
                             </div>
                         </Col>
                         <Col>
-                            <div key={data[5].plannerId}>
-                                <LoadMap datas={data[5]}></LoadMap>
+                            <div key={data[1].plannerId}>
+                                <LoadMap datas={data[1]}></LoadMap>
+                            </div>
+                        </Col>
+                        <Col>
+                            <div key={data[2].plannerId}>
+                                <LoadMap datas={data[2]}></LoadMap>
+                            </div>
+                        </Col>
+                        <Col>
+                            <div key={data[3].plannerId}>
+                                <LoadMap datas={data[3]}></LoadMap>
                             </div>
                         </Col>
                     </Row>
