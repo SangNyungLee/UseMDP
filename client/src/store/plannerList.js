@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 //todo     doing    done
 
-const initialState = [];
+const initialState = []
+
 
 const plannerListSlice = createSlice({
     name: 'planners',

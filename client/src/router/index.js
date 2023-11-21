@@ -35,7 +35,7 @@ const Router = createBrowserRouter([
                 element: <DefaultLoadMap />,
             },
             {
-                path: 'calender',
+                path: 'calendar',
                 element: <MyCalendar />,
             },
         ],
