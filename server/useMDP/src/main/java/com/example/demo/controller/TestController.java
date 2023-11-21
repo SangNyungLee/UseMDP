@@ -21,6 +21,12 @@ public class TestController {
         return "person : age - " + person.getAge() + ", name - " + person.getName();
     }
 
+    @PostMapping("/api/gitTest")
+    public String gitTest(){
+
+        return "Success";
+    }
+
     public static class Person {
         private String name;
         private int age;
