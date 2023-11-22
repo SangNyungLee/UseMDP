@@ -16,9 +16,9 @@ export default function DefaultLoadMap() {
             case 3:
                 return <StarComponent />;
             case 4:
-                return <SearchComponent />;
-            case 5:
                 return <MyCalendar />;
+            case 5:
+                return <SearchComponent />;
             default:
                 return <HomeComponent />;
         }
