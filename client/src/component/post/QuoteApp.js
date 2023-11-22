@@ -112,7 +112,7 @@ const getListStyle = (isDraggingOver) => ({
 export default function QuoteApp() {
     //페이크 아이템을 10개, 5개를 만드는데, 두번쨰는 10부터,세번째는 15부터 시작하도록
     const state = useSelector((state) => state.planner);
-    // console.log('state:', state);
+    console.log('state:', state);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const thumnnailRef = useRef(null);
     //dispatch 선언
