@@ -1,9 +1,10 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
-import StarComponent from '../StarComponent';
+import StarComponent from '../starComponent/StarComponent';
 import HomeComponent from '../homeComponent/HomeComponent';
-
+import MyCalendar from '../MyCalendar';
+import SearchComponent from '../searchComponent/SearchComponent';
 export default function DefaultLoadMap() {
     const [menuNumber, setMenuNumber] = useState();
     const renderComponent = () => {
@@ -11,13 +12,13 @@ export default function DefaultLoadMap() {
             case 1:
                 return <HomeComponent />;
             case 2:
-                return <StarComponent />;
+                return <DefaultComponent />;
             case 3:
-                return <DefaultComponent />;
+                return <StarComponent />;
             case 4:
-                return <DefaultComponent />;
+                return <SearchComponent />;
             case 5:
-                return <DefaultComponent />;
+                return <MyCalendar />;
             default:
                 return <HomeComponent />;
         }
