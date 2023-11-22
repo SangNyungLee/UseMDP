@@ -3,7 +3,7 @@ import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
 import StarComponent from '../starComponent/StarComponent';
 import HomeComponent from '../homeComponent/HomeComponent';
-import MyCalendar from '../MyCalendar';
+import MyCalendar from '../home/calendar/MyCalendar';
 import SearchComponent from '../searchComponent/SearchComponent';
 export default function DefaultLoadMap() {
     const [menuNumber, setMenuNumber] = useState();
@@ -16,9 +16,9 @@ export default function DefaultLoadMap() {
             case 3:
                 return <StarComponent />;
             case 4:
-                return <SearchComponent />;
-            case 5:
                 return <MyCalendar />;
+            case 5:
+                return <SearchComponent />;
             default:
                 return <HomeComponent />;
         }

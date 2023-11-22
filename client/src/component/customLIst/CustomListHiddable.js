@@ -23,7 +23,7 @@ export default function CustomListHiddable(props) {
                 if (idx === 0) {
                     return (
                         <Container key={idx} style={{ marginTop: '30px' }}>
-                            <Row>
+                            <Row style={{ justifyContent: 'space-between' }}>
                                 {Array.from({ length: Math.min(4, data.length) }).map((_, i) => (
                                     <Col key={data[i].plannerId}>
                                         <div onContextMenu={(e) => handleRightClick(e, data[i].title, data[i].plannerId)}>
@@ -62,9 +62,11 @@ export default function CustomListHiddable(props) {
                 }
             })}
             {/* hide===true면 접고, false면 펼수 있도록. */}
+            <br />
             {hide ? (
                 <div>
                     <Button
+                        variant="success"
                         className="w-25 float-end"
                         onClick={() => {
                             setHide(false);

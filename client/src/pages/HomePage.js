@@ -7,7 +7,9 @@ export default function HomePage() {
             <div>HomePage</div>
             <div style={{ display: 'flex' }}>
                 <HomeSideBar />
-                <Outlet />
+                <div style={{ flexGrow: 1 }}>
+                    <Outlet />
+                </div>
             </div>
         </>
     );
