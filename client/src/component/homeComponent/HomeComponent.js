@@ -12,22 +12,27 @@ export default function HomeComponent() {
 
     const dispatch = useDispatch();
     console.log(data);
-    // console.log(data);
     useEffect(() => {
         async function fetchData() {
+            const testData = [
+                { plannerId: 1, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
+                { plannerId: 2, creator: '234', title: '230304', likePlanner: 2, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
+                { plannerId: 3, creator: '456', title: '230305', likePlanner: 3, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
+            ];
             // const response = await axios.get('/api/myplanner');
             try {
                 const response = await axios.get('/plannerTest');
                 // console.log('res : ', response.data);
-                setData(response.data);
-                dispatch(planActions.setPlans(response.data));
+                if (response.data.length == 0) {
+                    setData(testData);
+                    dispatch(planActions.setPlans(testData));
+                } else {
+                    setData(response.data);
+                    dispatch(planActions.setPlans(response.data));
+                }
             } catch {
                 console.log('error');
-                const testData = [
-                    { plannerId: 1, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 2, creator: '234', title: '230304', likePlanner: 2, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 3, creator: '456', title: '230305', likePlanner: 3, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                ];
+
                 setData(testData);
                 dispatch(planActions.setPlans(testData));
             }
