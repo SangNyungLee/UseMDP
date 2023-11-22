@@ -8,7 +8,10 @@ export default function TestPage() {
     console.log("Get방식 : ", result);
   };
 
-  const goPost = async () => {};
+  const goPost = async () => {
+    const result = await axios.post("http://localhost:8080/api/test");
+    console.log("Post방식임 : ", result);
+  };
 
   const socialTest = async () => {
     const gitUrl =
