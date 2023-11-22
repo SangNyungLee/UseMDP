@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.model.dto.LoginDTO;
 import com.example.demo.service.JwtTokenProvider;
 import com.example.demo.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 
+@Tag(name="Login")
 @RestController
 @RequestMapping("/api/login")
 public class LoginController {
@@ -36,6 +39,7 @@ public class LoginController {
     private JwtTokenProvider jwtTokenProvider;
 
 
+    @Operation(summary = "사용자 인증", description = "사용자 인증을 수행하고 토큰을 생성한다")
     @PostMapping
     public ResponseEntity<String> loginUser(@RequestBody LoginDTO loginDTO) {
         // 여기서 LoginDTO는 로그인 시 사용자의 입력을 나타내는 데이터 전송 객체입니다.
