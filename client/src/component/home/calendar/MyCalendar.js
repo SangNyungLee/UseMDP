@@ -42,15 +42,17 @@ export default function MyCalendar() {
 
   const [events, setEvents] = useState([
     {
-      id: 1,
-      start: moment().toDate().toISOString(),
-      end: moment().add(1, "days").toDate().toISOString(),
+      cardId: "1",
+      startDate: moment().toDate().toISOString(),
+      endDate: moment().add(1, "days").toDate().toISOString(),
+      coverColor: "#FFD6DA",
       title: "Some title 1",
     },
     {
-      id: 2,
-      start: moment().add(2, "days").toDate().toISOString(),
-      end: moment().add(3, "days").toDate().toISOString(),
+      cardId: "2",
+      startDate: moment().add(2, "days").toDate().toISOString(),
+      endDate: moment().add(3, "days").toDate().toISOString(),
+      coverColor: "orange",
       title: "Some title 2",
     },
   ]);
@@ -58,13 +60,15 @@ export default function MyCalendar() {
   console.log(events);
 
   useEffect(()=>{
-    const newArr
-    = plannerList.map( e => e.dataContent.flat())
-      .flat().map( e => ({ ...e,
-        startDate: new Date(e.startDate),
-        endDate: new Date(e.endDate),
-        sourceResource: null }));
-    setEvents(newArr)
+    if(plannerList.length>0){
+      console.log(true)
+      const newArr
+      = plannerList.map( e => e.dataContent.flat())
+        .flat().map( e => ({ ...e,
+          startDate: new Date(e.startDate),
+          endDate: new Date(e.endDate)}));
+      setEvents(newArr)
+    }
   },[plannerList])
 
   const onEventResize = (data) => {

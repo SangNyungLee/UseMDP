@@ -39,27 +39,27 @@ public class SecurityConfig {
     @Autowired
     Oauth2UserService oauth2UserService;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(CorsConfigurer::disable);
-        http.csrf(CsrfConfigurer::disable); // 외부 POST 요청을 받아야하니 csrf는 꺼준다.
-//        http.httpBasic(HttpBasicConfigurer::disable);
-//        // http 기본 인증 방식을 사용하지 않는다는거지 http 요청 자체를 거부하는게 아님
-        http.sessionManagement((sessionManagement)
-                -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        // 통신을 주고 받을때 세션을 생성 안 함 : stateless를 사용하는 restful에서 자주 사용
-        http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated());
-        http.oauth2Login((oauth2Login) -> oauth2Login
-                        .userInfoEndpoint((userInfo) -> userInfo
-                                .userService(oauth2UserService)
-                                .userAuthoritiesMapper(grantedAuthoritiesMapper())
-                        ));
-        return http.build();
-    }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.cors(CorsConfigurer::disable);
+//        http.csrf(CsrfConfigurer::disable); // 외부 POST 요청을 받아야하니 csrf는 꺼준다.
+////        http.httpBasic(HttpBasicConfigurer::disable);
+////        // http 기본 인증 방식을 사용하지 않는다는거지 http 요청 자체를 거부하는게 아님
+//        http.sessionManagement((sessionManagement)
+//                -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        // 통신을 주고 받을때 세션을 생성 안 함 : stateless를 사용하는 restful에서 자주 사용
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                        .requestMatchers("/**")
+//                        .permitAll()
+//                        .anyRequest()
+//                        .authenticated());
+//        http.oauth2Login((oauth2Login) -> oauth2Login
+//                        .userInfoEndpoint((userInfo) -> userInfo
+//                                .userService(oauth2UserService)
+//                                .userAuthoritiesMapper(grantedAuthoritiesMapper())
+//                        ));
+//        return http.build();
+//    }
 
     private GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
         return (authorities) -> {
