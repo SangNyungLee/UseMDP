@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router';
-import HomeSideBar from '../component/HomeSideBar';
+import HomeSideBar from '../component/home/HomeSideBar';
 
 export default function HomePage() {
     return (

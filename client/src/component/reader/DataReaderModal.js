@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DataReader from "../DataReader";
+import DataReader from "./DataReader";
 
 export default function DataReaderModal({setState}){
     const [ modalPosition, setModalPosition ] = useState();

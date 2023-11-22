@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function TodoListLi({todo,id}){
     const [ visible, setVisible ] = useState(false);
+    console.log(todo)
 
     return (
         <>
