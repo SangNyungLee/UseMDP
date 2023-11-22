@@ -8,6 +8,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class GoogleLoginService {
 
@@ -17,17 +20,22 @@ public class GoogleLoginService {
     public GoogleLoginService(Environment env){
         this.env = env;
     }
-    public void socialLogin(String code, String registrationId){
+    public Map<String, String> socialLogin(String code, String registrationId){
         String accessToken = getAccessToken(code, registrationId);
         JsonNode userResourceNode = getUserResource(accessToken, registrationId);
         System.out.println("userResourceNode= " + userResourceNode);
-
         String id = userResourceNode.get("id").asText();
         String email = userResourceNode.get("email").asText();
         String nickname = userResourceNode.get("name").asText();
         System.out.println("id = " + id);
         System.out.println("email = " + email);
         System.out.println("nickname = " +nickname);
+
+        //일단 아이디랑 닉네임만 반환시킴
+        Map<String, String> result = new HashMap<>();
+        result.put("id", id);
+        result.put("nickname", nickname);
+        return result;
     }
 
     private String getAccessToken(String authorizationCode, String registrationId){
