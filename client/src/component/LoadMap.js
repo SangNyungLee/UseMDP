@@ -6,12 +6,14 @@ export default function LoadMap(props) {
 
     return (
         <Card style={{ width: '250px' }}>
-            <Card.Img variant="top" src={thumbnail}></Card.Img>
+            <Card.Img style={{ width: '250px', height: '125px' }} variant="top" src={thumbnail}></Card.Img>
             <Card.Body>
-                <Card.Title>{title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted float-end">{creator}</Card.Subtitle>
+                <Card.Title style={{ fontSize: '14px', fontWeight: 'bold' }}>{title}</Card.Title>
+                <Card.Subtitle style={{ fontSize: '12px' }} className="mb-2 text-muted float-end">
+                    {creator}
+                </Card.Subtitle>
                 <br />
-                <Card.Text>{description}</Card.Text>
+                <Card.Text style={{ fontSize: '13px' }}>{description}</Card.Text>
             </Card.Body>
         </Card>
     );
