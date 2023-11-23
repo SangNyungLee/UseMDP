@@ -38,13 +38,18 @@ function Example(props) {
     const cardItem = useSelector((state) => state.card);
     console.log('cardItem', cardItem);
     //구조 분해할당
-    const { id, post, title, coverColor, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
+    const { id, post, title, coverColor, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
     const [picker, setPicker] = useState(false);
     const handlePicker = () => {
         setPicker(!picker);
     };
     // console.log('plan', separatorPlan);
+    
+    const [ startDate, setStartDate] = useState();
+    const [ endDate, setEndDate] = useState();
+
+    console.log('plan', separatorPlan);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
 
@@ -91,6 +96,8 @@ function Example(props) {
     };
 
     useEffect(() => {
+        setStartDate(new Date(cardItem.startDate))
+        setEndDate(new Date(cardItem.endDate))
         setShow(props.modalStatus);
     }, [props.modalStatus]);
 
@@ -126,9 +133,9 @@ function Example(props) {
                     <ProgressBar now={handleProgessBar()} label={`${handleProgessBar()}%`}></ProgressBar>
                     <CardEditor editpost={Edits} post={post}></CardEditor>
                     <FlexContainer>
-                        <MyDayPicker date={parseISOString(startDate)} />
+                        <MyDayPicker date={startDate} setDate={setStartDate} />
                         <span>~</span>
-                        <MyDayPicker date={parseISOString(endDate)} />
+                        <MyDayPicker date={endDate} setDate={setEndDate}/>
                     </FlexContainer>
                     <div>
                         {list.map((item, index) => (
