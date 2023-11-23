@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.CodeDTO;
 import com.example.demo.service.GithubLoginService;
 import com.example.demo.service.GoogleLoginService;
+import com.example.demo.utils.JwtTokenUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,22 @@ public class LoginController {
     @Autowired
     GithubLoginService githubLoginService;
 
+    private final JwtTokenUtil jwtTokenUtil;
+
+    public LoginController(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+
     @PostMapping("/api/googleCode")
     public String googleLogin(@RequestBody CodeDTO codeDTO){
         String code = codeDTO.getAuthorizationCode();
         Map<String, String> result = googleLoginService.socialLogin(code, "registergoogle");
         System.out.println("아이디: " + result.get("id"));
         System.out.println("닉네임: " + result.get("nickname"));
+        String id = result.get("id");
+        String token = jwtTokenUtil.createToken(id);
 
-        return "success";
+        return token;
     }
     @PostMapping("/api/githubCode")
     public String githubLogin(@RequestBody CodeDTO codeDTO){
