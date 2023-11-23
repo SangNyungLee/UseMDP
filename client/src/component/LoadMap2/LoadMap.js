@@ -50,7 +50,8 @@ export default function LoadMap2(props) {
     };
     const [starClick, setStarClick] = useState(false);
 
-    const isStarCilck = () => {
+    const isStarCilck = (e) => {
+        e.stopPropagation();
         setStarClick(!starClick);
     };
 
@@ -70,7 +71,7 @@ export default function LoadMap2(props) {
             <div>
                 <_Felx>
                     <_TitleStyle>{title}</_TitleStyle>
-                    {starClick ? <_Star src={yellowStar} onClick={() => isStarCilck()}></_Star> : <_Star src={star} onClick={() => isStarCilck()}></_Star>}
+                    {starClick ? <_Star src={yellowStar} onClick={(e) => isStarCilck(e)}></_Star> : <_Star src={star} onClick={(e) => isStarCilck(e)}></_Star>}
                 </_Felx>
                 <_DescriptionStyle>{description}</_DescriptionStyle>
             </div>
