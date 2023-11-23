@@ -36,7 +36,7 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await axios.get('/api/getPlanners');
+                const response = await axios.get('http://localhost:8080/api/getPlanners');
                 data = response.data;
             } catch {
                 const tmp = [

@@ -20,7 +20,7 @@ export default function StarComponent() {
     useEffect(() => {
         async function getData() {
             try {
-                const result = await axios.get('/api/getPlanner/trending');
+                const result = await axios.get('http://localhost:8080/api/getPlanner/trending');
                 setData(result.data);
             } catch {
                 console.log('error');

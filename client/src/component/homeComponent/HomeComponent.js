@@ -27,7 +27,7 @@ export default function HomeComponent() {
             ];
             // const response = await axios.get('/api/myplanner');
             try {
-                const response = await axios.get('api/getMyPlanner');
+                const response = await axios.get('http://localhost:8080/api/getPlanners');
                 console.log('res : ', response.data);
                 if (response.data.length == 0) {
                     setData(testData);

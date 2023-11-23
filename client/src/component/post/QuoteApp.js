@@ -134,7 +134,7 @@ export default function QuoteApp() {
         const fetchData = async () => {
             const btoa = searchParams.get('id');
             const rearrangedArray = [[], [], []];
-            const result = await axios(`/api/getPlanner/${btoa}`);
+            const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
             const Planner = result.data;
             console.log(Planner);
             const { cards, ...newPlanner } = Planner;

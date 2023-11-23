@@ -4,6 +4,8 @@ import star from '../../constant/img/star.png';
 import yellowStar from '../../constant/img/yellowStar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+import { async } from 'q';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -50,8 +52,16 @@ export default function LoadMap2(props) {
     };
     const [starClick, setStarClick] = useState(false);
 
-    const isStarCilck = (e) => {
+    const isStarCilck = async (e) => {
         e.stopPropagation();
+        //Star에 따라서, +를 보내줄지, -를 보내줄지 결정하자.
+        //StarClick= true 이미 좋아요 한 상태의므로
+        if (starClick) {
+            //unlike
+            const res = await axios.patch('http://localhost:8080/api/patchPlanner/unlike', { plannerId: plannerId });
+        } else {
+            const res = await axios.patch('http://localhost:8080/api/patchPlanner/like', { plannerId: plannerId });
+        }
         setStarClick(!starClick);
     };
 

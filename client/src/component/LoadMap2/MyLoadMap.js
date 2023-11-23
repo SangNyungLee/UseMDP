@@ -1,9 +1,10 @@
-import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import star from '../../constant/img/star.png';
-import yellowStar from '../../constant/img/yellowStar.png';
+// import star from '../../constant/img/star.png';
+// import yellowStar from '../../constant/img/yellowStar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -58,7 +59,7 @@ const _Button = styled.button`
 `;
 
 export default function MyLoadMap(props) {
-    const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
+    const { plannerId, title, creator, likePlanner, thumbnail, createAt, description, plannerAccess } = props.datas;
     // console.log(props);
     const navigate = useNavigate();
     const handleClick = () => {
@@ -68,21 +69,39 @@ export default function MyLoadMap(props) {
     };
     const [starClick, setStarClick] = useState(false);
 
+    // 모달 보여주기
+    const [showModal, setShowModal] = useState(false);
+
+    // 모달폼
+    const [editedTitle, setEditedTitle] = useState(title);
+    const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
+    const [editedDescription, setEditedDescription] = useState(description);
+
     const handleShareIcon = (e) => {
         e.stopPropagation();
+        //RightClicker 보내주자.
+    };
+
+    const changeDataByButton = (e) => {
+        e.stopPropagation();
+        setShowModal(true);
+    };
+    //모달끄기
+    const handleCloseModal = (e) => {
+        e.stopPropagation();
+        setShowModal(false);
+    };
+
+    //저장
+    const handleSaveChanges = (e) => {
+        e.stopPropagation();
+        //업데이트하고, axios보내줘야한다.
+
+        setShowModal(false);
     };
 
     return (
         <_Container onClick={handleClick}>
-            {/* <Image src={thumbnail}></Image>
-      <Row>
-        <Col>
-          <h3>{title}</h3>
-          <span>{description}</span>
-        </Col>
-        <Col>{creator}</Col>
-      </Row> */}
-
             <_ImageStyle src={thumbnail}></_ImageStyle>
             <div>
                 <_Felx>
@@ -97,10 +116,48 @@ export default function MyLoadMap(props) {
                 </_Felx>
                 <_DescriptionStyle>{description}</_DescriptionStyle>
                 <_Felx>
-                    <_isOpen>PRIVATE</_isOpen>
-                    <_Button>수정</_Button>
+                    <_isOpen>{plannerAccess}</_isOpen>
+                    <_Button
+                        onClick={(e) => {
+                            changeDataByButton(e);
+                        }}
+                    >
+                        수정
+                    </_Button>
                 </_Felx>
             </div>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header>
+                    <Modal.Title>Edit Planner</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <label>Title:</label>
+                    <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+                    <label>Planner Access:</label>
+                    <input type="text" value={editedPlannerAccess} onChange={(e) => setEditedPlannerAccess(e.target.value)} />
+                    <label>Description:</label>
+                    <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)}></textarea>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        onClick={(e) => {
+                            handleCloseModal(e);
+                        }}
+                    >
+                        Close
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={(e) => {
+                            handleSaveChanges(e);
+                        }}
+                    >
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </_Container>
     );
 }
