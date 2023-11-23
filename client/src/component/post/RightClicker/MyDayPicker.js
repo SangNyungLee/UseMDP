@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const MyDayPicker = ({ date }) => {
-    const [startDate, setStartDate] = useState(new Date(date));
-
+const MyDayPicker = ({ date,setDate }) => {
     return (
         <div>
-            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" />
+            <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="yyyy-MM-dd" />
         </div>
     );
 };
