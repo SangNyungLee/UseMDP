@@ -1,10 +1,31 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
-import { useState } from "react";
-import DefaultComponent from "./DefaultComponent";
-import StarComponent from "../StarComponent";
-import HomeComponent from "../homeComponent.js/HomeComponent";
-import SearchComponent from "../";
-import styled from "styled-components";
+import { useState } from 'react';
+import DefaultComponent from './DefaultComponent';
+import StarComponent from '../starComponent/StarComponent';
+import HomeComponent from '../homeComponent/HomeComponent';
+import MyCalendar from '../home/calendar/MyCalendar';
+import SearchComponent from '../searchComponent/SearchComponent';
+export default function DefaultLoadMap() {
+    const [menuNumber, setMenuNumber] = useState();
+    const renderComponent = () => {
+        switch (menuNumber) {
+            case 1:
+                return <HomeComponent />;
+            case 2:
+                return <DefaultComponent />;
+            case 3:
+                return <StarComponent />;
+            case 4:
+                return <MyCalendar />;
+            case 5:
+                return <SearchComponent />;
+            default:
+                return <HomeComponent />;
+        }
+    };
+    const handleNumber = (number) => {
+        setMenuNumber(number);
+    };
 
 const _Button = styled.button`
   border: none;
