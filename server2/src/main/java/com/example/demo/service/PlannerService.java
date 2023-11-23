@@ -40,17 +40,19 @@ public class PlannerService {
     private CardRepository cardRepository;
 
     //모든 플래너 가져오기
-    public List<PlannerDTO> getPlanners() {
+    public List<ResponsePlannerDTO> getAllPlanners() {
         List<PlannerEntity> result = plannerRepository.findAll();
-        List<PlannerDTO> plannerDTOList = new ArrayList<>();
+        List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
-            PlannerDTO plannerDTO = PlannerDTO.builder()
+            ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
                     .title(planner.getTitle())
                     .likePlanner(planner.getLikePlanner())
                     .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .isDefault(planner.getIsDefault())
                     .createdAt(planner.getCreatedAt())
                     .updatedAt(planner.getUpdatedAt())
                     .build();
@@ -60,17 +62,19 @@ public class PlannerService {
     }
 
     //인기순으로 정렬된 플래너 가져오기
-    public List<PlannerDTO> getTrendingPlanner() {
+    public List<ResponsePlannerDTO> getTrendingPlanner() {
         List<PlannerEntity> result = plannerRepository.getTrendingPlanner();
-        List<PlannerDTO> plannerDTOList = new ArrayList<>();
+        List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
-            PlannerDTO plannerDTO = PlannerDTO.builder()
+            ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
                     .title(planner.getTitle())
                     .likePlanner(planner.getLikePlanner())
                     .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .isDefault(planner.getIsDefault())
                     .createdAt(planner.getCreatedAt())
                     .updatedAt(planner.getUpdatedAt())
                     .build();
@@ -80,17 +84,19 @@ public class PlannerService {
     }
 
     //기본 플래너 가져오기
-    public List<PlannerDTO> getDefaultPlanner() {
+    public List<ResponsePlannerDTO> getDefaultPlanner() {
         List<PlannerEntity> result = plannerRepository.getDefaultPlanner();
-        List<PlannerDTO> plannerDTOList = new ArrayList<>();
+        List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
-            PlannerDTO plannerDTO = PlannerDTO.builder()
+            ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
                     .title(planner.getTitle())
                     .likePlanner(planner.getLikePlanner())
                     .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .isDefault(planner.getIsDefault())
                     .createdAt(planner.getCreatedAt())
                     .updatedAt(planner.getUpdatedAt())
                     .build();
@@ -120,7 +126,7 @@ public class PlannerService {
 
     //플래너 생성
     //-1값이 리턴되면 실패한 것
-    public long postPlanner(PlannerDTO plannerDTO, Long memberId) {
+    public long postPlanner(PlannerDTO plannerDTO, String memberId) {
         if(memberId == null){
             return -1;
         }
@@ -128,10 +134,11 @@ public class PlannerService {
 
         if(member.isPresent()){
             PlannerEntity plannerEntity = PlannerEntity.builder()
-                    .creator(member.get().getNickname())
+                    .creator(member.get().getSocialNickname())
                     .title(plannerDTO.getTitle())
                     .likePlanner(plannerDTO.getLikePlanner())
                     .thumbnail(plannerDTO.getThumbnail())
+                    .memberEntity(member.get())
                     .build();
             plannerRepository.save(plannerEntity);
             return plannerEntity.getPlannerId();
@@ -247,7 +254,7 @@ public class PlannerService {
     }
 
     // 특정 사용자의 모든 플래너 정보 가져오기
-    public List<ResponsePlannerDTO> getPlannersByMember(long memberId) {
+    public List<ResponsePlannerDTO> getPlannersByMember(String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
 
         if (optionalMemberEntity.isPresent()) {
@@ -311,7 +318,7 @@ public class PlannerService {
     }
 
     //플래너 복제하기
-    public long postPlannerCopy(PlannerIdDTO plannerIdDTO, Long decodedMemberId) {
+    public long postPlannerCopy(PlannerIdDTO plannerIdDTO, String decodedMemberId) {
 
         Optional<MemberEntity> member = memberRepository.findById(decodedMemberId);
 
@@ -340,7 +347,7 @@ public class PlannerService {
 
                 //플래너 복제
                 PlannerEntity copyPlannerEntity = PlannerEntity.builder()
-                        .creator(member.get().getNickname())
+                        .creator(member.get().getSocialNickname())
                         .title(responsePlannerDTO.getTitle())
                         .likePlanner(0)
                         .thumbnail(responsePlannerDTO.getThumbnail())
@@ -450,5 +457,15 @@ public class PlannerService {
         }else {
             return -1;
         }
+    }
+
+    public int likePlanner(PlannerIdDTO plannerIdDTO) {
+        long plannerId = plannerIdDTO.getPlannerId();
+        return plannerRepository.likePlanner(plannerId);
+    }
+
+    public int unlikePlanner(PlannerIdDTO plannerIdDTO) {
+        long plannerId = plannerIdDTO.getPlannerId();
+        return plannerRepository.unlikePlanner(plannerId);
     }
 }

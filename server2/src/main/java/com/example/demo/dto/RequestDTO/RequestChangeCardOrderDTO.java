@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RequestChangeCardOrderDTO {
     private long plannerId;
-    private long sourceCardId;
+    private String sourceCardId;
     private int sourceCardOrder;
     private int destinationCardOrder;
     private CardEntity.CardStatus sourceCardStatus;

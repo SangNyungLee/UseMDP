@@ -1,30 +1,49 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CodeDTO;
 import com.example.demo.service.GithubLoginService;
 import com.example.demo.service.GoogleLoginService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping(value = "/login/oauth2/code")
 public class LoginController {
 
     @Autowired
     GoogleLoginService googleLoginService;
     @Autowired
     GithubLoginService githubLoginService;
-    public LoginController(GoogleLoginService googleLoginService){
-        this.googleLoginService = googleLoginService;
+
+    @PostMapping("/api/googleCode")
+    public String googleLogin(@RequestBody CodeDTO codeDTO){
+        String code = codeDTO.getAuthorizationCode();
+        Map<String, String> result = googleLoginService.socialLogin(code, "registergoogle");
+        System.out.println("아이디: " + result.get("id"));
+        System.out.println("닉네임: " + result.get("nickname"));
+
+        return "success";
+    }
+    @PostMapping("/api/githubCode")
+    public String githubLogin(@RequestBody CodeDTO codeDTO){
+        String code = codeDTO.getAuthorizationCode();
+        System.out.println("코드값 " + code);
+        githubLoginService.gitLogin(code);
+        return "git Success";
     }
 
-    @GetMapping("/{registrationId}")
+    @GetMapping("/login/oauth2/code/{registrationId}")
     public void googleLogin(@RequestParam String code, @PathVariable String registrationId){
         if ("github".equals(registrationId)) {
+            System.out.println(code);
             githubLoginService.gitLogin(code);
         }else{
-            System.out.println("여기 들어오긴함");
-            googleLoginService.socialLogin(code, registrationId);
+                Map<String, String> result = googleLoginService.socialLogin(code, registrationId);
+                System.out.println("2번 register" + registrationId);
+                System.out.println("아이디: " + result.get("id"));
+                System.out.println("닉네임: " + result.get("nickname"));
         }
-
     }
 }

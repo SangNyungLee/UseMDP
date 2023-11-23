@@ -1,9 +1,11 @@
 import { useState } from "react";
 import TodoListLi from "./TodoListLi";
+import { useDispatch } from "react-redux";
+import { calendarActions } from "../../../store/calendar";
 
-export default function PlannerListLi({plan}){
+export default function PlannerListLi({plan,firstIndex}){
     const [ visible, setVisible ] = useState(false);
-
+    const dispatch = useDispatch();
 
     const defaultLoad = (planner) => {
         const currentTime = new Date();
@@ -20,12 +22,17 @@ export default function PlannerListLi({plan}){
     // const todoList = defaultLoad(plan.dataContent);
     const todoList = plan.dataContent;
 
+    const handleClick = () => {
+        setVisible( prev => !prev )
+        dispatch(calendarActions.setSelect([firstIndex]))
+    }
+
     return (
     <>
-        <div onClick={() => setVisible( prev => !prev)}>{plan.title}</div>
+        <div onClick={handleClick}>{plan.title}</div>
         { visible && <ul>
             { todoList.map((todo,id) => <li key={id}>
-                    <TodoListLi todo={todo} id={id}/>
+                    <TodoListLi todo={todo} firstIndex={firstIndex} secondIndex={id}/>
                 </li>
             )}
         </ul>
