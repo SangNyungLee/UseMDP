@@ -1,14 +1,26 @@
 import { useState } from "react";
+import { calendarActions } from "../../../store/calendar";
+import { useDispatch } from "react-redux";
 
-export default function TodoListLi({todo,id}){
+export default function TodoListLi({todo,firstIndex,secondIndex}){
     const [ visible, setVisible ] = useState(false);
-    console.log(todo)
+    const dispatch = useDispatch();
+
+    const divHandleClick = () => {
+        setVisible( prev => !prev )
+        dispatch(calendarActions.setSelect([firstIndex,secondIndex]))
+
+    }
+
+    const liHandleClick = (thirdIndex) => {
+        dispatch(calendarActions.setSelect([firstIndex,secondIndex,thirdIndex]))
+    }
 
     return (
         <>
-            <div onClick={() => setVisible( prev => !prev )}>{(id === 0) ? 'todo' : (id === 1) ? 'doing' : 'done'}</div>
+            <div onClick={divHandleClick}>{(secondIndex === 0) ? 'todo' : (secondIndex === 1) ? 'doing' : 'done'}</div>
             { visible && <ul>
-                { todo.map( (plan,index) => <li key={index}>{plan.title}</li>)}
+                { todo.map( (plan,index) => <li key={index} onClick={()=>liHandleClick(index)}>{plan.title}</li>)}
             </ul>
             }
         </>
