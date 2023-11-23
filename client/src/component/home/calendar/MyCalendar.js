@@ -9,8 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { plannerListActions } from "../../../store/plannerList";
 import CalendarModal from "./CalendarModal";
 
+import { v4 as uuidv4, v4 } from 'uuid';
+
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
+
 
 // const CustomToolbar = ({ label, onNavigate }) => {
 //   const goToToday = () => {
@@ -41,16 +44,16 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function MyCalendar() {
   const plannerList = useSelector( state => state.plannerList );
-  const { select } = useSelector( state => state.calendar );
+  const { home } = useSelector( state => state.calendar );
   const dispatch = useDispatch();
 
   const [events, setEvents] = useState();
 
   useEffect(()=>{
-    plannerListSetting(getNestedElement(plannerList,select));
-  },[ plannerList, select ])
+    eventSetting(getNestedElement(plannerList,home));
+  },[ plannerList, home ])
   
-  const plannerListSetting = (totalPlanner) => {
+  const eventSetting = (totalPlanner) => {
     const newArr
     = totalPlanner.flat().map( e => ({ ...e,
         startDate: new Date(e.startDate),
@@ -64,11 +67,11 @@ export default function MyCalendar() {
       return array;
     }
 
-    let result = (array[indices[0]]).dataContent;
+    let result = (array[indices[0]]).cards;
 
     switch (indices.length){
       case 0:
-        return array.map( e => e.dataContent.flat());
+        return array.map( e => e.cards.flat());
       case 1:
         return result.flat();
       case 2:
@@ -106,21 +109,31 @@ export default function MyCalendar() {
   
   const onSelectSlot = (slotInfo) => {
     const newEvent = {
-      cardId: String(events.flat().length + 1),
-      title: `New Event ${events.flat().length + 1}`,
-      post:'',
-      coverColor:'#87CEEB',
-      todolist: [
+      cardId : v4(),
+      title: "default title",
+      coverColor: "#FFD6DA",
+      post: "",
+      intOrder: 0,
+      createdAt: "2023-11-23T08:41:37.615Z",
+      updatedAt: "2023-11-23T08:41:37.615Z",
+      cardStatus: "TODO",
+      checklists: [
         {
-          "done": false
+          checklistId: 0,
+          checked: 0,
+          title: "done",
+          createdAt: "2023-11-23T08:41:37.615Z",
+          updatedAt: "2023-11-23T08:41:37.615Z"
         },
         {
-          "jpa": false
+          checklistId: 1,
+          checked: 0,
+          title: "jpa",
+          createdAt: "2023-11-23T08:41:37.615Z",
+          updatedAt: "2023-11-23T08:41:37.615Z"
         }
       ],
-      intOrder: 0,
-      separatorPlan: "TODO",
-      sourceResource: null,
+      "sourceResource": null
     };
 
     const startDate = moment(slotInfo.start).toDate();
@@ -130,7 +143,7 @@ export default function MyCalendar() {
       dispatch(plannerListActions.addPlanner(
         {
           title: "default title",
-          dataContent: [[{...newEvent,
+          cards: [[{...newEvent,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
           }],[],[]]
@@ -138,7 +151,7 @@ export default function MyCalendar() {
       ))
     } else {
       dispatch(plannerListActions.addCard({
-        id: select[0],
+        id: home[0],
         card: {...newEvent,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
@@ -173,23 +186,33 @@ export default function MyCalendar() {
   };
 
   const [ selectedCard, setSelectedCard ] = useState({
-    cardId: "item-0-1700630974580-TODO",
-    post: "",
-    title: "title 0",
+    cardId : v4(),
+    title: "default title",
     coverColor: "#FFD6DA",
+    post: "",
+    intOrder: 0,
     startDate: "2023-10-01T15:00:00.000Z",
     endDate: "2023-10-04T15:00:00.000Z",
-    todolist: [
+    createdAt: "2023-11-23T08:41:37.615Z",
+    updatedAt: "2023-11-23T08:41:37.615Z",
+    cardStatus: "TODO",
+    checklists: [
       {
-        "done": false
+        checklistId: 0,
+        checked: 0,
+        title: "done",
+        createdAt: "2023-11-23T08:41:37.615Z",
+        updatedAt: "2023-11-23T08:41:37.615Z"
       },
       {
-        "jpa": false
+        checklistId: 1,
+        checked: 0,
+        title: "jpa",
+        createdAt: "2023-11-23T08:41:37.615Z",
+        updatedAt: "2023-11-23T08:41:37.615Z"
       }
     ],
-    intOrder: 0,
-    separatorPlan: "TODO",
-    sourceResource: null
+    "sourceResource": null
   });
 
   const [ visible, setVisible ] = useState(false);

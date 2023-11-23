@@ -10,6 +10,9 @@ import axios from 'axios';
 import copy from 'fast-copy';
 import DataDownload from '../../utils/DataDownload';
 import DataReaderModal from '../reader/DataReaderModal';
+import QuoteAppCalendar from './QuoteAppCalendar';
+import { plannerListActions } from '../../store/plannerList';
+import { v4 } from 'uuid';
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
 // getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
@@ -18,19 +21,42 @@ import DataReaderModal from '../reader/DataReaderModal';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
+
 const getItems = (count, offset = 0, separatorStr = 'TODO') =>
-    Array.from({ length: count }, (v, k) => k).map((k) => ({
-        cardId: `item-${k + offset}-${new Date().getTime()}-${separatorStr}`,
-        post: ``,
-        title: `title ${k + offset}`,
-        coverColor: '#FFD6DA',
-        startDate: new Date(2023, 0, 1).toISOString(),
-        endDate: new Date(2023, 0, 1).toISOString(),
-        todolist: [{ done: false }, { jpa: false }],
-        intOrder: offset,
-        separatorPlan: separatorStr,
-        sourceResource: null,
-    }));
+    Array.from({ length: count }, (v, k) => k).map((k) => {
+        const r1 = Math.floor(Math.random() * 31);
+        const r2 = Math.floor(Math.random() * 3) + 1;
+        const currentTime = new Date()
+        return {
+            cardId: v4(),
+            post: ``,
+            title: `title ${k + offset}`,
+            coverColor: '#FFD6DA',
+            startDate: new Date(Date.now() + (r1 - 15) * 24 * 60 * 60 * 1000).toISOString(),
+            endDate: new Date(Date.now() + (r1 + r2 - 15) * 24 * 60 * 60 * 1000).toISOString(),
+            createdAt: currentTime.toISOString(),
+            updatedAt: currentTime.toISOString(),
+            cardStatus: separatorStr,
+            checklists: [
+                {
+                    checklistId: k * 2,
+                    checked: 0,
+                    title: "done",
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                },
+                { 
+                    checklistId: k * 2 + 1,
+                    checked: 0,
+                    title: "jpa",
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                }
+            ],
+            intOrder: offset,
+            sourceResource: null,
+        }
+    });
 //reOrder
 //2) 같은 칸톤 보드에서 위치 바꿈
 //3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
@@ -118,12 +144,14 @@ export default function QuoteApp() {
     const thumnnailRef = useRef(null);
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
-    const [readData, setReadData] = useState();
-    const [plannerTitle, setPlannerTitle] = useState('MDP');
+    const [ readData, setReadData ] = useState();
+    const [ plannerTitle, setPlannerTitle ] = useState('MDP');
+
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get('/plannerTest');
-
+            // const response = await axios.get('/plannerTest');
+            const response = { data: [null] }
+            
             // 혹시나 테스트중 데이터가 비어있을 경우
             if (response.data[0]) {
                 const data = response.data[0].cardList;
@@ -143,7 +171,22 @@ export default function QuoteApp() {
                 // console.log(newState);
                 dispatch(planActions.setPlansInit(newState));
             } else {
-                dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
+                const cards = [getItems(8), getItems(5, 8), getItems(5, 13)]
+                const currentTime = new Date();
+                const plannerList = [{
+                    plannerId: 0,
+                    creator: "default user name",
+                    title: "useMDP",
+                    likePlanner: 0,
+                    thumbnail: "",
+                    plannerAccess: "PRIVATE",
+                    isDefault: 0,
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                    cards,
+                }];
+                dispatch(planActions.setPlansInit(cards));
+                dispatch(plannerListActions.setPlannersInit(plannerList));
             }
         };
         fetchData();
@@ -198,100 +241,104 @@ export default function QuoteApp() {
     }
     // ...state, getItems(1)
     return (
-        <div ref={thumnnailRef}>
-            {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
-            <Example modalStatus={isModalOpen} modalClose={closeModal}></Example>
-            <button
-                type="button"
-                onClick={() => {
-                    handleThumbnailDownload();
-                }}
-            >
-                ThumbnailMaker
-            </button>
-            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} />
-            <button type="button" onClick={saveState}>
-                저장하기
-            </button>
-            <DataReaderModal setState={setReadData} />
-            <div style={{ display: 'flex' }}>
-                <DragDropContext onDragEnd={onDragEnd}>
-                    {/* DragDropContext에서는 drag가 가능한 공간임. 여기서 state를 map으로 푼다. */}
-                    {state.map((el, ind) => {
-                        // 여기서는, state의 원소, getItems(10), getItems(5, 10), getItems(5, 15)가 순서대로.
-                        //ind는 인덱스임.
-                        // console.log(el, ind);
-                        return (
-                            <>
-                                <Droppable key={ind} droppableId={`${ind}`}>
-                                    {(provided, snapshot) => {
-                                        //Droppable에서 제공하는 무언가 같음. 환경 설정이 들어가 있음.
-                                        // console.log('provided: ', provided);
-                                        // console.log('snapshot: ', snapshot); {isModalOpen ? <Example></Example> : null}
-                                        return (
-                                            //
-                                            <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
-                                                {el.map((item, index) => (
-                                                    <Draggable key={item.cardId} draggableId={item.cardId} index={index}>
-                                                        {(provided, snapshot) => (
-                                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)} onClick={() => handleClick(ind, index)}>
-                                                                <div style={{ position: 'relative', backgroundColor: item.coverColor, height: '20px', borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}></div>
-                                                                <div
-                                                                    style={{
-                                                                        paddingTop: '8px',
-                                                                        display: 'flex',
-                                                                        justifyContent: 'space-around',
-                                                                    }}
-                                                                >
-                                                                    {item.title}
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={(e) => {
-                                                                            //상위 onclick을 무력화한다.
-                                                                            e.stopPropagation();
-                                                                            // const newState = [...state];
-                                                                            const newState = copy(state);
-                                                                            //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
-                                                                            for (let i = index + 1; i < newState[ind].length; i++) {
-                                                                                newState[ind][i].intOrder--;
-                                                                            }
-
-                                                                            //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
-                                                                            newState[ind].splice(index, 1);
-                                                                            dispatch(planActions.setPlans(newState));
-                                                                            // setState(newState.filter((group) => group.length));
+        <div style={{"display":"flex"}}>
+            <div ref={thumnnailRef}>
+                {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
+                <Example modalStatus={isModalOpen} modalClose={closeModal}></Example>
+                <button
+                    type="button"
+                    onClick={() => {
+                        handleThumbnailDownload();
+                    }}
+                >
+                    ThumbnailMaker
+                </button>
+                <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} />
+                <button type="button" onClick={saveState}>
+                    저장하기
+                </button>
+                <DataReaderModal setState={setReadData} />
+                <div style={{ display: 'flex' }}>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        {/* DragDropContext에서는 drag가 가능한 공간임. 여기서 state를 map으로 푼다. */}
+                        {state.map((el, ind) => {
+                            // 여기서는, state의 원소, getItems(10), getItems(5, 10), getItems(5, 15)가 순서대로.
+                            //ind는 인덱스임.
+                            // console.log(el, ind);
+                            return (
+                                <>
+                                    <Droppable key={ind} droppableId={`${ind}`}>
+                                        {(provided, snapshot) => {
+                                            //Droppable에서 제공하는 무언가 같음. 환경 설정이 들어가 있음.
+                                            // console.log('provided: ', provided);
+                                            // console.log('snapshot: ', snapshot); {isModalOpen ? <Example></Example> : null}
+                                            return (
+                                                //
+                                                <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
+                                                    {el.map((item, index) => (
+                                                        <Draggable key={item.cardId} draggableId={item.cardId} index={index}>
+                                                            {(provided, snapshot) => (
+                                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)} onClick={() => handleClick(ind, index)}>
+                                                                    <div style={{ position: 'relative', backgroundColor: item.coverColor, height: '20px', borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}></div>
+                                                                    <div
+                                                                        style={{
+                                                                            paddingTop: '8px',
+                                                                            display: 'flex',
+                                                                            justifyContent: 'space-around',
                                                                         }}
                                                                     >
-                                                                        delete
-                                                                    </button>
+                                                                        {item.title}
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={(e) => {
+                                                                                //상위 onclick을 무력화한다.
+                                                                                e.stopPropagation();
+                                                                                // const newState = [...state];
+                                                                                const newState = copy(state);
+                                                                                //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
+                                                                                for (let i = index + 1; i < newState[ind].length; i++) {
+                                                                                    newState[ind][i].intOrder--;
+                                                                                }
+
+                                                                                //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
+                                                                                newState[ind].splice(index, 1);
+                                                                                dispatch(planActions.setPlans(newState));
+                                                                                // setState(newState.filter((group) => group.length));
+                                                                            }}
+                                                                        >
+                                                                            delete
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        )}
-                                                    </Draggable>
-                                                ))}
-                                                {provided.placeholder}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        const newState = copy(state);
-                                                        const separatorStr = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
-                                                        newState[ind].push(...getItems(1, newState[ind].length, separatorStr));
-                                                        //setState([state[0], state[1], state[2]]);
-                                                        dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
-                                                    }}
-                                                >
-                                                    Add new item
-                                                </button>
-                                            </div>
-                                        );
-                                    }}
-                                </Droppable>
-                                <div>구분</div>
-                            </>
-                        );
-                    })}
-                </DragDropContext>
+                                                            )}
+                                                        </Draggable>
+                                                    ))}
+                                                    {provided.placeholder}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newState = copy(state);
+                                                            const separatorStr = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
+                                                            newState[ind].push(...getItems(1, newState[ind].length, separatorStr));
+                                                            //setState([state[0], state[1], state[2]]);
+                                                            dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
+                                                        }}
+                                                    >
+                                                        Add new item
+                                                    </button>
+                                                </div>
+                                            );
+                                        }}
+                                    </Droppable>
+                                    <div>구분</div>
+                                </>
+                            );
+                        })}
+                    </DragDropContext>
+                </div>
             </div>
+            <QuoteAppCalendar/>
         </div>
+
     );
 }
