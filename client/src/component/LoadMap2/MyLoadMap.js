@@ -68,8 +68,8 @@ export default function MyLoadMap(props) {
     };
     const [starClick, setStarClick] = useState(false);
 
-    const isStarCilck = () => {
-        setStarClick(!starClick);
+    const handleShareIcon = (e) => {
+        e.stopPropagation();
     };
 
     return (
@@ -87,7 +87,11 @@ export default function MyLoadMap(props) {
             <div>
                 <_Felx>
                     <_TitleStyle>{title}</_TitleStyle>
-                    <_Share>
+                    <_Share
+                        onClick={(e) => {
+                            handleShareIcon(e);
+                        }}
+                    >
                         <i class="material-icons">share</i>
                     </_Share>
                 </_Felx>
