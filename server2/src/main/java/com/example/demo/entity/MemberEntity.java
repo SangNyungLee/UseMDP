@@ -1,10 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,17 +14,18 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class MemberEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long memberId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String memberId;
 
     @Column(nullable = false)
-    private String email;
+    private long socialId;
 
     @Column(nullable = false)
-    private String nickname;
+    private String socialNickname;
 
     @Column
     @CreationTimestamp

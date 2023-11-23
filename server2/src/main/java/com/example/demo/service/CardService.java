@@ -14,6 +14,7 @@ import com.example.demo.repository.PlannerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -98,7 +99,7 @@ public class CardService {
     public int patchCard(CardDTO cardDTO) {
         Optional<PlannerEntity> optionalPlanner = plannerRepository.findById(cardDTO.getPlannerId());
         if(optionalPlanner.isPresent()) {
-            Optional<CardEntity> optionalCardEntity = cardRepository.findById(cardDTO.getCardId());
+            Optional<CardEntity>optionalCardEntity = cardRepository.findById(cardDTO.getCardId());
             if(optionalCardEntity.isPresent()) {
                 CardEntity originalCardEntity = optionalCardEntity.get();
                 List<ChecklistEntity> originalChecklistEntities = originalCardEntity.getChecklists();
@@ -184,7 +185,7 @@ public class CardService {
 
     }
 
-    public int deleteCard(long cardId) {
+    public int deleteCard(String cardId) {
         Optional<CardEntity> card = cardRepository.findById(cardId);
         if(card.isEmpty()) {
             return 0;
