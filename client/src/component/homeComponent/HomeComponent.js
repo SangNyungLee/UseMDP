@@ -6,11 +6,13 @@ import { planActions } from '../../store/planner';
 import { plannerListActions } from '../../store/plannerList';
 import base64Str from '../../constant/ImageBase64';
 import CustomList from '../customLIst/CustomList';
+
 const statusIndexMap = {
     TODO: 0,
     DOING: 1,
     DONE: 2,
 };
+
 export default function HomeComponent() {
     //이미 저장된 값이 있으면 그 list를 불러온다.
     const [data, setData] = useLocalStorage('List', '');
