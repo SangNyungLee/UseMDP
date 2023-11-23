@@ -23,6 +23,7 @@ export default function HomeSideBar(){
     useEffect(()=>{
         if(readData){
             const data = JSON.parse(readData)
+            console.log("data",data);
             dispatch(plannerListActions.addPlanner(data))
             setReadData();
         }

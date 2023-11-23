@@ -10,6 +10,9 @@ import axios from 'axios';
 import copy from 'fast-copy';
 import DataDownload from '../../utils/DataDownload';
 import DataReaderModal from '../reader/DataReaderModal';
+import QuoteAppCalendar from './QuoteAppCalendar';
+import { plannerListActions } from '../../store/plannerList';
+import { v4 } from 'uuid';
 import { Spinner } from 'react-bootstrap';
 
 import { useSearchParams } from 'react-router-dom';
@@ -22,19 +25,42 @@ import { useSearchParams } from 'react-router-dom';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
+
 const getItems = (count, offset = 0, separatorStr = 'TODO') =>
-    Array.from({ length: count }, (v, k) => k).map((k) => ({
-        cardId: `item-${k + offset}-${new Date().getTime()}-${separatorStr}`,
-        post: ``,
-        title: `title ${k + offset}`,
-        coverColor: '#FFD6DA',
-        startDate: new Date(2023, 0, 1).toISOString(),
-        endDate: new Date(2023, 0, 1).toISOString(),
-        todolist: [{ done: false }, { jpa: false }],
-        intOrder: offset,
-        separatorPlan: separatorStr,
-        sourceResource: null,
-    }));
+    Array.from({ length: count }, (v, k) => k).map((k) => {
+        const r1 = Math.floor(Math.random() * 31);
+        const r2 = Math.floor(Math.random() * 3) + 1;
+        const currentTime = new Date()
+        return {
+            cardId: v4(),
+            post: ``,
+            title: `title ${k + offset}`,
+            coverColor: '#FFD6DA',
+            startDate: new Date(Date.now() + (r1 - 15) * 24 * 60 * 60 * 1000).toISOString(),
+            endDate: new Date(Date.now() + (r1 + r2 - 15) * 24 * 60 * 60 * 1000).toISOString(),
+            createdAt: currentTime.toISOString(),
+            updatedAt: currentTime.toISOString(),
+            cardStatus: separatorStr,
+            checklists: [
+                {
+                    checklistId: k * 2,
+                    checked: 0,
+                    title: "done",
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                },
+                { 
+                    checklistId: k * 2 + 1,
+                    checked: 0,
+                    title: "jpa",
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                }
+            ],
+            intOrder: offset,
+            sourceResource: null,
+        }
+    });
 //reOrder
 //2) 같은 칸톤 보드에서 위치 바꿈
 //3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
@@ -126,45 +152,50 @@ export default function QuoteApp() {
     const thumnnailRef = useRef(null);
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
-    const [readData, setReadData] = useState();
-    const [plannerTitle, setPlannerTitle] = useState('MDP');
-    const [searchParams] = useSearchParams();
+    const [ readData, setReadData ] = useState();
+    const [ plannerTitle, setPlannerTitle ] = useState('MDP');
 
     useEffect(() => {
         const fetchData = async () => {
-            const btoa = searchParams.get('id');
-            const rearrangedArray = [[], [], []];
-            const result = await axios(`/api/getPlanner/${btoa}`);
-            const Planner = result.data;
-            console.log(Planner);
-            const { cards, ...newPlanner } = Planner;
-            cards.forEach((item) => {
-                const statusIndex = statusIndexMap[item.cardStatus];
-                rearrangedArray[statusIndex].push(item);
-            });
-            dispatch(planActions.setPlansInit(rearrangedArray));
+            // const response = await axios.get('/plannerTest');
+            const response = { data: [null] }
+            
             // 혹시나 테스트중 데이터가 비어있을 경우
-            // if (response.data[0]) {
-            //     const data = response.data[0].cardList;
-            //     const newState = [[], [], []];
-            //     for (let i = 0; i < data.length; i++) {
-            //         if (data[i].separatorPlan === 'TODO') {
-            //             data[i].cardId = 'a' + data[i].cardId;
-            //             newState[0].push(data[i]);
-            //         } else if (data[i].separatorPlan === 'DOING') {
-            //             data[i].cardId = 'a' + data[i].cardId;
-            //             newState[1].push(data[i]);
-            //         } else {
-            //             data[i].cardId = 'a' + data[i].cardId;
-            //             newState[2].push(data[i]);
-            //         }
-            //     }
-            //     // console.log(newState);
-            //     dispatch(planActions.setPlansInit(newState));
-            //     // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
-            // } else {
-            //     dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
-            // }
+            if (response.data[0]) {
+                const data = response.data[0].cardList;
+                const newState = [[], [], []];
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].separatorPlan === 'TODO') {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[0].push(data[i]);
+                    } else if (data[i].separatorPlan === 'DOING') {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[1].push(data[i]);
+                    } else {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[2].push(data[i]);
+                    }
+                }
+                // console.log(newState);
+                dispatch(planActions.setPlansInit(newState));
+            } else {
+                const cards = [getItems(8), getItems(5, 8), getItems(5, 13)]
+                const currentTime = new Date();
+                const plannerList = [{
+                    plannerId: 0,
+                    creator: "default user name",
+                    title: "useMDP",
+                    likePlanner: 0,
+                    thumbnail: "",
+                    plannerAccess: "PRIVATE",
+                    isDefault: 0,
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                    cards,
+                }];
+                dispatch(planActions.setPlansInit(cards));
+                dispatch(plannerListActions.setPlannersInit(plannerList));
+            }
         };
         // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
         fetchData();
@@ -230,6 +261,7 @@ export default function QuoteApp() {
         );
     } else {
         return (
+        <div style={{"display":"flex"}}>
             <div ref={thumnnailRef}>
                 {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
                 <Example modalStatus={isModalOpen} modalClose={closeModal}></Example>
@@ -325,6 +357,8 @@ export default function QuoteApp() {
                     </DragDropContext>
                 </div>
             </div>
-        );
-    }
+            <QuoteAppCalendar/>
+            
+        </div>
+    )};
 }
