@@ -10,6 +10,8 @@ import axios from 'axios';
 import copy from 'fast-copy';
 import DataDownload from '../../utils/DataDownload';
 import DataReaderModal from '../reader/DataReaderModal';
+
+import { useSearchParams } from 'react-router-dom';
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
 // getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
@@ -109,7 +111,11 @@ const getListStyle = (isDraggingOver) => ({
     padding: grid,
     width: 250,
 });
-
+const statusIndexMap = {
+    TODO: 0,
+    DOING: 1,
+    DONE: 2,
+};
 export default function QuoteApp() {
     //페이크 아이템을 10개, 5개를 만드는데, 두번쨰는 10부터,세번째는 15부터 시작하도록
     const state = useSelector((state) => state.planner);
@@ -120,32 +126,45 @@ export default function QuoteApp() {
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
     const [readData, setReadData] = useState();
     const [plannerTitle, setPlannerTitle] = useState('MDP');
+    const [searchParams] = useSearchParams();
+
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get('/plannerTest');
-
+            const btoa = searchParams.get('id');
+            const rearrangedArray = [[], [], []];
+            const result = await axios(`/api/getPlanner/${btoa}`);
+            const Planner = result.data;
+            console.log(Planner);
+            const { cards, ...newPlanner } = Planner;
+            cards.forEach((item) => {
+                const statusIndex = statusIndexMap[item.cardStatus];
+                rearrangedArray[statusIndex].push(item);
+            });
+            dispatch(planActions.setPlansInit(rearrangedArray));
             // 혹시나 테스트중 데이터가 비어있을 경우
-            if (response.data[0]) {
-                const data = response.data[0].cardList;
-                const newState = [[], [], []];
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i].separatorPlan === 'TODO') {
-                        data[i].cardId = 'a' + data[i].cardId;
-                        newState[0].push(data[i]);
-                    } else if (data[i].separatorPlan === 'DOING') {
-                        data[i].cardId = 'a' + data[i].cardId;
-                        newState[1].push(data[i]);
-                    } else {
-                        data[i].cardId = 'a' + data[i].cardId;
-                        newState[2].push(data[i]);
-                    }
-                }
-                // console.log(newState);
-                dispatch(planActions.setPlansInit(newState));
-            } else {
-                dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
-            }
+            // if (response.data[0]) {
+            //     const data = response.data[0].cardList;
+            //     const newState = [[], [], []];
+            //     for (let i = 0; i < data.length; i++) {
+            //         if (data[i].separatorPlan === 'TODO') {
+            //             data[i].cardId = 'a' + data[i].cardId;
+            //             newState[0].push(data[i]);
+            //         } else if (data[i].separatorPlan === 'DOING') {
+            //             data[i].cardId = 'a' + data[i].cardId;
+            //             newState[1].push(data[i]);
+            //         } else {
+            //             data[i].cardId = 'a' + data[i].cardId;
+            //             newState[2].push(data[i]);
+            //         }
+            //     }
+            //     // console.log(newState);
+            //     dispatch(planActions.setPlansInit(newState));
+            //     // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
+            // } else {
+            //     dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
+            // }
         };
+        // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
         fetchData();
     }, []);
 

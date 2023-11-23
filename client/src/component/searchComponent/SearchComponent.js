@@ -82,7 +82,7 @@ export default function SearchComponent() {
         );
     } else {
         return (
-            <div>
+            <div style={{ padding: '15px' }}>
                 <h2>로드맵 검색</h2>
 
                 <SearchContainer>

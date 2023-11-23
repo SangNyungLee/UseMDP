@@ -23,7 +23,7 @@ export default function DefaultComponent() {
     useEffect(() => {
         async function getData() {
             try {
-                const result = await axios.get('/planner/default');
+                const result = await axios.get('/api/getPlanner/default');
                 setData(result.data);
             } catch {
                 console.log('error');
@@ -51,7 +51,7 @@ export default function DefaultComponent() {
         );
     } else {
         return (
-            <div onClick={handlePoint}>
+            <div style={{ padding: '15px' }} onClick={handlePoint}>
                 <h2>기본로드맵</h2>
 
                 {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.

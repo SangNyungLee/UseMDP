@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
 
-import Modal from 'react-bootstrap/Modal';
+import { Button, Modal, ProgressBar, Form } from 'react-bootstrap';
 import CardEditor from '../post/Editor/CardEditor';
-import ProgressBar from 'react-bootstrap/ProgressBar';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { planActions } from '../../store/planner';
+
 import MyDayPicker from '../post/RightClicker/MyDayPicker';
 import copy from 'fast-copy';
+import { cardActions } from '../../store/card';
+
+// import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+// import ProgressBar from 'react-bootstrap/ProgressBar';
+// import Form from 'react-bootstrap/Form';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -34,8 +40,11 @@ function Example(props) {
     //구조 분해할당
     const { id, post, title, coverColor, startDate, endDate, todolist, intOrder, separatorPlan } = cardItem;
     const [show, setShow] = useState(false);
-
-    console.log('plan', separatorPlan);
+    const [picker, setPicker] = useState(false);
+    const handlePicker = () => {
+        setPicker(!picker);
+    };
+    // console.log('plan', separatorPlan);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
 
@@ -46,6 +55,8 @@ function Example(props) {
 
     //디스패치
     const dispatch = useDispatch();
+
+    //colorPicker
 
     //모달끄기
     const handleClose = () => {
@@ -88,11 +99,28 @@ function Example(props) {
             setList(todolist);
         }
     }, [todolist]);
+
+    //colorChange Logic
+
+    const handleColorChange = (e) => {
+        //커버 컬러 , 모달만 변경
+        dispatch(cardActions.setCover(e.target.value));
+        //어처피 전체적으로는  dispatch(planActions.patchCardsByIdx({ idx1, idx2, cardItem: newCardItem })); 이게 해줄것
+    };
+
     return (
         <>
             <Modal show={show} onHide={handleClose}>
-                <Modal.Header style={{ backgroundColor: coverColor }} closeButton>
+                <Modal.Header onClick={handlePicker} style={{ backgroundColor: coverColor }} closeButton>
                     <Modal.Title>{title}</Modal.Title>
+                    <Form.Control
+                        type="color"
+                        defaultValue={coverColor}
+                        title="Choose your color"
+                        onChange={(e) => {
+                            handleColorChange(e);
+                        }}
+                    />
                 </Modal.Header>
                 <Modal.Body>
                     <ProgressBar now={handleProgessBar()} label={`${handleProgessBar()}%`}></ProgressBar>
