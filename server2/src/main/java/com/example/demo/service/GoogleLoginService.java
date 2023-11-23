@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -13,23 +14,28 @@ import java.util.Map;
 
 @Service
 public class GoogleLoginService {
+    @Value("${oauth2.google.client-id}")
+    private String clientId;
 
-    private final Environment env;
+    @Value("${oauth2.google.client-secret}")
+    private String clientSecret;
+
+    @Value("${oauth2.google.redirect-uri}")
+    private String redirectUri;
+
+    @Value("${oauth2.google.token-uri}")
+    private String tokenUri;
+
+    @Value("${oauth2.google.resource-uri}")
+    private String resourceUri;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public GoogleLoginService(Environment env){
-        this.env = env;
-    }
     public Map<String, String> socialLogin(String code, String registrationId){
         String accessToken = getAccessToken(code, registrationId);
         JsonNode userResourceNode = getUserResource(accessToken, registrationId);
-        System.out.println("userResourceNode= " + userResourceNode);
         String id = userResourceNode.get("id").asText();
         String email = userResourceNode.get("email").asText();
         String nickname = userResourceNode.get("name").asText();
-        System.out.println("id = " + id);
-        System.out.println("email = " + email);
-        System.out.println("nickname = " +nickname);
 
         //일단 아이디랑 닉네임만 반환시킴
         Map<String, String> result = new HashMap<>();
@@ -39,11 +45,6 @@ public class GoogleLoginService {
     }
 
     private String getAccessToken(String authorizationCode, String registrationId){
-        String clientId = env.getProperty("oauth2." + registrationId + ".client-id");
-        String clientSecret = env.getProperty("oauth2." + registrationId + ".client-secret");
-        String redirectUri = env.getProperty("oauth2." + registrationId + ".redirect-uri");
-        String tokenUri = env.getProperty("oauth2." + registrationId + ".token-uri");
-
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
         params.add("client_id", clientId);
@@ -53,7 +54,6 @@ public class GoogleLoginService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
         HttpEntity entity = new HttpEntity(params, headers);
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
         JsonNode accessTokenNode = responseNode.getBody();
@@ -61,10 +61,8 @@ public class GoogleLoginService {
     }
 
     private JsonNode getUserResource(String accessToken, String registrationId){
-        String resourceUri = env.getProperty("oauth2." + registrationId + ".resource-uri");
-
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer" + accessToken);
+        headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity entity = new HttpEntity(headers);
         return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
     }
