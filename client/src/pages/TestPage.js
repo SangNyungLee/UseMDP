@@ -3,13 +3,14 @@ import axios from "axios";
 
 export default function TestPage() {
   const goGet = async () => {
-    // const result = await axios.get("https://www.usemdp.com/api/test");
-    const result = await axios.get("http://localhost:8080/api/test");
+    const result = await axios.get("https://www.usemdp.com/api/test");
+    // const result = await axios.get("http://localhost:8080/api/test");
     console.log("Get방식 : ", result);
   };
 
   const goPost = async () => {
-    const result = await axios.post("http://localhost:8080/api/test");
+    const result = await axios.post("https://www.usemdp.com/api/test");
+    // const result = await axios.post("http://localhost:8080/api/test");
     console.log("Post방식임 : ", result);
   };
 
