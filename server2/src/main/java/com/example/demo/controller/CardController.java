@@ -41,7 +41,7 @@ public class CardController implements SwaggerCardAPI {
     // 특정 플래너 특정 카드 삭제
     @Override
     @DeleteMapping("api/deleteCard/{cardId}")
-    public int deleteCard(@PathVariable long cardId) {
+    public int deleteCard(@PathVariable String cardId) {
         return cardService.deleteCard(cardId);
     }
 }

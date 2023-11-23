@@ -126,7 +126,7 @@ public class PlannerService {
 
     //플래너 생성
     //-1값이 리턴되면 실패한 것
-    public long postPlanner(PlannerDTO plannerDTO, Long memberId) {
+    public long postPlanner(PlannerDTO plannerDTO, String memberId) {
         if(memberId == null){
             return -1;
         }
@@ -134,7 +134,7 @@ public class PlannerService {
 
         if(member.isPresent()){
             PlannerEntity plannerEntity = PlannerEntity.builder()
-                    .creator(member.get().getNickname())
+                    .creator(member.get().getSocialNickname())
                     .title(plannerDTO.getTitle())
                     .likePlanner(plannerDTO.getLikePlanner())
                     .thumbnail(plannerDTO.getThumbnail())
@@ -254,7 +254,7 @@ public class PlannerService {
     }
 
     // 특정 사용자의 모든 플래너 정보 가져오기
-    public List<ResponsePlannerDTO> getPlannersByMember(long memberId) {
+    public List<ResponsePlannerDTO> getPlannersByMember(String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
 
         if (optionalMemberEntity.isPresent()) {
@@ -318,7 +318,7 @@ public class PlannerService {
     }
 
     //플래너 복제하기
-    public long postPlannerCopy(PlannerIdDTO plannerIdDTO, Long decodedMemberId) {
+    public long postPlannerCopy(PlannerIdDTO plannerIdDTO, String decodedMemberId) {
 
         Optional<MemberEntity> member = memberRepository.findById(decodedMemberId);
 
@@ -347,7 +347,7 @@ public class PlannerService {
 
                 //플래너 복제
                 PlannerEntity copyPlannerEntity = PlannerEntity.builder()
-                        .creator(member.get().getNickname())
+                        .creator(member.get().getSocialNickname())
                         .title(responsePlannerDTO.getTitle())
                         .likePlanner(0)
                         .thumbnail(responsePlannerDTO.getThumbnail())
