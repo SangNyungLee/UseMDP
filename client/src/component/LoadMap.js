@@ -1,6 +1,5 @@
 import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { planActions } from '../store/planner';
 import { planInfoActions } from '../store/plannerInfo';

@@ -4,6 +4,8 @@ import base64Str from '../../constant/ImageBase64';
 import { Spinner } from 'react-bootstrap';
 import CustomList from '../customLIst/CustomList';
 import CustomListHiddable from '../customLIst/CustomListHiddable';
+import MyLoadMap from '../LoadMap2/MyLoadMap';
+import LoadMap2 from '../LoadMap2/LoadMap';
 
 export default function StarComponent() {
     const [data, setData] = useState([]);
@@ -48,13 +50,13 @@ export default function StarComponent() {
         return (
             <div style={{ padding: '15px' }} onClick={handlePoint}>
                 <h2>인기 로드맵</h2>
-                <CustomListHiddable datas={data} points={[point, setPoint]}></CustomListHiddable>
+                <CustomListHiddable datas={data} points={[point, setPoint]} loadMap={LoadMap2}></CustomListHiddable>
                 {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}
 
                 <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
 
-                <CustomList datas={data}></CustomList>
+                <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
             </div>
         );
     }

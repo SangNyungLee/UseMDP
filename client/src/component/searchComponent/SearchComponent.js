@@ -5,6 +5,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import CustomList from '../customLIst/CustomList';
 import base64Str from '../../constant/ImageBase64';
 import axios from 'axios';
+import LoadMap2 from '../LoadMap2/LoadMap';
 const SearchContainer = styled.div`
     width: 75vw;
     display: flex;
@@ -35,7 +36,7 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await axios.get('/api/planners');
+                const response = await axios.get('/api/getPlanners');
                 data = response.data;
             } catch {
                 const tmp = [
@@ -151,7 +152,7 @@ export default function SearchComponent() {
                 </SearchContainer>
                 <hr></hr>
                 <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>
-                <CustomList datas={filteredDatas}></CustomList>
+                <CustomList datas={filteredDatas} loadMap={LoadMap2}></CustomList>
             </div>
         );
     }

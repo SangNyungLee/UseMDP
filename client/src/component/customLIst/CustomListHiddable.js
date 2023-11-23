@@ -1,4 +1,3 @@
-import LoadMap from '../LoadMap';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import RightClicker from '../post/RightClicker/RightClicker';
@@ -14,6 +13,7 @@ export default function CustomListHiddable(props) {
         setRightClickData([newTitle, newId]);
         setPoint([e.clientY, e.clientX]);
     };
+    const CustomLoadMap = props.loadMap;
     return (
         <>
             {point[0] !== -1 && point[1] !== -1 ? <RightClicker rightClickData={rightClickData} point={point}></RightClicker> : null}
@@ -27,7 +27,7 @@ export default function CustomListHiddable(props) {
                                 {Array.from({ length: Math.min(4, data.length) }).map((_, i) => (
                                     <Col key={data[i].plannerId}>
                                         <div onContextMenu={(e) => handleRightClick(e, data[i].title, data[i].plannerId)}>
-                                            <LoadMap datas={data[i]}></LoadMap>
+                                            <CustomLoadMap datas={data[i]}></CustomLoadMap>
                                         </div>
                                     </Col>
                                 ))}
@@ -47,7 +47,7 @@ export default function CustomListHiddable(props) {
                                 {Array.from({ length: endIdx - idx + 1 }).map((_, i) => (
                                     <Col key={data[idx + i].plannerId}>
                                         <div onContextMenu={handleRightClick}>
-                                            <LoadMap datas={data[idx + i]}></LoadMap>
+                                            <CustomLoadMap datas={data[i]}></CustomLoadMap>
                                         </div>
                                     </Col>
                                 ))}
