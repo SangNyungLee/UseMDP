@@ -59,7 +59,7 @@ public class PlannerController implements SwaggerPlannerAPI {
     @Override
     @GetMapping("api/getMyPlanner")
     public List<ResponsePlannerDTO> getPlanners() {
-        long memberId = 1;
+        String memberId = "uuid";
         return plannerService.getPlannersByMember(memberId);
     }
 
@@ -67,8 +67,8 @@ public class PlannerController implements SwaggerPlannerAPI {
     // 현재로서는 테스트용으로 memberId = 1
     @Override
     @PostMapping("/api/postPlanner")
-    public long postPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "memberId", required = false) Long memberId) {
-        return plannerService.postPlanner(plannerDTO, 1L);
+    public long postPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "memberId", required = false) String memberId) {
+        return plannerService.postPlanner(plannerDTO, "uuid");
     }
 
 
@@ -86,7 +86,7 @@ public class PlannerController implements SwaggerPlannerAPI {
 //        }else {
 //            return -1;
 //        }
-        return plannerService.postPlannerCopy(plannerIdDTO, 1L);
+        return plannerService.postPlannerCopy(plannerIdDTO, "uuid");
     }
 
     //특정 플래너 수정정

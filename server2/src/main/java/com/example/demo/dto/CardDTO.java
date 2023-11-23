@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CardDTO {
 
-    private long cardId;
+    private String cardId;
     private long plannerId;
     private String title;
     private String coverColor;

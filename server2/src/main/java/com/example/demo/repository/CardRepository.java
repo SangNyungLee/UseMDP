@@ -9,8 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface CardRepository extends JpaRepository<CardEntity, Long> {
+public interface CardRepository extends JpaRepository<CardEntity, String> {
     @Transactional
     @Modifying
     @Query(value = "UPDATE CardEntity c SET c.intOrder = c.intOrder - 1 WHERE c.plannerEntity.plannerId = :#{#dto.plannerId} " +

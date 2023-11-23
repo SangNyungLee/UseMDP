@@ -24,8 +24,8 @@ import java.util.List;
 public class CardEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cardId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String cardId;
 
     @Column(nullable = false)
     private String title;

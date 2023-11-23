@@ -13,6 +13,10 @@ import DataReaderModal from '../reader/DataReaderModal';
 import QuoteAppCalendar from './QuoteAppCalendar';
 import { plannerListActions } from '../../store/plannerList';
 import { v4 } from 'uuid';
+import { Spinner } from 'react-bootstrap';
+
+import { useSearchParams } from 'react-router-dom';
+
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
 // getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
@@ -135,7 +139,11 @@ const getListStyle = (isDraggingOver) => ({
     padding: grid,
     width: 250,
 });
-
+const statusIndexMap = {
+    TODO: 0,
+    DOING: 1,
+    DONE: 2,
+};
 export default function QuoteApp() {
     //페이크 아이템을 10개, 5개를 만드는데, 두번쨰는 10부터,세번째는 15부터 시작하도록
     const state = useSelector((state) => state.planner);
@@ -189,6 +197,7 @@ export default function QuoteApp() {
                 dispatch(plannerListActions.setPlannersInit(plannerList));
             }
         };
+        // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
         fetchData();
     }, []);
 
@@ -240,7 +249,18 @@ export default function QuoteApp() {
         }
     }
     // ...state, getItems(1)
-    return (
+    console.log('state:', state);
+    if (!state) {
+        return (
+            //Spinner
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    } else {
+        return (
         <div style={{"display":"flex"}}>
             <div ref={thumnnailRef}>
                 {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
@@ -338,7 +358,7 @@ export default function QuoteApp() {
                 </div>
             </div>
             <QuoteAppCalendar/>
+            
         </div>
-
-    );
+    )};
 }
