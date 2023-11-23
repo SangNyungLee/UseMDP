@@ -53,7 +53,9 @@ public class GithubLoginService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<JsonNode> response = restTemplate.postForEntity(accessTokenUrl, new HttpEntity<>(data, headers), JsonNode.class);
+        System.out.println(response.getBody());
         JsonNode accessTokenNode = response.getBody();
+
         return accessTokenNode.get("access_token").asText();
 
     }
