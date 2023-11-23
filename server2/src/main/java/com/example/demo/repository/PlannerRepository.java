@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
-    List<PlannerEntity> findByMemberEntity_MemberId(long memberId);
+    List<PlannerEntity> findByMemberEntity_MemberId(String memberId);
 
     @Query(nativeQuery = true, value = "select * from planner order by like_planner desc")
     List<PlannerEntity> getTrendingPlanner();

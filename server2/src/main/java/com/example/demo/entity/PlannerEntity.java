@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "planner")
@@ -57,6 +58,14 @@ public class PlannerEntity {
     @ManyToOne
     @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
+
+    @ManyToMany
+    @JoinTable(
+            name = "plannerTags",
+            joinColumns = @JoinColumn(name = "plannerId"),
+            inverseJoinColumns = @JoinColumn(name = "tagId")
+    )
+    private Set<TagEntity> tagEntities;
 
     @Getter
     public enum PlannerAccess {
