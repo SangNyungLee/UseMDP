@@ -12,7 +12,14 @@ import CustomListHiddable from '../customLIst/CustomListHiddable';
 export default function DefaultComponent() {
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
+    const [hide, setHide] = useState(true);
+    const [rightClickData, setRightClickData] = useState([]);
 
+    const handleRightClick = (e, newTitle, newId) => {
+        e.preventDefault();
+        setRightClickData([newTitle, newId]);
+        setPoint([e.clientY, e.clientX]);
+    };
     // const handleRightClick = (e, newTitle, newId) => {
     //     e.preventDefault();
     //     setRightClickData([newTitle, newId]);
