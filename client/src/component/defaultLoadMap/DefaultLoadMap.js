@@ -2,6 +2,8 @@
 import { useState } from "react";
 import DefaultComponent from "./DefaultComponent";
 import StarComponent from "../StarComponent";
+import HomeComponent from "../homeComponent.js/HomeComponent";
+import SearchComponent from "../";
 import styled from "styled-components";
 
 const _Button = styled.button`
@@ -40,17 +42,17 @@ export default function DefaultLoadMap() {
   const renderComponent = () => {
     switch (menuNumber) {
       case 1:
-        return <DefaultComponent />;
+        return <HomeComponent />;
       case 2:
-        return <StarComponent />;
+        return <DefaultComponent />;
       case 3:
-        return <DefaultComponent />;
+        return <StarComponent />;
       case 4:
-        return <DefaultComponent />;
+        return <SearchComponent />;
       case 5:
-        return <DefaultComponent />;
+        return <CalendarCompo />;
       default:
-        return <DefaultComponent />;
+        return <HomeComponent />;
     }
   };
   const handleNumber = (number) => {
