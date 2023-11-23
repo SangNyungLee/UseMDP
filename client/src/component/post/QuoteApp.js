@@ -10,8 +10,10 @@ import axios from 'axios';
 import copy from 'fast-copy';
 import DataDownload from '../../utils/DataDownload';
 import DataReaderModal from '../reader/DataReaderModal';
+import { Spinner } from 'react-bootstrap';
 
 import { useSearchParams } from 'react-router-dom';
+
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
 // getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
@@ -216,6 +218,7 @@ export default function QuoteApp() {
         }
     }
     // ...state, getItems(1)
+    console.log('state:', state);
     if (!state) {
         return (
             //Spinner
