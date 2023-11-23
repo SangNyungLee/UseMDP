@@ -2,7 +2,6 @@ import { Container, Image, Row, Col, Card, Button } from "react-bootstrap";
 import styled from "styled-components";
 import star from "../../constant/img/star.png";
 import yellowStar from "../../constant/img/yellowStar.png";
-import Share from "../../constant/img/share.png";
 import { useState } from "react";
 
 const _Container = styled.div`
@@ -34,10 +33,11 @@ const _Felx = styled.div`
   margin-top: 5px;
 `;
 
-const _Share = styled.img`
+const _Share = styled.div`
   width: 20px;
   height: 20px;
   margin-right: 2px;
+  color: #515151;
 `;
 
 const _isOpen = styled.div`
@@ -90,7 +90,9 @@ export default function MyLoadMap(props) {
       <div>
         <_Felx>
           <_TitleStyle>{title}</_TitleStyle>
-          <_Share src={Share}></_Share>
+          <_Share>
+            <i class="material-icons">share</i>
+          </_Share>
         </_Felx>
         <_DescriptionStyle>{description}</_DescriptionStyle>
         <_Felx>

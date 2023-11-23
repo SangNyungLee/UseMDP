@@ -7,14 +7,19 @@ const _Font = styled.div`
   font-family: "SUITE-Regular";
 `;
 
+const _Flex = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export default function HomePage() {
   return (
     <_Font>
       <div>HomePage</div>
-      <div style={{ display: "flex" }}>
-        <HomeSideBar />
+      <_Flex>
+        {/* <HomeSideBar /> */}
         <Outlet />
-      </div>
+      </_Flex>
     </_Font>
   );
 }

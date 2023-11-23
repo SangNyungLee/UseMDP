@@ -37,7 +37,7 @@ export default function DefaultComponent() {
         setData([
           {
             plannerId: 1,
-            creator: "123",
+            creator: "test",
             title: "230303",
             likePlanner: 1,
             thumbnail: base64Str,
