@@ -20,6 +20,7 @@ public class MemberDTO {
     private String memberId;
     private String socialId;
     private String socialNickname;
+    private String socialProfilePicture;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private List<PlannerDTO> planners;

@@ -28,6 +28,9 @@ public class MemberEntity {
     private String socialNickname;
 
     @Column
+    private String socialProfilePicture;
+
+    @Column
     @CreationTimestamp
     private Timestamp createdAt;
 

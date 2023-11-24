@@ -32,7 +32,7 @@ public class GithubLoginService {
         String accessToken = getGithubAccessToken(code);
         System.out.println("AccessToken값은? : " + accessToken);
         JsonNode userResourceNode = getUserResource(accessToken);
-        System.out.println("유저 리소스" + userResourceNode);
+        System.out.println("깃허브 유저 리소스" + userResourceNode);
 
         String socialId = userResourceNode.get("id").asText();
         String socialNickname = userResourceNode.get("name").asText();

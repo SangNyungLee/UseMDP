@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.SocialLoginDTO.SocialDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -30,18 +31,18 @@ public class GoogleLoginService {
     private String resourceUri;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public Map<String, String> socialLogin(String code, String registrationId){
+    public SocialDTO socialLogin(String code, String registrationId){
         String accessToken = getAccessToken(code, registrationId);
         JsonNode userResourceNode = getUserResource(accessToken, registrationId);
-        String id = userResourceNode.get("id").asText();
-        String email = userResourceNode.get("email").asText();
-        String nickname = userResourceNode.get("name").asText();
-
-        //일단 아이디랑 닉네임만 반환시킴
-        Map<String, String> result = new HashMap<>();
-        result.put("id", id);
-        result.put("nickname", nickname);
-        return result;
+        System.out.println("구글 유저 리소스" + userResourceNode);
+        String socialId = userResourceNode.get("id").asText();
+        String socialNickname = userResourceNode.get("name").asText();
+        String socialProfilePicture = userResourceNode.get("picture").asText();
+        return SocialDTO.builder()
+                .socialId(socialId)
+                .socialNickname(socialNickname)
+                .socialProfilePicture(socialProfilePicture)
+                .build();
     }
 
     private String getAccessToken(String authorizationCode, String registrationId){
