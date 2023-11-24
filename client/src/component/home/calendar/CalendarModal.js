@@ -11,7 +11,7 @@ import copy from 'fast-copy';
 import { plannerListActions } from '../../../store/plannerList';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
-
+import axios from 'axios';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -58,7 +58,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
 
     const dispatch = useDispatch();
 
-    const handleClose = () => {
+    const handleClose = async () => {
         const newCardItem = {
             ...selectedCard,
             title,
@@ -69,7 +69,9 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
             endDate: endDate.toISOString(),
             coverColor,
         };
-
+        console.log(newCardItem);
+        const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem);
+        console.log(result.data);
         dispatch(plannerListActions.updateCard(newCardItem));
         modalClose();
         setShow(false);
@@ -92,6 +94,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
     };
 
     useEffect(() => {
+        console.log('HI');
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
         setTitle(title);
         setPost(post);

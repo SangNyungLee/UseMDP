@@ -38,18 +38,6 @@ export default function QuoteApp() {
 
     useEffect(() => {
         const fetchData = async () => {
-            // const btoa = searchParams.get('id');
-            // const rearrangedArray = [[], [], []];
-            // const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
-            // const Planner = result.data;
-            // console.log(Planner);
-            // const { cards, ...newPlanner } = Planner;
-            // cards.forEach((item) => {
-            //     const statusIndex = statusIndexMap[item.cardStatus];
-            //     rearrangedArray[statusIndex].push(item);
-            // });
-            // dispatch(planActions.setPlansInit(rearrangedArray));
-            // const response = await axios.get('/plannerTest');
             const response = { data: [null] };
 
             // 혹시나 테스트중 데이터가 비어있을 경우
@@ -75,7 +63,7 @@ export default function QuoteApp() {
                 dispatch(plannerListActions.setPlannersInit(plannerList));
             }
         };
-        fetchData();
+        // fetchData();
     }, []);
 
     function cardClick(ind, index) {
