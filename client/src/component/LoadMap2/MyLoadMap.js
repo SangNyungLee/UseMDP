@@ -7,6 +7,9 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import DataDownload from '../../utils/DataDownload';
+import { calendarActions } from '../../store/calendar';
+import { plannerListActions } from '../../store/plannerList';
+import { useDispatch } from 'react-redux';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -71,14 +74,18 @@ const StyledShareIcon = styled.i`
 `;
 
 export default function MyLoadMap(props) {
+    const dispatch = useDispatch();
     const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
     // console.log(props);
     const navigate = useNavigate();
-    const handleClick = () => {
+    const handleClick = async () => {
         //모달이 꺼져있으면
         if (!showModal) {
             const btoaId = btoa(plannerId);
-            // Initialize an array with three empty subarrays
+            const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
+            console.log('axios:', result);
+            dispatch(calendarActions.setQuote([0]));
+            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: result.data.cards }));
             navigate(`/planner?id=${btoaId}`);
         }
     };

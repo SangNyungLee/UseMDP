@@ -35,6 +35,7 @@ export default function HomeComponent() {
                     dispatch(plannerListActions.setPlannersInit(testData));
                 } else {
                     setData(response.data);
+
                     dispatch(plannerListActions.setPlannersInit(response.data));
                 }
             } catch {

@@ -1,20 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-//todo     doing    done
-
-// const getItems = (count, offset = 0) =>
-//     Array.from({ length: count }, (v, k) => k).map((k) => ({
-//         cardId: `item-${k + offset}-${new Date().getTime()}`,
-//         post: '',
-//         title: `title ${k + offset}`,
-//         coverColor: '#FFD6DA',
-//         startDate: new Date(2023, 0, 1).toISOString(),
-//         endDate: new Date(2023, 0, 1).toISOString(),
-//         todolist: [{ done: false }, { jpa: false }],
-//         intOrder: k,
-//         separator: 'TODO',
-//     }));
-
-// const initialState = [getItems(8), getItems(5, 8), getItems(5, 13)];
 
 const initialState = [];
 
