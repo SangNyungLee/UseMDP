@@ -12,7 +12,7 @@ import CalendarModal from "./calendar/CalendarModal";
 import CalendarSideBar from "./calendar/CalendarSideBar";
 
 import axios from "axios";
-import { dateParsing, getNestedElement } from "../../utils/CalendarController";
+import { dateParsing, eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
 import { getOneCard } from "../../utils/QuoteSetting";
 
 const localizer = momentLocalizer(moment);
@@ -115,21 +115,6 @@ export default function MyCalendar() {
     setEvents(prev => [...prev,{...newEvent,
       startDate,
       endDate,}]);
-  };
-
-
-
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    var backgroundColor = event.coverColor;
-    var style = {
-        backgroundColor: backgroundColor,
-        borderRadius: '0px',
-        opacity: 0.8,
-        color: 'black',
-        border: '0px',
-        display: 'block'
-    };
-    return {style};
   };
 
   const onSelectEvent = (event, e) => {

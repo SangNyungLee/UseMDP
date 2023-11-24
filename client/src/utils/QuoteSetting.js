@@ -27,14 +27,14 @@ export function getItems (count, offset = 0, separatorStr = 'TODO'){
             checklists: [
                 {
                     checklistId: ( k + offset) * 2,
-                    checked: 0,
+                    checked: false,
                     title: "done",
                     createdAt: currentTime.toISOString(),
                     updatedAt: currentTime.toISOString(),
                 },
                 { 
                     checklistId: ( k + offset) * 2 + 1,
-                    checked: 0,
+                    checked: false,
                     title: "jpa",
                     createdAt: currentTime.toISOString(),
                     updatedAt: currentTime.toISOString(),

@@ -16,11 +16,9 @@ import DroppableComponent from './DroppableComponent';
 const _QuoteAppContainer = styled.div`
     display: flex;
 `
-
 const _QuoteContainer = styled.div`
     display: flex;
 `
-
 
 export default function QuoteApp() {
     const plannerList = useSelector((state) => state.plannerList);
@@ -33,9 +31,14 @@ export default function QuoteApp() {
 
 
     let planner;
+    let plannerId;
+    let plannerTitle;
 
     if (plannerList.length > 0 ){
-        planner = plannerList[quote[0]].cards;
+        const { cards, plannerId: id, title , ...rest } = plannerList[quote[0]]
+        planner = cards
+        plannerId = id
+        plannerTitle = title
     }
  
     useEffect(() => {
@@ -132,7 +135,9 @@ export default function QuoteApp() {
                     thumnnailRef={thumnnailRef}
                     visible={visible}
                     setVisible={setVisible}
-                    planner={planner}/>
+                    planner={planner}
+                    plannerId={plannerId}
+                    />
                 <_QuoteContainer>
                     <DragDropContext onDragEnd={onDragEnd}>
                         { planner.map((item, index) =>
