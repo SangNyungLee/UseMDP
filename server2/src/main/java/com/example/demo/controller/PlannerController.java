@@ -20,7 +20,7 @@ public class PlannerController implements SwaggerPlannerAPI {
 
     // 모든 플래너들 가져오기
     @Override
-    @GetMapping("/api/getPlanners")
+        @GetMapping("/api/getPlanners")
     public List<ResponsePlannerDTO> getAllPlanners() {
         return plannerService.getAllPlanners();
     }
@@ -95,6 +95,12 @@ public class PlannerController implements SwaggerPlannerAPI {
     public int patchPlanner(@RequestBody PlannerDTO plannerDTO) {
         return plannerService.patchPlanner(plannerDTO);
     }
+
+//    @PatchMapping("/api/patchPlannerInfo")
+//    public int patchPlannerInfo(@RequestBody PlannerDTO plannerDTO) {
+//        return plannerService.patchPlanner(plannerDTO);
+//    }
+
 
     // 특정 플래너 좋아요 +1
     @Override
