@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseCardDTO {
-    private long cardId;
+    private String cardId;
     private String title;
     private String coverColor;
     private String post;

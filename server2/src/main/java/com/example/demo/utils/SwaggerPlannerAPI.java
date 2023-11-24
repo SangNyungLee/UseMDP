@@ -114,7 +114,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    long postPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "memberId", required = false) Long memberId);
+    long postPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "memberId", required = false) String memberId);
 
     @Operation(
             summary = "특정 플래너를 복사후 특정 사용자의 것으로 생성",

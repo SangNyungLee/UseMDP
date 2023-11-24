@@ -38,18 +38,18 @@ function Example(props) {
     const cardItem = useSelector((state) => state.card);
     console.log('cardItem', cardItem);
     //구조 분해할당
-    const { id, post, title, coverColor, todolist, intOrder, separatorPlan } = cardItem;
+    const { id, post, title, coverColor, todolist, intOrder, cardStatus } = cardItem;
     const [show, setShow] = useState(false);
     const [picker, setPicker] = useState(false);
     const handlePicker = () => {
         setPicker(!picker);
     };
-    // console.log('plan', separatorPlan);
-    
-    const [ startDate, setStartDate] = useState();
-    const [ endDate, setEndDate] = useState();
+    // console.log('plan', cardStatus);
 
-    console.log('plan', separatorPlan);
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+
+    console.log('plan', cardStatus);
 
     //redux가 안바뀌니까, 새로 상태로 생성해주고
 
@@ -65,7 +65,7 @@ function Example(props) {
 
     //모달끄기
     const handleClose = () => {
-        const idx1 = separatorPlan === 'TODO' ? 0 : separatorPlan === 'DOING' ? 1 : 2;
+        const idx1 = cardStatus === 'TODO' ? 0 : cardStatus === 'DOING' ? 1 : 2;
         const idx2 = intOrder;
 
         const newCardItem = {
@@ -74,6 +74,7 @@ function Example(props) {
             post: Edits[0],
         };
         // console.log(newCardItem);
+        console.log(idx1, idx2);
         dispatch(planActions.patchCardsByIdx({ idx1, idx2, cardItem: newCardItem }));
 
         props.modalClose();
@@ -96,8 +97,8 @@ function Example(props) {
     };
 
     useEffect(() => {
-        setStartDate(new Date(cardItem.startDate))
-        setEndDate(new Date(cardItem.endDate))
+        setStartDate(new Date(cardItem.startDate));
+        setEndDate(new Date(cardItem.endDate));
         setShow(props.modalStatus);
     }, [props.modalStatus]);
 
@@ -135,7 +136,7 @@ function Example(props) {
                     <FlexContainer>
                         <MyDayPicker date={startDate} setDate={setStartDate} />
                         <span>~</span>
-                        <MyDayPicker date={endDate} setDate={setEndDate}/>
+                        <MyDayPicker date={endDate} setDate={setEndDate} />
                     </FlexContainer>
                     <div>
                         {list.map((item, index) => (

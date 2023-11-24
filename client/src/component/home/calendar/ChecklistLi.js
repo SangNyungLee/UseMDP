@@ -2,18 +2,18 @@ import { useState } from "react";
 import { calendarActions } from "../../../store/calendar";
 import { useDispatch } from "react-redux";
 
-export default function TodoListLi({todo,firstIndex,secondIndex}){
+export default function ChecklistLi({todo,firstIndex,secondIndex}){
     const [ visible, setVisible ] = useState(false);
     const dispatch = useDispatch();
 
     const divHandleClick = () => {
         setVisible( prev => !prev )
-        dispatch(calendarActions.setSelect([firstIndex,secondIndex]))
+        dispatch(calendarActions.setHome([firstIndex,secondIndex]))
 
     }
 
     const liHandleClick = (thirdIndex) => {
-        dispatch(calendarActions.setSelect([firstIndex,secondIndex,thirdIndex]))
+        dispatch(calendarActions.setHome([firstIndex,secondIndex,thirdIndex]))
     }
 
     return (

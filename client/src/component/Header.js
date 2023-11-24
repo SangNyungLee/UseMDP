@@ -6,8 +6,12 @@ import {
   GithubLoginButton,
   GoogleLoginButton,
 } from "react-social-login-buttons";
+import axios from "axios";
 
 export default function Header() {
+  const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
+  const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
+  const githubLoginId = process.env.REACT_APP_GITHUB_LOGIN_CLIENT_ID;
   // 모달창 보여주기, 숨기기 상태
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -19,13 +23,12 @@ export default function Header() {
   });
 
   ///////로그인버튼///////
-  const googleLogin = () => {
-    window.location.href =
-      "https://accounts.google.com/o/oauth2/auth?client_id=25234701637-os7792gto1sgkjh5i14lev582mklj7l5.apps.googleusercontent.com&redirect_uri=http://localhost:8080/login/oauth2/code/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
+  const googleLogin = async () => {
+    window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
   const githubLogin = () => {
-    console.log("깃허브로그인 ㅋ");
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
   return (
     <>

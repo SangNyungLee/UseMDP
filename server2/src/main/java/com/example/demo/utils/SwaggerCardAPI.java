@@ -79,5 +79,5 @@ public interface SwaggerCardAPI {
                     }
             )
     })
-    int deleteCard(@PathVariable long cardId);
+    int deleteCard(@PathVariable String cardId);
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TodoListLi from "./TodoListLi";
+import ChecklistLi from "./ChecklistLi";
 import { useDispatch } from "react-redux";
 import { calendarActions } from "../../../store/calendar";
 
@@ -19,20 +19,20 @@ export default function PlannerListLi({plan,firstIndex}){
         return filteredEvents;
     }
 
-    // const todoList = defaultLoad(plan.dataContent);
-    const todoList = plan.dataContent;
+    // const checklist = defaultLoad(plan.cards);
+    const checklist = plan.cards;
 
     const handleClick = () => {
         setVisible( prev => !prev )
-        dispatch(calendarActions.setSelect([firstIndex]))
+        dispatch(calendarActions.setHome([firstIndex]))
     }
 
     return (
     <>
         <div onClick={handleClick}>{plan.title}</div>
         { visible && <ul>
-            { todoList.map((todo,id) => <li key={id}>
-                    <TodoListLi todo={todo} firstIndex={firstIndex} secondIndex={id}/>
+            { checklist.map((todo,id) => <li key={id}>
+                    <ChecklistLi todo={todo} firstIndex={firstIndex} secondIndex={id}/>
                 </li>
             )}
         </ul>

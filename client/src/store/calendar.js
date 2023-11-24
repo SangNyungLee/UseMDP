@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    select:[0],
+    home: [0],
+    quote: [0],
 }
 
 
@@ -9,8 +10,12 @@ const calendarSlice = createSlice({
     name: 'calendar',
     initialState,
     reducers: {
-        setSelect(state, action) {
-            state.select = action.payload;
+        setHome(state, action) {
+            state.home = action.payload;
+            return state;
+        },
+        setQuote(state, action) {
+            state.quote = action.payload;
             return state;
         },
     },
