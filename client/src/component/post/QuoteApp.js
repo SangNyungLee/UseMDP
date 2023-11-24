@@ -126,20 +126,10 @@ export default function QuoteApp() {
 
     let planners = [];
     let planner = [[], [], []];
-    if (plannerList.length > 0) {
-        planners = plannerList[quote[0]].cards;
-        for (let i = 0; i < planners.length; i++) {
-            if (planners[i].cardStatus === 'TODO') {
-                planner[0].push(planners[i]);
-            } else if (planners[i].cardStatus === 'DOING') {
-                planner[1].push(planners[i]);
-            } else if (planners[i].cardStatus === 'DONE') {
-                planner[2].push(planners[i]);
-            }
-        }
-    }
-    console.log('state:', plannerList);
+
+    console.log('plannerList:', plannerList);
     console.log('planner', planner);
+    console.log('queto', quote);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const thumnnailRef = useRef(null);
     //dispatch 선언
@@ -149,18 +139,6 @@ export default function QuoteApp() {
 
     useEffect(() => {
         const fetchData = async () => {
-            // const btoa = searchParams.get('id');
-            // const rearrangedArray = [[], [], []];
-            // const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
-            // const Planner = result.data;
-            // console.log(Planner);
-            // const { cards, ...newPlanner } = Planner;
-            // cards.forEach((item) => {
-            //     const statusIndex = statusIndexMap[item.cardStatus];
-            //     rearrangedArray[statusIndex].push(item);
-            // });
-            // dispatch(planActions.setPlansInit(rearrangedArray));
-            // const response = await axios.get('/plannerTest');
             const response = { data: [null] };
 
             // 혹시나 테스트중 데이터가 비어있을 경우
@@ -203,7 +181,21 @@ export default function QuoteApp() {
             }
         };
         // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
-        fetchData();
+        // fetchData();
+        if (plannerList.length > 0) {
+            planners = plannerList[quote[0]].cards;
+            console.log('plan', planners);
+            for (let i = 0; i < planners.length; i++) {
+                if (planners[i].cardStatus === 'TODO') {
+                    console.log('TODO');
+                    planner[0].push(planners[i]);
+                } else if (planners[i].cardStatus === 'DOING') {
+                    planner[1].push(planners[i]);
+                } else if (planners[i].cardStatus === 'DONE') {
+                    planner[2].push(planners[i]);
+                }
+            }
+        }
     }, []);
 
     function handleThumbnailDownload() {
