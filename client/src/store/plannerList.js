@@ -17,11 +17,11 @@ const plannerListSlice = createSlice({
             return state;
         },
         addCard(state,action){
-            const { id, card } = action.payload
-            state[id].cards[0] = [...state[id].cards[0], card]
+            const { id, status, card } = action.payload
+            state[id].cards[status] = [...state[id].cards[status], card]
             return state;
         },
-        updatePlanner(state,action){
+        updateCard(state,action){
             const { cardId, ...rest } = action.payload
             return state.map( e =>
                 ({ ...e, cards: e.cards.map( r =>
@@ -40,6 +40,11 @@ const plannerListSlice = createSlice({
             const { plannerId, title } = action.payload
             return state.map( e => e.plannerId === plannerId ? { ...e, title } : e )
         },
+        updatePlanner(state,action){
+            const { id, planner } = action.payload
+            state[id].cards = planner
+            return state;
+        }
     },
 });
 export const plannerListActions = plannerListSlice.actions;

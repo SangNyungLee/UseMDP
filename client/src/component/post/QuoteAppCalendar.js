@@ -35,7 +35,6 @@ export default function QuoteAppCalendar() {
       if(array.length === 0){
         return array;
       }
-      console.log("test",array)
   
       let result = (array[indices[0]]).cards;
   
@@ -64,7 +63,7 @@ export default function QuoteAppCalendar() {
     const onEventDrop = (data) => {
       const { start, end, event } = data;
   
-      dispatch(plannerListActions.updatePlanner({
+      dispatch(plannerListActions.updateCard({
         cardId: event.cardId,
         startDate: start.toISOString(),
         endDate: end.toISOString(),
@@ -122,6 +121,7 @@ export default function QuoteAppCalendar() {
       } else {
         dispatch(plannerListActions.addCard({
           id: quote[0],
+          status: 0,
           card: {...newEvent,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),

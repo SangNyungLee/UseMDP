@@ -53,7 +53,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose}){
     const [ startDate, setStartDate ] = useState(new Date());
     const [ endDate, setEndDate ] = useState(new Date());
     const [ coverColor, setCoverColor ] = useState("");
-    const [ separatorPlan, setSeparatorPlan ] = useState("");
+    const [ cardStatus, setCardStatus ] = useState("");
     
     const Edits = [ post, setPost ];
 
@@ -71,45 +71,45 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose}){
             coverColor,
         };
 
-        dispatch(plannerListActions.updatePlanner(newCardItem));
+        dispatch(plannerListActions.updateCard(newCardItem));
         modalClose();
         setShow(false);
     };
 
     //체크박스 온체인지
-    const handleCheckboxChange = (index, key) => {
+    const handleCheckboxChange = (index, value) => {
         setChecklists((prevCheckLists) => {
             const updatedCheckLists = copy(prevCheckLists);
-            updatedCheckLists[index][key] = !updatedCheckLists[index][key];
+            updatedCheckLists[index]["checked"] = value;
             return updatedCheckLists;
         });
     };
 
     const handleProgessBar = () => {
-        const done = checklists.filter((item) => Object.values(item).every((value) => value)).length;
+        const done = checklists.filter((item) => item.checked === true).length;
         const total = checklists.length;
         const progress = (done / total) * 100;
         return progress;
     };
 
     useEffect(() => {
-        const { title, post, startDate, endDate, coverColor, checklists, separatorPlan } = selectedCard;
+        const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
         setTitle(title)
         setPost(post);
         setStartDate(new Date(startDate))
         setEndDate(new Date(endDate))
         setCoverColor(coverColor)
         setChecklists(checklists)
-        setSeparatorPlan(separatorPlan);
+        setCardStatus(cardStatus);
         setShow(modalStatus);
         setModalOpen(false);
     }, [modalStatus]);
 
-    useEffect(() => {
-        if (checklists) {
-            setChecklists(checklists);
-        }
-    }, [checklists]);
+    // useEffect(() => {
+    //     if (checklists) {
+    //         setChecklists(checklists);
+    //     }
+    // }, [checklists]);
 
 
     const addTodo = () => {
@@ -171,7 +171,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose}){
                     <div>
                         { checklists.map((item, index) => (
                             <_ChecklistContainer key={index}>
-                                <input type="checkbox" checked={item[index]} onChange={() => handleCheckboxChange(index, index)} />
+                                <input type="checkbox" checked={item[index]} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
                                 <input type="text" value={item.title} onChange={(e) => checkTitleEdit(index,e.target.value)}/>
                                 <button type="button" onClick={()=>deleteCheck(index)}>-</button>
                             </_ChecklistContainer>

@@ -44,7 +44,7 @@ function Example(props) {
     const handlePicker = () => {
         setPicker(!picker);
     };
-    // console.log('plan', separatorPlan);
+    // console.log('plan', cardStatus);
 
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
