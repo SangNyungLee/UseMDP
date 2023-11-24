@@ -3,7 +3,7 @@ import LZUTF8 from "lzutf8";
 export default function DataDownload(title,content){
     const newContent = {
         title,
-        dataContent: content
+        cards: content
     }
     const jsonContent = JSON.stringify(newContent,null,2)
     // null 자리는 특정 키를 제외할 경우 추가
@@ -12,7 +12,7 @@ export default function DataDownload(title,content){
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'generated-file.json';
+    a.download = title + new Date().toString() + '.json';
     document.body.appendChild(a);
     a.click();
     URL.revokeObjectURL(url);

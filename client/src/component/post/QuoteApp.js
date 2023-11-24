@@ -10,9 +10,13 @@ import axios from 'axios';
 import copy from 'fast-copy';
 import DataDownload from '../../utils/DataDownload';
 import DataReaderModal from '../reader/DataReaderModal';
+import QuoteAppCalendar from './QuoteAppCalendar';
+import { plannerListActions } from '../../store/plannerList';
+import { v4 } from 'uuid';
 import { Spinner } from 'react-bootstrap';
 
 import { useSearchParams } from 'react-router-dom';
+import CalendarModal from '../home/calendar/CalendarModal';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
@@ -22,19 +26,42 @@ import { useSearchParams } from 'react-router-dom';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
+
 const getItems = (count, offset = 0, separatorStr = 'TODO') =>
-    Array.from({ length: count }, (v, k) => k).map((k) => ({
-        cardId: `item-${k + offset}-${new Date().getTime()}-${separatorStr}`,
-        post: ``,
-        title: `title ${k + offset}`,
-        coverColor: '#FFD6DA',
-        startDate: new Date(2023, 0, 1).toISOString(),
-        endDate: new Date(2023, 0, 1).toISOString(),
-        todolist: [{ done: false }, { jpa: false }],
-        intOrder: offset,
-        separatorPlan: separatorStr,
-        sourceResource: null,
-    }));
+    Array.from({ length: count }, (v, k) => k).map((k) => {
+        const r1 = Math.floor(Math.random() * 31);
+        const r2 = Math.floor(Math.random() * 3) + 1;
+        const currentTime = new Date()
+        return {
+            cardId: v4(),
+            post: ``,
+            title: `title ${k + offset}`,
+            coverColor: '#FFD6DA',
+            startDate: new Date(Date.now() + (r1 - 15) * 24 * 60 * 60 * 1000).toISOString(),
+            endDate: new Date(Date.now() + (r1 + r2 - 15) * 24 * 60 * 60 * 1000).toISOString(),
+            createdAt: currentTime.toISOString(),
+            updatedAt: currentTime.toISOString(),
+            cardStatus: separatorStr,
+            checklists: [
+                {
+                    checklistId: k * 2,
+                    checked: 0,
+                    title: "done",
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                },
+                { 
+                    checklistId: k * 2 + 1,
+                    checked: 0,
+                    title: "jpa",
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                }
+            ],
+            intOrder: offset,
+            sourceResource: null,
+        }
+    });
 //reOrder
 //2) 같은 칸톤 보드에서 위치 바꿈
 //3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
@@ -80,7 +107,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     //그리고 옮길 source card의 intOrder는, 도착지의 index로 재조정
     sourceClone[droppableSource.index].intOrder = droppableDestination.index;
     //separtorPlan도 수정해주자.
-    sourceClone[droppableSource.index].separatorPlan = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
+    sourceClone[droppableSource.index].cardStatus = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
 
     const [removed] = sourceClone.splice(droppableSource.index, 1);
 
@@ -121,50 +148,75 @@ const statusIndexMap = {
 export default function QuoteApp() {
     //페이크 아이템을 10개, 5개를 만드는데, 두번쨰는 10부터,세번째는 15부터 시작하도록
     const state = useSelector((state) => state.planner);
-    console.log('state:', state);
+    const plannerList = useSelector((state) => state.plannerList);
+    const { quote } = useSelector((state) => state.calendar);
+
+    let planner = [];
+
+    if (plannerList.length > 0 ){
+        planner = plannerList[quote[0]].cards;
+    }
+
+    // console.log('state:', state);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const thumnnailRef = useRef(null);
     //dispatch 선언
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
-    const [readData, setReadData] = useState();
-    const [plannerTitle, setPlannerTitle] = useState('MDP');
-    const [searchParams] = useSearchParams();
+    const [ readData, setReadData ] = useState();
+    const [ plannerTitle, setPlannerTitle ] = useState('MDP');
 
     useEffect(() => {
         const fetchData = async () => {
-            const btoa = searchParams.get('id');
-            const rearrangedArray = [[], [], []];
-            const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
-            const Planner = result.data;
-            console.log(Planner);
-            const { cards, ...newPlanner } = Planner;
-            cards.forEach((item) => {
-                const statusIndex = statusIndexMap[item.cardStatus];
-                rearrangedArray[statusIndex].push(item);
-            });
-            dispatch(planActions.setPlansInit(rearrangedArray));
+            // const btoa = searchParams.get('id');
+            // const rearrangedArray = [[], [], []];
+            // const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
+            // const Planner = result.data;
+            // console.log(Planner);
+            // const { cards, ...newPlanner } = Planner;
+            // cards.forEach((item) => {
+            //     const statusIndex = statusIndexMap[item.cardStatus];
+            //     rearrangedArray[statusIndex].push(item);
+            // });
+            // dispatch(planActions.setPlansInit(rearrangedArray));
+            // const response = await axios.get('/plannerTest');
+            const response = { data: [null] }
+            
             // 혹시나 테스트중 데이터가 비어있을 경우
-            // if (response.data[0]) {
-            //     const data = response.data[0].cardList;
-            //     const newState = [[], [], []];
-            //     for (let i = 0; i < data.length; i++) {
-            //         if (data[i].separatorPlan === 'TODO') {
-            //             data[i].cardId = 'a' + data[i].cardId;
-            //             newState[0].push(data[i]);
-            //         } else if (data[i].separatorPlan === 'DOING') {
-            //             data[i].cardId = 'a' + data[i].cardId;
-            //             newState[1].push(data[i]);
-            //         } else {
-            //             data[i].cardId = 'a' + data[i].cardId;
-            //             newState[2].push(data[i]);
-            //         }
-            //     }
-            //     // console.log(newState);
-            //     dispatch(planActions.setPlansInit(newState));
-            //     // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
-            // } else {
-            //     dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
-            // }
+            if (response.data[0]) {
+                const data = response.data[0].cardList;
+                const newState = [[], [], []];
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].cardStatus === 'TODO') {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[0].push(data[i]);
+                    } else if (data[i].cardStatus === 'DOING') {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[1].push(data[i]);
+                    } else {
+                        data[i].cardId = 'a' + data[i].cardId;
+                        newState[2].push(data[i]);
+                    }
+                }
+                // console.log(newState);
+                dispatch(planActions.setPlansInit(newState));
+            } else {
+                const cards = [getItems(8,0,"TODO"), getItems(5, 8, "DOING"), getItems(5, 13, "DONE")]
+                const currentTime = new Date();
+                const plannerList = [{
+                    plannerId: 0,
+                    creator: "default user name",
+                    title: "useMDP",
+                    likePlanner: 0,
+                    thumbnail: "",
+                    plannerAccess: "PRIVATE",
+                    isDefault: 0,
+                    createdAt: currentTime.toISOString(),
+                    updatedAt: currentTime.toISOString(),
+                    cards,
+                }];
+                // dispatch(planActions.setPlansInit(cards));
+                dispatch(plannerListActions.setPlannersInit(plannerList));
+            }
         };
         // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
         fetchData();
@@ -188,9 +240,44 @@ export default function QuoteApp() {
     };
 
     function handleClick(ind, index) {
-        dispatch(cardActions.setCard(state[ind][index]));
-        openModal();
+        // dispatch(cardActions.setCard(state[ind][index]));
+        // openModal();
+        setSelectedCard(planner[ind][index]);
+        setVisible(true)
     }
+
+    const [ selectedCard, setSelectedCard ] = useState({
+        cardId : v4(),
+        title: "default title",
+        coverColor: "#FFD6DA",
+        post: "",
+        intOrder: 0,
+        startDate: "2023-10-01T15:00:00.000Z",
+        endDate: "2023-10-04T15:00:00.000Z",
+        createdAt: "2023-11-23T08:41:37.615Z",
+        updatedAt: "2023-11-23T08:41:37.615Z",
+        cardStatus: "TODO",
+        checklists: [
+          {
+            checklistId: 0,
+            checked: 0,
+            title: "done",
+            createdAt: "2023-11-23T08:41:37.615Z",
+            updatedAt: "2023-11-23T08:41:37.615Z"
+          },
+          {
+            checklistId: 1,
+            checked: 0,
+            title: "jpa",
+            createdAt: "2023-11-23T08:41:37.615Z",
+            updatedAt: "2023-11-23T08:41:37.615Z"
+          }
+        ],
+        "sourceResource": null
+      });
+
+    const [ visible, setVisible ] = useState(false);
+
     //dnd에서는, dragend와 onclick이 구분되게 됨.
     function onDragEnd(result) {
         const { source, destination } = result;
@@ -203,22 +290,30 @@ export default function QuoteApp() {
         const dInd = +destination.droppableId;
 
         if (sInd === dInd) {
-            const items = reorder(state[sInd], source.index, destination.index);
-            const newState = [...state];
+            const items = reorder(planner[sInd], source.index, destination.index);
+            const newState = [...planner];
             newState[sInd] = items;
             //setState(newState);
-            dispatch(planActions.setPlans(newState));
+            // dispatch(planActions.setPlans(newState));
+            dispatch(plannerListActions.updatePlanner({
+                id: quote[0],
+                planner: newState, 
+            }))
         } else {
-            const result = move(state[sInd], state[dInd], source, destination);
-            const newState = [...state];
+            const result = move(planner[sInd], planner[dInd], source, destination);
+            const newState = [...planner];
             newState[sInd] = result[sInd];
             newState[dInd] = result[dInd];
-            dispatch(planActions.setPlans(newState));
+            // dispatch(planActions.setPlans(newState));
             //setState(newState.filter((group) => group.length));
+            dispatch(plannerListActions.updatePlanner({
+                id: quote[0],
+                planner: newState, 
+            }))
         }
     }
     // ...state, getItems(1)
-    console.log('state:', state);
+
     if (!state) {
         return (
             //Spinner
@@ -230,9 +325,14 @@ export default function QuoteApp() {
         );
     } else {
         return (
+        <div style={{"display":"flex"}}>
             <div ref={thumnnailRef}>
                 {/* 무언가를 추가하기 위해서, 무조건 state[0]에 생성되도록하였음. */}
-                <Example modalStatus={isModalOpen} modalClose={closeModal}></Example>
+                <CalendarModal
+                selectedCard={selectedCard}
+                modalStatus={visible}
+                modalClose={()=>setVisible(false)}
+                />
                 <button
                     type="button"
                     onClick={() => {
@@ -249,7 +349,7 @@ export default function QuoteApp() {
                 <div style={{ display: 'flex' }}>
                     <DragDropContext onDragEnd={onDragEnd}>
                         {/* DragDropContext에서는 drag가 가능한 공간임. 여기서 state를 map으로 푼다. */}
-                        {state.map((el, ind) => {
+                        {planner.map((el, ind) => {
                             // 여기서는, state의 원소, getItems(10), getItems(5, 10), getItems(5, 15)가 순서대로.
                             //ind는 인덱스임.
                             // console.log(el, ind);
@@ -282,7 +382,8 @@ export default function QuoteApp() {
                                                                                 //상위 onclick을 무력화한다.
                                                                                 e.stopPropagation();
                                                                                 // const newState = [...state];
-                                                                                const newState = copy(state);
+                       
+                                                                                const newState = copy(planner);
                                                                                 //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
                                                                                 for (let i = index + 1; i < newState[ind].length; i++) {
                                                                                     newState[ind][i].intOrder--;
@@ -290,7 +391,11 @@ export default function QuoteApp() {
 
                                                                                 //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
                                                                                 newState[ind].splice(index, 1);
-                                                                                dispatch(planActions.setPlans(newState));
+                                                                                dispatch(plannerListActions.updatePlanner({
+                                                                                    id: quote[0],
+                                                                                    planner: newState
+                                                                                }))
+                                                                                // dispatch(planActions.setPlans(newState));
                                                                                 // setState(newState.filter((group) => group.length));
                                                                             }}
                                                                         >
@@ -305,11 +410,18 @@ export default function QuoteApp() {
                                                     <button
                                                         type="button"
                                                         onClick={() => {
-                                                            const newState = copy(state);
-                                                            const separatorStr = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
-                                                            newState[ind].push(...getItems(1, newState[ind].length, separatorStr));
+                                                            //const newState = copy(planner);
+                                                            const cardStatus = ind == 0 ? 'TODO' : ind == 1 ? 'DOING' : 'DONE';
+                                                            //newState[ind].push(...getItems(1, newState[ind].length, cardStatus));
+                                                            //console.log("card",getItems(1,newState[ind].length, cardStatus))
+                                                            const card = getItems(1,planner[ind].length,cardStatus)[0]
+                                                            dispatch(plannerListActions.addCard({
+                                                                id: quote[0],
+                                                                status: ind,
+                                                                card,
+                                                            }))
                                                             //setState([state[0], state[1], state[2]]);
-                                                            dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
+                                                            // dispatch(planActions.setPlans([newState[0], newState[1], newState[2]]));
                                                         }}
                                                     >
                                                         Add new item
@@ -325,6 +437,7 @@ export default function QuoteApp() {
                     </DragDropContext>
                 </div>
             </div>
-        );
-    }
+            <QuoteAppCalendar/>
+        </div>
+    )};
 }

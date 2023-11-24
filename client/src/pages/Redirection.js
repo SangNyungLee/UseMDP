@@ -13,7 +13,7 @@ export default function Redirection({ provider }) {
       try {
         if (provider === "google") {
           await axios
-            .post("http://localhost:8080/api/googleCode", {
+            .post("https://www.usemdp.site/api/googleCode", {
               authorizationCode: code,
             })
             .then((res) => {
@@ -26,7 +26,7 @@ export default function Redirection({ provider }) {
         } else if (provider === "github") {
           console.log("깃허브");
           await axios
-            .post("http://localhost:8080/api/githubCode", {
+            .post("https://www.usemdp.site/api/githubCode", {
               authorizationCode: code,
             })
             .then((res) => {

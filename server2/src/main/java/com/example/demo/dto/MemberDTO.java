@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberDTO {
     private String memberId;
-    private long socialId;
+    private String socialId;
     private String socialNickname;
     private Timestamp createdAt;
     private Timestamp updatedAt;

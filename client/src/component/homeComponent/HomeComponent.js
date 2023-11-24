@@ -12,6 +12,7 @@ const statusIndexMap = {
     DOING: 1,
     DONE: 2,
 };
+
 export default function HomeComponent() {
     //이미 저장된 값이 있으면 그 list를 불러온다.
     const [data, setData] = useLocalStorage('List', '');
