@@ -94,7 +94,7 @@ export default function MyCalendar() {
   const onEventDrop = (data) => {
     const { start, end, event } = data;
 
-    dispatch(plannerListActions.updatePlanner({
+    dispatch(plannerListActions.updateCard({
       cardId: event.cardId,
       startDate: start.toISOString(),
       endDate: end.toISOString(),
@@ -116,7 +116,7 @@ export default function MyCalendar() {
       intOrder: 0,
       createdAt: "2023-11-23T08:41:37.615Z",
       updatedAt: "2023-11-23T08:41:37.615Z",
-      cardStatus: "TODO",
+      cardStatus: home[1] ? home[1] === 0 ? "TODO" : home[1] === 1 ? "DOING" : "DONE" : "ERROR",
       checklists: [
         {
           checklistId: 0,
@@ -152,6 +152,7 @@ export default function MyCalendar() {
     } else {
       dispatch(plannerListActions.addCard({
         id: home[0],
+        status: home[1] ? home[1] : 0,
         card: {...newEvent,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
