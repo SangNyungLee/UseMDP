@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import base64Str from "../../constant/ImageBase64";
 import LoadMap from "../LoadMap";
@@ -7,11 +6,7 @@ import LoadMap2 from "../LoadMap2/LoadMap";
 import MyLoadMap from "../LoadMap2/MyLoadMap";
 import { Container, Row, Col, Spinner, Button } from "react-bootstrap";
 import RightClicker from "../post/RightClicker/RightClicker";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import base64Str from "../../constant/ImageBase64";
-import { Spinner } from "react-bootstrap";
-
 import CustomList from "../customLIst/CustomList";
 import CustomListHiddable from "../customLIst/CustomListHiddable";
 export default function DefaultComponent() {
@@ -23,6 +18,14 @@ export default function DefaultComponent() {
   //     setRightClickData([newTitle, newId]);
   //     setPoint([e.clientY, e.clientX]);
   // };
+
+  const [hide, setHide] = useState(true);
+  const [rightClickData, setRightClickData] = useState([]);
+  const handleRightClick = (e, newTitle, newId) => {
+    e.preventDefault();
+    setRightClickData([newTitle, newId]);
+    setPoint([e.clientY, e.clientX]);
+  };
 
   const handlePoint = () => {
     if (point[0] !== -1 && point[1] !== -1) {
