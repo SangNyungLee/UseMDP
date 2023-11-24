@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { useDispatch } from "react-redux";
-import { plannerListActions } from "../../store/plannerList";
-import DataReaderModal from "../reader/DataReaderModal";
-import PlannerListLi from "./calendar/PlannerListLi";
-import useRead from "../../hook/useRead";
+import { plannerListActions } from "../../../store/plannerList";
+import DataReaderModal from "../../reader/DataReaderModal";
+import PlannerListLi from "./PlannerListLi";
+import useRead from "../../../hook/useRead";
 
 const _Container = styled.div`
     background-color: skyblue;
@@ -13,7 +13,7 @@ const _Container = styled.div`
     width: 200px;
 `
 
-export default function HomeSideBar(){
+export default function CalendarSideBar(){
     const plannerList = useSelector( state => state.plannerList );
     const [ readData, setReadData ] = useState();
     const dispatch = useDispatch();

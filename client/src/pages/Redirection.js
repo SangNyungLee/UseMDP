@@ -13,7 +13,7 @@ export default function Redirection({ provider }) {
       try {
         if (provider === "google") {
           await axios
-            .post("https://www.usemdp.site/api/googleCode", {
+            .post(`${process.env.REACT_APP_GOOGLE_LOCAL_API_URI}`, {
               authorizationCode: code,
             })
             .then((res) => {
@@ -26,7 +26,7 @@ export default function Redirection({ provider }) {
         } else if (provider === "github") {
           console.log("깃허브");
           await axios
-            .post("https://www.usemdp.site/api/githubCode", {
+            .post(`${process.env.REACT_APP_GITHUB_LOCAL_API_URI}`, {
               authorizationCode: code,
             })
             .then((res) => {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
 import StarComponent from '../starComponent/StarComponent';
 import HomeComponent from '../homeComponent/HomeComponent';
-import MyCalendar from '../home/calendar/MyCalendar';
+import MyCalendar from '../home/MyCalendar';
 import SearchComponent from '../searchComponent/SearchComponent';
 import styled from 'styled-components';
 const _Button = styled.button`
