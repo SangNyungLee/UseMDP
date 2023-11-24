@@ -5,7 +5,6 @@ import com.example.demo.dto.MemberDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
 import com.example.demo.dto.ResponseDTO.ResponseMemberDTO;
 import com.example.demo.dto.SocialLoginDTO.SocialDTO;
-import com.example.demo.entity.MemberEntity;
 import com.example.demo.service.GithubLoginService;
 import com.example.demo.service.GoogleLoginService;
 import com.example.demo.service.MemberService;
@@ -13,13 +12,9 @@ import com.example.demo.utils.JwtTokenUtil;
 import com.example.demo.utils.SocialLoginAPI;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -41,13 +36,25 @@ public class LoginController implements SocialLoginAPI {
     }
 
     @Override
-    @PostMapping("/api/googleCode")
-    public ResponseEntity<APIResponseDTO<ResponseMemberDTO>> googleLogin(@RequestBody CodeDTO codeDTO, HttpServletResponse response){
-        // 서버에서 구글에서 받은 authorizationCode
+    @PostMapping("/api/socialLogin/{loginProvider}")
+    public ResponseEntity<APIResponseDTO<ResponseMemberDTO>> socialLogin(@PathVariable String loginProvider, @RequestBody CodeDTO codeDTO, HttpServletResponse response){
+        // 서버에서 받은 authorizationCode
         String code = codeDTO.getAuthorizationCode();
 
+        SocialDTO user;
+
         // authorizationCode로 로그인 후 사용자 정보 받기
-        SocialDTO user = googleLoginService.socialLogin(code, "registergoogle");
+        if(loginProvider.equals("google")) {
+            user = googleLoginService.socialLogin(code, "registergoogle");
+        } else if (loginProvider.equals("github")){
+            user = githubLoginService.gitLogin(code);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<ResponseMemberDTO>builder()
+                            .resultCode("404")
+                            .message("잘못된 주소")
+                            .data(null)
+                            .build());
+        }
 
         // 사용자 정보 DB에 갱신
         MemberDTO member = memberService.saveMember(user);
@@ -74,43 +81,6 @@ public class LoginController implements SocialLoginAPI {
         response.addCookie(cookie);
 
         // 응답 결과 전달
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(APIResponseDTO.<ResponseMemberDTO>builder()
-                        .resultCode("201")
-                        .message("로그인 성공")
-                        .data(null)
-                        .build()
-                );
-    }
-
-    @Override
-    @PostMapping("/api/githubCode")
-    public ResponseEntity<APIResponseDTO<ResponseMemberDTO>> githubLogin(@RequestBody CodeDTO codeDTO, HttpServletResponse response){
-        String code = codeDTO.getAuthorizationCode();
-        SocialDTO user = githubLoginService.gitLogin(code);
-
-        MemberDTO member = memberService.saveMember(user);
-        ResponseMemberDTO responseMemberDTO = ResponseMemberDTO.builder()
-                .socialId(member.getSocialId())
-                .socialNickname(member.getSocialNickname())
-                .socialProfilePicture(member.getSocialProfilePicture())
-                .build();
-
-        String token = jwtTokenUtil.createToken(member.getMemberId());
-        System.out.println("JWT token = " + token);
-
-        Cookie cookie = new Cookie("auth", token);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(24 * 60 * 60);
-        cookie.setPath("/");
-
-        System.out.println("cookie = " + cookie.getValue());
-
-        response.addCookie(cookie);
-
-
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(APIResponseDTO.<ResponseMemberDTO>builder()
