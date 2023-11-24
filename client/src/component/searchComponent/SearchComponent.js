@@ -5,6 +5,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import CustomList from '../customLIst/CustomList';
 import base64Str from '../../constant/ImageBase64';
 import axios from 'axios';
+import LoadMap2 from '../LoadMap2/LoadMap';
 const SearchContainer = styled.div`
     width: 75vw;
     display: flex;
@@ -24,9 +25,9 @@ const options = [
 ];
 export default function SearchComponent() {
     const selectInputRef = useRef();
-    const [author, setAuthor] = useState();
-    const [title, setTitle] = useState();
-    const [datas, setDatas] = useState();
+    const [author, setAuthor] = useState([]);
+    const [title, setTitle] = useState([]);
+    const [datas, setDatas] = useState([]);
     const [filteredDatas, setFilteredDatas] = useState([]);
     const [selectTag, setSelectTag] = useState(tags[0]);
     const [option, setOption] = useState(options[0]);
@@ -35,7 +36,7 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await axios.get('/api/planners');
+                const response = await axios.get('http://localhost:8080/api/getPlanners');
                 data = response.data;
             } catch {
                 const tmp = [
@@ -47,8 +48,29 @@ export default function SearchComponent() {
             }
             setDatas(data);
             setFilteredDatas(data);
-            setTitle(data.map((item) => ({ value: item.title, label: item.title })));
-            setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
+
+            //셋을 만들어서, 중복을 방지한다.
+            const uniqueTitles = new Set();
+            const uniqueAuthors = new Set();
+            const Title = [];
+            // uniqueTitles에도 값을 넣어서, 값을 체크하는 메커니즘.
+            const Author = [];
+            data.map((item) => {
+                if (!uniqueAuthors.has(item.creator)) {
+                    uniqueAuthors.add(item.creator);
+                    Author.push({ value: item.creator, label: item.creator });
+                }
+                if (!uniqueTitles.has(item.title)) {
+                    uniqueTitles.add(item.title);
+                    Title.push({ value: item.title, label: item.title });
+                }
+                return null;
+            });
+            setAuthor(Author);
+            setTitle(Title);
+            console.log('uniqueTitles : ', Author);
+            // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
+            // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
     }, []);
@@ -151,7 +173,7 @@ export default function SearchComponent() {
                 </SearchContainer>
                 <hr></hr>
                 <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>
-                <CustomList datas={filteredDatas}></CustomList>
+                <CustomList datas={filteredDatas} loadMap={LoadMap2}></CustomList>
             </div>
         );
     }

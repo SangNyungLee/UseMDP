@@ -1,6 +1,5 @@
 import { Container, Image, Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { planActions } from '../store/planner';
 import { planInfoActions } from '../store/plannerInfo';
@@ -40,10 +39,12 @@ export default function LoadMap(props) {
         <Card onClick={handleClick} style={{ width: '250px' }}>
             <Card.Img variant="top" src={thumbnail}></Card.Img>
             <Card.Body>
-                <Card.Title>{title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted float-end">{creator}</Card.Subtitle>
+                <Card.Title style={{ fontSize: '14px', fontWeight: 'bold' }}>{title}</Card.Title>
+                <Card.Subtitle style={{ fontSize: '12px' }} className="mb-2 text-muted float-end">
+                    {creator}
+                </Card.Subtitle>
                 <br />
-                <Card.Text>{description}</Card.Text>
+                <Card.Text style={{ fontSize: '13px' }}>{description}</Card.Text>
             </Card.Body>
         </Card>
     );
