@@ -116,7 +116,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
             ...prev,
             {
                 checklistId: prev.checklistId + 1,
-                checked: 0,
+                checked: false,
                 title: 'default',
                 createdAt: currentTime.toISOString(),
                 updatedAt: currentTime.toISOString(),

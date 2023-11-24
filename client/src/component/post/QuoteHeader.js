@@ -19,6 +19,10 @@ export default function QuoteHeader(props){
         DataDownload(plannerTitle, planner);
     };
 
+    const handleBlur = (e) => {
+        console.log("blur",e)
+    }
+
     useEffect(()=>{
         if(readData){
             console.log("readData", readData);
@@ -40,7 +44,8 @@ export default function QuoteHeader(props){
             >
                 ThumbnailMaker
             </button>
-            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} />
+            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)}
+            onBlur={handleBlur} />
             <button type="button" onClick={saveState}>
                 저장하기
             </button>

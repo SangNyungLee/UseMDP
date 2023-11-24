@@ -1,3 +1,16 @@
+export function eventStyleGetter(event, start, end, isSelected) {
+    var backgroundColor = event.coverColor;
+    var style = {
+        backgroundColor: backgroundColor,
+        borderRadius: '0px',
+        opacity: 0.8,
+        color: 'black',
+        border: '0px',
+        display: 'block'
+    };
+    return {style};
+};
+
 export function getNestedElement(array, indices) {
     if(array.length === 0){
       return array;
