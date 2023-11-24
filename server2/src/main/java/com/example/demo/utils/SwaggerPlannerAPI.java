@@ -130,7 +130,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    long postPlannerCopy(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "memberId", required = false) String memberId);
+    long postPlannerCopy(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(
             summary = "특정 플래너 수정",

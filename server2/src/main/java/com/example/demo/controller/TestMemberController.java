@@ -14,6 +14,6 @@ public class TestMemberController {
 
     @PostMapping("/api/postMember")
     public void postMember(@RequestBody RequestTestSaveMemberDTO requestTestSaveMemberDTO) {
-        memberService.saveMember(requestTestSaveMemberDTO);
+        memberService.joinMember(requestTestSaveMemberDTO);
     }
 }
