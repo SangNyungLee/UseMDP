@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,13 +8,18 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 @Entity
-@Table(name = "like")
+@Table(name = "likes")
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
 public class LikeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long like_id;
+
     @ManyToOne
     @JoinColumn(name = "plannerId")
     private PlannerEntity plannerEntity;
@@ -25,4 +27,14 @@ public class LikeEntity {
     @ManyToOne
     @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
+
+    // PlannerEntity의 plannerId 반환
+    public Long getPlannerId() {
+        return plannerEntity != null ? plannerEntity.getPlannerId() : null;
+    }
+
+    // MemberEntity의 memberId 반환
+    public String getMemberId() {
+        return memberEntity != null ? memberEntity.getMemberId() : null;
+    }
 }
