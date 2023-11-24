@@ -6,7 +6,7 @@ import { planActions } from '../../store/planner';
 import { plannerListActions } from '../../store/plannerList';
 import base64Str from '../../constant/ImageBase64';
 import CustomList from '../customLIst/CustomList';
-
+import MyLoadMap from '../LoadMap2/MyLoadMap';
 const statusIndexMap = {
     TODO: 0,
     DOING: 1,
@@ -28,13 +28,14 @@ export default function HomeComponent() {
             ];
             // const response = await axios.get('/api/myplanner');
             try {
-                const response = await axios.get('api/getMyPlanner');
+                const response = await axios.get('http://localhost:8080/api/getPlanners');
                 console.log('res : ', response.data);
                 if (response.data.length == 0) {
                     setData(testData);
                     dispatch(plannerListActions.setPlannersInit(testData));
                 } else {
                     setData(response.data);
+
                     dispatch(plannerListActions.setPlannersInit(response.data));
                 }
             } catch {
@@ -49,8 +50,8 @@ export default function HomeComponent() {
 
     return (
         <div style={{ padding: '15px' }}>
-            <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
-            <CustomList datas={data}></CustomList>
+            <h2 style={{ marginTop: '15px' }}>내 로드맵</h2>
+            <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
         </div>
     );
 }

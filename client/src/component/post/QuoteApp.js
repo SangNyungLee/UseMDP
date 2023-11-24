@@ -21,6 +21,7 @@ const _QuoteContainer = styled.div`
     display: flex;
 `
 
+
 export default function QuoteApp() {
     const plannerList = useSelector((state) => state.plannerList);
     const { quote } = useSelector((state) => state.calendar);
@@ -30,17 +31,29 @@ export default function QuoteApp() {
     
     const dispatch = useDispatch();
 
+
     let planner;
 
     if (plannerList.length > 0 ){
         planner = plannerList[quote[0]].cards;
     }
-    
+ 
     useEffect(() => {
         const fetchData = async () => {
+            // const btoa = searchParams.get('id');
+            // const rearrangedArray = [[], [], []];
+            // const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
+            // const Planner = result.data;
+            // console.log(Planner);
+            // const { cards, ...newPlanner } = Planner;
+            // cards.forEach((item) => {
+            //     const statusIndex = statusIndexMap[item.cardStatus];
+            //     rearrangedArray[statusIndex].push(item);
+            // });
+            // dispatch(planActions.setPlansInit(rearrangedArray));
             // const response = await axios.get('/plannerTest');
-            const response = { data: [null] }
-            
+            const response = { data: [null] };
+
             // 혹시나 테스트중 데이터가 비어있을 경우
             if (response.data[0]) {
                 const data = response.data[0].cardList;
@@ -69,8 +82,9 @@ export default function QuoteApp() {
 
     function cardClick(ind, index) {
         setSelectedCard(planner[ind][index]);
-        setVisible(true)
+        setVisible(true);
     }
+
 
     //dnd에서는, dragend와 onclick이 구분되게 됨.
     function onDragEnd(result) {
