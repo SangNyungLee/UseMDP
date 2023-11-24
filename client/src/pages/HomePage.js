@@ -17,7 +17,7 @@ export default function HomePage() {
     <_Font>
       <div>HomePage</div>
       <_Flex>
-        {/* <HomeSideBar /> */}
+        <HomeSideBar />
         <Outlet />
       </_Flex>
     </_Font>
