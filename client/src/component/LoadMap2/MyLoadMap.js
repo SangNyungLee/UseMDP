@@ -83,9 +83,19 @@ export default function MyLoadMap(props) {
         if (!showModal) {
             const btoaId = btoa(plannerId);
             const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
-            console.log('axios:', result);
+            const cardList = result.data.cards;
+            const cards = [[], [], []];
+            for (let i = 0; i < cardList.length; i++) {
+                if (cardList[i].cardStatus === 'TODO') {
+                    cards[0].push(cardList[i]);
+                } else if (cardList[i].cardStatus === 'DOING') {
+                    cards[1].push(cardList[i]);
+                } else if (cardList[i].cardStatus === 'DONE') {
+                    cards[2].push(cardList[i]);
+                }
+            }
             dispatch(calendarActions.setQuote([0]));
-            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: result.data.cards }));
+            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
             navigate(`/planner?id=${btoaId}`);
         }
     };

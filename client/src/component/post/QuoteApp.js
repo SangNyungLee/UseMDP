@@ -124,9 +124,10 @@ export default function QuoteApp() {
     const plannerList = useSelector((state) => state.plannerList);
     const { quote } = useSelector((state) => state.calendar);
 
-    let planners = [];
-    let planner = [[], [], []];
-
+    let planner = [];
+    if (plannerList.length > 0) {
+        planner = plannerList[quote[0]].cards;
+    }
     console.log('plannerList:', plannerList);
     console.log('planner', planner);
     console.log('queto', quote);
@@ -157,8 +158,6 @@ export default function QuoteApp() {
                         newState[2].push(data[i]);
                     }
                 }
-                // // console.log(newState);
-                // dispatch(planActions.setPlansInit(newState));
             } else {
                 const cards = [getItems(8, 0, 'TODO'), getItems(5, 8, 'DOING'), getItems(5, 13, 'DONE')];
                 const currentTime = new Date();
@@ -182,20 +181,6 @@ export default function QuoteApp() {
         };
         // dispatch(planActions.setPlansInit([getItems(8), getItems(5, 8), getItems(5, 13)]));
         // fetchData();
-        if (plannerList.length > 0) {
-            planners = plannerList[quote[0]].cards;
-            console.log('plan', planners);
-            for (let i = 0; i < planners.length; i++) {
-                if (planners[i].cardStatus === 'TODO') {
-                    console.log('TODO');
-                    planner[0].push(planners[i]);
-                } else if (planners[i].cardStatus === 'DOING') {
-                    planner[1].push(planners[i]);
-                } else if (planners[i].cardStatus === 'DONE') {
-                    planner[2].push(planners[i]);
-                }
-            }
-        }
     }, []);
 
     function handleThumbnailDownload() {
