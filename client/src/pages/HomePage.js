@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import HomeSideBar from "../component/home/HomeSideBar";
+import HomeSideBar from "../component/home/calendar/CalendarSideBar";
 import "../constant/css/index.css";
 import styled from "styled-components";
 
@@ -17,7 +17,6 @@ export default function HomePage() {
     <_Font>
       <div>HomePage</div>
       <_Flex>
-        <HomeSideBar />
         <Outlet />
       </_Flex>
     </_Font>

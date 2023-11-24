@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Example from '../modal/ModalExample';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
 import { useDispatch, useSelector } from 'react-redux';
 import { planActions } from '../../store/planner';
-import { cardActions } from '../../store/card';
-import axios from 'axios';
 import copy from 'fast-copy';
 import DataDownload from '../../utils/DataDownload';
 import DataReaderModal from '../reader/DataReaderModal';
@@ -14,8 +11,6 @@ import QuoteAppCalendar from './QuoteAppCalendar';
 import { plannerListActions } from '../../store/plannerList';
 import { v4 } from 'uuid';
 import { Spinner } from 'react-bootstrap';
-
-import { useSearchParams } from 'react-router-dom';
 import CalendarModal from '../home/calendar/CalendarModal';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
@@ -26,6 +21,9 @@ import CalendarModal from '../home/calendar/CalendarModal';
 
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
+
+import { reorder } from '../../utils/QuoteController';
+
 
 const getItems = (count, offset = 0, separatorStr = 'TODO') =>
     Array.from({ length: count }, (v, k) => k).map((k) => {
@@ -44,14 +42,14 @@ const getItems = (count, offset = 0, separatorStr = 'TODO') =>
             cardStatus: separatorStr,
             checklists: [
                 {
-                    checklistId: k * 2,
+                    checklistId: ( k + offset) * 2,
                     checked: 0,
                     title: "done",
                     createdAt: currentTime.toISOString(),
                     updatedAt: currentTime.toISOString(),
                 },
                 { 
-                    checklistId: k * 2 + 1,
+                    checklistId: ( k + offset) * 2 + 1,
                     checked: 0,
                     title: "jpa",
                     createdAt: currentTime.toISOString(),
@@ -62,29 +60,6 @@ const getItems = (count, offset = 0, separatorStr = 'TODO') =>
             sourceResource: null,
         }
     });
-//reOrder
-//2) 같은 칸톤 보드에서 위치 바꿈
-//3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
-//4)아래서 위로 갔으면 그 사이에 있는 값들의 intOrder를 --해준다.
-const reorder = (list, startIndex, endIndex) => {
-    //아래에서 위로 갔다면
-    const newList = copy(list);
-    if (startIndex < endIndex) {
-        newList[startIndex].intOrder = endIndex;
-        for (let i = startIndex + 1; i <= endIndex; i++) {
-            newList[i].intOrder--;
-        }
-    } else {
-        newList[startIndex].intOrder = endIndex;
-        for (let i = endIndex + 1; i <= startIndex; i++) {
-            newList[i].intOrder++;
-        }
-    }
-    const result = Array.from(newList);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-};
 
 /**
  * Moves an item from one list to another list.
@@ -225,7 +200,7 @@ export default function QuoteApp() {
     };
 
     const saveState = () => {
-        DataDownload(plannerTitle, state);
+        DataDownload(plannerTitle, planner);
     };
 
     function handleClick(ind, index) {

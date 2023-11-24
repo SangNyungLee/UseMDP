@@ -6,10 +6,13 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
-import { plannerListActions } from "../../../store/plannerList";
-import CalendarModal from "./CalendarModal";
+import { plannerListActions } from "../../store/plannerList";
+import CalendarModal from "./calendar/CalendarModal";
+
+import CalendarSideBar from "./calendar/CalendarSideBar";
 
 import { v4 as uuidv4, v4 } from 'uuid';
+import axios from "axios";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -45,6 +48,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 export default function MyCalendar() {
   const plannerList = useSelector( state => state.plannerList );
   const { home } = useSelector( state => state.calendar );
+  const site = useSelector( state => state.site );
   const dispatch = useDispatch();
 
   const [events, setEvents] = useState();
@@ -218,8 +222,30 @@ export default function MyCalendar() {
 
   const [ visible, setVisible ] = useState(false);
 
+  const [ test, setTest ] = useState();
+
+  const testLogin = () => {
+    const loginAxios = async () => {
+      const result = await axios({
+        method:"POST",
+        url:"http://localhost:8080/api/postMember",
+        data:{
+          socialId:0,
+          socialNickname:"aymrm",
+        },
+      })
+      console.log("login",result)
+    }
+    loginAxios();
+  }
+
+
+  console.log("test",test)
+
   return (
     <>
+      <CalendarSideBar/>
+      <button onClick={testLogin}>테스트 로그인</button>
       <CalendarModal
       selectedCard={selectedCard}
       modalStatus={visible}
