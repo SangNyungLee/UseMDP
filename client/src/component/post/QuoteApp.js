@@ -29,7 +29,6 @@ export default function QuoteApp() {
     
     const dispatch = useDispatch();
 
-
     let planner;
     let plannerId;
     let plannerTitle;
@@ -135,8 +134,9 @@ export default function QuoteApp() {
                     thumnnailRef={thumnnailRef}
                     visible={visible}
                     setVisible={setVisible}
-                    planner={planner}
+                    plannerList={plannerList}
                     plannerId={plannerId}
+                    title={plannerTitle}
                     />
                 <_QuoteContainer>
                     <DragDropContext onDragEnd={onDragEnd}>

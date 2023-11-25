@@ -19,32 +19,31 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-// const CustomToolbar = ({ label, onNavigate }) => {
-//   const goToToday = () => {
-//     onNavigate("TODAY"); // 오늘 날짜로 이동
-//   };
+const CustomToolbar = ({ label, onNavigate }) => {
+  const goToToday = () => {
+    onNavigate("TODAY"); // 오늘 날짜로 이동
+  };
 
-//   const goToNext = () => {
-//     onNavigate("NEXT"); // 다음 달로 이동
-//   };
+  const goToNext = () => {
+    onNavigate("NEXT"); // 다음 달로 이동
+  };
 
-//   const goToPrev = () => {
-//     onNavigate("PREV"); // 이전 달로 이동
-//   };
+  const goToPrev = () => {
+    onNavigate("PREV"); // 이전 달로 이동
+  };
 
-//   return (
-//     <div>
-//       <div style={{ textAlign: "center" }}>
-//         <span>{label}</span>
-//       </div>
-//       <div style={{ display: "flex", justifyContent: "space-between" }}>
-//         <button onClick={goToPrev}>Back</button>
-//         <button onClick={goToToday}>Today</button>
-//         <button onClick={goToNext}>Next</button>
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div style={{width:'70vw'}}>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <button onClick={goToPrev}>{"<"}</button>
+        <div onClick={goToToday} style={{ textAlign: "center" }}>
+          <span>{label}</span>
+        </div>
+        <button onClick={goToNext}>{">"}</button>
+      </div>
+    </div>
+  );
+};
 
 export default function MyCalendar() {
   const plannerList = useSelector( state => state.plannerList );
@@ -145,7 +144,7 @@ export default function MyCalendar() {
   return (
     <>
       <CalendarSideBar/>
-      <button onClick={testLogin}>테스트 로그인</button>
+      {/* <button onClick={testLogin}>테스트 로그인</button> */}
       <CalendarModal
       selectedCard={selectedCard}
       modalStatus={visible}
@@ -166,9 +165,9 @@ export default function MyCalendar() {
         selectable
         style={{ height: "100vh" }}
         eventPropGetter={eventStyleGetter}
-        // components={{
-        //   toolbar: CustomToolbar,
-        // }}
+        components={{
+          toolbar: CustomToolbar,
+        }}
       />
     </>
   );
