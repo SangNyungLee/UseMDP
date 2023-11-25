@@ -30,7 +30,7 @@ public class WebSecurityConfig {
 
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList("https://www.usemdp.site", "http://localhost:3000"));
-        config.setAllowedMethods(Arrays.asList("HEAD", "POST", "GET", "DELETE", "PUT"));
+        config.setAllowedMethods(Arrays.asList("HEAD", "POST", "GET", "DELETE", "PUT","PATCH"));
         config.setAllowedHeaders(Arrays.asList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
