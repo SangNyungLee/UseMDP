@@ -12,7 +12,7 @@ export default function DataDownload(title,content){
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = title + new Date().toString() + '.json';
+    a.download = title + '-' + new Date().toISOString() + '.json';
     document.body.appendChild(a);
     a.click();
     URL.revokeObjectURL(url);

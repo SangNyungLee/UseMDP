@@ -20,4 +20,6 @@ public class LikeDTO {
                 .memberId(likeEntity.getMemberEntity().getMemberId())
                 .build();
     }
+
 }
+

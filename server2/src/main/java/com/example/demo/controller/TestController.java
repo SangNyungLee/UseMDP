@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,4 +29,16 @@ public class TestController {
         public String getName(){ return this.name; }
         public int getAge(){ return this.age; }
     }
+
+    @PostMapping("/api/cookie")
+    public String sendCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("auth", "AAAAAAAAA");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(24 * 60 * 60);
+        System.out.println("TEST cookie = " + cookie.getValue());
+        response.addCookie(cookie);
+
+        return "COOKIE";
+    }
+
 }

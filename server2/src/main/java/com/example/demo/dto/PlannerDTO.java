@@ -1,19 +1,17 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.PlannerEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
 
-@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class PlannerDTO {
     private long plannerId;
     private String creator;
@@ -21,8 +19,6 @@ public class PlannerDTO {
     private int likePlanner;
     private String thumbnail;
     private int isDefault;
-    private Date createdAt;
-    private Date updatedAt;
     private PlannerEntity.PlannerAccess plannerAccess;
     private List<CardDTO> cards;
 }

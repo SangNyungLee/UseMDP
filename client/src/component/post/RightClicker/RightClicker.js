@@ -26,10 +26,11 @@ const RightClicker = (props) => {
         const btoaId = btoa(plannerId);
         // const result = await axios(`/api/planner/${btoaId}`);
         const result = await axios(`/plannerTest`);
-        const Planner = result.data;
-        console.log(Planner);
+        const Planner = result.data[0];
+        console.log('plan', Planner);
         const { cardList, ...newPlanner } = Planner;
-        dispatch(planActions.setPlansInit(cardList));
+        console.log('cardList', cardList);
+        dispatch(planActions.setPlansInit([cardList, [], []]));
         dispatch(planInfoActions.setPlanInfoInit(newPlanner));
         navigate('/planner');
     };

@@ -37,4 +37,6 @@ public class LikeEntity {
     public String getMemberId() {
         return memberEntity != null ? memberEntity.getMemberId() : null;
     }
+
 }
+

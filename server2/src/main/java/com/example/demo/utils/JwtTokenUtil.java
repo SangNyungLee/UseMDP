@@ -3,12 +3,14 @@ package com.example.demo.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Getter
 public class JwtTokenUtil {
 
     private final String secretKey;
@@ -17,11 +19,11 @@ public class JwtTokenUtil {
         this.secretKey = secretKey;
     }
     //jwt 토큰 발급
-    public String createToken(String longId){
+    public String createToken(String memberId){
         //claim jwt에 들어갈 정보
         // claim에 LongId를 넣어줌으로써 나중에 longid를 꺼낼 수 있음
         Claims claims = Jwts.claims();
-        claims.put("longId", longId);
+        claims.put("memberId", memberId);
 
         //만료시간 60분
         long expireTimesMs = 24 * 60 * 60;
@@ -34,9 +36,9 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    // Claims에서 loginId 꺼내기
-    public static String getLoginId(String token, String secretKey) {
-        return extractClaims(token, secretKey).get("loginId").toString();
+    // Claims에서 memberId 꺼내기
+    public static String getMemberId(String token, String secretKey) {
+        return extractClaims(token, secretKey).get("memberId").toString();
     }
 
     // 발급된 Token이 만료 시간이 지났는지 체크
