@@ -151,17 +151,17 @@ public class PlannerController implements SwaggerPlannerAPI {
     }
 
 //    // 특정 플래너 좋아요 +1
-//    @Override
-//    @PatchMapping("/api/patchPlanner/like")
-//    public int likePlanner(@RequestBody LikeDTO likeDTO) {
-//        return plannerService.likePlanner(likeDTO);
-//    }
-//    // 특정 플래너 좋아요 -1
-//    @Override
-//    @PatchMapping("/api/patchPlanner/unlike")
-//    public int unlikePlanner(@RequestBody LikeDTO likeDTO) {
-//        return plannerService.unlikePlanner(likeDTO);
-//    }
+    @Override
+    @PatchMapping("/api/patchPlanner/like")
+    public int likePlanner(@RequestBody LikeDTO likeDTO) {
+        return plannerService.likePlanner(likeDTO);
+    }
+    // 특정 플래너 좋아요 -1
+    @Override
+    @PatchMapping("/api/patchPlanner/unlike")
+    public int unlikePlanner(@RequestBody LikeDTO likeDTO) {
+        return plannerService.unlikePlanner(likeDTO);
+    }
 
     // 특정 플래너 삭제
     @Override

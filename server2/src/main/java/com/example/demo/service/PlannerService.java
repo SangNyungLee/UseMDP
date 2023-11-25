@@ -445,32 +445,32 @@ public class PlannerService {
     }
 
     //성공 -> 1, 실패 -> 0
-//    public int likePlanner(LikeDTO likeDTO) {
-//
-//        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
-//            return 0;
-//        }
-//
-//        LikeEntity likeEntity = LikeEntity.builder()
-//                .plannerEntity(PlannerEntity.builder().plannerId(likeDTO.getPlannerId()).build())
-//                .memberEntity(MemberEntity.builder().memberId(likeDTO.getMemberId()).build())
-//                .build();
-//        likeRepository.save(likeEntity);
-//
-//        return 1;
-//
-//    }
-//
-//    //성공 -> 1, 실패 -> 0
-//    public int unlikePlanner(LikeDTO likeDTO) {
-//        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
-//            return 0;
-//        }
-//        long plannerId = likeDTO.getPlannerId();
-//        String memberId = likeDTO.getMemberId();
-//
-//        LikeEntity result = likeRepository.getLikeEntity(plannerId,memberId);
-//        likeRepository.delete(result);
-//        return 1;
-//    }
+    public int likePlanner(LikeDTO likeDTO) {
+
+        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
+            return 0;
+        }
+
+        LikeEntity likeEntity = LikeEntity.builder()
+                .plannerEntity(PlannerEntity.builder().plannerId(likeDTO.getPlannerId()).build())
+                .memberEntity(MemberEntity.builder().memberId(likeDTO.getMemberId()).build())
+                .build();
+        likeRepository.save(likeEntity);
+
+        return 1;
+
+    }
+
+    //성공 -> 1, 실패 -> 0
+    public int unlikePlanner(LikeDTO likeDTO) {
+        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
+            return 0;
+        }
+        long plannerId = likeDTO.getPlannerId();
+        String memberId = likeDTO.getMemberId();
+
+        LikeEntity result = likeRepository.getLikeEntity(plannerId,memberId);
+        likeRepository.delete(result);
+        return 1;
+    }
 }

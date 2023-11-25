@@ -99,37 +99,37 @@ public interface SwaggerPlannerAPI {
     @Operation(summary = "특정 플래너 수정", description = "DB에 존재하는 특정 플래너 수정")
     ResponseEntity<APIResponseDTO<Long>> patchPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "auth", required = false) String token);
 
-//    @Operation(
-//            summary = "특정 플래너 좋아요 +1",
-//            description = "DB에 존재하는 특정 플래너의 plannerLike 값 +1")
-//    @ApiResponses(value = {
-//            @ApiResponse(
-//                    description = "수정 실패 = 0, 수정 성공 = 1",
-//                    content = {
-//                            @Content(
-//                                    mediaType = "application/json",
-//                                    schema = @Schema(type = "integer")
-//                            )
-//                    }
-//            )
-//    })
-//    int likePlanner(@RequestBody LikeDTO likeDTO);
-//
-//    @Operation(
-//            summary = "특정 플래너 좋아요 -1",
-//            description = "DB에 존재하는 특정 플래너의 plannerLike 값 -1")
-//    @ApiResponses(value = {
-//            @ApiResponse(
-//                    description = "수정 실패 = 0, 수정 성공 = 1",
-//                    content = {
-//                            @Content(
-//                                    mediaType = "application/json",
-//                                    schema = @Schema(type = "integer")
-//                            )
-//                    }
-//            )
-//    })
-//    int unlikePlanner(@RequestBody LikeDTO likeDTO);
+    @Operation(
+            summary = "특정 플래너 좋아요 +1",
+            description = "DB에 존재하는 특정 플래너의 plannerLike 값 +1")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    description = "수정 실패 = 0, 수정 성공 = 1",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "integer")
+                            )
+                    }
+            )
+    })
+    int likePlanner(@RequestBody LikeDTO likeDTO);
+
+    @Operation(
+            summary = "특정 플래너 좋아요 -1",
+            description = "DB에 존재하는 특정 플래너의 plannerLike 값 -1")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    description = "수정 실패 = 0, 수정 성공 = 1",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "integer")
+                            )
+                    }
+            )
+    })
+    int unlikePlanner(@RequestBody LikeDTO likeDTO);
 
 
     @Operation(summary = "특정 플래너 삭제", description = "DB에 존재하는 특정 플래너 삭제")
