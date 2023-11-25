@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.NewApplication;
 import com.example.demo.dto.PlannerDTO;
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.service.PlannerService;
+import com.example.demo.utils.JwtTokenUtil;
 import com.example.demo.utils.SwaggerPlannerAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,12 @@ public class PlannerController implements SwaggerPlannerAPI {
     @Autowired
     private PlannerService plannerService;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     // 모든 플래너들 가져오기
     @Override
-    @GetMapping("/api/getPlanners")
+        @GetMapping("/api/getPlanners")
     public List<ResponsePlannerDTO> getAllPlanners() {
         return plannerService.getAllPlanners();
     }
@@ -67,8 +71,11 @@ public class PlannerController implements SwaggerPlannerAPI {
     // 현재로서는 테스트용으로 memberId = 1
     @Override
     @PostMapping("/api/postPlanner")
-    public long postPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "memberId", required = false) String memberId) {
-        return plannerService.postPlanner(plannerDTO, "uuid");
+    public long postPlanner(@RequestBody PlannerDTO plannerDTO, @CookieValue(name = "auth", required = false) String token) {
+
+        String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+
+        return plannerService.postPlanner(plannerDTO, "62df1aad-6b75-471f-a617-e1923150a639");
     }
 
 
@@ -95,6 +102,12 @@ public class PlannerController implements SwaggerPlannerAPI {
     public int patchPlanner(@RequestBody PlannerDTO plannerDTO) {
         return plannerService.patchPlanner(plannerDTO);
     }
+
+//    @PatchMapping("/api/patchPlannerInfo")
+//    public int patchPlannerInfo(@RequestBody PlannerDTO plannerDTO) {
+//        return plannerService.patchPlanner(plannerDTO);
+//    }
+
 
     // 특정 플래너 좋아요 +1
     @Override

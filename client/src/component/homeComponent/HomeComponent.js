@@ -2,16 +2,17 @@ import { useEffect } from 'react';
 import useLocalStorage from 'use-local-storage';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { planActions } from '../../store/planner';
 import { plannerListActions } from '../../store/plannerList';
 import base64Str from '../../constant/ImageBase64';
 import CustomList from '../customLIst/CustomList';
 import MyLoadMap from '../LoadMap2/MyLoadMap';
+import copy from 'fast-copy';
 const statusIndexMap = {
     TODO: 0,
     DOING: 1,
     DONE: 2,
 };
+
 export default function HomeComponent() {
     //이미 저장된 값이 있으면 그 list를 불러온다.
     const [data, setData] = useLocalStorage('List', '');
@@ -31,10 +32,15 @@ export default function HomeComponent() {
                 console.log('res : ', response.data);
                 if (response.data.length == 0) {
                     setData(testData);
+
                     dispatch(plannerListActions.setPlannersInit(testData));
                 } else {
-                    setData(response.data);
-                    dispatch(plannerListActions.setPlannersInit(response.data));
+                    const newData = response.data.map((item, idx) => {
+                        const newItem = { ...item, cards: item.cards ? item.cards : [] };
+                        return newItem;
+                    });
+                    setData(newData);
+                    dispatch(plannerListActions.setPlannersInit(newData));
                 }
             } catch {
                 console.log('error');

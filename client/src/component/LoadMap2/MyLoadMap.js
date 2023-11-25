@@ -5,6 +5,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import DataDownload from '../../utils/DataDownload';
+import { calendarActions } from '../../store/calendar';
+import { plannerListActions } from '../../store/plannerList';
+import { useDispatch, useSelector } from 'react-redux';
+import useLocalStorage from 'use-local-storage';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -58,14 +64,45 @@ const _Button = styled.button`
     margin-right: 2px;
 `;
 
+const StyledShareIcon = styled.i`
+    &.material-icons {
+        cursor: pointer;
+    }
+
+    &:hover {
+        color: #007bff; /* Change the color on hover as an example */
+    }
+`;
+
 export default function MyLoadMap(props) {
-    const { plannerId, title, creator, likePlanner, thumbnail, createAt, description, plannerAccess } = props.datas;
+    const dispatch = useDispatch();
+
+    const state = useSelector((state) => state.plannerList);
+    const [data, setData] = useLocalStorage('List', '');
+    const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
     // console.log(props);
     const navigate = useNavigate();
-    const handleClick = () => {
-        const btoaId = btoa(plannerId);
-        // Initialize an array with three empty subarrays
-        navigate(`/planner?id=${btoaId}`);
+    const handleClick = async () => {
+        //모달이 꺼져있으면
+        if (!showModal) {
+            const btoaId = btoa(plannerId);
+            const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
+            const cardList = result.data.cards;
+            const cards = [[], [], []];
+            for (let i = 0; i < cardList.length; i++) {
+                if (cardList[i].cardStatus === 'TODO') {
+                    cards[0].push(cardList[i]);
+                } else if (cardList[i].cardStatus === 'DOING') {
+                    cards[1].push(cardList[i]);
+                } else if (cardList[i].cardStatus === 'DONE') {
+                    cards[2].push(cardList[i]);
+                }
+            }
+            dispatch(calendarActions.setQuote([0]));
+            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+            setData(state);
+            navigate(`/planner?id=${btoaId}`);
+        }
     };
     const [starClick, setStarClick] = useState(false);
 
@@ -75,11 +112,21 @@ export default function MyLoadMap(props) {
     // 모달폼
     const [editedTitle, setEditedTitle] = useState(title);
     const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
-    const [editedDescription, setEditedDescription] = useState(description);
 
     const handleShareIcon = (e) => {
         e.stopPropagation();
         //RightClicker 보내주자.
+        DataDownload(editedTitle, {
+            plannerId,
+            creator,
+            title: editedTitle,
+            likePlanner,
+            thumbnail,
+            isDefault,
+            createdAt,
+            updatedAt,
+            plannerAccess: editedPlannerAccess,
+        });
     };
 
     const changeDataByButton = (e) => {
@@ -90,13 +137,25 @@ export default function MyLoadMap(props) {
     const handleCloseModal = (e) => {
         e.stopPropagation();
         setShowModal(false);
+        setEditedTitle(title);
+        setEditedPlannerAccess(plannerAccess);
     };
 
     //저장
-    const handleSaveChanges = (e) => {
+    const handleSaveChanges = async (e) => {
         e.stopPropagation();
+
         //업데이트하고, axios보내줘야한다.
 
+        const result = await axios.patch('http://localhost:8080/api/patchPlanner', {
+            plannerId,
+            creator,
+            title: editedTitle,
+            likePlanner,
+            thumbnail,
+            isDefault,
+            plannerAccess: editedPlannerAccess,
+        });
         setShowModal(false);
     };
 
@@ -105,18 +164,17 @@ export default function MyLoadMap(props) {
             <_ImageStyle src={thumbnail}></_ImageStyle>
             <div>
                 <_Felx>
-                    <_TitleStyle>{title}</_TitleStyle>
+                    <_TitleStyle>{editedTitle}</_TitleStyle>
                     <_Share
                         onClick={(e) => {
                             handleShareIcon(e);
                         }}
                     >
-                        <i class="material-icons">share</i>
+                        <StyledShareIcon className="material-icons">share</StyledShareIcon>
                     </_Share>
                 </_Felx>
-                <_DescriptionStyle>{description}</_DescriptionStyle>
                 <_Felx>
-                    <_isOpen>{plannerAccess}</_isOpen>
+                    <_isOpen>{editedPlannerAccess}</_isOpen>
                     <_Button
                         onClick={(e) => {
                             changeDataByButton(e);
@@ -134,10 +192,12 @@ export default function MyLoadMap(props) {
                 <Modal.Body>
                     <label>Title:</label>
                     <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
+                    <br></br>
                     <label>Planner Access:</label>
+
                     <input type="text" value={editedPlannerAccess} onChange={(e) => setEditedPlannerAccess(e.target.value)} />
-                    <label>Description:</label>
-                    <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)}></textarea>
+                    {/* <label>Description:</label>
+                    <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)}></textarea> */}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

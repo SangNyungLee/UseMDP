@@ -1,13 +1,14 @@
-package com.example.demo.dto.RequestDTO;
+package com.example.demo.dto.SocialLoginDTO;
 
 import lombok.*;
 
-@Getter
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class RequestTestSaveMemberDTO {
+public class SocialDTO {
     private String socialId;
     private String socialNickname;
+    private String socialProfilePicture;
 }

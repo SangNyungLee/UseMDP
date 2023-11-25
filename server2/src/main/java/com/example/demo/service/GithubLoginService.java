@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.SocialLoginDTO.SocialDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,12 +28,23 @@ public class GithubLoginService {
     @Value("${github.redirectUri}")
     private String redirectUri;
 
-    public void gitLogin(String code){
+    public SocialDTO gitLogin(String code){
         String accessToken = getGithubAccessToken(code);
         System.out.println("AccessToken값은? : " + accessToken);
         JsonNode userResourceNode = getUserResource(accessToken);
-        System.out.println("유저 리소스" + userResourceNode);
+        System.out.println("깃허브 유저 리소스" + userResourceNode);
 
+        String socialId = userResourceNode.get("id").asText();
+        String socialNickname = userResourceNode.get("name").asText();
+        String socialProfilePicture =  userResourceNode.get("avatar_url").asText();
+        System.out.println("socialId" + socialId);
+        System.out.println("socialNickname" + socialNickname);
+        System.out.println("socialProfilePicture" + socialProfilePicture);
+        return SocialDTO.builder()
+                .socialId(socialId)
+                .socialNickname(socialNickname)
+                .socialProfilePicture(socialProfilePicture)
+                .build();
     }
     public String getGithubAccessToken(String code){
         //여기로 보내서 토큰 발급받아야됨

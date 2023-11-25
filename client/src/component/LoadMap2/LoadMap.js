@@ -5,7 +5,10 @@ import yellowStar from '../../constant/img/yellowStar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import { async } from 'q';
+import { calendarActions } from '../../store/calendar';
+import { plannerListActions } from '../../store/plannerList';
+import { useDispatch } from 'react-redux';
+
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -42,12 +45,17 @@ const _Star = styled.img`
 `;
 
 export default function LoadMap2(props) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
     // console.log(props);
-    const navigate = useNavigate();
-    const handleClick = () => {
+
+    const handleClick = async () => {
         const btoaId = btoa(plannerId);
-        // Initialize an array with three empty subarrays
+        const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
+        console.log(result.data);
+        dispatch(calendarActions.setQuote([plannerId]));
+        dispatch(plannerListActions.setPlannersInit(result.data));
         navigate(`/planner?id=${btoaId}`);
     };
     const [starClick, setStarClick] = useState(false);

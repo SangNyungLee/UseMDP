@@ -4,9 +4,8 @@ import HomePage from "../pages/HomePage";
 import MyPage from "../pages/MyPage";
 import PlannerPage from "../pages/PlannerPage";
 import App from "../App";
-import MyCalendar from "../component/home/calendar/MyCalendar";
+import MyCalendar from "../component/home/MyCalendar";
 import DefaultLoadMap from "../component/defaultLoadMap/DefaultLoadMap";
-import TestPage from "../pages/TestPage";
 import Redirection from "../pages/Redirection";
 
 const Router = createBrowserRouter([
@@ -41,10 +40,6 @@ const Router = createBrowserRouter([
         element: <MyCalendar />,
       },
     ],
-  },
-  {
-    path: "/testpage",
-    element: <TestPage />,
   },
   {
     path: "/google/callback",

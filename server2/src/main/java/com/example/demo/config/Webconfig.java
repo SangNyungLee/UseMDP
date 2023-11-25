@@ -10,6 +10,7 @@ public class Webconfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("https://www.usemdp.site", "http://localhost:3000")
+                .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("*");
         //        WebMvcConfigurer.super.addCorsMappings(registry);

@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import CardEditor from '../../post/Editor/CardEditor';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import MyDayPicker from '../../post/RightClicker/MyDayPicker';
 import copy from 'fast-copy';
 import { plannerListActions } from '../../../store/plannerList';
@@ -21,37 +21,40 @@ const _TitleInput = styled.input`
     border: none;
     outline: none;
     padding: none;
-    background-color: ${ props => props.color || 'lightblue'};
+    background-color: ${(props) => props.color};
 
     &:focus {
-        background-color: ${ props => darken(0.1,props.color)};
+        background-color: ${(props) => darken(0.1, props.color)};
     }
-`
+`;
 
 const _TodoAddButton = styled.button`
     background-color: white;
     border: none;
-`
+`;
 
 const _ColorPickerModal = styled.div`
     position: fixed;
     z-index: 1;
-`
+`;
 
-export default function CalendarModal({ selectedCard, modalStatus, modalClose}){
+const _ChecklistContainer = styled.div`
+    display: flex;
+`;
 
+export default function CalendarModal({ selectedCard, modalStatus, modalClose }) {
     //구조 분해할당
-    const [ show, setShow ] = useState(false);
-    
-    const [ title, setTitle ] = useState("");
-    const [ post, setPost ] = useState("");
-    const [ todolist, setTodoList ] = useState([]);
-    const [ startDate, setStartDate ] = useState(new Date());
-    const [ endDate, setEndDate ] = useState(new Date());
-    const [ coverColor, setCoverColor ] = useState("");
-    const [ separatorPlan, setSeparatorPlan ] = useState("");
-    
-    const Edits = [ post, setPost ];
+    const [show, setShow] = useState(false);
+
+    const [title, setTitle] = useState('');
+    const [post, setPost] = useState('');
+    const [checklists, setChecklists] = useState([]);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [coverColor, setCoverColor] = useState('');
+    const [cardStatus, setCardStatus] = useState('');
+
+    const Edits = [post, setPost];
 
     const dispatch = useDispatch();
 
@@ -60,107 +63,118 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose}){
             ...selectedCard,
             title,
             post,
-            todolist,
+            checklists,
             post,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
             coverColor,
         };
 
-        dispatch(plannerListActions.updatePlanner(newCardItem));
+        dispatch(plannerListActions.updateCard(newCardItem));
         modalClose();
         setShow(false);
     };
 
     //체크박스 온체인지
-    const handleCheckboxChange = (index, key) => {
-        setTodoList((prevTodoList) => {
-            const updatedTodoList = copy(prevTodoList);
-            updatedTodoList[index][key] = !updatedTodoList[index][key];
-            return updatedTodoList;
+    const handleCheckboxChange = (index, value) => {
+        setChecklists((prevCheckLists) => {
+            const updatedCheckLists = copy(prevCheckLists);
+            updatedCheckLists[index]['checked'] = value;
+            return updatedCheckLists;
         });
     };
 
     const handleProgessBar = () => {
-        const done = todolist.filter((item) => Object.values(item).every((value) => value)).length;
-        const total = todolist.length;
+        const done = checklists.filter((item) => item.checked === true).length;
+        const total = checklists.length;
         const progress = (done / total) * 100;
         return progress;
     };
 
     useEffect(() => {
-        const { title, post, startDate, endDate, coverColor, todolist, separatorPlan } = selectedCard;
-        setTitle(title)
+        const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
+        setTitle(title);
         setPost(post);
-        setStartDate(new Date(startDate))
-        setEndDate(new Date(endDate))
-        setCoverColor(coverColor)
-        setTodoList(todolist ? todolist : [])
-        setSeparatorPlan(separatorPlan);
+        setStartDate(new Date(startDate));
+        setEndDate(new Date(endDate));
+        setCoverColor(coverColor);
+        setChecklists(checklists);
+        setCardStatus(cardStatus);
         setShow(modalStatus);
         setModalOpen(false);
     }, [modalStatus]);
 
-    useEffect(() => {
-        if (todolist) {
-            setTodoList(todolist);
-        }
-    }, [todolist]);
-
+    // useEffect(() => {
+    //     if (checklists) {
+    //         setChecklists(checklists);
+    //     }
+    // }, [checklists]);
 
     const addTodo = () => {
-        setTodoList( prev => [ ...prev, { default: false } ])
-    }
+        const currentTime = new Date();
+        setChecklists((prev) => [
+            ...prev,
+            {
+                checklistId: prev.checklistId + 1,
+                checked: 0,
+                title: 'default',
+                createdAt: currentTime.toISOString(),
+                updatedAt: currentTime.toISOString(),
+            },
+        ]);
+    };
 
-    const [ isModalOpen, setModalOpen ] = useState(false);
-    const [ modalPosition, setModalPosition ] = useState({ left:0, top:0 });
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalPosition, setModalPosition] = useState({ left: 0, top: 0 });
 
     const handleHeaderClick = (e) => {
-        setModalOpen( prev => !prev );
+        setModalOpen((prev) => !prev);
         setModalPosition({
             left: e.clientX,
             top: e.clientY,
-        })
+        });
     };
 
-    const todoTitleEdit = (key,value) => {
-        
-    }
+    const checkTitleEdit = (index, value) => {
+        const newChecklist = [...checklists];
+        newChecklist[index] = { ...newChecklist[index], title: value };
+        setChecklists(newChecklist);
+    };
 
+    const deleteCheck = (index) => {
+        setChecklists((prev) => prev.filter((_, id) => id !== index));
+    };
 
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header style={{ backgroundColor: coverColor }} onClick={handleHeaderClick} closeButton>
-                { isModalOpen && ( <_ColorPickerModal style={modalPosition}>
-                    <HexColorPicker color={coverColor} onChange={setCoverColor}/>
-                </_ColorPickerModal>
-                )}
-                 <Modal.Title>
-                    <_TitleInput value={title}
-                        color={coverColor}
-                        onChange={ e => setTitle(e.target.value)}
-                        onClick={ e => e.stopPropagation()}/>
-                </Modal.Title>
+                    {isModalOpen && (
+                        <_ColorPickerModal style={modalPosition}>
+                            <HexColorPicker color={coverColor} onChange={setCoverColor} />
+                        </_ColorPickerModal>
+                    )}
+                    <Modal.Title>
+                        <_TitleInput value={title} color={coverColor} onChange={(e) => setTitle(e.target.value)} onClick={(e) => e.stopPropagation()} />
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <ProgressBar now={handleProgessBar()} label={`${handleProgessBar()}%`}></ProgressBar>
                     <CardEditor editpost={Edits} post={post}></CardEditor>
                     <FlexContainer>
-                        <MyDayPicker date={startDate} setDate={setStartDate}/>
+                        <MyDayPicker date={startDate} setDate={setStartDate} />
                         <span>~</span>
                         <MyDayPicker date={endDate} setDate={setEndDate} />
                     </FlexContainer>
                     <div>
-                        { todolist.map((item, index) => (
-                            <div key={index}>
-                                { Object.keys(item).map((key) => (
-                                    <label key={key}>
-                                        <input type="checkbox" checked={item[key]} onChange={() => handleCheckboxChange(index, key)} />
-                                        <input type="text" value={key} onChange={(e) => todoTitleEdit(key,e.target.value)}/>
-                                    </label>
-                                ))}
-                            </div>
+                        {checklists.map((item, index) => (
+                            <_ChecklistContainer key={index}>
+                                <input type="checkbox" checked={item[index]} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
+                                <input type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
+                                <button type="button" onClick={() => deleteCheck(index)}>
+                                    -
+                                </button>
+                            </_ChecklistContainer>
                         ))}
                         <_TodoAddButton onClick={addTodo}>+</_TodoAddButton>
                     </div>
@@ -174,7 +188,6 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose}){
                     </Button>
                 </Modal.Footer>
             </Modal>
-
         </>
     );
 }

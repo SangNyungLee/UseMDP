@@ -22,10 +22,13 @@ public class MemberEntity {
     private String memberId;
 
     @Column(nullable = false)
-    private long socialId;
+    private String socialId;
 
     @Column(nullable = false)
     private String socialNickname;
+
+    @Column
+    private String socialProfilePicture;
 
     @Column
     @CreationTimestamp

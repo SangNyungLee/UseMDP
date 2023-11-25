@@ -25,9 +25,9 @@ const options = [
 ];
 export default function SearchComponent() {
     const selectInputRef = useRef();
-    const [author, setAuthor] = useState();
-    const [title, setTitle] = useState();
-    const [datas, setDatas] = useState();
+    const [author, setAuthor] = useState([]);
+    const [title, setTitle] = useState([]);
+    const [datas, setDatas] = useState([]);
     const [filteredDatas, setFilteredDatas] = useState([]);
     const [selectTag, setSelectTag] = useState(tags[0]);
     const [option, setOption] = useState(options[0]);
@@ -48,8 +48,29 @@ export default function SearchComponent() {
             }
             setDatas(data);
             setFilteredDatas(data);
-            setTitle(data.map((item) => ({ value: item.title, label: item.title })));
-            setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
+
+            //셋을 만들어서, 중복을 방지한다.
+            const uniqueTitles = new Set();
+            const uniqueAuthors = new Set();
+            const Title = [];
+            // uniqueTitles에도 값을 넣어서, 값을 체크하는 메커니즘.
+            const Author = [];
+            data.map((item) => {
+                if (!uniqueAuthors.has(item.creator)) {
+                    uniqueAuthors.add(item.creator);
+                    Author.push({ value: item.creator, label: item.creator });
+                }
+                if (!uniqueTitles.has(item.title)) {
+                    uniqueTitles.add(item.title);
+                    Title.push({ value: item.title, label: item.title });
+                }
+                return null;
+            });
+            setAuthor(Author);
+            setTitle(Title);
+            console.log('uniqueTitles : ', Author);
+            // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
+            // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
     }, []);
