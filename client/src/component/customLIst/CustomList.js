@@ -1,9 +1,11 @@
 //여기에서는 props로 파일 리스트를 받아 파일을 4x2로 출력하는 component를 만들고, 다른 컴포넌트에 주고 싶다.
 import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
 import LoadMap from '../LoadMap';
+import LoadMap2 from '../LoadMap2/LoadMap';
 export default function CustomList(props) {
     console.log(props.datas);
     const data = props.datas;
+    const CustomLoadMap = props.loadMap;
 
     return (
         <div>
@@ -17,7 +19,7 @@ export default function CustomList(props) {
                                       {Array.from({ length: Math.min(4, data.length) }).map((_, i) => (
                                           <Col key={data[i].plannerId}>
                                               <div>
-                                                  <LoadMap datas={data[i]}></LoadMap>
+                                                  <CustomLoadMap datas={data[i]}></CustomLoadMap>
                                               </div>
                                           </Col>
                                       ))}
@@ -35,7 +37,7 @@ export default function CustomList(props) {
                                       {Array.from({ length: endIdx - idx + 1 }).map((_, i) => (
                                           <Col key={data[idx + i].plannerId}>
                                               <div>
-                                                  <LoadMap datas={data[idx + i]}></LoadMap>
+                                                  <CustomLoadMap datas={data[i]}></CustomLoadMap>
                                               </div>
                                           </Col>
                                       ))}

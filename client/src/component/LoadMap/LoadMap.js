@@ -5,8 +5,8 @@ export default function LoadMap(props) {
     // console.log(thumbnail);
 
     return (
-        <Card style={{ width: '250px' }}>
-            <Card.Img className="w-50" src={thumbnail}></Card.Img>
+        <Card style={{ width: '250px', height: '125px' }}>
+            <Card.Img src={thumbnail}></Card.Img>
             <Card.Body>
                 <Card.Title>{title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{creator}</Card.Subtitle>

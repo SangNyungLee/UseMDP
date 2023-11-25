@@ -6,10 +6,14 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
-import { plannerListActions } from "../../../store/plannerList";
-import CalendarModal from "./CalendarModal";
+import { plannerListActions } from "../../store/plannerList";
+import CalendarModal from "./calendar/CalendarModal";
 
-import { v4 as uuidv4, v4 } from 'uuid';
+import CalendarSideBar from "./calendar/CalendarSideBar";
+
+import axios from "axios";
+import { dateParsing, eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
+import { getOneCard } from "../../utils/QuoteSetting";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -45,41 +49,15 @@ const DnDCalendar = withDragAndDrop(Calendar);
 export default function MyCalendar() {
   const plannerList = useSelector( state => state.plannerList );
   const { home } = useSelector( state => state.calendar );
+  const site = useSelector( state => state.site );
   const dispatch = useDispatch();
 
   const [events, setEvents] = useState();
 
   useEffect(()=>{
-    eventSetting(getNestedElement(plannerList,home));
+    const selectedEvents = getNestedElement(plannerList,home);
+    setEvents(dateParsing(selectedEvents))
   },[ plannerList, home ])
-  
-  const eventSetting = (totalPlanner) => {
-    const newArr
-    = totalPlanner.flat().map( e => ({ ...e,
-        startDate: new Date(e.startDate),
-        endDate: new Date(e.endDate)}));
-    setEvents(newArr)
-  }
-
-
-  const getNestedElement = (array, indices) => {
-    if(array.length === 0){
-      return array;
-    }
-
-    let result = (array[indices[0]]).cards;
-
-    switch (indices.length){
-      case 0:
-        return array.map( e => e.cards.flat());
-      case 1:
-        return result.flat();
-      case 2:
-        return result[indices[1]].flat();
-      case 3:
-        return [result[indices[1]][indices[2]]]
-    }
-  }
 
   const onEventResize = (data) => {
     const { start, end, event } = data;
@@ -94,7 +72,7 @@ export default function MyCalendar() {
   const onEventDrop = (data) => {
     const { start, end, event } = data;
 
-    dispatch(plannerListActions.updatePlanner({
+    dispatch(plannerListActions.updateCard({
       cardId: event.cardId,
       startDate: start.toISOString(),
       endDate: end.toISOString(),
@@ -108,33 +86,8 @@ export default function MyCalendar() {
   };
   
   const onSelectSlot = (slotInfo) => {
-    const newEvent = {
-      cardId : v4(),
-      title: "default title",
-      coverColor: "#FFD6DA",
-      post: "",
-      intOrder: 0,
-      createdAt: "2023-11-23T08:41:37.615Z",
-      updatedAt: "2023-11-23T08:41:37.615Z",
-      cardStatus: "TODO",
-      checklists: [
-        {
-          checklistId: 0,
-          checked: 0,
-          title: "done",
-          createdAt: "2023-11-23T08:41:37.615Z",
-          updatedAt: "2023-11-23T08:41:37.615Z"
-        },
-        {
-          checklistId: 1,
-          checked: 0,
-          title: "jpa",
-          createdAt: "2023-11-23T08:41:37.615Z",
-          updatedAt: "2023-11-23T08:41:37.615Z"
-        }
-      ],
-      "sourceResource": null
-    };
+    const cardStatus = home[1] ? home[1] === 0 ? "TODO" : home[1] === 1 ? "DOING" : "DONE" : "ERROR"
+    const newEvent = getOneCard(events.length,cardStatus)
 
     const startDate = moment(slotInfo.start).toDate();
     const endDate = moment(slotInfo.end).toDate()
@@ -152,6 +105,7 @@ export default function MyCalendar() {
     } else {
       dispatch(plannerListActions.addCard({
         id: home[0],
+        status: home[1] ? home[1] : 0,
         card: {...newEvent,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
@@ -163,62 +117,35 @@ export default function MyCalendar() {
       endDate,}]);
   };
 
-
-
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    var backgroundColor = event.coverColor;
-    var style = {
-        backgroundColor: backgroundColor,
-        borderRadius: '0px',
-        opacity: 0.8,
-        color: 'black',
-        border: '0px',
-        display: 'block'
-    };
-    return {style};
-  };
-
   const onSelectEvent = (event, e) => {
-    // event: 클릭한 이벤트의 정보
-    // e: 이벤트 객체
     setSelectedCard(event);
     setVisible(true)
   };
 
-  const [ selectedCard, setSelectedCard ] = useState({
-    cardId : v4(),
-    title: "default title",
-    coverColor: "#FFD6DA",
-    post: "",
-    intOrder: 0,
-    startDate: "2023-10-01T15:00:00.000Z",
-    endDate: "2023-10-04T15:00:00.000Z",
-    createdAt: "2023-11-23T08:41:37.615Z",
-    updatedAt: "2023-11-23T08:41:37.615Z",
-    cardStatus: "TODO",
-    checklists: [
-      {
-        checklistId: 0,
-        checked: 0,
-        title: "done",
-        createdAt: "2023-11-23T08:41:37.615Z",
-        updatedAt: "2023-11-23T08:41:37.615Z"
-      },
-      {
-        checklistId: 1,
-        checked: 0,
-        title: "jpa",
-        createdAt: "2023-11-23T08:41:37.615Z",
-        updatedAt: "2023-11-23T08:41:37.615Z"
-      }
-    ],
-    "sourceResource": null
-  });
+  const [ selectedCard, setSelectedCard ] = useState(getOneCard(0,"TODO"));
 
   const [ visible, setVisible ] = useState(false);
 
+  const testLogin = () => {
+    const loginAxios = async () => {
+      const result = await axios({
+        method:"POST",
+        url:"http://localhost:8080/api/postMember",
+        data:{
+          socialId:0,
+          socialNickname:"aymrm",
+        },
+      })
+      console.log("login",result)
+    }
+    loginAxios();
+  }
+
+
   return (
     <>
+      <CalendarSideBar/>
+      <button onClick={testLogin}>테스트 로그인</button>
       <CalendarModal
       selectedCard={selectedCard}
       modalStatus={visible}

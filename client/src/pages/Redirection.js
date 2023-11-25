@@ -1,40 +1,49 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Redirection({ provider }) {
+
+  //쿼리스트링에서 code값만 가져와서 변수에 저장
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get("code");
-  console.log(code);
+
   const navigate = useNavigate();
   useEffect(() => {
     const func = async () => {
       try {
         if (provider === "google") {
           await axios
-            .post("http://localhost:8080/api/googleCode", {
-              authorizationCode: code,
-            })
+            .post(
+              `${process.env.REACT_APP_GOOGLE_LOCAL_API_URI}`,
+              {
+                authorizationCode: code,
+              },
+              { withCredentials: true }
+            )
             .then((res) => {
-              console.log(res);
               navigate("/");
+              alert("구글 로그인에 성공하셨습니다.");
             })
             .catch((res) => {
-              console.log("구글 로그인오류");
+              alert("구글 로그인에 실패하셨습니다..");
             });
         } else if (provider === "github") {
-          console.log("깃허브");
           await axios
-            .post("http://localhost:8080/api/githubCode", {
+            .post(`${process.env.REACT_APP_GITHUB_LOCAL_API_URI}`, {
               authorizationCode: code,
-            })
+            },
+                  							{ withCredentials: true }
+
+                 )
             .then((res) => {
               console.log(res);
               navigate("/");
+              alert("깃허브 로그인 성공");
             })
             .catch((res) => {
-              console("깃허브 로그인오류");
+              alert("깃허브 로그인에 실패하셨습니다..");
             });
         }
       } catch (error) {}
