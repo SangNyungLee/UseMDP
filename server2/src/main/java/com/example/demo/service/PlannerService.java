@@ -1,19 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ChecklistDTO;
+import com.example.demo.dto.LikeDTO;
 import com.example.demo.dto.PlannerDTO;
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
-import com.example.demo.entity.CardEntity;
-import com.example.demo.entity.ChecklistEntity;
-import com.example.demo.entity.MemberEntity;
-import com.example.demo.entity.PlannerEntity;
-import com.example.demo.repository.CardRepository;
-import com.example.demo.repository.ChecklistRepository;
-import com.example.demo.repository.MemberRepository;
-import com.example.demo.repository.PlannerRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +30,9 @@ public class PlannerService {
     private ChecklistRepository checklistRepository;
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Autowired
     private CardRepository cardRepository;
@@ -446,13 +444,33 @@ public class PlannerService {
         }
     }
 
-    public int likePlanner(PlannerIdDTO plannerIdDTO) {
-        long plannerId = plannerIdDTO.getPlannerId();
-        return plannerRepository.likePlanner(plannerId);
-    }
-
-    public int unlikePlanner(PlannerIdDTO plannerIdDTO) {
-        long plannerId = plannerIdDTO.getPlannerId();
-        return plannerRepository.unlikePlanner(plannerId);
-    }
+    //성공 -> 1, 실패 -> 0
+//    public int likePlanner(LikeDTO likeDTO) {
+//
+//        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
+//            return 0;
+//        }
+//
+//        LikeEntity likeEntity = LikeEntity.builder()
+//                .plannerEntity(PlannerEntity.builder().plannerId(likeDTO.getPlannerId()).build())
+//                .memberEntity(MemberEntity.builder().memberId(likeDTO.getMemberId()).build())
+//                .build();
+//        likeRepository.save(likeEntity);
+//
+//        return 1;
+//
+//    }
+//
+//    //성공 -> 1, 실패 -> 0
+//    public int unlikePlanner(LikeDTO likeDTO) {
+//        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
+//            return 0;
+//        }
+//        long plannerId = likeDTO.getPlannerId();
+//        String memberId = likeDTO.getMemberId();
+//
+//        LikeEntity result = likeRepository.getLikeEntity(plannerId,memberId);
+//        likeRepository.delete(result);
+//        return 1;
+//    }
 }
