@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.PlannerEntity;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;

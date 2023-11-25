@@ -23,3 +23,34 @@ export function reorder (list, startIndex, endIndex) {
     result.splice(endIndex, 0, removed);
     return result;
 };
+
+// idx를 받았을 때, idx4개를 받아 order를 바꿔줘야함.
+//시작지에서는 droppableSource로 접근하고, index초과인 친구들의 intOrder를 -1하면 된다.
+// 도착지에서는 droppableid로 접근하고, index초과인 친구들의 intOrder를 +1하면 된다.
+export function move (source, destination, droppableSource, droppableDestination) {
+    console.log('move : ', source, destination, droppableSource, droppableDestination);
+    const sourceClone = copy(source);
+    const destClone = copy(destination);
+    //시작지에서는 droppableSource로 접근하고, index초과인 친구들의 intOrder를 -1하면 된다.
+    for (let i = droppableSource.index + 1; i < sourceClone.length; i++) {
+        sourceClone[i].intOrder--;
+    }
+    // 도착지에서는 droppableDestination 접근하고, index초과인 친구들의 intOrder를 +1하면 된다
+    for (let i = droppableDestination.index + 1; i < destClone.length; i++) {
+        destClone[i].intOrder++;
+    }
+    //그리고 옮길 source card의 intOrder는, 도착지의 index로 재조정
+    sourceClone[droppableSource.index].intOrder = droppableDestination.index;
+    //separtorPlan도 수정해주자.
+    sourceClone[droppableSource.index].cardStatus = droppableDestination.droppableId == 0 ? ('TODO' ? droppableDestination.droppableId == 1 : 'DOING') : 'DONE';
+
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+
+    return result;
+};

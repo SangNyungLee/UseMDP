@@ -100,7 +100,7 @@ export default function MyLoadMap(props) {
             }
             dispatch(calendarActions.setQuote([0]));
             dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-            setData(state);
+
             navigate(`/planner?id=${btoaId}`);
         }
     };
