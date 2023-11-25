@@ -11,6 +11,8 @@ import copy from 'fast-copy';
 import { plannerListActions } from '../../../store/plannerList';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
+import axios from 'axios';
+import { async } from 'q';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -42,7 +44,7 @@ const _ChecklistContainer = styled.div`
     display: flex;
 `;
 
-export default function CalendarModal({ selectedCard, modalStatus, modalClose }) {
+export default function CalendarModal({ selectedCard, modalStatus, modalClose, plannerId }) {
     //구조 분해할당
     const [show, setShow] = useState(false);
 
@@ -58,18 +60,26 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
 
     const dispatch = useDispatch();
 
-    const handleClose = () => {
+    const handleCloseWithoutSave = () => {
+        modalClose();
+        setShow(false);
+    };
+
+    const handleClose = async () => {
+        console.log(title);
         const newCardItem = {
             ...selectedCard,
             title,
             post,
             checklists,
+            plannerId,
             post,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
             coverColor,
         };
-
+        console.log(newCardItem);
+        const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem);
         dispatch(plannerListActions.updateCard(newCardItem));
         modalClose();
         setShow(false);
@@ -147,7 +157,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleCloseWithoutSave}>
                 <Modal.Header style={{ backgroundColor: coverColor }} onClick={handleHeaderClick} closeButton>
                     {isModalOpen && (
                         <_ColorPickerModal style={modalPosition}>
@@ -180,7 +190,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>

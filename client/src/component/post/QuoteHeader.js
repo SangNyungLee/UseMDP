@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import DataDownload from "../../utils/DataDownload";
-import CalendarModal from "../home/calendar/CalendarModal";
-import DataReaderModal from "../reader/DataReaderModal";
-import ThumbnailMaker from "./RightClicker/ThumbnailMaker";
+import { useEffect, useState } from 'react';
+import DataDownload from '../../utils/DataDownload';
+import CalendarModal from '../home/calendar/CalendarModal';
+import DataReaderModal from '../reader/DataReaderModal';
+import ThumbnailMaker from './RightClicker/ThumbnailMaker';
 
-export default function QuoteHeader(props){
-    const { selectedCard, thumnnailRef, visible, setVisible, planner } = props
+export default function QuoteHeader(props) {
+    const { selectedCard, thumnnailRef, visible, setVisible, planner, plannerId } = props;
 
-    const [ plannerTitle, setPlannerTitle ] = useState('MDP');
-    const [ readData, setReadData ] = useState();
+    const [plannerTitle, setPlannerTitle] = useState('MDP');
+    const [readData, setReadData] = useState();
 
     function handleThumbnailDownload() {
         console.log('download', thumnnailRef.current);
@@ -20,22 +20,18 @@ export default function QuoteHeader(props){
     };
 
     const handleBlur = (e) => {
-        console.log("blur",e)
-    }
+        console.log('blur', e);
+    };
 
-    useEffect(()=>{
-        if(readData){
-            console.log("readData", readData);
+    useEffect(() => {
+        if (readData) {
+            console.log('readData', readData);
         }
-    },[readData])
+    }, [readData]);
 
     return (
         <>
-            <CalendarModal
-            selectedCard={selectedCard}
-            modalStatus={visible}
-            modalClose={()=>setVisible(false)}
-            />
+            <CalendarModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             <button
                 type="button"
                 onClick={() => {
@@ -44,12 +40,11 @@ export default function QuoteHeader(props){
             >
                 ThumbnailMaker
             </button>
-            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)}
-            onBlur={handleBlur} />
+            <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} onBlur={handleBlur} />
             <button type="button" onClick={saveState}>
                 저장하기
             </button>
             <DataReaderModal setState={setReadData} />
         </>
-    )
+    );
 }
