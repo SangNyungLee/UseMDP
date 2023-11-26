@@ -66,7 +66,6 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     };
 
     const handleClose = async () => {
-        console.log(title);
         const newCardItem = {
             ...selectedCard,
             title,
