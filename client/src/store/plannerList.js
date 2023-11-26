@@ -11,6 +11,10 @@ const plannerListSlice = createSlice({
             state = action.payload;
             return state;
         },
+        addPlannerList(state,action){
+            state = [...state, ...action.payload];
+            return state;
+        },
         addPlanner(state, action) {
             state = [...state, action.payload];
             return state;

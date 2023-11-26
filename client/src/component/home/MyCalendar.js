@@ -19,7 +19,8 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-const CustomToolbar = ({ label, onNavigate }) => {
+const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
+
   const goToToday = () => {
     onNavigate("TODAY"); // 오늘 날짜로 이동
   };
@@ -32,14 +33,36 @@ const CustomToolbar = ({ label, onNavigate }) => {
     onNavigate("PREV"); // 이전 달로 이동
   };
 
+  const switchToMonthView = () => {
+    onView('month'); // 주 단위(view)로 전환
+  };
+
+  const switchToWeekView = () => {
+    onView('week'); // 주 단위(view)로 전환
+  };
+
+  const switchToDayView = () => {
+    onView('day'); // 날짜 단위(view)로 전환
+  };
+
+  const switchToAgendaView = () => {
+    onView('agenda'); // 날짜 단위(view)로 전환
+  };
+
   return (
-    <div style={{width:'70vw'}}>
+    <div style={{width:'70vw', marginBottom:'10px'}}>
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <button onClick={goToPrev}>{"<"}</button>
         <div onClick={goToToday} style={{ textAlign: "center" }}>
           <span>{label}</span>
         </div>
         <button onClick={goToNext}>{">"}</button>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button onClick={switchToMonthView}>Month</button>
+        <button onClick={switchToWeekView}>Week</button>
+        <button onClick={switchToDayView}>Day</button>
+        <button onClick={switchToAgendaView}>Agenda</button>
       </div>
     </div>
   );
