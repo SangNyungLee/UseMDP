@@ -14,7 +14,8 @@ import java.util.Date;
 public class JwtTokenUtil {
 
     private final String secretKey;
-
+    //24시간 짜리
+    private final long expireTimeMs =  24 * 60 * 60 * 1000;
     public JwtTokenUtil(String secretKey) {
         this.secretKey = secretKey;
     }
@@ -25,13 +26,10 @@ public class JwtTokenUtil {
         Claims claims = Jwts.claims();
         claims.put("memberId", memberId);
 
-        //만료시간 60분
-        long expireTimesMs = 24 * 60 * 60;
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireTimesMs))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
