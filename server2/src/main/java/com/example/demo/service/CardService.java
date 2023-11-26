@@ -70,7 +70,7 @@ public class CardService {
             System.out.println("Check patch2");
             Optional<CardEntity>optionalCardEntity = cardRepository.findById(cardDTO.getCardId());
             if(optionalCardEntity.isPresent()) {
-                System.out.println("Check patch3");
+                System.out.println("Check patch3: "+ cardDTO.getChecklists().get(0).getTitle());
                 CardEntity originalCardEntity = optionalCardEntity.get();
                 List<ChecklistEntity> originalChecklistEntities = originalCardEntity.getChecklists();
                 List<ChecklistDTO> updatedChecklistDTOS = cardDTO.getChecklists();
