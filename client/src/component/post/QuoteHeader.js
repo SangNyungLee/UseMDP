@@ -3,12 +3,16 @@ import DataDownload from '../../utils/DataDownload';
 import CalendarModal from '../home/calendar/CalendarModal';
 import DataReaderModal from '../reader/DataReaderModal';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
+import { useDispatch } from 'react-redux';
+import { plannerListActions } from '../../store/plannerList';
 
 export default function QuoteHeader(props) {
-    const { selectedCard, thumnnailRef, visible, setVisible, planner, plannerId } = props;
+    const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerId, title } = props;
 
-    const [plannerTitle, setPlannerTitle] = useState('MDP');
+    const [plannerTitle, setPlannerTitle] = useState(title);
     const [readData, setReadData] = useState();
+
+    const dispatch = useDispatch();
 
     function handleThumbnailDownload() {
         console.log('download', thumnnailRef.current);
@@ -16,11 +20,16 @@ export default function QuoteHeader(props) {
     }
 
     const saveState = () => {
-        DataDownload(plannerTitle, planner);
+        DataDownload(plannerTitle, plannerList);
     };
 
     const handleBlur = (e) => {
-        console.log('blur', e);
+        dispatch(
+            plannerListActions.updatePlannerTitle({
+                plannerId,
+                title: plannerTitle,
+            })
+        );
     };
 
     useEffect(() => {

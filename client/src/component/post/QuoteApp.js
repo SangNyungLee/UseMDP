@@ -33,7 +33,7 @@ export default function QuoteApp() {
     const dispatch = useDispatch();
 
     let planner;
-    let plannerId;
+    let plannerId = quote[0];
     let plannerTitle;
     function sortByIntOrder(data) {
         // intOrder를 기준으로 오름차순 정렬
@@ -45,8 +45,14 @@ export default function QuoteApp() {
         console.log('tmp:', tmp);
         return tmp;
     }
+
+    // if (plannerList.length > 0) {
+    //     const { cards, plannerId: id, title, ...rest } = planner.plannerId === quote[0]);
+    //     plannerId = id;
+    //     plannerTitle = title;
+    // }
     if (plannerList.length > 0) {
-        const { cards, plannerId: id, title, ...rest } = plannerList[quote[0]];
+        const { cards, plannerId: id, title, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
@@ -107,7 +113,7 @@ export default function QuoteApp() {
             newState[sInd] = items;
             dispatch(
                 plannerListActions.updatePlanner({
-                    id: quote[0],
+                    plannerId: quote[0],
                     planner: newState,
                 })
             );
@@ -131,29 +137,29 @@ export default function QuoteApp() {
             const newState = [...planner];
             newState[sInd] = result[sInd];
             newState[dInd] = result[dInd];
-
             dispatch(
                 plannerListActions.updatePlanner({
-                    id: quote[0],
+                    plannerId: quote[0],
                     planner: newState,
                 })
             );
         }
     }
     // ...state, getItems(1)
-    // console.log('local', localdata, localQuote);
-    console.log('planners', planner);
+
+    console.log('plannerList', plannerList);
+
     if (!planner) {
         return <QuoteSpinner />;
     } else {
         return (
             <_QuoteAppContainer>
                 <div ref={thumnnailRef}>
-                    <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} planner={planner} plannerId={plannerId} />
+                    <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
                     <_QuoteContainer>
                         <DragDropContext onDragEnd={onDragEnd}>
-                            {planner.map((item, index) => (
-                                <DroppableComponent item={item} index={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                            {planner.map((cardList, index) => (
+                                <DroppableComponent cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
                             ))}
                         </DragDropContext>
                     </_QuoteContainer>
