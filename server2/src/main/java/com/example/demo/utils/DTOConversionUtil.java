@@ -8,6 +8,7 @@ import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.entity.CardEntity;
 import com.example.demo.entity.ChecklistEntity;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.entity.PlannerEntity;
 import com.example.demo.repository.CardRepository;
 import com.example.demo.repository.ChecklistRepository;
@@ -63,12 +64,13 @@ public class DTOConversionUtil {
                 .build();
     }
 
-    public PlannerEntity toPlannerEntity(RequestPostPlannerDTO requestPostPlannerDTO) {
+    public PlannerEntity toPlannerEntity(RequestPostPlannerDTO requestPostPlannerDTO, MemberEntity memberEntity) {
         return PlannerEntity.builder()
                 .creator(requestPostPlannerDTO.getCreator())
                 .title(requestPostPlannerDTO.getTitle())
                 .thumbnail(requestPostPlannerDTO.getThumbnail())
                 .plannerAccess(requestPostPlannerDTO.getPlannerAccess())
+                .memberEntity(memberEntity)
                 .build();
     }
 
