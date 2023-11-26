@@ -77,7 +77,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
             endDate: endDate.toISOString(),
             coverColor,
         };
-        console.log(newCardItem);
+        console.log('MODAL에서 보내는 item', newCardItem);
         const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem);
         dispatch(plannerListActions.updateCard(newCardItem));
         modalClose();
@@ -86,15 +86,16 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
 
     //체크박스 온체인지
     const handleCheckboxChange = (index, value) => {
+        const changeValue = value ? 1 : 0;
         setChecklists((prevCheckLists) => {
             const updatedCheckLists = copy(prevCheckLists);
-            updatedCheckLists[index]['checked'] = value;
+            updatedCheckLists[index]['checked'] = changeValue;
             return updatedCheckLists;
         });
     };
 
     const handleProgessBar = () => {
-        const done = checklists.filter((item) => item.checked === true).length;
+        const done = checklists.filter((item) => item.checked === 1).length;
         const total = checklists.length;
         const progress = (done / total) * 100;
         return progress;
@@ -125,7 +126,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
             ...prev,
             {
                 checklistId: prev.checklistId + 1,
-                checked: false,
+                checked: 0,
                 title: 'default',
                 createdAt: currentTime.toISOString(),
                 updatedAt: currentTime.toISOString(),
@@ -153,7 +154,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
-
+    console.log('modal checklist', checklists);
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave}>
