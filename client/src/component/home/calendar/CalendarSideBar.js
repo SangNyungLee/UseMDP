@@ -53,13 +53,15 @@ export default function CalendarSideBar(){
             setReadData();
         }
     },[readData])
+    
+    console.log("plannerList",plannerList)
 
     return(<>
         <_Container {...readerRegister}>
             <ul>
-                { plannerList.map((e,id) =>
-                    <li key={id}>
-                        <PlannerListLi plan={e} firstIndex={id}/>
+                { plannerList.map((planner) =>
+                    <li key={planner.plannerId}>
+                        <PlannerListLi planner={planner}/>
                     </li>
                 )}
             </ul>

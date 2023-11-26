@@ -14,13 +14,13 @@ const _CardBody = styled.div`
     justify-content: space-around;
 `
 
-export default function QuoteCard({ card, deleteCard }){
+export default function QuoteCard({ card, deleteCard, cardIndex }){
     return (
         <>
             <_CardHeader color={card.coverColor}/>
             <_CardBody>
                 {card.title}
-                <button type="button" onClick={(e) => deleteCard(e)}> delete </button>
+                <button type="button" onClick={(e) => deleteCard(e,cardIndex)}> delete </button>
             </_CardBody>
         </>
     )

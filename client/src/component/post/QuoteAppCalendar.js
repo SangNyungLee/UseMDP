@@ -71,7 +71,7 @@ export default function QuoteAppCalendar() {
         ))
       } else {
         dispatch(plannerListActions.addCard({
-          id: quote[0],
+          plannerId: quote[0],
           status: 0,
           card: {...newEvent,
             startDate: startDate.toISOString(),

@@ -8,33 +8,41 @@ import QuoteCard from "./QuoteCard";
 
 export default function DroppableComponent(props){
     const { quote } = useSelector( state => state.calendar);
-    const { item, index, planner, handleClick } = props
+    const { cardList, cardStatusIndex, planner, handleClick } = props
     
     const dispatch = useDispatch();
 
     const deleteCard = (e, id) => {
         e.stopPropagation();
 
+        console.log("planner",planner);
+        console.log("id",id);
+        console.log("cardstatus",cardStatusIndex);
+        console.log("quote",quote[0]);
+
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
-        for (let i = id + 1; i < newState[index].length; i++) {
-            newState[index][i].intOrder--;
+        for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {
+            newState[cardStatusIndex][i].intOrder--;
         }
 
         //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
-        newState[index].splice(id, 1);
+        newState[cardStatusIndex].splice(id, 1);
+
+        console.log("New state",newState)
+
         dispatch(plannerListActions.updatePlanner({
-            id: quote[0],
+            plannerId: quote[0],
             planner: newState
         }))
     }
 
     const addCard = () => {
-        const cardStatus = index == 0 ? 'TODO' : index == 1 ? 'DOING' : 'DONE';
-        const card = getItems(1,planner[index].length,cardStatus)[0]
+        const cardStatus = cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE';
+        const card = getItems(1,planner[cardStatusIndex].length,cardStatus)[0]
         dispatch(plannerListActions.addCard({
-            id: quote[0],
-            status: index,
+            plannerId: quote[0],
+            status: cardStatusIndex,
             card,
         }))
     }
@@ -50,20 +58,20 @@ export default function DroppableComponent(props){
         ...provided.dragHandleProps,
         ref: provided.innerRef,
         style: getItemStyle(snapshot.isDragging, provided.draggableProps.style),
-        onClick: () => handleClick(index, id)
+        onClick: () => handleClick(cardStatusIndex, id)
     })
 
     return (
-        <Droppable key={index} droppableId={`${index}`}>
+        <Droppable key={cardStatusIndex} droppableId={`${cardStatusIndex}`}>
             {(provided, snapshot) => {
                 //Droppable에서 제공하는 무언가 같음. 환경 설정이 들어가 있음.
                 return (
                     <div {...droppableComponentRegister(provided,snapshot)}>
-                        { item.map((card, id) => (
+                        { cardList.map((card, id) => (
                             <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
                                 {(provided, snapshot) => (
                                     <div {...draggableComponentRegister(provided,snapshot,id)}>
-                                        <QuoteCard card={card} deleteCard={deleteCard}/>
+                                        <QuoteCard card={card} deleteCard={deleteCard} cardIndex={id}/>
                                     </div>
                                 )}
                             </Draggable>

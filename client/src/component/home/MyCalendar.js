@@ -76,6 +76,7 @@ export default function MyCalendar() {
   const dispatch = useDispatch();
 
   const [events, setEvents] = useState();
+  console.log(home)
 
   useEffect(()=>{
     const selectedEvents = getNestedElement(plannerList,home);
@@ -84,6 +85,12 @@ export default function MyCalendar() {
 
   const onEventResize = (data) => {
     const { start, end, event } = data;
+
+    dispatch(plannerListActions.updateCard({
+      cardId: event.cardId,
+      startDate: start.toISOString(),
+      endDate: end.toISOString(),
+    }))
   
     setEvents((prevEvents) =>
       prevEvents.map((e) =>
@@ -109,7 +116,7 @@ export default function MyCalendar() {
   };
   
   const onSelectSlot = (slotInfo) => {
-    const cardStatus = home[1] ? home[1] === 0 ? "TODO" : home[1] === 1 ? "DOING" : "DONE" : "ERROR"
+    const cardStatus = home[1] ? ( home[1] === 0 ? "TODO" : ( home[1] === 1 ? "DOING" : "DONE" ) ) : "TODO"
     const newEvent = getOneCard(events.length,cardStatus)
 
     const startDate = moment(slotInfo.start).toDate();
@@ -118,6 +125,7 @@ export default function MyCalendar() {
     if(plannerList.length === 0){
       dispatch(plannerListActions.addPlanner(
         {
+          plannerId: 0,
           title: "default title",
           cards: [[{...newEvent,
             startDate: startDate.toISOString(),
@@ -127,7 +135,7 @@ export default function MyCalendar() {
       ))
     } else {
       dispatch(plannerListActions.addCard({
-        id: home[0],
+        plannerId: home[0],
         status: home[1] ? home[1] : 0,
         card: {...newEvent,
           startDate: startDate.toISOString(),
