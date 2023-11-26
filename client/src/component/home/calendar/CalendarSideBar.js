@@ -6,6 +6,8 @@ import { plannerListActions } from "../../../store/plannerList";
 import DataReaderModal from "../../reader/DataReaderModal";
 import PlannerListLi from "./PlannerListLi";
 import useRead from "../../../hook/useRead";
+import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../../../utils/DataDownload";
+import { plannerCardStatusDevide, plannerListCardStatusDevide } from "../../../utils/QuoteController";
 
 const _Container = styled.div`
     background-color: skyblue;
@@ -24,7 +26,30 @@ export default function CalendarSideBar(){
         if(readData){
             const data = JSON.parse(readData)
             console.log("data",data);
-            dispatch(plannerListActions.addPlanner(data))
+            // Unspecified인 애들은 이런식으로 데이터가 온다길레 추가로 작업한것..
+            // 혹시나 형태가 달라지면 이거도 수정해야함
+            if (validatePlannerData(data)) {
+                // cards = [ [] , [] , [] ] 형태
+                console.log("planner")
+                dispatch(plannerListActions.addPlanner(data))
+            } else if (validateUnspecifiedPlannerData(data)) {
+                // cards = [] 형태
+                console.log("planner2")
+                const specifiedPlanner = plannerCardStatusDevide(data);
+                specifiedPlanner.title = "default title"; // 없는 데이터 셋이길레 추가
+                dispatch(plannerListActions.addPlanner(specifiedPlanner))
+            } else if (validatePlannerListData(data)) {
+                // cards = [ [] , [] , [] ] 형태
+                console.log("plannerList")
+                dispatch(plannerListActions.addPlannerList(data))
+            } else if (validateUnspecifiedPlannerListData(data)) {
+                // cards = [] 형태
+                console.log("unspecified plannerList")
+                const specifiedPlannerList = plannerListCardStatusDevide(data)
+                dispatch(plannerListActions.addPlannerList(specifiedPlannerList))
+            } else {
+                console.log("error")
+            }
             setReadData();
         }
     },[readData])

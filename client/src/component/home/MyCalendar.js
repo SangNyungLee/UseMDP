@@ -19,32 +19,54 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-// const CustomToolbar = ({ label, onNavigate }) => {
-//   const goToToday = () => {
-//     onNavigate("TODAY"); // 오늘 날짜로 이동
-//   };
+const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
 
-//   const goToNext = () => {
-//     onNavigate("NEXT"); // 다음 달로 이동
-//   };
+  const goToToday = () => {
+    onNavigate("TODAY"); // 오늘 날짜로 이동
+  };
 
-//   const goToPrev = () => {
-//     onNavigate("PREV"); // 이전 달로 이동
-//   };
+  const goToNext = () => {
+    onNavigate("NEXT"); // 다음 달로 이동
+  };
 
-//   return (
-//     <div>
-//       <div style={{ textAlign: "center" }}>
-//         <span>{label}</span>
-//       </div>
-//       <div style={{ display: "flex", justifyContent: "space-between" }}>
-//         <button onClick={goToPrev}>Back</button>
-//         <button onClick={goToToday}>Today</button>
-//         <button onClick={goToNext}>Next</button>
-//       </div>
-//     </div>
-//   );
-// };
+  const goToPrev = () => {
+    onNavigate("PREV"); // 이전 달로 이동
+  };
+
+  const switchToMonthView = () => {
+    onView('month'); // 주 단위(view)로 전환
+  };
+
+  const switchToWeekView = () => {
+    onView('week'); // 주 단위(view)로 전환
+  };
+
+  const switchToDayView = () => {
+    onView('day'); // 날짜 단위(view)로 전환
+  };
+
+  const switchToAgendaView = () => {
+    onView('agenda'); // 날짜 단위(view)로 전환
+  };
+
+  return (
+    <div style={{width:'70vw', marginBottom:'10px'}}>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <button onClick={goToPrev}>{"<"}</button>
+        <div onClick={goToToday} style={{ textAlign: "center" }}>
+          <span>{label}</span>
+        </div>
+        <button onClick={goToNext}>{">"}</button>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button onClick={switchToMonthView}>Month</button>
+        <button onClick={switchToWeekView}>Week</button>
+        <button onClick={switchToDayView}>Day</button>
+        <button onClick={switchToAgendaView}>Agenda</button>
+      </div>
+    </div>
+  );
+};
 
 export default function MyCalendar() {
   const plannerList = useSelector( state => state.plannerList );
@@ -145,7 +167,7 @@ export default function MyCalendar() {
   return (
     <>
       <CalendarSideBar/>
-      <button onClick={testLogin}>테스트 로그인</button>
+      {/* <button onClick={testLogin}>테스트 로그인</button> */}
       <CalendarModal
       selectedCard={selectedCard}
       modalStatus={visible}
@@ -166,9 +188,9 @@ export default function MyCalendar() {
         selectable
         style={{ height: "100vh" }}
         eventPropGetter={eventStyleGetter}
-        // components={{
-        //   toolbar: CustomToolbar,
-        // }}
+        components={{
+          toolbar: CustomToolbar,
+        }}
       />
     </>
   );

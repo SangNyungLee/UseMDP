@@ -1,12 +1,13 @@
 export function eventStyleGetter(event, start, end, isSelected) {
     var backgroundColor = event.coverColor;
     var style = {
-        backgroundColor: backgroundColor,
-        borderRadius: '0px',
+        backgroundColor,
+        borderRadius: '10px',
         opacity: 0.8,
         color: 'black',
         border: '0px',
-        display: 'block'
+        display: 'block',
+        textAlign: 'center',
     };
     return {style};
 };

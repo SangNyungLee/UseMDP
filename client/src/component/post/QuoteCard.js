@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 const _CardHeader = styled.div`
     position: relative;
-    background-color: ${ props => props.coverColor };
+    background-color: ${ props => props.color }; // lowercase를 쓰래서 color로 수정
     height: 20px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
@@ -17,7 +17,7 @@ const _CardBody = styled.div`
 export default function QuoteCard({ card, deleteCard }){
     return (
         <>
-            <_CardHeader coverColor={card.coverColor}/>
+            <_CardHeader color={card.coverColor}/>
             <_CardBody>
                 {card.title}
                 <button type="button" onClick={(e) => deleteCard(e)}> delete </button>
