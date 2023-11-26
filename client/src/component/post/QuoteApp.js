@@ -35,6 +35,7 @@ export default function QuoteApp() {
     let planner;
     let plannerId = quote[0];
     let plannerTitle;
+
     function sortByIntOrder(data) {
         // intOrder를 기준으로 오름차순 정렬
         const tmp = [[], [], []];
@@ -45,15 +46,9 @@ export default function QuoteApp() {
         console.log('tmp:', tmp);
         return tmp;
     }
-
-    // if (plannerList.length > 0) {
-    //     const { cards, plannerId: id, title, ...rest } = planner.plannerId === quote[0]);
-    //     plannerId = id;
-    //     plannerTitle = title;
-    // }
     if (plannerList.length > 0) {
         const { cards, plannerId: id, title, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
-        planner = sortByIntOrder(cards);
+        planner = cards;
         plannerId = id;
         plannerTitle = title;
     } else if (localdata.length > 0) {
@@ -61,11 +56,16 @@ export default function QuoteApp() {
         // console.log(localStorage.getItem('List'));
         const { cards, plannerId: id, title, ...rest } = localdata[0];
         dispatch(plannerListActions.setPlannersInit(localdata));
-        dispatch(calendarActions.setQuote([0]));
-        planner = sortByIntOrder(cards);
+        dispatch(calendarActions.setQuote([id]));
+        planner = cards;
         plannerId = id;
         plannerTitle = title;
     }
+    //planner가 바뀔때마다, localStoage에 저장하는 코드.
+
+    useEffect(() => {
+        setLocalData(plannerList);
+    }, [plannerList]);
 
     useEffect(() => {
         console.log('HI', localdata);
