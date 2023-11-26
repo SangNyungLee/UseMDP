@@ -54,16 +54,3 @@ export function move (source, destination, droppableSource, droppableDestination
 
     return result;
 };
-
-export function plannerCardStatusDevide(planner){
-    const { cards } = planner
-    return {...planner, cards :[
-        cards.filter( card => card.cardStatus === "TODO"),
-        cards.filter( card => card.cardStatus === "DOING"),
-        cards.filter( card => card.cardStatus === "DONE"),
-    ]}
-}
-
-export function plannerListCardStatusDevide( plannerList ){
-    return plannerList.map( planner => plannerCardStatusDevide(planner))
-}

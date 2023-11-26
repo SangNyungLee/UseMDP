@@ -6,8 +6,8 @@ import { plannerListActions } from "../../../store/plannerList";
 import DataReaderModal from "../../reader/DataReaderModal";
 import PlannerListLi from "./PlannerListLi";
 import useRead from "../../../hook/useRead";
-import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../../../utils/DataDownload";
-import { plannerCardStatusDevide, plannerListCardStatusDevide } from "../../../utils/QuoteController";
+import { plannerCardStatusDevide, plannerListCardStatusDevide } from "../../../utils/DataParsing";
+import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../../../utils/DataValidate";
 
 const _Container = styled.div`
     background-color: skyblue;
