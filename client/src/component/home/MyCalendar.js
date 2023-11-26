@@ -12,8 +12,9 @@ import CalendarModal from "./calendar/CalendarModal";
 import CalendarSideBar from "./calendar/CalendarSideBar";
 
 import axios from "axios";
-import { dateParsing, eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
+import { eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
 import { getOneCard } from "../../utils/QuoteSetting";
+import { dateParsing } from "../../utils/DataParsing";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);

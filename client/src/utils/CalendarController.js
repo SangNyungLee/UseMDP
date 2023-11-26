@@ -31,9 +31,3 @@ export function getNestedElement(array, indices) {
     }
 }
 
-export function dateParsing(planner){
-    return planner.flat().map( e => ({ ...e,
-        startDate: new Date(e.startDate),
-        endDate: new Date(e.endDate)}));
-}
-
