@@ -29,13 +29,12 @@ export default function QuoteApp() {
     
     const dispatch = useDispatch();
 
-
     let planner;
-    let plannerId;
+    let plannerId = quote[0];
     let plannerTitle;
 
     if (plannerList.length > 0 ){
-        const { cards, plannerId: id, title , ...rest } = plannerList[quote[0]]
+        const { cards, plannerId: id, title , ...rest } = plannerList.find( planner => planner.plannerId === quote[0])
         planner = cards
         plannerId = id
         plannerTitle = title
@@ -106,7 +105,7 @@ export default function QuoteApp() {
             const newState = [...planner];
             newState[sInd] = items;
             dispatch(plannerListActions.updatePlanner({
-                id: quote[0],
+                plannerId: quote[0],
                 planner: newState, 
             }))
         } else {
@@ -115,12 +114,14 @@ export default function QuoteApp() {
             newState[sInd] = result[sInd];
             newState[dInd] = result[dInd];
             dispatch(plannerListActions.updatePlanner({
-                id: quote[0],
+                plannerId: quote[0],
                 planner: newState, 
             }))
         }
     }
     // ...state, getItems(1)
+
+    console.log("plannerList",plannerList);
 
     if (!planner) {
         return (
@@ -135,15 +136,16 @@ export default function QuoteApp() {
                     thumnnailRef={thumnnailRef}
                     visible={visible}
                     setVisible={setVisible}
-                    planner={planner}
+                    plannerList={plannerList}
                     plannerId={plannerId}
+                    title={plannerTitle}
                     />
                 <_QuoteContainer>
                     <DragDropContext onDragEnd={onDragEnd}>
-                        { planner.map((item, index) =>
+                        { planner.map((cardList, index) =>
                             <DroppableComponent
-                                item={item}
-                                index={index}
+                                cardList={cardList}
+                                cardStatusIndex={index}
                                 planner={planner}
                                 handleClick={cardClick}/>
                         )}

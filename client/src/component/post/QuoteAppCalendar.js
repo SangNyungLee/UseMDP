@@ -6,8 +6,9 @@ import { plannerListActions } from "../../store/plannerList";
 import CalendarModal from "../home/calendar/CalendarModal";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import { dateParsing, eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
+import { eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
 import { getOneCard } from "../../utils/QuoteSetting";
+import { dateParsing } from "../../utils/DataParsing";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -70,7 +71,7 @@ export default function QuoteAppCalendar() {
         ))
       } else {
         dispatch(plannerListActions.addCard({
-          id: quote[0],
+          plannerId: quote[0],
           status: 0,
           card: {...newEvent,
             startDate: startDate.toISOString(),
