@@ -35,7 +35,7 @@ export default function HomeComponent() {
 
                     dispatch(plannerListActions.setPlannersInit(testData));
                 } else {
-                    const newData = response.data.map((item, idx) => {
+                    const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });

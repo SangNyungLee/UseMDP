@@ -56,7 +56,7 @@ export default function LoadMap2(props) {
         };
         const btoaId = btoa(plannerId);
         const result = await fetchData(btoaId);
-        const cardList = result.data.cards;
+        const cardList = result.data.data.cards;
         const cards = [[], [], []];
         for (let i = 0; i < cardList.length; i++) {
             if (cardList[i].cardStatus === 'TODO') {

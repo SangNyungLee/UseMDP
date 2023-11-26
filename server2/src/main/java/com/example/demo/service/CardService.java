@@ -3,6 +3,9 @@ package com.example.demo.service;
 import com.example.demo.dto.CardDTO;
 import com.example.demo.dto.ChecklistDTO;
 import com.example.demo.dto.RequestDTO.RequestChangeCardOrderDTO;
+import com.example.demo.dto.RequestDTO.RequestChecklistDTO;
+import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
+import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.entity.CardEntity;
 import com.example.demo.entity.ChecklistEntity;
 import com.example.demo.entity.MemberEntity;
@@ -11,6 +14,7 @@ import com.example.demo.repository.CardRepository;
 import com.example.demo.repository.ChecklistRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PlannerRepository;
+import com.example.demo.utils.DTOConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CardService {
@@ -28,73 +33,35 @@ public class CardService {
     private CardRepository cardRepository;
     @Autowired
     private ChecklistRepository checklistRepository;
-
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private DTOConversionUtil dtoConversionUtil;
 
-    public int postCard(CardDTO cardDTO) {
-            Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(cardDTO.getPlannerId());
-            if(optionalPlannerEntity.isPresent()) {
-                PlannerEntity plannerEntity = optionalPlannerEntity.get();
 
-                List<ChecklistDTO> checklistDTOS = cardDTO.getChecklists();
-                List<ChecklistEntity> checklistEntities = new ArrayList<>();
-                for(ChecklistDTO checklistDTO : checklistDTOS) {
-                    ChecklistEntity checklistEntity = ChecklistEntity.builder()
-                            .checked(checklistDTO.getChecked())
-                            .title(checklistDTO.getTitle())
-                            .build();
-                    checklistEntities.add(checklistEntity);
-                }
-
-                CardEntity cardEntity = CardEntity.builder()
-                        .title(cardDTO.getTitle())
-                        .coverColor(cardDTO.getCoverColor())
-                        .post(cardDTO.getPost())
-                        .intOrder(cardDTO.getIntOrder())
-                        .startDate(cardDTO.getStartDate())
-                        .endDate(cardDTO.getEndDate())
-                        .cardStatus(cardDTO.getCardStatus())
-                        .checklists(checklistEntities)
-                        .plannerEntity(plannerEntity)
-                        .build();
-
-                cardRepository.save(cardEntity);
-                return 1;
-            } else {
-                return 0;
-            }
+    public int postCard(RequestPostCardDTO requestPostCardDTO, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
+            return 0;
         }
-//        System.out.println("cardDTO checklists = " + cardDTO.getChecklists());
-//        Optional<PlannerEntity> optionalPlanner = plannerRepository.findById(cardDTO.getPlannerId());
-//        System.out.println("cardDTO = " + cardDTO.getPlannerId());
-//        if(optionalPlanner.isPresent()) {
-//            PlannerEntity planner = optionalPlanner.get();
-//            CardEntity cardEntity = CardEntity.builder()
-//                    .title(cardDTO.getTitle())
-//                    .coverColor(cardDTO.getCoverColor())
-//                    .post(cardDTO.getPost())
-//                    .intOrder(cardDTO.getIntOrder())
-//                    .startDate(cardDTO.getStartDate())
-//                    .endDate(cardDTO.getEndDate())
-//                    .cardStatus(cardDTO.getCardStatus())
-//                    .plannerEntity(planner)
-//                    .build();
-//
-//            cardRepository.save(cardEntity);
-//
-//            List<ChecklistDTO> checklistDTOS = cardDTO.getChecklists();
-//            for(ChecklistDTO checklistDTO : checklistDTOS) {
-//                ChecklistEntity newChecklistEntity = ChecklistEntity.builder()
-//                        .checked(checklistDTO.getChecked())
-//                        .title(checklistDTO.getTitle())
-//                        .cardEntity(cardEntity)
-//                        .build();
-//                checklistRepository.save(newChecklistEntity);
-//            }
-//        }
 
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestPostCardDTO.getPlannerId());
+        if(optionalPlannerEntity.isEmpty()) {
+            return 0;
+        }
+
+        PlannerEntity plannerEntity = optionalPlannerEntity.get();
+        CardEntity cardEntity = dtoConversionUtil.toCardEntity(requestPostCardDTO, plannerEntity);
+
+        CardEntity savedCardEntity = cardRepository.save(cardEntity);
+        List<RequestChecklistDTO> checklistDTOS = requestPostCardDTO.getChecklists();
+
+        List<ChecklistEntity> checklistEntities = checklistDTOS.stream().map(checklistDTO -> dtoConversionUtil.toChecklistEntity(checklistDTO, savedCardEntity)).toList();
+        checklistRepository.saveAll(checklistEntities);
+        return 1;
+    }
 
     public int patchCard(CardDTO cardDTO) {
         Optional<PlannerEntity> optionalPlanner = plannerRepository.findById(cardDTO.getPlannerId());

@@ -87,7 +87,7 @@ export default function MyLoadMap(props) {
         if (!showModal) {
             const btoaId = btoa(plannerId);
             const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
-            const cardList = result.data.cards;
+            const cardList = result.data.data.cards;
             const cards = [[], [], []];
             for (let i = 0; i < cardList.length; i++) {
                 if (cardList[i].cardStatus === 'TODO') {
