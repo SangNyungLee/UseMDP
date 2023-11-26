@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.dto.LikeDTO;
 import com.example.demo.dto.PlannerDTO;
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
@@ -112,7 +113,8 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    int likePlanner(@RequestBody PlannerIdDTO plannerIdDTO);
+    int likePlanner(@RequestBody LikeDTO LikeDTO);
+
 
     @Operation(
             summary = "특정 플래너 좋아요 -1",
@@ -128,7 +130,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    int unlikePlanner(@RequestBody PlannerIdDTO plannerIdDTO);
+    int unlikePlanner(@RequestBody LikeDTO LikeDTO);
 
 
     @Operation(summary = "특정 플래너 삭제", description = "DB에 존재하는 특정 플래너 삭제")

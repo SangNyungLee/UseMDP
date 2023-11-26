@@ -1,10 +1,14 @@
+// import DefaultLoadMap from '../component/home/DefaultLoadMap';
+// import Header from "../Header";
+import HomeHeader from '../HomeHeader';
 import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
 import StarComponent from '../starComponent/StarComponent';
 import HomeComponent from '../homeComponent/HomeComponent';
 import MyCalendar from '../home/MyCalendar';
-import SearchComponent from '../searchComponent/SearchComponent';
 import styled from 'styled-components';
+import SearchComponent from '../searchComponent/SearchComponent';
+
 const _Button = styled.button`
     border: none;
     background: none;
@@ -21,6 +25,7 @@ const _Button = styled.button`
 const _Flex = styled.div`
     display: flex;
     justify-content: center;
+    margin-top: 80px;
 `;
 
 const _FlexNavi = styled.div`
@@ -41,15 +46,15 @@ export default function DefaultLoadMap() {
     const renderComponent = () => {
         switch (menuNumber) {
             case 1:
-                return <HomeComponent />;
-            case 2:
                 return <DefaultComponent />;
-            case 3:
+            case 2:
                 return <StarComponent />;
+            case 3:
+                return <HomeComponent />;
             case 4:
-                return <SearchComponent />;
-            case 5:
                 return <MyCalendar />;
+            case 5:
+                return <SearchComponent />;
             default:
                 return <HomeComponent />;
         }
@@ -59,36 +64,39 @@ export default function DefaultLoadMap() {
     };
 
     return (
-        <_Flex>
-            <_FlexNavi>
-                <_Button className="default" onClick={() => handleNumber(1)}>
-                    <i class="material-icons" style={{ fontSize: '40px' }}>
-                        description
-                    </i>
-                </_Button>
-                <_Button className="default" onClick={() => handleNumber(2)}>
-                    <i class="material-icons" style={{ fontSize: '40px' }}>
-                        star
-                    </i>
-                </_Button>
-                <_Button className="default" onClick={() => handleNumber(3)}>
-                    <i class="material-icons" style={{ fontSize: '40px' }}>
-                        account_circle
-                    </i>
-                </_Button>
-                <_Button className="default" onClick={() => handleNumber(4)}>
-                    <i class="material-icons" style={{ fontSize: '40px' }}>
-                        calendar_month
-                    </i>
-                </_Button>
-                <_Button className="default" onClick={() => handleNumber(5)}>
-                    <i class="material-icons" style={{ fontSize: '40px' }}>
-                        search
-                    </i>
-                </_Button>
-            </_FlexNavi>
-            <_RenderComponent>{renderComponent()}</_RenderComponent>
-        </_Flex>
+        <>
+            <HomeHeader />
+            <_Flex>
+                <_FlexNavi>
+                    <_Button className="default" onClick={() => handleNumber(1)}>
+                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                            description
+                        </i>
+                    </_Button>
+                    <_Button className="default" onClick={() => handleNumber(2)}>
+                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                            star
+                        </i>
+                    </_Button>
+                    <_Button className="default" onClick={() => handleNumber(3)}>
+                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                            account_circle
+                        </i>
+                    </_Button>
+                    <_Button className="default" onClick={() => handleNumber(4)}>
+                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                            calendar_month
+                        </i>
+                    </_Button>
+                    <_Button className="default" onClick={() => handleNumber(5)}>
+                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                            search
+                        </i>
+                    </_Button>
+                </_FlexNavi>
+                <_RenderComponent>{renderComponent()}</_RenderComponent>
+            </_Flex>
+        </>
     );
 }
 

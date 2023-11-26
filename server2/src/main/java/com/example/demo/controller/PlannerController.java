@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LikeDTO;
 import com.example.demo.dto.PlannerDTO;
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
@@ -149,24 +150,17 @@ public class PlannerController implements SwaggerPlannerAPI {
         }
     }
 
-//    @PatchMapping("/api/patchPlannerInfo")
-//    public int patchPlannerInfo(@RequestBody PlannerDTO plannerDTO) {
-//        return plannerService.patchPlanner(plannerDTO);
-//    }
-
-
-    // 특정 플래너 좋아요 +1
     @Override
     @PatchMapping("/api/patchPlanner/like")
-    public int likePlanner(@RequestBody PlannerIdDTO plannerIdDTO) {
-        return plannerService.likePlanner(plannerIdDTO);
-    }
+    public int likePlanner(@RequestBody LikeDTO likeDTO) {
 
+        return plannerService.likePlanner(likeDTO);
+    }
     // 특정 플래너 좋아요 -1
     @Override
     @PatchMapping("/api/patchPlanner/unlike")
-    public int unlikePlanner(@RequestBody PlannerIdDTO plannerIdDTO) {
-        return plannerService.unlikePlanner(plannerIdDTO);
+    public int unlikePlanner(@RequestBody LikeDTO likeDTO) {
+        return plannerService.unlikePlanner(likeDTO);
     }
 
     // 특정 플래너 삭제

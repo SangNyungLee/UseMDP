@@ -1,14 +1,14 @@
-import LoadMap from '../LoadMap';
-import LoadMap2 from '../LoadMap2/LoadMap';
-import MyLoadMap from '../LoadMap2/MyLoadMap';
-import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
-import RightClicker from '../post/RightClicker/RightClicker';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import base64Str from '../../constant/ImageBase64';
-import CustomList from '../customLIst/CustomList';
-import CustomListHiddable from '../customLIst/CustomListHiddable';
-
+import axios from "axios";
+import styled from "styled-components";
+import base64Str from "../../constant/ImageBase64";
+import LoadMap from "../LoadMap";
+import LoadMap2 from "../LoadMap2/LoadMap";
+import MyLoadMap from "../LoadMap2/MyLoadMap";
+import { Container, Row, Col, Spinner, Button } from "react-bootstrap";
+import RightClicker from "../post/RightClicker/RightClicker";
+import { useEffect, useState } from "react";
+import CustomList from "../customLIst/CustomList";
+import CustomListHiddable from "../customLIst/CustomListHiddable";
 export default function DefaultComponent() {
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
@@ -16,16 +16,6 @@ export default function DefaultComponent() {
 
     const [rightClickData, setRightClickData] = useState([]);
 
-    const handleRightClick = (e, newTitle, newId) => {
-        e.preventDefault();
-        setRightClickData([newTitle, newId]);
-        setPoint([e.clientY, e.clientX]);
-    };
-    // const handleRightClick = (e, newTitle, newId) => {
-    //     e.preventDefault();
-    //     setRightClickData([newTitle, newId]);
-    //     setPoint([e.clientY, e.clientX]);
-    // };
 
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
