@@ -162,7 +162,7 @@ public class PlannerService {
 
     //플래너 수정
     //성공 -> 1, 실패 -> 0
-public long patchPlanner(RequestPatchPlannerDTO requestPatchPlannerDTO, String memberId) {
+    public long patchPlanner(RequestPatchPlannerDTO requestPatchPlannerDTO, String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
 
         if (optionalMemberEntity.isPresent()) {

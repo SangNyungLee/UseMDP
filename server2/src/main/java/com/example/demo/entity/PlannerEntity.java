@@ -67,6 +67,9 @@ public class PlannerEntity {
     )
     private Set<TagEntity> tagEntities;
 
+    @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<LikeEntity> likes;
+
     @Getter
     public enum PlannerAccess {
         PRIVATE,
