@@ -65,9 +65,12 @@ public class CardService {
 
     public int patchCard(CardDTO cardDTO) {
         Optional<PlannerEntity> optionalPlanner = plannerRepository.findById(cardDTO.getPlannerId());
+        System.out.println("Check patch1");
         if(optionalPlanner.isPresent()) {
+            System.out.println("Check patch2");
             Optional<CardEntity>optionalCardEntity = cardRepository.findById(cardDTO.getCardId());
             if(optionalCardEntity.isPresent()) {
+                System.out.println("Check patch3");
                 CardEntity originalCardEntity = optionalCardEntity.get();
                 List<ChecklistEntity> originalChecklistEntities = originalCardEntity.getChecklists();
                 List<ChecklistDTO> updatedChecklistDTOS = cardDTO.getChecklists();
@@ -90,7 +93,7 @@ public class CardService {
                     }
                 }
 
-
+                System.out.println("Check patch4 : "+cardDTO.getTitle() );
                 PlannerEntity plannerEntity = optionalPlanner.get();
                 CardEntity updatedCardEntity = CardEntity.builder()
                         .cardId(cardDTO.getCardId())
@@ -104,6 +107,7 @@ public class CardService {
                         .createdAt(originalCardEntity.getCreatedAt())
                         .plannerEntity(plannerEntity)
                         .build();
+                System.out.println("cardID : "+updatedCardEntity.getCardId());
                 cardRepository.save(updatedCardEntity);
                 return 1;
             } else {

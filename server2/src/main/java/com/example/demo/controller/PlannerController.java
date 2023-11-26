@@ -35,10 +35,10 @@ public class PlannerController implements SwaggerPlannerAPI {
     public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getAllPlanners() {
         List<ResponsePlannerDTO> data = plannerService.getAllPlanners();
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
-                        .resultCode("200")
-                        .message("모든 플래너들 불러오기 성공")
-                        .data(data)
-                        .build());
+                .resultCode("200")
+                .message("모든 플래너들 불러오기 성공")
+                .data(data)
+                .build());
     }
 
     //인기순 정렬된 플래너들 가져오기
@@ -81,10 +81,10 @@ public class PlannerController implements SwaggerPlannerAPI {
                     .build());
         }
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<ResponsePlannerDTO>builder()
-                        .resultCode("200")
-                        .message("요청한 플래너 불러오기 성공")
-                        .data(data)
-                        .build());
+                .resultCode("200")
+                .message("요청한 플래너 불러오기 성공")
+                .data(data)
+                .build());
     }
 
     // 특정 사용자의 모든 플래너 가져오기
@@ -93,10 +93,10 @@ public class PlannerController implements SwaggerPlannerAPI {
     public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getPlanners(@CookieValue(name = "auth", required = false) String token) {
         if(token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
-                            .resultCode("401")
-                            .message("로그인 되지 않은 사용자입니다")
-                            .data(null)
-                            .build());
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
         }
         boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
         if(tokenExpired) {

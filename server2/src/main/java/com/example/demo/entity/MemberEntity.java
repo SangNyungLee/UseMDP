@@ -41,4 +41,7 @@ public class MemberEntity {
     @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<PlannerEntity> planners;
 
+    @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<LikeEntity> likes;
+
 }
