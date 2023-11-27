@@ -85,7 +85,6 @@ public class CardService {
         MemberEntity memberEntity = optionalMemberEntity.get();
         PlannerEntity plannerEntity = optionalPlannerEntity.get();
         CardEntity cardEntity = optionalCardEntity.get();
-        List<ChecklistEntity> checklistEntities  = requestPatchCardDTO.getChecklists().stream().map(requestChecklistDTO -> dtoConversionUtil.toChecklistEntity(requestChecklistDTO, cardEntity)).toList();
         CardEntity newCardEntity = CardEntity.builder()
                 .cardId(cardEntity.getCardId())
                 .title(requestPatchCardDTO.getTitle())
@@ -97,13 +96,23 @@ public class CardService {
                 .cardStatus(requestPatchCardDTO.getCardStatus())
                 .createdAt(cardEntity.getCreatedAt())
                 .plannerEntity(plannerEntity)
-                .checklists(checklistEntities)
                 .build();
-        CardEntity updatedCardEntity = cardRepository.save(newCardEntity);
+
+        List<ChecklistEntity> checklistEntities  = requestPatchCardDTO.getChecklists().stream().map(requestChecklistDTO -> dtoConversionUtil.toChecklistEntity(requestChecklistDTO, cardEntity)).toList();
+        cardRepository.save(newCardEntity);
+        checklistRepository.saveAll(checklistEntities);
         return 1;
     }
 
-    public int changeCardOrder(RequestChangeCardOrderDTO requestChangeCardOrderDTO) {
+    public int changeCardOrder(RequestChangeCardOrderDTO requestChangeCardOrderDTO, String memberId) {
+
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
+            return 0;
+        }
+
+        MemberEntity memberEntity = optionalMemberEntity.get();
+
         Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestChangeCardOrderDTO.getPlannerId());
         if(optionalPlannerEntity.isPresent()) {
             PlannerEntity originalPlannerEntity = optionalPlannerEntity.get();
@@ -141,12 +150,18 @@ public class CardService {
 
     }
 
-    public int deleteCard(String cardId) {
-        Optional<CardEntity> card = cardRepository.findById(cardId);
-        if(card.isEmpty()) {
+    public int deleteCard(String cardId, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
             return 0;
         }
-        cardRepository.deleteById(cardId);
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        Optional<CardEntity> optionalCardEntity = cardRepository.findById(cardId);
+        if(optionalCardEntity.isEmpty()) {
+            return 0;
+        }
+        CardEntity cardEntity = optionalCardEntity.get();
+        cardRepository.delete(cardEntity);
         Optional<CardEntity> deletedCard = cardRepository.findById(cardId);
         if(deletedCard.isEmpty()) {
             return 1;
