@@ -32,7 +32,6 @@ export default function QuoteApp() {
     const [visible, setVisible] = useState(false);
     const [localdata, setLocalData] = useLocalStorage('List', []);
     const [localQuote, setLocalQuote] = useLocalStorage('Quote', []);
-
     const dispatch = useDispatch();
 
     let planner;
@@ -66,10 +65,6 @@ export default function QuoteApp() {
 
     //planner가 바뀔때마다, localStoage에 저장하는 코드.
 
-    useEffect(() => {
-        setLocalData(plannerList);
-    }, [plannerList]);
-
     // useEffect(() => {
     //     console.log('HI', localdata);
     // }, [localdata, localQuote]);
@@ -94,6 +89,7 @@ export default function QuoteApp() {
             // isData가 false면, 전부 재로딩한다.
             fetchData();
         }
+        console.log('Check site');
     }, [site.isData]);
 
     useEffect(() => {
@@ -104,7 +100,8 @@ export default function QuoteApp() {
             }
         };
         fetchData();
-    }, []);
+        console.log('Check local');
+    }, [plannerList]);
 
     function cardClick(ind, index) {
         setSelectedCard(planner[ind][index]);
@@ -112,7 +109,8 @@ export default function QuoteApp() {
     }
 
     //dnd에서는, dragend와 onclick이 구분되게 됨.
-    async function onDragEnd(result) {
+    function onDragEnd(result, provided) {
+        console.log(result, provided);
         const { source, destination } = result;
 
         // dropped outside the list
@@ -137,7 +135,7 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-            const result2 = await axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
+            const result2 = axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
             const items = reorder(planner[sInd], source.index, destination.index);
             const newState = [...planner];
             newState[sInd] = items;
@@ -162,8 +160,8 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-
-            const result2 = await axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
+            console.log('move', data);
+            const result2 = axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
             const result = move(planner[sInd], planner[dInd], source, destination);
             const newState = [...planner];
             newState[sInd] = result[sInd];
@@ -179,7 +177,7 @@ export default function QuoteApp() {
     }
     // ...state, getItems(1)
 
-    // console.log('plannerList', plannerList);
+    console.log('plannerList', plannerList);
 
     if (!planner) {
         return <QuoteSpinner />;
@@ -189,9 +187,13 @@ export default function QuoteApp() {
                 <div ref={thumnnailRef}>
                     <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
                     <_QuoteContainer>
-                        <DragDropContext onDragEnd={onDragEnd}>
+                        <DragDropContext
+                            onDragEnd={(result, provided) => {
+                                onDragEnd(result, provided);
+                            }}
+                        >
                             {planner.map((cardList, index) => (
-                                <DroppableComponent cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                                <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
                             ))}
                         </DragDropContext>
                     </_QuoteContainer>
