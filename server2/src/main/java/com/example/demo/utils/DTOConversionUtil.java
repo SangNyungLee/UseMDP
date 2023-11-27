@@ -21,6 +21,10 @@ import java.util.Optional;
 
 @Component
 public class DTOConversionUtil {
+
+    @Autowired
+    private ChecklistRepository checklistRepository;
+
     public ResponsePlannerDTO toResponsePlannerDTO(PlannerEntity plannerEntity) {
         List<ResponseCardDTO> responseCardDTOS = plannerEntity.getCards().stream().map(this::toResponseCardDTO).toList();
         return ResponsePlannerDTO.builder()
@@ -95,11 +99,13 @@ public class DTOConversionUtil {
                     .cardEntity(cardEntity)
                     .build();
         }
+        Optional<ChecklistEntity> optionalChecklistEntity = checklistRepository.findById(requestChecklistDTO.getChecklistId());
         return ChecklistEntity.builder()
                 .checklistId(requestChecklistDTO.getChecklistId())
                 .checked(requestChecklistDTO.getChecked())
                 .title(requestChecklistDTO.getTitle())
                 .cardEntity(cardEntity)
+                .createdAt(optionalChecklistEntity.get().getCreatedAt())
                 .build();
     }
 }
