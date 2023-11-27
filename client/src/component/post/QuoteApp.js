@@ -46,6 +46,7 @@ export default function QuoteApp() {
             tmp[i] = data[i].slice().sort((a, b) => a.intOrder - b.intOrder);
         }
         // 새로운 배열 반환
+        console.log('sort: ', tmp);
         return tmp;
     }
     if (plannerList.length > 0 && plannerList[0]) {
@@ -94,6 +95,7 @@ export default function QuoteApp() {
             fetchData();
         }
     }, [site.isData]);
+
     useEffect(() => {
         const fetchData = async () => {
             if (plannerList.length > 0) {
@@ -177,7 +179,7 @@ export default function QuoteApp() {
     }
     // ...state, getItems(1)
 
-    console.log('plannerList', plannerList);
+    // console.log('plannerList', plannerList);
 
     if (!planner) {
         return <QuoteSpinner />;

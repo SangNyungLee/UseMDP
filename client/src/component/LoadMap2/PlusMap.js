@@ -35,10 +35,9 @@ export default function PlusMap(props) {
         const data = {
             creator: editedCreator,
             title: editedTitle,
-            plannerAccess: editedPlannerAccess,
             thumbnail: base64Str,
+            plannerAccess: editedPlannerAccess,
         };
-
         const result = await axios.post('http://localhost:8080/api/postPlanner', data, { withCredentials: true });
         setShowModal(false);
     };
