@@ -23,11 +23,6 @@ export default function DroppableComponent(props) {
             console.log(error);
         }
 
-        console.log('planner', planner);
-        console.log('id', id);
-        console.log('cardstatus', cardStatusIndex);
-        console.log('quote', quote[0]);
-
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
         for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {

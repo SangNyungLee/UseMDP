@@ -24,10 +24,10 @@ const plannerListSlice = createSlice({
             return state;
         },
         addCard(state, action) {
-            const { plannerId, status, card } = action.payload;
+            const { plannerId, cardStatusIndex, card } = action.payload;
             state = state.map((planner) => ({
                 ...planner,
-                cards: planner.plannerId === plannerId ? planner.cards.map((cardList, index) => (status === index ? [...cardList, card] : cardList)) : planner.cards,
+                cards: planner.plannerId === plannerId ? planner.cards.map((cardList, index) => (cardStatusIndex === index ? [...cardList, card] : cardList)) : planner.cards,
             }));
             return state;
         },
