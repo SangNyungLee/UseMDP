@@ -64,7 +64,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     };
 
     const handleClose = async () => {
-        const newChecklist = [{ checklistId: checklists[0].checklistId, title: checklists[0].title, checked: checklists[0].checked }];
+        const newChecklist = [{ title: checklists[0].title, checked: checklists[0].checked }];
         console.log(checklists);
         const newCardItem = {
             ...selectedCard,
