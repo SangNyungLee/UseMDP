@@ -150,9 +150,10 @@ public class PlannerController implements SwaggerPlannerAPI {
         }
     }
 
-//    // 특정 플래너 좋아요 +1
+
+    // 특정 플래너 좋아요 +1
     @Override
-    @PatchMapping("/api/patchPlanner/like")
+    @PostMapping("/api/postPlanner/like")
     public int likePlanner(@RequestBody LikeDTO likeDTO) {
 
         return plannerService.likePlanner(likeDTO);

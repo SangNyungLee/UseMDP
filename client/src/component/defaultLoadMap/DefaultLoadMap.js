@@ -1,27 +1,11 @@
-<<<<<<< HEAD
-// import DefaultLoadMap from '../component/home/DefaultLoadMap';
-// import Header from "../Header";
-import HomeHeader from "../HomeHeader";
 import { useState } from "react";
 import DefaultComponent from "./DefaultComponent";
 import StarComponent from "../starComponent/StarComponent";
+import HomeHeader from "../HomeHeader";
 import HomeComponent from "../homeComponent/HomeComponent";
-import MyCalendar from "../home/calendar/MyCalendar";
-import styled from "styled-components";
+import MyCalendar from "../home/MyCalendar";
 import SearchComponent from "../searchComponent/SearchComponent";
-=======
-import { useState } from 'react';
-import DefaultComponent from './DefaultComponent';
-import StarComponent from '../starComponent/StarComponent';
-import HomeComponent from '../homeComponent/HomeComponent';
-import MyCalendar from '../home/MyCalendar';
-import SearchComponent from '../searchComponent/SearchComponent';
-import styled from 'styled-components';
-const _Button = styled.button`
-    border: none;
-    background: none;
-    /* color: gray; */
->>>>>>> dabeenTest
+import styled from "styled-components";
 
 const _Button = styled.button`
   border: none;

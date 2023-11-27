@@ -448,7 +448,6 @@ public class PlannerService {
 
     //성공 -> 1, 실패 -> 0
     public int likePlanner(LikeDTO likeDTO) {
-
         if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
             return 0;
         }
@@ -475,4 +474,5 @@ public class PlannerService {
         likeRepository.delete(result);
         return 1;
     }
+
 }
