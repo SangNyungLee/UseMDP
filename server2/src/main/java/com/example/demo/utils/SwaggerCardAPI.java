@@ -2,6 +2,7 @@ package com.example.demo.utils;
 
 import com.example.demo.dto.CardDTO;
 import com.example.demo.dto.RequestDTO.RequestChangeCardOrderDTO;
+import com.example.demo.dto.RequestDTO.RequestPatchCardDTO;
 import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,21 +24,8 @@ public interface SwaggerCardAPI {
     @Operation(summary = "카드 생성", description = "플래너 아이디로 새로운 카드 생성")
     ResponseEntity<APIResponseDTO<Integer>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token);
 
-    @Operation(
-            summary = "카드 수정",
-            description = "플래너 아이디로 기존 카드 수정")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    description = "실패 = 0, 성공 = 1",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "integer")
-                            )
-                    }
-            )
-    })
-    int patchCard(@RequestBody CardDTO cardDTO);
+    @Operation(summary = "카드 수정", description = "플래너 아이디로 기존 카드 수정")
+    ResponseEntity<APIResponseDTO<Integer>> patchCard(@RequestBody RequestPatchCardDTO requestPatchCardDTO, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(
             summary = "카드 순서 intOrder 및 cardStatus 수정",
