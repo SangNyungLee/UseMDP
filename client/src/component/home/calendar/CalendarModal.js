@@ -12,8 +12,6 @@ import { plannerListActions } from '../../../store/plannerList';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
 import axios from 'axios';
-import { async } from 'q';
-
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -80,10 +78,15 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
             coverColor,
         };
         console.log('MODAL에서 보내는 item', newCardItem);
-        const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem);
-        dispatch(plannerListActions.updateCard(newCardItem));
-        modalClose();
-        setShow(false);
+        try {
+            const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem, { withCredentials: true });
+            console.log(result.data);
+            dispatch(plannerListActions.updateCard(newCardItem));
+            modalClose();
+            setShow(false);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     //체크박스 온체인지
@@ -104,6 +107,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     };
 
     useEffect(() => {
+        console.log('HI');
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
         setTitle(title);
         setPost(post);

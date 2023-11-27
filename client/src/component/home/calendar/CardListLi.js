@@ -1,52 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { calendarActions } from "../../../store/calendar";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { plannerListActions } from "../../../store/plannerList";
 import { useSelector } from "react-redux";
+import { darken } from "polished";
+import CardLi from "./CardLi";
 
-const _DelButton = styled.button`
-    margin-left: 5px;
-    /* background-color: skyblue;
-    border: none; */
+
+const _PlannerLi = styled.li`
+    display: flex;
+    border-radius: 20px;
+    background-color: ${(props) => props.$focus ? darken(0.1, props.color) : props.color };
+    padding: 10px;
+    margin: 5px;
+
+    &:hover {
+        background-color: ${(props) => darken(0.1, props.color)};
+    }
+
+    &::before {
+        content: ">";
+        margin-right: 8px;
+        display: inline-block;
+        transform: ${({ $visible }) => ( $visible ? 'rotate(90deg)' : 'none')}; /* visible이 true일 때 회전, 그 외에는 회전하지 않음 */
+        transform-origin: center;
+    }
 `;
 
-export default function ChecklistLi({cardList,plannerId,cardStatus}){
+
+const _PlannerListUl = styled.ul`
+    list-style-type: none;
+    padding: 5px;
+    margin-left: 10px;
+`
+
+export default function CardListLi({cardList,plannerId,cardStatus}){
     const [ visible, setVisible ] = useState(false);
     const { home } = useSelector( state => state.calendar );
     const dispatch = useDispatch();
+    const [ cardListFocus, setCardListFocus ] = useState(false);
 
-    const cardListHandleClick = () => {
+    useEffect(()=>{
+        if( home[0] === plannerId ){
+            setCardListFocus( home[1] === cardStatus )
+        } else {
+            setCardListFocus( false )
+        }
+    },[home])
+    
+
+    const cardListHandleClick = (e) => {
+        e.stopPropagation()
         setVisible( prev => !prev )
         dispatch(calendarActions.setHome([plannerId,cardStatus]))
     }
 
-    const liHandleClick = (cardId) => {
-        dispatch(calendarActions.setHome([plannerId,cardStatus,cardId]))
-    }
-
-    const delCard = (e,cardId) => {
-        e.stopPropagation()
-        dispatch(plannerListActions.delCard(cardId))
-        if ( home.length > 1 ){
-            if(cardId === home[2]){
-                console.log("home state",[home[0],home[1]])
-                dispatch(calendarActions.setHome([home[0],home[1]]))
-            }
-        }
-    }
-
     return (
         <>
-            <div onClick={cardListHandleClick}>{(cardStatus === 0) ? 'todo' : (cardStatus === 1) ? 'doing' : 'done'}</div>
-            { visible && <ul>
-                { cardList.map( card => (
-                    <li key={card.cardId} onClick={()=>liHandleClick(card.cardId)}>
-                        <span>{card.title}</span>
-                        <_DelButton onClick={(e) => delCard(e,card.cardId)}>x</_DelButton>
-                    </li>
-                ))}
-            </ul>
+            <_PlannerLi
+                color={"#FFD6DA"}
+                $visible={visible ? 1 : undefined}
+                onClick={ e => cardListHandleClick(e)}
+                $focus={cardListFocus ? 1 : undefined}>
+                <div>{(cardStatus === 0) ? 'todo' : (cardStatus === 1) ? 'doing' : 'done'}</div>
+            </_PlannerLi>
+            { visible && <_PlannerListUl>
+                { cardList.map( card => <CardLi
+                    key={card.cardId}
+                    plannerId={plannerId}
+                    cardId={card.cardId}
+                    title={card.title}
+                    cardStatus={cardStatus}/>)}
+            </_PlannerListUl>
             }
         </>
     )

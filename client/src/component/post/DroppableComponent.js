@@ -16,17 +16,13 @@ export default function DroppableComponent(props) {
     console.log('newplanner', planner);
     const deleteCard = async (e, id, card) => {
         e.stopPropagation();
+        console.log('삭제');
+        const result = await axios.delete(`http://localhost:8080/api/deleteCard/${cardList[id].cardId}`, { withCredentials: true });
         // console.log(card);
         try {
-            const result = await axios.delete(`http://localhost:8080/api/deleteCard/${card.cardId}`);
         } catch (error) {
             console.log(error);
         }
-
-        console.log('planner', planner);
-        console.log('id', id);
-        console.log('cardstatus', cardStatusIndex);
-        console.log('quote', quote[0]);
 
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
@@ -52,7 +48,7 @@ export default function DroppableComponent(props) {
         const card = getItems(1, planner[cardStatusIndex].length, cardStatus)[0];
         card.plannerId = plannerId;
         console.log('addcard : ', card);
-        const result = await axios.post('http://localhost:8080/api/postCard', card);
+        const result = await axios.post('http://localhost:8080/api/postCard', card, { withCredentials: true });
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],

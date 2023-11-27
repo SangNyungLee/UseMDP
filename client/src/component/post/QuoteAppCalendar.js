@@ -19,6 +19,15 @@ export default function QuoteAppCalendar() {
     const dispatch = useDispatch();
   
     const [events, setEvents] = useState();
+    const [ selectedCard, setSelectedCard ] = useState(getOneCard(0,"TODO"));
+    const [ visible, setVisible ] = useState(false);
+
+    const plannerId = quote[0]
+    const cardStatusIndex = quote[1] ? quote[1] : 0
+    const cardStatus = cardStatusIndex ?
+      ( cardStatusIndex === 0 ? "TODO"
+        : cardStatusIndex === 1 ? "DOING"
+          : "DONE" ) : "TODO";
   
     useEffect(()=>{
       const selectedEvents = getNestedElement(plannerList,quote)
@@ -52,7 +61,6 @@ export default function QuoteAppCalendar() {
     };
     
     const onSelectSlot = (slotInfo) => {
-      const cardStatus = quote[1] ? quote[1] === 0 ? "TODO" : quote[1] === 1 ? "DOING" : "DONE" : "ERROR"
       const newEvent = getOneCard(events.length,cardStatus)
 
   
@@ -71,8 +79,8 @@ export default function QuoteAppCalendar() {
         ))
       } else {
         dispatch(plannerListActions.addCard({
-          plannerId: quote[0],
-          status: 0,
+          plannerId,
+          cardStatusIndex: 0,
           card: {...newEvent,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
@@ -88,10 +96,6 @@ export default function QuoteAppCalendar() {
       setSelectedCard(event);
       setVisible(true)
     };
-  
-    const [ selectedCard, setSelectedCard ] = useState(getOneCard(0,"TODO"));
-  
-    const [ visible, setVisible ] = useState(false);
   
     return (
       <>

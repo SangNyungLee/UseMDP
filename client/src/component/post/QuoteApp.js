@@ -18,6 +18,7 @@ import { async } from 'q';
 const _QuoteAppContainer = styled.div`
     display: flex;
 `;
+
 const _QuoteContainer = styled.div`
     display: flex;
 `;
@@ -113,6 +114,7 @@ export default function QuoteApp() {
             newState[sInd] = items;
             dispatch(
                 plannerListActions.updatePlanner({
+                    id: quote[0],
                     plannerId: quote[0],
                     planner: newState,
                 })
@@ -139,6 +141,7 @@ export default function QuoteApp() {
             newState[dInd] = result[dInd];
             dispatch(
                 plannerListActions.updatePlanner({
+                    id: quote[0],
                     plannerId: quote[0],
                     planner: newState,
                 })
