@@ -20,18 +20,16 @@ const LikeButton = ({ plannerId, memberId }) => {
   const dispatch = useDispatch();
 
   const isStarCilckLike = () => {
-    dispatch(addLike({ plannerId, memberId }));
+    dispatch(addLike({ plannerId }));
     const res = axios.post("http://localhost:8080/api/postPlanner/like", {
       plannerId: plannerId,
-      memberId: 1,
     });
   };
 
   const isStarCilckUnLike = () => {
-    dispatch(removeLike({ plannerId, memberId }));
+    dispatch(removeLike({ plannerId }));
     const res = axios.patch("http://localhost:8080/api/patchPlanner/unlike", {
       plannerId: plannerId,
-      memberId: 1,
     });
   };
 

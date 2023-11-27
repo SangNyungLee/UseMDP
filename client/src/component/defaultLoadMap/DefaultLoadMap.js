@@ -7,6 +7,19 @@ import MyCalendar from "../home/MyCalendar";
 import SearchComponent from "../searchComponent/SearchComponent";
 import styled from "styled-components";
 
+const _Button = styled.button`
+  border: none;
+  background: none;
+  /* color: gray; */
+
+  /* &:active {
+    color: black;
+  }
+  &:focus {
+    color: black;
+  } */
+`;
+
 const _Flex = styled.div`
   display: flex;
   justify-content: center;
