@@ -6,18 +6,15 @@ import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
 import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
-import com.example.demo.entity.PlannerEntity;
 import com.example.demo.service.PlannerService;
 import com.example.demo.utils.EncodingConversionUtil;
 import com.example.demo.utils.JwtTokenUtil;
 import com.example.demo.utils.SwaggerPlannerAPI;
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.List;
 
 @RestController
