@@ -94,6 +94,7 @@ export default function DefaultLoadMap() {
                         </i>
                     </_Button>
                 </_FlexNavi>
+
                 <_RenderComponent>{renderComponent()}</_RenderComponent>
             </_Flex>
         </>

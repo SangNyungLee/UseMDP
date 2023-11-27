@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
-
 import Modal from 'react-bootstrap/Modal';
 import CardEditor from '../../post/Editor/CardEditor';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { useDispatch } from 'react-redux';
 import MyDayPicker from '../../post/RightClicker/MyDayPicker';
 import copy from 'fast-copy';
-import { plannerListActions } from '../../../store/plannerList';
+import { siteActions } from '../../../store/site';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
 import axios from 'axios';
@@ -64,8 +63,9 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     };
 
     const handleClose = async () => {
-        const newChecklist = [{ title: checklists[0].title, checked: checklists[0].checked }];
-        console.log(checklists);
+        const newChecklist = checklists.map((item) => {
+            return item.isNew == 1 ? { title: item.title, checked: item.checked } : item;
+        });
         const newCardItem = {
             ...selectedCard,
             title,
@@ -80,8 +80,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
         console.log('MODAL에서 보내는 item', newCardItem);
         try {
             const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem, { withCredentials: true });
-            console.log(result.data);
-            dispatch(plannerListActions.updateCard(newCardItem));
+            dispatch(siteActions.setIsData(false));
             modalClose();
             setShow(false);
         } catch (err) {
@@ -107,7 +106,6 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     };
 
     useEffect(() => {
-        console.log('HI');
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
         setTitle(title);
         setPost(post);
@@ -136,6 +134,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
                 title: 'default',
                 createdAt: currentTime.toISOString(),
                 updatedAt: currentTime.toISOString(),
+                isNew: 1,
             },
         ]);
     };
@@ -160,7 +159,6 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
-    // console.log('modal checklist', checklists);
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave}>
@@ -185,7 +183,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
                     <div>
                         {checklists.map((item, index) => (
                             <_ChecklistContainer key={index}>
-                                <input type="checkbox" checked={item[index]} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
+                                <input type="checkbox" checked={item.checked == 1} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
                                 <input type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
                                 <button type="button" onClick={() => deleteCheck(index)}>
                                     -
