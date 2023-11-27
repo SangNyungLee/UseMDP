@@ -3,6 +3,7 @@ import Header from '../component/Header';
 import { NavLink } from 'react-router-dom';
 import { Container, Image, Row, Col, Card, Button, Stack } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
+import { useState } from 'react';
 
 export default function WelcomePage() {
 	const isMobile = useMediaQuery({
