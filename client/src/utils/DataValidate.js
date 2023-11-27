@@ -1,3 +1,9 @@
+// 사용되지 않았으나 사용 가능한 로직
+// enum: ["red", "green", "blue"]   : 이 3개의 값 중에 하나여야만 허용
+// format: "email"   :  데이터 형식을 명시적으로 표기 (그 외 "date-time", "uri"등이 가능)
+// pattern: "^[A-Za-z]+$"   :  우리가 알고 있는 그 패턴 형식
+// minimum: 1   ,  maximum: 100   :   type:integer에서만 사용 가능 최댓갑 최소값ㅌ
+
 export function validatePlannerData(data) {
     // JSON Schema 정의
     const schema = {
@@ -34,7 +40,7 @@ export function validatePlannerData(data) {
                                     type: 'object',
                                     properties: {
                                         checklistId: { type: 'integer' },
-                                        checked: { type: 'boolean' },
+                                        checked: { type: 'integer' },
                                         title: { type: 'string' },
                                         createdAt: { type: 'string' },
                                         updatedAt: { type: 'string' },
@@ -96,7 +102,7 @@ export function validateUnspecifiedPlannerData(data) {
                                     type: 'object',
                                     properties: {
                                         checklistId: { type: 'integer' },
-                                        checked: { type: 'boolean' },
+                                        checked: { type: 'integer' },
                                         title: { type: 'string' },
                                         createdAt: { type: 'string' },
                                         updatedAt: { type: 'string' },
@@ -170,7 +176,7 @@ export function validatePlannerListData(data) {
                                         type: 'object',
                                         properties: {
                                             checklistId: { type: 'integer' },
-                                            checked: { type: 'boolean' },
+                                            checked: { type: 'integer' },
                                             title: { type: 'string' },
                                             createdAt: { type: 'string' },
                                             updatedAt: { type: 'string' },
@@ -244,7 +250,7 @@ export function validateUnspecifiedPlannerListData(data) {
                                     type: 'object',
                                     properties: {
                                         checklistId: { type: 'integer' },
-                                        checked: { type: 'boolean' },
+                                        checked: { type: 'integer' },
                                             title: { type: 'string' },
                                         createdAt: { type: 'string' },
                                         updatedAt: { type: 'string' },

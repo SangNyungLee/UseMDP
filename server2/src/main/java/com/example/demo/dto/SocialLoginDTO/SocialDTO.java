@@ -11,4 +11,5 @@ public class SocialDTO {
     private String socialId;
     private String socialNickname;
     private String socialProfilePicture;
+    private String socialLoginAccessToken;
 }

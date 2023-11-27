@@ -12,8 +12,6 @@ import { plannerListActions } from '../../../store/plannerList';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
 import axios from 'axios';
-import { async } from 'q';
-
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -109,6 +107,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     };
 
     useEffect(() => {
+        console.log('HI');
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
         setTitle(title);
         setPost(post);
