@@ -2,83 +2,90 @@ import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { planActions } from '../../store/planner';
 import QuoteAppCalendar from './QuoteAppCalendar';
 import { plannerListActions } from '../../store/plannerList';
-
+import { calendarActions } from '../../store/calendar';
 import { getOneCard, getOneDefaultPlanner } from '../../utils/QuoteSetting';
 import { reorder, move } from '../../utils/QuoteController';
 import styled from 'styled-components';
 import QuoteHeader from './QuoteHeader';
 import QuoteSpinner from './QuoteSpinner';
 import DroppableComponent from './DroppableComponent';
-
+import useLocalStorage from 'use-local-storage';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { async } from 'q';
 const _QuoteAppContainer = styled.div`
     display: flex;
-`
+`;
 const _QuoteContainer = styled.div`
     display: flex;
-`
+`;
 
 export default function QuoteApp() {
     const plannerList = useSelector((state) => state.plannerList);
     const { quote } = useSelector((state) => state.calendar);
     const thumnnailRef = useRef(null);
-    const [ selectedCard, setSelectedCard ] = useState( getOneCard(0,"TODO") );
-    const [ visible, setVisible ] = useState(false);
-    
+    const [selectedCard, setSelectedCard] = useState(getOneCard(0, 'TODO'));
+    const [visible, setVisible] = useState(false);
+    const [localdata, setLocalData] = useLocalStorage('List', []);
+    const [localQuote, setLocalQuote] = useLocalStorage('Quote', []);
     const dispatch = useDispatch();
 
-
     let planner;
-    let plannerId;
+    let plannerId = quote[0];
     let plannerTitle;
 
-    if (plannerList.length > 0 ){
-        const { cards, plannerId: id, title , ...rest } = plannerList[quote[0]]
-        planner = cards
-        plannerId = id
-        plannerTitle = title
+    function sortByIntOrder(data) {
+        // intOrder를 기준으로 오름차순 정렬
+        const tmp = [[], [], []];
+        for (let i = 0; i < 3; i++) {
+            tmp[i] = data[i].slice().sort((a, b) => a.intOrder - b.intOrder);
+        }
+        // 새로운 배열 반환
+        console.log('tmp:', tmp);
+        return tmp;
     }
- 
+    if (plannerList.length > 0) {
+        const { cards, plannerId: id, title, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
+        planner = cards;
+        plannerId = id;
+        plannerTitle = title;
+    } else if (localdata.length > 0) {
+        console.log('local in if', localdata);
+        // console.log(localStorage.getItem('List'));
+        const { cards, plannerId: id, title, ...rest } = localdata[0];
+        dispatch(plannerListActions.setPlannersInit(localdata));
+        dispatch(calendarActions.setQuote([id]));
+        planner = cards;
+        plannerId = id;
+        plannerTitle = title;
+    }
+    //planner가 바뀔때마다, localStoage에 저장하는 코드.
+
+    useEffect(() => {
+        setLocalData(plannerList);
+    }, [plannerList]);
+
+    useEffect(() => {
+        console.log('HI', localdata);
+    }, [localdata, localQuote]);
+
     useEffect(() => {
         const fetchData = async () => {
-            // const btoa = searchParams.get('id');
-            // const rearrangedArray = [[], [], []];
-            // const result = await axios(`http://localhost:8080/api/getPlanner/${btoa}`);
-            // const Planner = result.data;
-            // console.log(Planner);
-            // const { cards, ...newPlanner } = Planner;
-            // cards.forEach((item) => {
-            //     const statusIndex = statusIndexMap[item.cardStatus];
-            //     rearrangedArray[statusIndex].push(item);
-            // });
-            // dispatch(planActions.setPlansInit(rearrangedArray));
-            // const response = await axios.get('/plannerTest');
+            if (plannerList.length > 0) {
+                setLocalData(plannerList);
+                setLocalQuote(quote);
+            }
             const response = { data: [null] };
 
             // 혹시나 테스트중 데이터가 비어있을 경우
-            if (response.data[0]) {
-                const data = response.data[0].cardList;
-                const newState = [[], [], []];
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i].cardStatus === 'TODO') {
-                        data[i].cardId = 'a' + data[i].cardId;
-                        newState[0].push(data[i]);
-                    } else if (data[i].cardStatus === 'DOING') {
-                        data[i].cardId = 'a' + data[i].cardId;
-                        newState[1].push(data[i]);
-                    } else {
-                        data[i].cardId = 'a' + data[i].cardId;
-                        newState[2].push(data[i]);
-                    }
-                }
-                dispatch(planActions.setPlansInit(newState));
-            } else {
-                const defaultPlanner = getOneDefaultPlanner()
-                const plannerList = [ defaultPlanner ];
-                dispatch(plannerListActions.setPlannersInit(plannerList));
-            }
+            // if (response.data[0]) {
+            // } else {
+            //     const defaultPlanner = getOneDefaultPlanner();
+            //     const plannerList = [defaultPlanner];
+            //     dispatch(plannerListActions.setPlannersInit(plannerList));
+            // }
         };
         fetchData();
     }, []);
@@ -88,9 +95,8 @@ export default function QuoteApp() {
         setVisible(true);
     }
 
-
     //dnd에서는, dragend와 onclick이 구분되게 됨.
-    function onDragEnd(result) {
+    async function onDragEnd(result) {
         const { source, destination } = result;
 
         // dropped outside the list
@@ -105,52 +111,61 @@ export default function QuoteApp() {
             const items = reorder(planner[sInd], source.index, destination.index);
             const newState = [...planner];
             newState[sInd] = items;
-            dispatch(plannerListActions.updatePlanner({
-                id: quote[0],
-                planner: newState, 
-            }))
+            dispatch(
+                plannerListActions.updatePlanner({
+                    plannerId: quote[0],
+                    planner: newState,
+                })
+            );
         } else {
+            const mapper = {
+                0: 'TODO',
+                1: 'DOING',
+                2: 'DONE',
+            };
+            const data = {
+                plannerId,
+                sourceCardId: planner[sInd][source.index].cardId,
+                sourceCardOrder: planner[sInd][source.index].intOrder,
+                sourceCardStatus: planner[sInd][source.index].cardStatus,
+                destinationCardOrder: destination.index,
+                destinationCardStatus: mapper[destination.droppableId],
+            };
+
+            const result2 = await axios.patch('http://localhost:8080/api/patchMoveCards', data);
             const result = move(planner[sInd], planner[dInd], source, destination);
             const newState = [...planner];
             newState[sInd] = result[sInd];
             newState[dInd] = result[dInd];
-            dispatch(plannerListActions.updatePlanner({
-                id: quote[0],
-                planner: newState, 
-            }))
+            dispatch(
+                plannerListActions.updatePlanner({
+                    plannerId: quote[0],
+                    planner: newState,
+                })
+            );
         }
     }
     // ...state, getItems(1)
 
+    console.log('plannerList', plannerList);
+
     if (!planner) {
-        return (
-            <QuoteSpinner/>
-        );
+        return <QuoteSpinner />;
     } else {
         return (
-        <_QuoteAppContainer>
-            <div ref={thumnnailRef}>
-                <QuoteHeader
-                    selectedCard={selectedCard}
-                    thumnnailRef={thumnnailRef}
-                    visible={visible}
-                    setVisible={setVisible}
-                    planner={planner}
-                    plannerId={plannerId}
-                    />
-                <_QuoteContainer>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        { planner.map((item, index) =>
-                            <DroppableComponent
-                                item={item}
-                                index={index}
-                                planner={planner}
-                                handleClick={cardClick}/>
-                        )}
-                    </DragDropContext>
-                </_QuoteContainer>
-            </div>
-            <QuoteAppCalendar/>
-        </_QuoteAppContainer>
-    )};
+            <_QuoteAppContainer>
+                <div ref={thumnnailRef}>
+                    <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
+                    <_QuoteContainer>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            {planner.map((cardList, index) => (
+                                <DroppableComponent cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                            ))}
+                        </DragDropContext>
+                    </_QuoteContainer>
+                </div>
+                <QuoteAppCalendar />
+            </_QuoteAppContainer>
+        );
+    }
 }

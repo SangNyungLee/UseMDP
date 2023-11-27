@@ -11,21 +11,44 @@ const plannerListSlice = createSlice({
             state = action.payload;
             return state;
         },
+        addPlannerList(state,action){
+            state = [...state, ...action.payload];
+            return state;
+        },
         addPlanner(state, action) {
             state = [...state, action.payload];
             return state;
         },
+        delPlanner(state,action){
+            state = state.filter( planner => planner.plannerId !== action.payload)
+            return state;
+        },
         addCard(state, action) {
-            const { id, status, card } = action.payload;
-            state[id].cards[status] = [...state[id].cards[status], card];
+            const { plannerId, status, card } = action.payload; 
+            state = state.map( planner => ({
+                ...planner,
+                cards: planner.plannerId === plannerId ? planner.cards.map(
+                    (cardList,index) => status === index ? [...cardList,card] : cardList
+                ) : planner.cards
+            }))
+            return state;
+        },
+        delCard(state, action) {
+            state = state.map( planner => ({
+                ...planner,
+                cards: planner.cards.map(
+                cardList => cardList.filter(
+                    card => card.cardId !== action.payload
+                ) 
+            )}));
             return state;
         },
         //id에 있는 planner를 그대로 바꿔치기한다.
         replaceCards(state, action) {
             const { id, cards } = action.payload;
 
-            const newState = state.map((plan) => (plan.plannerId === id ? { ...plan, cards: cards } : plan));
-            return newState;
+            state = state.map((plan) => (plan.plannerId === id ? { ...plan, cards: cards } : plan));
+            return state;
         },
         updateCard(state, action) {
             const { cardId, ...rest } = action.payload;
@@ -50,11 +73,12 @@ const plannerListSlice = createSlice({
         },
         updatePlannerTitle(state, action) {
             const { plannerId, title } = action.payload;
-            return state.map((e) => (e.plannerId === plannerId ? { ...e, title } : e));
+            return state.map( e => (e.plannerId === plannerId ? { ...e, title } : e));
         },
         updatePlanner(state, action) {
-            const { id, planner } = action.payload;
-            state[id].cards = planner;
+            const { plannerId, planner } = action.payload;
+            state = state.map( prevPlanner => prevPlanner.plannerId === plannerId ?
+                { ...prevPlanner, cards: planner } : prevPlanner)
             return state;
         },
     },
