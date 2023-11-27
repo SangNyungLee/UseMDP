@@ -52,7 +52,7 @@ public class CardService {
         MemberEntity memberEntity = optionalMemberEntity.get();
         Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestPostCardDTO.getPlannerId());
         if(optionalPlannerEntity.isEmpty()) {
-            return 0;
+            return -1;
         }
 
         PlannerEntity plannerEntity = optionalPlannerEntity.get();

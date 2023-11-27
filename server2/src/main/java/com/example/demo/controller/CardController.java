@@ -47,7 +47,8 @@ public class CardController implements SwaggerCardAPI {
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
         int result = cardService.postCard(requestPostCardDTO, memberId);
-        if(result == 0) {
+        if(result != 1 ) {
+            System.out.println("result : " + result);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<Integer>builder()
                     .resultCode("404")
                     .message("일치하는 memberId 없거나 plannerId 없음")
