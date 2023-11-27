@@ -238,17 +238,78 @@ public class PlannerController implements SwaggerPlannerAPI {
     // 특정 플래너 좋아요 +1
     @Override
     @PostMapping("/api/postPlanner/like")
-    public int likePlanner(@RequestBody LikeDTO likeDTO) {
+    public ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token) {
+        if(token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
+        }
 
-        return plannerService.likePlanner(likeDTO);
+        boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
+        if(tokenExpired) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+                    .resultCode("401")
+                    .message("만료된 토큰입니다. 다시 로그인하세요")
+                    .data(null)
+                    .build());
+        }
+
+        String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+
+        long result = plannerService.likePlanner(plannerId, memberId);
+        if(result == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponseDTO.<Long>builder()
+                    .resultCode("400")
+                    .message("좋아요 실패")
+                    .data(result)
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<Long>builder()
+                .resultCode("200")
+                .message("좋아요 완료")
+                .data(result)
+                .build());
 
     }
 
     // 특정 플래너 좋아요 -1
     @Override
     @PatchMapping("/api/patchPlanner/unlike")
-    public int unlikePlanner(@RequestBody LikeDTO likeDTO) {
-        return plannerService.unlikePlanner(likeDTO);
+    public ResponseEntity<APIResponseDTO<Long>> unlikePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token) {
+        if(token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
+        }
+
+        boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
+        if(tokenExpired) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+                    .resultCode("401")
+                    .message("만료된 토큰입니다. 다시 로그인하세요")
+                    .data(null)
+                    .build());
+        }
+
+        String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+
+        long result = plannerService.unlikePlanner(plannerId, memberId);
+        if(result == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponseDTO.<Long>builder()
+                    .resultCode("400")
+                    .message("좋아요 취소 실패")
+                    .data(result)
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<Long>builder()
+                .resultCode("200")
+                .message("좋아요 취소 완료")
+                .data(result)
+                .build());
     }
 
     // 특정 플래너 삭제

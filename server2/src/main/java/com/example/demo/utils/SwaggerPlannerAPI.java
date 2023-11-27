@@ -62,7 +62,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    int likePlanner(@RequestBody LikeDTO likeDTO);
+    ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(
             summary = "특정 플래너 좋아요 -1",
@@ -78,7 +78,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    int unlikePlanner(@RequestBody LikeDTO likeDTO);
+    ResponseEntity<APIResponseDTO<Long>> unlikePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token);
 
 
     @Operation(summary = "특정 플래너 삭제", description = "DB에 존재하는 특정 플래너 삭제")

@@ -413,22 +413,19 @@ public class PlannerService {
                 return copyPlannerEntity.getPlannerId();
 
             }else{
-                return -1;
+                return 0;
             }
         }else {
-            return -1;
+            return 0;
         }
     }
 
     //성공 -> 1, 실패 -> 0
-    public int likePlanner(LikeDTO likeDTO) {
-        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
-            return 0;
-        }
+    public long likePlanner(long plannerId, String memberId) {
 
         LikeEntity likeEntity = LikeEntity.builder()
-                .plannerEntity(PlannerEntity.builder().plannerId(likeDTO.getPlannerId()).build())
-                .memberEntity(MemberEntity.builder().memberId(likeDTO.getMemberId()).build())
+                .plannerEntity(PlannerEntity.builder().plannerId(plannerId).build())
+                .memberEntity(MemberEntity.builder().memberId(memberId).build())
                 .build();
         likeRepository.save(likeEntity);
 
@@ -437,13 +434,7 @@ public class PlannerService {
     }
 
     //성공 -> 1, 실패 -> 0
-    public int unlikePlanner(LikeDTO likeDTO) {
-        if(likeDTO.getPlannerId() == null || likeDTO.getMemberId() == null){
-            return 0;
-        }
-        long plannerId = likeDTO.getPlannerId();
-        String memberId = likeDTO.getMemberId();
-
+    public long unlikePlanner(long plannerId, String memberId) {
         LikeEntity result = likeRepository.getLikeEntity(plannerId,memberId);
         likeRepository.delete(result);
         return 1;
