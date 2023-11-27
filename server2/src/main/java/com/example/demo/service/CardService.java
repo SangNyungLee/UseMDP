@@ -43,16 +43,16 @@ public class CardService {
     private DTOConversionUtil dtoConversionUtil;
 
 
-    public int postCard(RequestPostCardDTO requestPostCardDTO, String memberId) {
+    public String postCard(RequestPostCardDTO requestPostCardDTO, String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
         if(optionalMemberEntity.isEmpty()) {
-            return 0;
+            return null;
         }
 
         MemberEntity memberEntity = optionalMemberEntity.get();
         Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestPostCardDTO.getPlannerId());
         if(optionalPlannerEntity.isEmpty()) {
-            return 0;
+            return null;
         }
 
         PlannerEntity plannerEntity = optionalPlannerEntity.get();
@@ -65,7 +65,7 @@ public class CardService {
         List<ChecklistEntity> checklistEntities = checklistDTOS.stream().map(checklistDTO -> dtoConversionUtil.toChecklistEntity(checklistDTO, savedCardEntity)).toList();
 
         checklistRepository.saveAll(checklistEntities);
-        return 1;
+        return savedCardEntity.getCardId();
     }
 
     public int patchCard(RequestPatchCardDTO requestPatchCardDTO, String memberId) {

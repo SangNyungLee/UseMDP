@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.PlannerIdDTO;
-import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
+import com.example.demo.dto.RequestDTO.*;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
@@ -430,5 +428,49 @@ public class PlannerService {
     public int unlikePlanner(PlannerIdDTO plannerIdDTO) {
         long plannerId = plannerIdDTO.getPlannerId();
         return plannerRepository.unlikePlanner(plannerId);
+    }
+
+    public long postJSONPlanner(RequestPostJSONPlannerDTO requestPostJSONPlannerDTO, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
+            return 0;
+        }
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        PlannerEntity plannerEntity = PlannerEntity.builder()
+                .creator(requestPostJSONPlannerDTO.getCreator())
+                .title(requestPostJSONPlannerDTO.getTitle())
+                .thumbnail(requestPostJSONPlannerDTO.getThumbnail())
+                .plannerAccess(requestPostJSONPlannerDTO.getPlannerAccess())
+                .memberEntity(memberEntity)
+                .build();
+        PlannerEntity savedPlannerEntity = plannerRepository.save(plannerEntity);
+
+        List<RequestPostJSONCardDTO> requestPostJSONCardDTOS = requestPostJSONPlannerDTO.getCards();
+
+        for(RequestPostJSONCardDTO requestPostJSONCardDTO : requestPostJSONCardDTOS) {
+            CardEntity cardEntity = CardEntity.builder()
+                    .title(requestPostJSONCardDTO.getTitle())
+                    .coverColor(requestPostJSONCardDTO.getCoverColor())
+                    .post(requestPostJSONCardDTO.getPost())
+                    .intOrder(requestPostJSONCardDTO.getIntOrder())
+                    .startDate(requestPostJSONCardDTO.getStartDate())
+                    .endDate(requestPostJSONCardDTO.getEndDate())
+                    .cardStatus(requestPostJSONCardDTO.getCardStatus())
+                    .plannerEntity(savedPlannerEntity)
+                    .build();
+            CardEntity savedCardEntity = cardRepository.save(cardEntity);
+
+            List<RequestChecklistDTO> requestChecklistDTOS = requestPostJSONCardDTO.getChecklists();
+            for(RequestChecklistDTO requestChecklistDTO : requestChecklistDTOS) {
+                ChecklistEntity checklistEntity = ChecklistEntity.builder()
+                        .checked(requestChecklistDTO.getChecked())
+                        .title(requestChecklistDTO.getTitle())
+                        .cardEntity(savedCardEntity)
+                        .build();
+
+                checklistRepository.save(checklistEntity);
+            }
+        }
+        return savedPlannerEntity.getPlannerId();
     }
 }
