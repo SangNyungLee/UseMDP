@@ -90,6 +90,7 @@ public class CardController implements SwaggerCardAPI {
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
         int result = cardService.patchCard(requestPatchCardDTO, memberId);
+        System.out.println("requestPostCardDTO : "+ requestPatchCardDTO.getChecklists().get(0).getTitle()+result);
         if(result == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<Integer>builder()
                     .resultCode("404")
