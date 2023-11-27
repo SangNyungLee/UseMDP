@@ -17,6 +17,11 @@ const siteSlice = createSlice({
             state.isData = action.payload;
             return state;
         },
+        setAllTrue(state){
+            state.isData = true;
+            state.isLogin = true;
+            return state;
+        },
     },
 });
 

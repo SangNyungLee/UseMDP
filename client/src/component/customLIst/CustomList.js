@@ -1,7 +1,6 @@
 //여기에서는 props로 파일 리스트를 받아 파일을 4x2로 출력하는 component를 만들고, 다른 컴포넌트에 주고 싶다.
 import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
-import LoadMap from '../LoadMap';
-import LoadMap2 from '../LoadMap2/LoadMap';
+
 export default function CustomList(props) {
     console.log(props.datas);
     const data = props.datas;
