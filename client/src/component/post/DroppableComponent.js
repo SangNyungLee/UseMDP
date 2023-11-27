@@ -6,14 +6,13 @@ import { getItemStyle, getItems, getListStyle } from '../../utils/QuoteSetting';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import QuoteCard from './QuoteCard';
 import axios from 'axios';
-
+import { siteActions } from '../../store/site';
 export default function DroppableComponent(props) {
     const { quote } = useSelector((state) => state.calendar);
     const { cardList, cardStatusIndex, planner, handleClick, plannerId } = props;
 
     const dispatch = useDispatch();
 
-    console.log('newplanner', planner);
     const deleteCard = async (e, id, card) => {
         e.stopPropagation();
         console.log('삭제');
@@ -57,6 +56,7 @@ export default function DroppableComponent(props) {
             card.checklists[i] = newCheckList;
         }
         console.log('addcard : ', card);
+
         const result = await axios.post('http://localhost:8080/api/postCard', card, { withCredentials: true });
         dispatch(
             plannerListActions.addCard({
@@ -65,6 +65,7 @@ export default function DroppableComponent(props) {
                 card,
             })
         );
+        dispatch(siteActions.setIsData(false));
     };
 
     const droppableComponentRegister = (provided, snapshot) => ({
