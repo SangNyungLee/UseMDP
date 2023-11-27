@@ -91,15 +91,6 @@ export default function LoadMap2(props) {
 
     return (
         <_Container onClick={handleClick}>
-            {/* <Image src={thumbnail}></Image>
-      <Row>
-        <Col>
-          <h3>{title}</h3>
-          <span>{description}</span>
-        </Col>
-        <Col>{creator}</Col>
-      </Row> */}
-
             {/* 추천할때 추천 수 올라가는 로직, 애니메이션 필요 */}
             <_ImageStyle src={thumbnail}></_ImageStyle>
             <div>

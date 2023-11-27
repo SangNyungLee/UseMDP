@@ -13,7 +13,6 @@ export default function DroppableComponent(props) {
 
     const dispatch = useDispatch();
 
-    console.log('newplanner', planner);
     const deleteCard = async (e, id, card) => {
         e.stopPropagation();
         console.log('삭제');

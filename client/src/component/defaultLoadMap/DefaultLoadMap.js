@@ -69,27 +69,27 @@ export default function DefaultLoadMap() {
             <_Flex>
                 <_FlexNavi>
                     <_Button className="default" onClick={() => handleNumber(1)}>
-                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                        <i className="material-icons" style={{ fontSize: '40px' }}>
                             description
                         </i>
                     </_Button>
                     <_Button className="default" onClick={() => handleNumber(2)}>
-                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                        <i className="material-icons" style={{ fontSize: '40px' }}>
                             star
                         </i>
                     </_Button>
                     <_Button className="default" onClick={() => handleNumber(3)}>
-                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                        <i className="material-icons" style={{ fontSize: '40px' }}>
                             account_circle
                         </i>
                     </_Button>
                     <_Button className="default" onClick={() => handleNumber(4)}>
-                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                        <i className="material-icons" style={{ fontSize: '40px' }}>
                             calendar_month
                         </i>
                     </_Button>
                     <_Button className="default" onClick={() => handleNumber(5)}>
-                        <i class="material-icons" style={{ fontSize: '40px' }}>
+                        <i className="material-icons" style={{ fontSize: '40px' }}>
                             search
                         </i>
                     </_Button>

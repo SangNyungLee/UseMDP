@@ -69,10 +69,6 @@ export default function QuoteApp() {
     }, [plannerList]);
 
     useEffect(() => {
-        console.log('HI', localdata);
-    }, [localdata, localQuote]);
-
-    useEffect(() => {
         const fetchData = async () => {
             if (plannerList.length > 0) {
                 setLocalData(plannerList);

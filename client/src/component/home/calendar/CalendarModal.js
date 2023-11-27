@@ -160,7 +160,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
-    console.log('modal checklist', checklists);
+    // console.log('modal checklist', checklists);
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave}>
