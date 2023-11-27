@@ -41,6 +41,7 @@ public class GithubLoginService {
         System.out.println("socialNickname" + socialNickname);
         System.out.println("socialProfilePicture" + socialProfilePicture);
         return SocialDTO.builder()
+                .socialLoginAccessToken(accessToken)
                 .socialId(socialId)
                 .socialNickname(socialNickname)
                 .socialProfilePicture(socialProfilePicture)

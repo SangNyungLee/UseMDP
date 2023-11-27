@@ -65,7 +65,7 @@ public class PlannerEntity {
             joinColumns = @JoinColumn(name = "plannerId"),
             inverseJoinColumns = @JoinColumn(name = "tagId")
     )
-    private Set<TagEntity> tagEntities;
+    private Set<TagEntity> tags;
 
     @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<LikeEntity> likes;

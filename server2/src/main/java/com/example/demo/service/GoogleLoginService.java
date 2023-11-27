@@ -39,6 +39,7 @@ public class GoogleLoginService {
         String socialNickname = userResourceNode.get("name").asText();
         String socialProfilePicture = userResourceNode.get("picture").asText();
         return SocialDTO.builder()
+                .socialLoginAccessToken(accessToken)
                 .socialId(socialId)
                 .socialNickname(socialNickname)
                 .socialProfilePicture(socialProfilePicture)

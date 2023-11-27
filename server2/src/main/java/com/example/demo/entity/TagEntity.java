@@ -24,6 +24,6 @@ public class TagEntity {
     @Column
     private String title;
 
-    @ManyToMany(mappedBy = "tagEntities", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<PlannerEntity> planners;
 }

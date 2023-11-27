@@ -67,7 +67,7 @@ public class LoginController implements SocialLoginAPI {
                 .build();
 
         // 갱신된 사용자 정보의 memberId 로 JWT 토큰 발행
-        String token = jwtTokenUtil.createToken(member.getMemberId());
+        String token = jwtTokenUtil.createToken(member.getMemberId(), user.getSocialLoginAccessToken());
         System.out.println("JWT token = " + token);
 
         // 발행된 JWT 토큰을 쿠키로 설정 및 전달
