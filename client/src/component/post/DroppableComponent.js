@@ -16,9 +16,10 @@ export default function DroppableComponent(props) {
     console.log('newplanner', planner);
     const deleteCard = async (e, id, card) => {
         e.stopPropagation();
+        console.log(id);
+        const result = await axios.delete(`http://localhost:8080/api/deleteCard/${id}`, { withCredentials: true });
         // console.log(card);
         try {
-            const result = await axios.delete(`http://localhost:8080/api/deleteCard/${card.cardId}`);
         } catch (error) {
             console.log(error);
         }
@@ -52,7 +53,7 @@ export default function DroppableComponent(props) {
         const card = getItems(1, planner[cardStatusIndex].length, cardStatus)[0];
         card.plannerId = plannerId;
         console.log('addcard : ', card);
-        const result = await axios.post('http://localhost:8080/api/postCard', card);
+        const result = await axios.post('http://localhost:8080/api/postCard', card, { withCredentials: true });
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],
