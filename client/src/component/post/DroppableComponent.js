@@ -52,6 +52,10 @@ export default function DroppableComponent(props) {
         const cardStatus = cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE';
         const card = getItems(1, planner[cardStatusIndex].length, cardStatus)[0];
         card.plannerId = plannerId;
+        for (let i = 0; i < card.checklists.length; i++) {
+            const { checklistId, ...newCheckList } = card.checklists[i];
+            card.checklists[i] = newCheckList;
+        }
         console.log('addcard : ', card);
         const result = await axios.post('http://localhost:8080/api/postCard', card, { withCredentials: true });
         dispatch(
