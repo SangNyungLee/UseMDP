@@ -30,6 +30,7 @@ export default function Header() {
   const githubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
+
   return (
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">

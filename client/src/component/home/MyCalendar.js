@@ -15,6 +15,7 @@ import axios from 'axios';
 import { eventStyleGetter, getNestedElement } from '../../utils/CalendarController';
 import { getOneCard } from '../../utils/QuoteSetting';
 import { dateParsing } from '../../utils/DataParsing';
+import useDefaultCheck from '../../hook/useDefaultCheck';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -71,6 +72,8 @@ export default function MyCalendar() {
   const plannerList = useSelector( state => state.plannerList );
   const { home } = useSelector( state => state.calendar );
   const site = useSelector( state => state.site );
+  
+  useDefaultCheck();
 
   const [events, setEvents] = useState();
   const [ selectedCard, setSelectedCard ] = useState(getOneCard(0,"TODO"));
@@ -209,7 +212,6 @@ export default function MyCalendar() {
 
   return (
     <>
-      <CalendarSideBar/>
       {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>
@@ -233,7 +235,7 @@ export default function MyCalendar() {
         onSelectEvent={onSelectEvent}
         resizable
         selectable
-        style={{ height: "100vh" }}
+        style={{ flex:1 }}
         eventPropGetter={eventStyleGetter}
         components={{
           toolbar: CustomToolbar,

@@ -72,7 +72,7 @@ public class LoginController implements SocialLoginAPI {
 
         // 발행된 JWT 토큰을 쿠키로 설정 및 전달
         Cookie cookie = new Cookie("auth", token);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         cookie.setMaxAge(24 * 60 * 60);
         cookie.setPath("/");
 

@@ -10,6 +10,7 @@ import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlanne
 import { calendarActions } from "../../../store/calendar";
 
 const _Container = styled.div`
+    border-radius: 20px;
     background-color: skyblue;
     height: 100vh;
     max-width: 270px;
@@ -18,6 +19,9 @@ const _Container = styled.div`
     white-space: nowrap;
     overflow-x: hidden;
     text-overflow: ellipsis;
+    padding-top: 30px;
+    margin: 30px;
+    margin-top: 0px;
 `
 
 const _PlannerListUl = styled.ul`
