@@ -9,7 +9,8 @@ import axios from 'axios';
 import DataDownload from '../../utils/DataDownload';
 import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import useLocalStorage from 'use-local-storage';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -75,6 +76,9 @@ const StyledShareIcon = styled.i`
 
 export default function MyLoadMap(props) {
     const dispatch = useDispatch();
+
+    const state = useSelector((state) => state.plannerList);
+    const [data, setData] = useLocalStorage('List', '');
     const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
     // console.log(props);
     const navigate = useNavigate();
@@ -83,7 +87,7 @@ export default function MyLoadMap(props) {
         if (!showModal) {
             const btoaId = btoa(plannerId);
             const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
-            const cardList = result.data.cards;
+            const cardList = result.data.data.cards;
             const cards = [[], [], []];
             for (let i = 0; i < cardList.length; i++) {
                 if (cardList[i].cardStatus === 'TODO') {
@@ -94,8 +98,9 @@ export default function MyLoadMap(props) {
                     cards[2].push(cardList[i]);
                 }
             }
-            dispatch(calendarActions.setQuote([0]));
+            dispatch(calendarActions.setQuote([plannerId]));
             dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+
             navigate(`/planner?id=${btoaId}`);
         }
     };

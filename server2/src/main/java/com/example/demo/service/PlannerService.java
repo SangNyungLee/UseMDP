@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.ChecklistDTO;
-import com.example.demo.dto.PlannerDTO;
 import com.example.demo.dto.PlannerIdDTO;
+import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
+import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
+import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
@@ -14,6 +15,7 @@ import com.example.demo.repository.CardRepository;
 import com.example.demo.repository.ChecklistRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PlannerRepository;
+import com.example.demo.utils.DTOConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PlannerService {
@@ -35,9 +38,11 @@ public class PlannerService {
     private ChecklistRepository checklistRepository;
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private CardRepository cardRepository;
+
+    @Autowired
+    private DTOConversionUtil dtoConversionUtil;
 
     //모든 플래너 가져오기
     public List<ResponsePlannerDTO> getAllPlanners() {
@@ -105,22 +110,51 @@ public class PlannerService {
         return plannerDTOList;
     }
 
+    //특정 플래너 가져오기
+    public ResponsePlannerDTO getPlanner(Long plannerId) {
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(plannerId);
+        if(optionalPlannerEntity.isEmpty()) {
+            return null;
+        }
+        PlannerEntity plannerEntity = optionalPlannerEntity.get();
+
+        List<CardEntity> cardEntities = plannerEntity.getCards();
+
+        List<ResponseCardDTO> responseCardDTOS = cardEntities.stream().map(cardEntity -> dtoConversionUtil.toResponseCardDTO(cardEntity)).toList();
+
+        return ResponsePlannerDTO.builder()
+                .plannerId(plannerEntity.getPlannerId())
+                .creator(plannerEntity.getCreator())
+                .title(plannerEntity.getTitle())
+                .likePlanner(plannerEntity.getLikePlanner())
+                .thumbnail(plannerEntity.getThumbnail())
+                .plannerAccess(plannerEntity.getPlannerAccess())
+                .isDefault(plannerEntity.getIsDefault())
+                .createdAt(plannerEntity.getCreatedAt())
+                .updatedAt(plannerEntity.getUpdatedAt())
+                .cards(responseCardDTOS)
+                .build();
+    }
+
     //플래너 생성
     //-1값이 리턴되면 실패한 것
-    public long postPlanner(PlannerDTO plannerDTO, String memberId) {
+    public long postPlanner(RequestPostPlannerDTO requestPostPlannerDTO, String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
-
         if(optionalMemberEntity.isPresent()){
             MemberEntity member = optionalMemberEntity.get();
             PlannerEntity plannerEntity = PlannerEntity.builder()
                     .creator(member.getSocialNickname())
-                    .title(plannerDTO.getTitle())
-                    .likePlanner(plannerDTO.getLikePlanner())
-                    .thumbnail(plannerDTO.getThumbnail())
+                    .title(requestPostPlannerDTO.getTitle())
+                    .thumbnail(requestPostPlannerDTO.getThumbnail())
                     .memberEntity(member)
                     .build();
-            plannerRepository.save(plannerEntity);
-            return plannerEntity.getPlannerId();
+            try {
+                PlannerEntity savedPlannerEntity = plannerRepository.save(plannerEntity);
+                return savedPlannerEntity.getPlannerId();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
         }else {
             return -1;
         }
@@ -128,26 +162,30 @@ public class PlannerService {
 
     //플래너 수정
     //성공 -> 1, 실패 -> 0
-    public long patchPlanner(PlannerDTO plannerDTO, String memberId) {
+    public long patchPlanner(RequestPatchPlannerDTO requestPatchPlannerDTO, String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
 
         if (optionalMemberEntity.isPresent()) {
             MemberEntity member = optionalMemberEntity.get();
-            Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(plannerDTO.getPlannerId());
-
+            Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestPatchPlannerDTO.getPlannerId());
             if(optionalPlannerEntity.isPresent()) {
                 PlannerEntity planner = optionalPlannerEntity.get();
                 PlannerEntity updatedPlanner = PlannerEntity.builder()
                         .plannerId(planner.getPlannerId())
-                        .creator(plannerDTO.getCreator())
-                        .title(plannerDTO.getTitle())
-                        .likePlanner(plannerDTO.getLikePlanner())
-                        .thumbnail(plannerDTO.getThumbnail())
+                        .creator(requestPatchPlannerDTO.getCreator())
+                        .title(requestPatchPlannerDTO.getTitle())
+                        .thumbnail(requestPatchPlannerDTO.getThumbnail())
+                        .plannerAccess(requestPatchPlannerDTO.getPlannerAccess())
                         .createdAt(planner.getCreatedAt())
-                        .plannerAccess(plannerDTO.getPlannerAccess())
+                        .memberEntity(member)
                         .build();
-                plannerRepository.save(updatedPlanner);
-                return 1;
+                try {
+                    PlannerEntity savedPlannerEntity = plannerRepository.save(updatedPlanner);
+                    return savedPlannerEntity.getPlannerId();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
             } else {
                 return 0;
             }
@@ -156,86 +194,23 @@ public class PlannerService {
         }
     }
 
-    //특정 플래너 가져오기
-    public ResponsePlannerDTO getPlanner(Long decodedPlannerId) {
-        Optional<PlannerEntity> result = plannerRepository.findById(decodedPlannerId);
-        if(result.isPresent()) {
-            PlannerEntity planner = result.get();
-            System.out.println("planner.plannerId = " + planner.getPlannerId());
-            System.out.println("planner.creator = " + planner.getCreator());
-            System.out.println("planner.title = " + planner.getTitle());
-            System.out.println("planner.likePlanner = " + planner.getLikePlanner());
-            System.out.println("planner.thumbnail = " + planner.getThumbnail());
-            System.out.println("planner.plannerAccess = " + planner.getPlannerAccess());
-            System.out.println("planner.isDefault = " + planner.getIsDefault());
-            System.out.println("planner.cards = " + planner.getCards());
-
-            List<CardEntity> cards = planner.getCards();
-            List<ResponseCardDTO> responseCardDTOList = new ArrayList<>();
-
-
-            for(CardEntity card : cards) {
-
-                List<ChecklistEntity> checklistEntityList = card.getChecklists();
-                List<ResponseChecklistDTO> checklistDTOList = new ArrayList<>();
-                for(ChecklistEntity checklistEntity : checklistEntityList) {
-                    ResponseChecklistDTO checklistDTO = ResponseChecklistDTO.builder()
-                            .checklistId(checklistEntity.getChecklistId())
-                            .checked(checklistEntity.getChecked())
-                            .title(checklistEntity.getTitle())
-                            .createdAt(checklistEntity.getCreatedAt())
-                            .updatedAt(checklistEntity.getUpdatedAt())
-                            .build();
-                    checklistDTOList.add(checklistDTO);
-                }
-
-
-                ResponseCardDTO responseCardDTO = ResponseCardDTO.builder()
-                        .cardId(card.getCardId())
-                        .cardStatus(card.getCardStatus())
-                        .title(card.getTitle())
-                        .coverColor(card.getCoverColor())
-                        .post(card.getPost())
-                        .intOrder(card.getIntOrder())
-                        .startDate(card.getStartDate())
-                        .endDate(card.getEndDate())
-                        .createdAt(card.getCreatedAt())
-                        .updatedAt(card.getUpdatedAt())
-                        .checklists(checklistDTOList)
-                        .build();
-                responseCardDTOList.add(responseCardDTO);
-            }
-
-            ResponsePlannerDTO responsePlannerDTO = ResponsePlannerDTO.builder()
-                    .plannerId(planner.getPlannerId())
-                    .creator(planner.getCreator())
-                    .title(planner.getTitle())
-                    .likePlanner(planner.getLikePlanner())
-                    .thumbnail(planner.getThumbnail())
-                    .plannerAccess(planner.getPlannerAccess())
-                    .isDefault(planner.getIsDefault())
-                    .createdAt(planner.getCreatedAt())
-                    .updatedAt(planner.getUpdatedAt())
-                    .cards(responseCardDTOList)
-                    .build();
-
-            return responsePlannerDTO;
-        } else {
-            return null;
-        }
-    }
-
     // 플래너 삭제
-    public int deletePlanner(long plannerId) {
-        Optional<PlannerEntity> planner = plannerRepository.findById(plannerId);
-        if(planner.isEmpty()) {
+    public int deletePlanner(long plannerId, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
             return 0;
         }
-        plannerRepository.deleteById(plannerId);
-        Optional<PlannerEntity> deletedPlanner = plannerRepository.findById(plannerId);
-        if(deletedPlanner.isEmpty()) {
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(plannerId);
+        if(optionalPlannerEntity.isEmpty()) {
+            return 0;
+        }
+        PlannerEntity plannerEntity = optionalPlannerEntity.get();
+        try {
+            plannerRepository.delete(plannerEntity);
             return 1;
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return 0;
         }
     }
@@ -305,13 +280,13 @@ public class PlannerService {
     }
 
     //플래너 복제하기
-    public long postPlannerCopy(PlannerIdDTO plannerIdDTO, String decodedMemberId) {
+    public long postPlannerCopy(RequestPostPlannerCopyDTO requestPostPlannerCopyDTO, String memberId) {
 
-        Optional<MemberEntity> member = memberRepository.findById(decodedMemberId);
+        Optional<MemberEntity> member = memberRepository.findById(memberId);
 
         if(member.isPresent()){
 
-            Optional<PlannerEntity> result = plannerRepository.findById(plannerIdDTO.getPlannerId());
+            Optional<PlannerEntity> result = plannerRepository.findById(requestPostPlannerCopyDTO.getPlannerId());
             if(result.isPresent()) {
                 PlannerEntity planner = result.get();
 
@@ -339,6 +314,7 @@ public class PlannerService {
                         .likePlanner(0)
                         .thumbnail(responsePlannerDTO.getThumbnail())
                         .isDefault(0)
+                        .memberEntity(member.get())
                         .build();
                 plannerRepository.save(copyPlannerEntity);
 

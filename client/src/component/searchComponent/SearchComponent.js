@@ -36,8 +36,16 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await axios.get('http://localhost:8080/api/getPlanners');
-                data = response.data;
+                const response = await axios.get('http://localhost:8080/api/getPlanner/trending');
+                console.log('res : ', response.data);
+                if (response.data.data.length == 0) {
+                } else {
+                    const newData = response.data.data.map((item, idx) => {
+                        const newItem = { ...item, cards: item.cards ? item.cards : [] };
+                        return newItem;
+                    });
+                    data = newData;
+                }
             } catch {
                 const tmp = [
                     { plannerId: 1, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },

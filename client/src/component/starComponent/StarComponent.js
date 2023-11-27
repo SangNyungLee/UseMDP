@@ -6,8 +6,10 @@ import CustomList from '../customLIst/CustomList';
 import CustomListHiddable from '../customLIst/CustomListHiddable';
 import MyLoadMap from '../LoadMap2/MyLoadMap';
 import LoadMap2 from '../LoadMap2/LoadMap';
-
+import { useDispatch } from 'react-redux';
+import { plannerListActions } from '../../store/plannerList';
 export default function StarComponent() {
+    const dispatch = useDispatch();
     const [data, setData] = useState([]);
 
     const [point, setPoint] = useState([-1, -1]);
@@ -20,17 +22,26 @@ export default function StarComponent() {
     useEffect(() => {
         async function getData() {
             try {
-                const result = await axios.get('http://localhost:8080/api/getPlanner/trending');
-                setData(result.data);
+                const response = await axios.get('http://localhost:8080/api/getPlanner/trending');
+                console.log('res : ', response.data);
+                if (response.data.data.length == 0) {
+                } else {
+                    const newData = response.data.data.map((item, idx) => {
+                        const newItem = { ...item, cards: item.cards ? item.cards : [] };
+                        return newItem;
+                    });
+                    setData(newData);
+                    dispatch(plannerListActions.setPlannersInit(newData));
+                }
             } catch {
                 console.log('error');
                 setData([
-                    { plannerId: 1, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 2, creator: '234', title: '230304', likePlanner: 2, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 3, creator: '456', title: '230305', likePlanner: 3, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 4, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 5, creator: '234', title: '230304', likePlanner: 2, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
-                    { plannerId: 6, creator: '456', title: '230305', likePlanner: 3, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cardList: null, description: '123' },
+                    { plannerId: 1, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cards: null, description: '123' },
+                    { plannerId: 2, creator: '234', title: '230304', likePlanner: 2, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cards: null, description: '123' },
+                    { plannerId: 3, creator: '456', title: '230305', likePlanner: 3, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cards: null, description: '123' },
+                    { plannerId: 4, creator: '123', title: '230303', likePlanner: 1, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cards: null, description: '123' },
+                    { plannerId: 5, creator: '234', title: '230304', likePlanner: 2, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cards: null, description: '123' },
+                    { plannerId: 6, creator: '456', title: '230305', likePlanner: 3, thumbnail: base64Str, createAt: '2023-03-02T15:00:00.000+00:00', cards: null, description: '123' },
                 ]);
             }
         }

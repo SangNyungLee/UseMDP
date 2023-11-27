@@ -1,9 +1,24 @@
 import { useState } from "react";
-import ChecklistLi from "./ChecklistLi";
+import CardListLi from "./CardListLi";
 import { useDispatch } from "react-redux";
 import { calendarActions } from "../../../store/calendar";
+import { plannerListActions } from "../../../store/plannerList";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
 
-export default function PlannerListLi({plan,firstIndex}){
+const _PlannerBox = styled.div`
+    display: flex;
+`
+
+const _DelButton = styled.button`
+    margin-left: 5px;
+    /* background-color: skyblue;
+    border: none; */
+`;
+
+export default function PlannerListLi({planner}){
+    const { home } = useSelector( state => state.calendar);
+    const plannerList = useSelector ( state => state.plannerList);
     const [ visible, setVisible ] = useState(false);
     const dispatch = useDispatch();
 
@@ -20,19 +35,31 @@ export default function PlannerListLi({plan,firstIndex}){
     }
 
     // const checklist = defaultLoad(plan.cards);
-    const checklist = plan.cards;
+    const { cards, plannerId, title } = planner;
 
     const handleClick = () => {
         setVisible( prev => !prev )
-        dispatch(calendarActions.setHome([firstIndex]))
+        dispatch(calendarActions.setHome([plannerId]))
+    }
+
+    const delPlanner = (e) => {
+        e.stopPropagation()
+        dispatch(plannerListActions.delPlanner(plannerId))
+        if (plannerId === home[0]){
+            const otherPlanner = plannerList.find( planner => planner.plannerId !== plannerId )
+            dispatch(calendarActions.setHome([otherPlanner.plannerId]))
+        }
     }
 
     return (
     <>
-        <div onClick={handleClick}>{plan.title}</div>
+        <_PlannerBox>
+            <div onClick={handleClick}>{title}</div>
+            <_DelButton onClick={ e => delPlanner(e)}>x</_DelButton>
+        </_PlannerBox>
         { visible && <ul>
-            { checklist.map((todo,id) => <li key={id}>
-                    <ChecklistLi todo={todo} firstIndex={firstIndex} secondIndex={id}/>
+            { cards.map((cardList,id) => <li key={id}>
+                    <CardListLi cardList={cardList} plannerId={plannerId} cardStatus={id}/>
                 </li>
             )}
         </ul>
