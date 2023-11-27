@@ -1,21 +1,21 @@
-import axios from "axios";
-import styled from "styled-components";
-import base64Str from "../../constant/ImageBase64";
-import LoadMap from "../LoadMap";
-import LoadMap2 from "../LoadMap2/LoadMap";
-import MyLoadMap from "../LoadMap2/MyLoadMap";
-import { Container, Row, Col, Spinner, Button } from "react-bootstrap";
-import RightClicker from "../post/RightClicker/RightClicker";
-import { useEffect, useState } from "react";
-import CustomList from "../customLIst/CustomList";
-import CustomListHiddable from "../customLIst/CustomListHiddable";
+import axios from 'axios';
+import base64Str from '../../constant/ImageBase64';
+import LoadMap2 from '../LoadMap2/LoadMap';
+import MyLoadMap from '../LoadMap2/MyLoadMap';
+import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
+import RightClicker from '../post/RightClicker/RightClicker';
+import { useEffect, useState } from 'react';
+import CustomList from '../customLIst/CustomList';
+import CustomListHiddable from '../customLIst/CustomListHiddable';
+import { useDispatch } from 'react-redux';
+import { plannerListActions } from '../../store/plannerList';
 export default function DefaultComponent() {
+    const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
     const [hide, setHide] = useState(true);
 
     const [rightClickData, setRightClickData] = useState([]);
-
 
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
@@ -25,8 +25,17 @@ export default function DefaultComponent() {
     useEffect(() => {
         async function getData() {
             try {
-                const result = await axios.get('http://localhost:8080/api/getPlanner/trending');
-                setData(result.data);
+                const response = await axios.get('http://localhost:8080/api/getPlanner/default');
+                console.log('res : ', response.data);
+                if (response.data.data.length == 0) {
+                } else {
+                    const newData = response.data.data.map((item, idx) => {
+                        const newItem = { ...item, cards: item.cards ? item.cards : [] };
+                        return newItem;
+                    });
+                    setData(newData);
+                    dispatch(plannerListActions.setPlannersInit(newData));
+                }
             } catch {
                 console.log('error');
                 setData([

@@ -61,7 +61,9 @@ public class CardService {
         CardEntity savedCardEntity = cardRepository.save(cardEntity);
         List<RequestChecklistDTO> checklistDTOS = requestPostCardDTO.getChecklists();
 
+
         List<ChecklistEntity> checklistEntities = checklistDTOS.stream().map(checklistDTO -> dtoConversionUtil.toChecklistEntity(checklistDTO, savedCardEntity)).toList();
+
         checklistRepository.saveAll(checklistEntities);
         return 1;
     }
