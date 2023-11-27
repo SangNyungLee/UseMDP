@@ -2,22 +2,20 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
+import com.example.demo.dto.RequestDTO.RequestPostJSONPlannerDTO;
 import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
 import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
-import com.example.demo.entity.PlannerEntity;
 import com.example.demo.service.PlannerService;
 import com.example.demo.utils.EncodingConversionUtil;
 import com.example.demo.utils.JwtTokenUtil;
 import com.example.demo.utils.SwaggerPlannerAPI;
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -35,10 +33,10 @@ public class PlannerController implements SwaggerPlannerAPI {
     public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getAllPlanners() {
         List<ResponsePlannerDTO> data = plannerService.getAllPlanners();
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
-                        .resultCode("200")
-                        .message("모든 플래너들 불러오기 성공")
-                        .data(data)
-                        .build());
+                .resultCode("200")
+                .message("모든 플래너들 불러오기 성공")
+                .data(data)
+                .build());
     }
 
     //인기순 정렬된 플래너들 가져오기
@@ -81,10 +79,10 @@ public class PlannerController implements SwaggerPlannerAPI {
                     .build());
         }
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<ResponsePlannerDTO>builder()
-                        .resultCode("200")
-                        .message("요청한 플래너 불러오기 성공")
-                        .data(data)
-                        .build());
+                .resultCode("200")
+                .message("요청한 플래너 불러오기 성공")
+                .data(data)
+                .build());
     }
 
     // 특정 사용자의 모든 플래너 가져오기
@@ -93,10 +91,10 @@ public class PlannerController implements SwaggerPlannerAPI {
     public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getPlanners(@CookieValue(name = "auth", required = false) String token) {
         if(token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
-                            .resultCode("401")
-                            .message("로그인 되지 않은 사용자입니다")
-                            .data(null)
-                            .build());
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
         }
         boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
         if(tokenExpired) {
@@ -153,6 +151,43 @@ public class PlannerController implements SwaggerPlannerAPI {
         return ResponseEntity.status(HttpStatus.CREATED).body(APIResponseDTO.<Long>builder()
                 .resultCode("201")
                 .message("플래너 생성 완료, 생성된 plannerId 반환")
+                .data(result)
+                .build());
+    }
+
+    // JSON으로 플래너 생성
+    @Override
+    @PostMapping("/api/postPlanner/json")
+    public ResponseEntity<APIResponseDTO<Long>> postJSONPlanner(@RequestBody RequestPostJSONPlannerDTO requestPostJSONPlannerDTO, @CookieValue(name = "auth", required = false) String token) {
+        if(token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
+        }
+
+        boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
+        if(tokenExpired) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+                    .resultCode("401")
+                    .message("만료된 토큰입니다. 다시 로그인하세요")
+                    .data(null)
+                    .build());
+        }
+        String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+
+        long result = plannerService.postJSONPlanner(requestPostJSONPlannerDTO, memberId);
+        if(result == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponseDTO.<Long>builder()
+                    .resultCode("400")
+                    .message("플래너 생성 실패")
+                    .data(result)
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(APIResponseDTO.<Long>builder()
+                .resultCode("201")
+                .message("플래너 생성 성공")
                 .data(result)
                 .build());
     }

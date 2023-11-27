@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    home: [0],
+    home: [1],
     quote: [0],
     // [ plannerId, cardStatusIndex, cardId ] 형태로 사용
 }

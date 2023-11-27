@@ -9,11 +9,11 @@ const grid = 8;
 // (v,k) => k 를 적어 넣으면 k 값을 0부터 count - 1 까지 for문 돌리듯 대응시킨다 (관용적으로 쓴다 봐도 될듯)
 // 가짜 데이터 생성기, coverColor, title이 있음.
 //title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
-export function getItems (count, offset = 0, separatorStr = 'TODO'){
+export function getItems(count, offset = 0, separatorStr = 'TODO') {
     return Array.from({ length: count }, (v, k) => k).map((k) => {
         const r1 = Math.floor(Math.random() * 31);
         const r2 = Math.floor(Math.random() * 3) + 1;
-        const currentTime = new Date()
+        const currentTime = new Date();
         return {
             cardId: v4(),
             post: ``,
@@ -26,27 +26,27 @@ export function getItems (count, offset = 0, separatorStr = 'TODO'){
             cardStatus: separatorStr,
             checklists: [
                 {
-                    checklistId: ( k + offset) * 2,
-                    checked: false,
-                    title: "done",
+                    checklistId: (k + offset) * 2,
+                    checked: 0,
+                    title: 'done',
                     createdAt: currentTime.toISOString(),
                     updatedAt: currentTime.toISOString(),
                 },
-                { 
-                    checklistId: ( k + offset) * 2 + 1,
-                    checked: false,
-                    title: "jpa",
+                {
+                    checklistId: (k + offset) * 2 + 1,
+                    checked: 0,
+                    title: 'jpa',
                     createdAt: currentTime.toISOString(),
                     updatedAt: currentTime.toISOString(),
-                }
+                },
             ],
             intOrder: offset,
             sourceResource: null,
-        }
+        };
     });
 }
 
-export function getItemStyle (isDragging, draggableStyle) {
+export function getItemStyle(isDragging, draggableStyle) {
     return {
         // some basic styles to make the items look a bit nicer
         userSelect: 'none',
@@ -62,7 +62,7 @@ export function getItemStyle (isDragging, draggableStyle) {
     };
 }
 
-export function getListStyle (isDraggingOver){
+export function getListStyle(isDraggingOver) {
     return {
         background: isDraggingOver ? 'lightblue' : 'lightgrey',
         padding: grid,
@@ -70,24 +70,24 @@ export function getListStyle (isDraggingOver){
     };
 }
 
-export function getOneCard(offset,status){
-    return getItems(1,offset,status)[0]
+export function getOneCard(offset, status) {
+    return getItems(1, offset, status)[0];
 }
 
-export function getOneDefaultPlanner(){
-    const cards = [getItems(8,0,"TODO"), getItems(5, 8, "DOING"), getItems(5, 13, "DONE")]
+export function getOneDefaultPlanner() {
+    const cards = [getItems(8, 0, 'TODO'), getItems(5, 8, 'DOING'), getItems(5, 13, 'DONE')];
     const currentTime = new Date();
     const planner = {
         plannerId: 0,
-        creator: "default user name",
-        title: "useMDP",
+        creator: 'default user name',
+        title: 'useMDP',
         likePlanner: 0,
-        thumbnail: "",
-        plannerAccess: "PRIVATE",
+        thumbnail: '',
+        plannerAccess: 'PRIVATE',
         isDefault: 0,
         createdAt: currentTime.toISOString(),
         updatedAt: currentTime.toISOString(),
         cards,
     };
-    return planner
+    return planner;
 }

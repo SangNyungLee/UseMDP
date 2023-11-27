@@ -47,8 +47,8 @@ const plannerListSlice = createSlice({
         replaceCards(state, action) {
             const { id, cards } = action.payload;
 
-            const newState = state.map((plan) => (plan.plannerId === id ? { ...plan, cards: cards } : plan));
-            return newState;
+            state = state.map((plan) => (plan.plannerId === id ? { ...plan, cards: cards } : plan));
+            return state;
         },
         updateCard(state, action) {
             const { cardId, ...rest } = action.payload;

@@ -11,7 +11,7 @@ import copy from 'fast-copy';
 import { plannerListActions } from '../../../store/plannerList';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
-
+import axios from 'axios';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
@@ -42,7 +42,7 @@ const _ChecklistContainer = styled.div`
     display: flex;
 `;
 
-export default function CalendarModal({ selectedCard, modalStatus, modalClose }) {
+export default function CalendarModal({ selectedCard, modalStatus, modalClose, plannerId }) {
     //구조 분해할당
     const [show, setShow] = useState(false);
 
@@ -58,40 +58,56 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
 
     const dispatch = useDispatch();
 
-    const handleClose = () => {
+    const handleCloseWithoutSave = () => {
+        modalClose();
+        setShow(false);
+    };
+
+    const handleClose = async () => {
+        const newChecklist = [{ title: checklists[0].title, checked: checklists[0].checked }];
+        console.log(checklists);
         const newCardItem = {
             ...selectedCard,
             title,
             post,
-            checklists,
+            checklists: newChecklist,
+            plannerId,
             post,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
             coverColor,
         };
-
-        dispatch(plannerListActions.updateCard(newCardItem));
-        modalClose();
-        setShow(false);
+        console.log('MODAL에서 보내는 item', newCardItem);
+        try {
+            const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem, { withCredentials: true });
+            console.log(result.data);
+            dispatch(plannerListActions.updateCard(newCardItem));
+            modalClose();
+            setShow(false);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     //체크박스 온체인지
     const handleCheckboxChange = (index, value) => {
+        const changeValue = value ? 1 : 0;
         setChecklists((prevCheckLists) => {
             const updatedCheckLists = copy(prevCheckLists);
-            updatedCheckLists[index]['checked'] = value;
+            updatedCheckLists[index]['checked'] = changeValue;
             return updatedCheckLists;
         });
     };
 
     const handleProgessBar = () => {
-        const done = checklists.filter((item) => item.checked === true).length;
+        const done = checklists.filter((item) => item.checked === 1).length;
         const total = checklists.length;
         const progress = (done / total) * 100;
         return progress;
     };
 
     useEffect(() => {
+        console.log('HI');
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
         setTitle(title);
         setPost(post);
@@ -116,7 +132,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
             ...prev,
             {
                 checklistId: prev.checklistId + 1,
-                checked: false,
+                checked: 0,
                 title: 'default',
                 createdAt: currentTime.toISOString(),
                 updatedAt: currentTime.toISOString(),
@@ -144,10 +160,10 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
-
+    console.log('modal checklist', checklists);
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleCloseWithoutSave}>
                 <Modal.Header style={{ backgroundColor: coverColor }} onClick={handleHeaderClick} closeButton>
                     {isModalOpen && (
                         <_ColorPickerModal style={modalPosition}>
@@ -180,7 +196,7 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose })
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>

@@ -2,12 +2,14 @@ package com.example.demo.utils;
 
 import com.example.demo.dto.RequestDTO.RequestChecklistDTO;
 import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
+import com.example.demo.dto.RequestDTO.RequestPostJSONCardDTO;
 import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.entity.CardEntity;
 import com.example.demo.entity.ChecklistEntity;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.entity.PlannerEntity;
 import com.example.demo.repository.CardRepository;
 import com.example.demo.repository.ChecklistRepository;
@@ -20,6 +22,10 @@ import java.util.Optional;
 
 @Component
 public class DTOConversionUtil {
+
+    @Autowired
+    private ChecklistRepository checklistRepository;
+
     public ResponsePlannerDTO toResponsePlannerDTO(PlannerEntity plannerEntity) {
         List<ResponseCardDTO> responseCardDTOS = plannerEntity.getCards().stream().map(this::toResponseCardDTO).toList();
         return ResponsePlannerDTO.builder()
@@ -63,12 +69,13 @@ public class DTOConversionUtil {
                 .build();
     }
 
-    public PlannerEntity toPlannerEntity(RequestPostPlannerDTO requestPostPlannerDTO) {
+    public PlannerEntity toPlannerEntity(RequestPostPlannerDTO requestPostPlannerDTO, MemberEntity memberEntity) {
         return PlannerEntity.builder()
                 .creator(requestPostPlannerDTO.getCreator())
                 .title(requestPostPlannerDTO.getTitle())
                 .thumbnail(requestPostPlannerDTO.getThumbnail())
                 .plannerAccess(requestPostPlannerDTO.getPlannerAccess())
+                .memberEntity(memberEntity)
                 .build();
     }
 
@@ -93,11 +100,13 @@ public class DTOConversionUtil {
                     .cardEntity(cardEntity)
                     .build();
         }
+        Optional<ChecklistEntity> optionalChecklistEntity = checklistRepository.findById(requestChecklistDTO.getChecklistId());
         return ChecklistEntity.builder()
                 .checklistId(requestChecklistDTO.getChecklistId())
                 .checked(requestChecklistDTO.getChecked())
                 .title(requestChecklistDTO.getTitle())
                 .cardEntity(cardEntity)
+                .createdAt(optionalChecklistEntity.get().getCreatedAt())
                 .build();
     }
 }
