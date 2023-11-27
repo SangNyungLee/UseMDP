@@ -5,9 +5,43 @@ import { calendarActions } from "../../../store/calendar";
 import { plannerListActions } from "../../../store/plannerList";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { darken } from "polished";
 
-const _PlannerBox = styled.div`
+const _PlannerTitle = styled.div`
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+`
+
+const _PlannerLi = styled.div`
+    margin: 5px;
+    max-width: 240px;
+`
+
+const _PlannerDiv = styled.div`
     display: flex;
+    border-radius: 20px;
+    background-color: ${(props) => props.$focus ? darken(0.1, props.color) : props.color };
+    padding: 10px;
+    margin: 5px;
+
+    &:hover {
+        background-color: ${(props) => darken(0.1, props.color)};
+    }
+
+    &::before {
+        content: ">";
+        margin-right: 8px;
+        display: inline-block;
+        transform: ${( props) => ( props.visible ? 'rotate(90deg)' : 'none')}; /* visible이 true일 때 회전, 그 외에는 회전하지 않음 */
+        transform-origin: center;
+    }
+`;
+
+const _PlannerListUl = styled.ul`
+    list-style-type: none;
+    padding: 5px;
+    margin-left: 10px;
 `
 
 const _DelButton = styled.button`
@@ -52,18 +86,21 @@ export default function PlannerListLi({planner}){
     }
 
     return (
-    <>
-        <_PlannerBox>
-            <div onClick={handleClick}>{title}</div>
-            <_DelButton onClick={ e => delPlanner(e)}>x</_DelButton>
-        </_PlannerBox>
-        { visible && <ul>
-            { cards.map((cardList,id) => <li key={id}>
-                    <CardListLi cardList={cardList} plannerId={plannerId} cardStatus={id}/>
-                </li>
-            )}
-        </ul>
-        }
-    </>
+        <_PlannerLi>
+            <_PlannerDiv
+                $visible={visible ? 1 : undefined}
+                color={"#FFD6DA"}
+                onClick={handleClick}
+                $focus={plannerId == home[0] ? 1 : undefined}>
+                <_PlannerTitle>{title}</_PlannerTitle>
+                <_DelButton onClick={ e => delPlanner(e)}>x</_DelButton>
+            </_PlannerDiv>
+            { visible && <_PlannerListUl>
+                { cards.map((cardList,id) =>
+                    <CardListLi cardList={cardList} plannerId={plannerId} cardStatus={id} key={id}/>
+                )}
+            </_PlannerListUl>
+            }
+        </_PlannerLi>
     )
 }

@@ -15,11 +15,6 @@ export default function DroppableComponent(props){
     const deleteCard = (e, id) => {
         e.stopPropagation();
 
-        console.log("planner",planner);
-        console.log("id",id);
-        console.log("cardstatus",cardStatusIndex);
-        console.log("quote",quote[0]);
-
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
         for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {
@@ -42,7 +37,7 @@ export default function DroppableComponent(props){
         const card = getItems(1,planner[cardStatusIndex].length,cardStatus)[0]
         dispatch(plannerListActions.addCard({
             plannerId: quote[0],
-            status: cardStatusIndex,
+            cardStatusIndex,
             card,
         }))
     }
