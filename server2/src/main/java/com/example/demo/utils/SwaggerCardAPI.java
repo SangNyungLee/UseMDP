@@ -30,32 +30,10 @@ public interface SwaggerCardAPI {
     @Operation(
             summary = "카드 순서 intOrder 및 cardStatus 수정",
             description = "플래너 아이디로 기존 카드의 순서와 상태 수정")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    description = "실패 = 0, 성공 = 1",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "integer")
-                            )
-                    }
-            )
-    })
-    int changeCardOrder(@RequestBody RequestChangeCardOrderDTO requestChangeCardOrderDTO);
+    ResponseEntity<APIResponseDTO<Integer>> changeCardOrder(@RequestBody RequestChangeCardOrderDTO requestChangeCardOrderDTO,  @CookieValue(name = "auth", required = false) String token);
 
     @Operation(
             summary = "특정 카드 삭제",
             description = "카드 아이디로 해당 카드 삭제")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    description = "실패 = 0, 성공 = 1",
-                    content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "integer")
-                            )
-                    }
-            )
-    })
-    int deleteCard(@PathVariable String cardId);
+    ResponseEntity<APIResponseDTO<Integer>> deleteCard(@PathVariable String cardId,  @CookieValue(name = "auth", required = false) String token);
 }
