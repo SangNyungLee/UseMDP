@@ -22,7 +22,7 @@ import java.util.List;
 @Tag(name = "Card Controller", description = "Card CRUD API")
 public interface SwaggerCardAPI {
     @Operation(summary = "카드 생성", description = "플래너 아이디로 새로운 카드 생성")
-    ResponseEntity<APIResponseDTO<Integer>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token);
+    ResponseEntity<APIResponseDTO<String>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(summary = "카드 수정", description = "플래너 아이디로 기존 카드 수정")
     ResponseEntity<APIResponseDTO<Integer>> patchCard(@RequestBody RequestPatchCardDTO requestPatchCardDTO, @CookieValue(name = "auth", required = false) String token);
