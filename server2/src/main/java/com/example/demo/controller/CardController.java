@@ -29,6 +29,7 @@ public class CardController implements SwaggerCardAPI {
     public ResponseEntity<APIResponseDTO<String>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token) {
         System.out.println("token = " + token);
         System.out.println(token == null);
+        System.out.println(requestPostCardDTO.getChecklists().get(0).toString() ) ;
         if(token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<String>builder()
                     .resultCode("401")
@@ -86,7 +87,6 @@ public class CardController implements SwaggerCardAPI {
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
         int result = cardService.patchCard(requestPatchCardDTO, memberId);
-        System.out.println("requestPostCardDTO : "+ requestPatchCardDTO.getChecklists().get(0).getTitle()+result);
         if(result == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<Integer>builder()
                     .resultCode("404")

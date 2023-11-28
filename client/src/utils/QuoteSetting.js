@@ -64,9 +64,12 @@ export function getItemStyle(isDragging, draggableStyle) {
 
 export function getListStyle(isDraggingOver) {
     return {
-        background: isDraggingOver ? 'lightblue' : 'lightgrey',
+        background: isDraggingOver ? 'lightblue' : '#f1f3f5',
         padding: grid,
         width: 250,
+        borderRadius: '10px',
+        marginRight: '10px',
+        minHeight: 'auto', // Set minHeight to 'auto' to adjust the height based on content
     };
 }
 
