@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { planActions } from '../../../store/planner';
 import { planInfoActions } from '../../../store/plannerInfo';
+import { getPlannerBtoA } from '../../../utils/DataAxios';
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
 const RightClicker = (props) => {
     //실제 예제에서는 여러 방법으로 Ref를 가져와야함.
@@ -17,24 +18,21 @@ const RightClicker = (props) => {
     //일단 로컬에 저장.
     const saveState = async () => {
         const btoaId = btoa(plannerId);
-        //const result = await axios(`/api/planner/${btoaId}`);
-        const result = await axios(`/plannerTest`);
+        const result = await getPlannerBtoA(btoaId);
+        // const result = await axios(`/plannerTest`);
         DataDownload(plannerTitle, result.data);
     };
 
     const toPlannerLink = async () => {
         const btoaId = btoa(plannerId);
         // const result = await axios(`/api/planner/${btoaId}`);
-        const result = await axios(`/plannerTest`);
+        const result = await getPlannerBtoA(btoaId);
         const Planner = result.data[0];
-        console.log('plan', Planner);
         const { cardList, ...newPlanner } = Planner;
-        console.log('cardList', cardList);
         dispatch(planActions.setPlansInit([cardList, [], []]));
         dispatch(planInfoActions.setPlanInfoInit(newPlanner));
         navigate('/planner');
     };
-    console.log(props);
 
     return (
         <ListGroup style={{ position: 'fixed', zIndex: 99, top: props.point[0], left: props.point[1] }}>

@@ -15,6 +15,7 @@ import DroppableComponent from './DroppableComponent';
 import useLocalStorage from 'use-local-storage';
 
 import axios from 'axios';
+import { getPlannerBtoA } from '../../utils/DataAxios';
 const _QuoteAppContainer = styled.div`
     margin: '20px';
     display: flex;
@@ -71,7 +72,7 @@ export default function QuoteApp() {
     // }, [localdata, localQuote]);
     useEffect(() => {
         async function fetchData() {
-            const result = await axios(`http://localhost:8080/api/getPlanner/${btoa(plannerId)}`);
+            const result = await getPlannerBtoA(btoa(plannerId));
             const cardList = result.data.data.cards;
             const cards = [[], [], []];
             for (let i = 0; i < cardList.length; i++) {

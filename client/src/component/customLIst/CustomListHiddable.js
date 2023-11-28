@@ -1,22 +1,24 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import RightClicker from '../post/RightClicker/RightClicker';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { pointActions } from '../../store/pointer';
 export default function CustomListHiddable(props) {
+    const dispatch = useDispatch();
+    const pointer = useSelector((state) => state.pointer);
     const [hide, setHide] = useState(true);
     const [rightClickData, setRightClickData] = useState([]);
-    console.log(props.datas);
     const data = props.datas;
-    const [point, setPoint] = props.points;
+
     const handleRightClick = (e, newTitle, newId) => {
         e.preventDefault();
         setRightClickData([newTitle, newId]);
-        setPoint([e.clientY, e.clientX]);
+        dispatch(pointActions.setPoint([e.clientY, e.clientX]));
     };
     const CustomLoadMap = props.loadMap;
     return (
         <>
-            {point[0] !== -1 && point[1] !== -1 ? <RightClicker rightClickData={rightClickData} point={point}></RightClicker> : null}
+            {pointer[0] !== -1 && pointer[1] !== -1 ? <RightClicker rightClickData={rightClickData} point={pointer}></RightClicker> : null}
 
             {data.map((_, idx) => {
                 // 컨테이너를 만든다.

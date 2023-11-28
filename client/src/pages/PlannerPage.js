@@ -10,7 +10,6 @@ const _Font = styled.div`
 export default function PlannerPage() {
     const dispatch = useDispatch();
     const handlePoint = () => {
-        console.log('point clear');
         dispatch(pointActions.clearPoint());
     };
 

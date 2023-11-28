@@ -9,13 +9,11 @@ import CustomList from '../customLIst/CustomList';
 import CustomListHiddable from '../customLIst/CustomListHiddable';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
+import { getPlannerByBasic } from '../../utils/DataAxios';
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
-    const [hide, setHide] = useState(true);
-
-    const [rightClickData, setRightClickData] = useState([]);
 
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
@@ -25,7 +23,7 @@ export default function DefaultComponent() {
     useEffect(() => {
         async function getData() {
             try {
-                const response = await axios.get('http://localhost:8080/api/getPlanner/default');
+                const response = await getPlannerByBasic();
                 console.log('res : ', response.data);
                 if (response.data.data.length == 0) {
                 } else {
@@ -125,7 +123,7 @@ export default function DefaultComponent() {
         return (
             <div onClick={handlePoint}>
                 <h2>기본로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap2} points={[point, setPoint]}></CustomListHiddable>
+                <CustomListHiddable datas={data} loadMap={LoadMap2}></CustomListHiddable>
 
                 <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
                 <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
