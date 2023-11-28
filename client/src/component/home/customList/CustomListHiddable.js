@@ -1,8 +1,9 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useState } from 'react';
-import RightClicker from '../post/RightClicker/RightClicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { pointActions } from '../../store/pointer';
+import { pointActions } from '../../../store/pointer';
+import RightClicker from '../../post/RightClicker/RightClicker';
+
 export default function CustomListHiddable(props) {
     const dispatch = useDispatch();
     const pointer = useSelector((state) => state.pointer);

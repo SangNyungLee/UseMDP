@@ -44,7 +44,7 @@ const _Star = styled.img`
     margin-right: 2px;
 `;
 
-export default function LoadMap2(props) {
+export default function LoadMap(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;

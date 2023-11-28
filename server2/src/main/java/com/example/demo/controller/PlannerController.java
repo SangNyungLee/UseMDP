@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.PlannerIdDTO;
-import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
-import com.example.demo.dto.RequestDTO.RequestPostJSONPlannerDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
+import com.example.demo.dto.RequestDTO.*;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.service.PlannerService;
@@ -227,6 +224,43 @@ public class PlannerController implements SwaggerPlannerAPI {
                 .resultCode("201")
                 .message("플래너 복사 및 생성 성공")
                 .data(result)
+                .build());
+    }
+
+    //특정 플래너에 카드들 생성 후 해당 플래너 반환
+    @Override
+    @PostMapping("/api/postPlannerWithCards")
+    public ResponseEntity<APIResponseDTO<ResponsePlannerDTO>> postPlannerWithCards(@RequestBody RequestPostPlannerWithCardsDTO requestPostPlannerWithCardsDTO, @CookieValue(name = "auth", required = false) String token) {
+        if(token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<ResponsePlannerDTO>builder()
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
+        }
+
+        boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
+        if(tokenExpired) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<ResponsePlannerDTO>builder()
+                    .resultCode("401")
+                    .message("만료된 토큰입니다. 다시 로그인하세요")
+                    .data(null)
+                    .build());
+        }
+
+        String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+        ResponsePlannerDTO data = plannerService.postPlannerWithCards(requestPostPlannerWithCardsDTO, memberId);
+        if(data == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(APIResponseDTO.<ResponsePlannerDTO>builder()
+                    .resultCode("204")
+                    .message("memberId 혹은 plannerId 존재하지 않음")
+                    .data(data)
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(APIResponseDTO.<ResponsePlannerDTO>builder()
+                .resultCode("201")
+                .message("planner 생성완료")
+                .data(data)
                 .build());
     }
 

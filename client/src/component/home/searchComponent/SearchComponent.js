@@ -2,10 +2,10 @@ import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button, Spinner } from 'react-bootstrap';
-import CustomList from '../customLIst/CustomList';
-import base64Str from '../../constant/ImageBase64';
+import CustomList from '../customList/CustomList';
+import base64Str from '../../../constant/ImageBase64';
 import axios from 'axios';
-import LoadMap2 from '../LoadMap2/LoadMap';
+import LoadMap from '../../LoadMap/LoadMap';
 
 const SearchContainer = styled.div`
     width: 75vw;
@@ -227,7 +227,7 @@ export default function SearchComponent() {
                 </SearchContainer>
                 <hr></hr>
                 <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>
-                <CustomList datas={filteredDatas} loadMap={LoadMap2}></CustomList>
+                <CustomList datas={filteredDatas} loadMap={LoadMap}></CustomList>
             </div>
         );
     }

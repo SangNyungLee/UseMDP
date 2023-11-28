@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import base64Str from '../../constant/ImageBase64';
+import base64Str from '../../../constant/ImageBase64';
 import { Spinner } from 'react-bootstrap';
-import CustomList from '../customLIst/CustomList';
-import CustomListHiddable from '../customLIst/CustomListHiddable';
-import MyLoadMap from '../LoadMap2/MyLoadMap';
-import LoadMap2 from '../LoadMap2/LoadMap';
+import CustomList from '../customList/CustomList';
+import CustomListHiddable from '../customList/CustomListHiddable';
+import MyLoadMap from '../../LoadMap/MyLoadMap';
+import LoadMap from '../../LoadMap/LoadMap';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
 import { getPlannerByTrend } from '../../utils/DataAxios';
@@ -54,7 +54,7 @@ export default function StarComponent() {
         return (
             <div style={{ padding: '15px' }}>
                 <h2>인기 로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap2}></CustomListHiddable>
+                <CustomListHiddable datas={data} loadMap={LoadMap}></CustomListHiddable>
                 {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}
 

@@ -54,7 +54,7 @@ public class PlannerEntity {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<CardEntity> cards = new ArrayList<>();
 

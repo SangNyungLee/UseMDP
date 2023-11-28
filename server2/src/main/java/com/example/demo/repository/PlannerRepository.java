@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
     List<PlannerEntity> findByMemberEntity_MemberId(String memberId);
@@ -21,4 +22,7 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
 
     @Query(value = "UPDATE PlannerEntity p SET p.likePlanner = p.likePlanner - 1 WHERE p.plannerId = :plannerId")
     int unlikePlanner(@Param("plannerId") long plannerId);
+
+    @Query("SELECT p FROM PlannerEntity p LEFT JOIN FETCH p.cards WHERE p.plannerId = :plannerId")
+    Optional<PlannerEntity> findPlannerWithCardsById(@Param("plannerId") long plannerId);
 }
