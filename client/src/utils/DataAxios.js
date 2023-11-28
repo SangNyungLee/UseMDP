@@ -29,11 +29,10 @@ export async function postPlannerCards(unspecifiedplanner){
     const res = await axios({
         method: 'POST',
         url: getURL('/api/postPlannerWithCards'),
-        data: {
-            planner: unspecifiedplanner,
-        },
+        data: unspecifiedplanner,
         withCredentials: true
     })
+    console.log("res",res)
     return res.data.data
 }
 
