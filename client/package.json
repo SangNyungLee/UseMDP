@@ -44,6 +44,8 @@
     "react-select": "^5.8.0",
     "react-social-login-buttons": "^3.9.1",
     "styled-components": "^6.1.1",
+    "sweetalert2": "^11.10.1",
+    "sweetalert2-react-content": "^5.0.7",
     "use-local-storage": "^3.0.0",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
