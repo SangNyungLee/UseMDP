@@ -11,7 +11,6 @@ export default function WelcomePage() {
 
 	return (
 		<>
-			<Header />
 			<Container className='px-5' style={{ height: '600px', paddingTop: '180px' }}>
 				<Row xs={1} sm={1} md={2}>
 					<Col className='mb-5'>

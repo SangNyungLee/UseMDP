@@ -4,10 +4,11 @@ import HomeHeader from '../HomeHeader';
 import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
 import StarComponent from '../starComponent/StarComponent';
-import HomeComponent from '../homeComponent/HomeComponent';
 import MyCalendar from '../home/MyCalendar';
 import styled from 'styled-components';
 import SearchComponent from '../searchComponent/SearchComponent';
+import HomeComponent from '../home/calendar/HomeComponent';
+import CalendarSideBar from '../home/calendar/CalendarSideBar';
 
 const _Button = styled.button`
     border: none;
@@ -24,15 +25,14 @@ const _Button = styled.button`
 
 const _Flex = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    width: 100vw;
     margin-top: 80px;
 `;
 
 const _FlexNavi = styled.div`
     display: flex;
     flex-direction: column;
-    position: fixed;
-    width: 100%;
     align-items: flex-start;
 `;
 
@@ -67,34 +67,36 @@ export default function DefaultLoadMap() {
         <>
             <HomeHeader />
             <_Flex>
-                <_FlexNavi>
-                    <_Button className="default" onClick={() => handleNumber(1)}>
-                        <i className="material-icons" style={{ fontSize: '40px' }}>
-                            description
-                        </i>
-                    </_Button>
-                    <_Button className="default" onClick={() => handleNumber(2)}>
-                        <i className="material-icons" style={{ fontSize: '40px' }}>
-                            star
-                        </i>
-                    </_Button>
-                    <_Button className="default" onClick={() => handleNumber(3)}>
-                        <i className="material-icons" style={{ fontSize: '40px' }}>
-                            account_circle
-                        </i>
-                    </_Button>
-                    <_Button className="default" onClick={() => handleNumber(4)}>
-                        <i className="material-icons" style={{ fontSize: '40px' }}>
-                            calendar_month
-                        </i>
-                    </_Button>
-                    <_Button className="default" onClick={() => handleNumber(5)}>
-                        <i className="material-icons" style={{ fontSize: '40px' }}>
-                            search
-                        </i>
-                    </_Button>
-                </_FlexNavi>
-
+                <div style={{ display: 'flex' }}>
+                    <_FlexNavi>
+                        <_Button className="default" onClick={() => handleNumber(1)}>
+                            <i class="material-icons" style={{ fontSize: '40px' }}>
+                                description
+                            </i>
+                        </_Button>
+                        <_Button className="default" onClick={() => handleNumber(2)}>
+                            <i class="material-icons" style={{ fontSize: '40px' }}>
+                                star
+                            </i>
+                        </_Button>
+                        <_Button className="default" onClick={() => handleNumber(3)}>
+                            <i class="material-icons" style={{ fontSize: '40px' }}>
+                                account_circle
+                            </i>
+                        </_Button>
+                        <_Button className="default" onClick={() => handleNumber(4)}>
+                            <i class="material-icons" style={{ fontSize: '40px' }}>
+                                calendar_month
+                            </i>
+                        </_Button>
+                        <_Button className="default" onClick={() => handleNumber(5)}>
+                            <i class="material-icons" style={{ fontSize: '40px' }}>
+                                search
+                            </i>
+                        </_Button>
+                    </_FlexNavi>
+                    <CalendarSideBar />
+                </div>
                 <_RenderComponent>{renderComponent()}</_RenderComponent>
             </_Flex>
         </>
