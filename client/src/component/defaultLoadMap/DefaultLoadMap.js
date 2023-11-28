@@ -6,6 +6,7 @@ import HomeComponent from "../homeComponent/HomeComponent";
 import MyCalendar from "../home/MyCalendar";
 import SearchComponent from "../searchComponent/SearchComponent";
 import styled from "styled-components";
+import CalendarSideBar from "../home/calendar/CalendarSideBar";
 
 const _Button = styled.button`
   border: none;

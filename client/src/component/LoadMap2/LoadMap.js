@@ -60,41 +60,10 @@ export default function LoadMap2(props) {
 
   console.log("loadmap 의 like" + like);
 
-<<<<<<< HEAD
   const handleClick = async () => {
     const btoaId = btoa(plannerId);
     const result = await axios(
       `http://localhost:8080/api/getPlanner/${btoaId}`
-=======
-    const isStarCilck = async (e) => {
-        e.stopPropagation();
-        //Star에 따라서, +를 보내줄지, -를 보내줄지 결정하자.
-        //StarClick= true 이미 좋아요 한 상태의므로
-
-        if (starClick) {
-            //unlike
-            const res = await axios.patch('http://localhost:8080/api/patchPlanner/unlike', { plannerId: plannerId });
-            console.log('StarClick', res);
-        } else {
-            const res = await axios.patch('http://localhost:8080/api/patchPlanner/like', { plannerId: plannerId });
-            console.log('StarClick', res);
-        }
-        setStarClick(!starClick);
-    };
-
-    return (
-        <_Container onClick={handleClick}>
-            {/* 추천할때 추천 수 올라가는 로직, 애니메이션 필요 */}
-            <_ImageStyle src={thumbnail}></_ImageStyle>
-            <div>
-                <_Felx>
-                    <_TitleStyle>{title}</_TitleStyle>
-                    {starClick ? <_Star src={yellowStar} onClick={(e) => isStarCilck(e)}></_Star> : <_Star src={star} onClick={(e) => isStarCilck(e)}></_Star>}
-                </_Felx>
-                <_DescriptionStyle>{description}</_DescriptionStyle>
-            </div>
-        </_Container>
->>>>>>> develop
     );
     console.log(result.data);
     dispatch(calendarActions.setQuote([plannerId]));
