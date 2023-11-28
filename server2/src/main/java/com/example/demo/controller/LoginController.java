@@ -90,17 +90,4 @@ public class LoginController implements SocialLoginAPI {
                         .build()
                 );
     }
-
-//    @GetMapping("/login/oauth2/code/{registrationId}")
-//    public void googleLogin(@RequestParam String code, @PathVariable String registrationId){
-//        if ("github".equals(registrationId)) {
-//            System.out.println(code);
-//            githubLoginService.gitLogin(code);
-//        }else{
-//                Map<String, String> result = googleLoginService.socialLogin(code, registrationId);
-//                System.out.println("2번 register" + registrationId);
-//                System.out.println("아이디: " + result.get("id"));
-//                System.out.println("닉네임: " + result.get("nickname"));
-//        }
-//    }
 }

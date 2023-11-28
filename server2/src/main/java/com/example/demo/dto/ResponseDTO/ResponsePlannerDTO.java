@@ -24,5 +24,6 @@ public class ResponsePlannerDTO {
     private int isDefault;
     private Date createdAt;
     private Date updatedAt;
+    private List<String> taglist;
     private List<ResponseCardDTO> cards;
 }

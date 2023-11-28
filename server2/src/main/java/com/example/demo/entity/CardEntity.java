@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,8 @@ public class CardEntity {
     private PlannerEntity plannerEntity;
 
     @OneToMany(mappedBy = "cardEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<ChecklistEntity> checklists;
+    @Builder.Default
+    private List<ChecklistEntity> checklists = new ArrayList<>();
 
     @Getter
     public enum CardStatus {

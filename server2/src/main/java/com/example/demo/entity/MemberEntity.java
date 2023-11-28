@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,9 +40,11 @@ public class MemberEntity {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<PlannerEntity> planners;
+    @Builder.Default
+    private List<PlannerEntity> planners = new ArrayList<>();
 
     @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<LikeEntity> likes;
+    @Builder.Default
+    private List<LikeEntity> likes = new ArrayList<>();
 
 }
