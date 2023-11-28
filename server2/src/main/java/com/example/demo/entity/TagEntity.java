@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,6 +25,9 @@ public class TagEntity {
     @Column
     private String title;
 
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private Set<PlannerEntity> planners;
+    @Column
+    private String thumbnail;
+
+    @ManyToMany(mappedBy = "taglist", fetch = FetchType.LAZY)
+    private Set<PlannerEntity> planners = new HashSet<>();
 }
