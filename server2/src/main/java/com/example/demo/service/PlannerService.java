@@ -11,13 +11,11 @@ import com.example.demo.utils.DTOConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.HTML;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PlannerService {
@@ -563,8 +561,93 @@ public class PlannerService {
                             .build();
                     checklistRepository.save(checklistEntity);
                 }
+
             }
         }
         return savedPlannerEntity.getPlannerId();
+    }
+
+    public ResponsePlannerDTO postPlannerWithCards(RequestPostPlannerWithCardsDTO requestPostPlannerWithCardsDTO, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if (optionalMemberEntity.isEmpty()) {
+            return null;
+        }
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        PlannerEntity plannerEntity = PlannerEntity.builder()
+                .creator(requestPostPlannerWithCardsDTO.getCreator())
+                .title(requestPostPlannerWithCardsDTO.getTitle())
+                .thumbnail(requestPostPlannerWithCardsDTO.getThumbnail())
+                .plannerAccess(requestPostPlannerWithCardsDTO.getPlannerAccess())
+                .memberEntity(memberEntity)
+                .build();
+
+        PlannerEntity savedPlannerEntity;
+        try {
+            savedPlannerEntity = plannerRepository.save(plannerEntity);
+            System.out.println("1");
+            System.out.println("savedPlannerEntity plannerId = " + savedPlannerEntity.getPlannerId());
+            System.out.println("savedPlannerEntity taglist = " + savedPlannerEntity.getTaglist().toString());
+            System.out.println("savedPlannerEntity cards = " + savedPlannerEntity.getCards().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("1");
+            return null;
+        }
+
+        if (!requestPostPlannerWithCardsDTO.getTaglist().isEmpty()) {
+            for (String tag : requestPostPlannerWithCardsDTO.getTaglist()) {
+                Optional<TagEntity> optionalTagEntity = tagRepository.findByTitle(tag);
+                TagEntity tagEntity = optionalTagEntity.orElseGet(() -> {
+                    TagEntity newTagEntity = TagEntity.builder()
+                            .title(tag)
+                            .thumbnail("DEFAULT")
+                            .build();
+                    return tagRepository.save(newTagEntity);
+                });
+                savedPlannerEntity.getTaglist().add(tagEntity);
+            }
+        }
+
+        try {
+            savedPlannerEntity = plannerRepository.save(savedPlannerEntity);
+            System.out.println("2");
+            System.out.println("savedPlannerEntity plannerId = " + savedPlannerEntity.getPlannerId());
+            System.out.println("savedPlannerEntity taglist = " + savedPlannerEntity.getTaglist().toString());
+            System.out.println("savedPlannerEntity cards = " + savedPlannerEntity.getCards().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("2");
+            return null;
+        }
+
+        if (!requestPostPlannerWithCardsDTO.getCards().isEmpty()) {
+            for (RequestPostCardDTO requestPostCardDTO : requestPostPlannerWithCardsDTO.getCards()) {
+                CardEntity cardEntity = CardEntity.builder()
+                        .title(requestPostCardDTO.getTitle())
+                        .coverColor(requestPostCardDTO.getCoverColor())
+                        .post(requestPostCardDTO.getPost())
+                        .intOrder(requestPostCardDTO.getIntOrder())
+                        .startDate(requestPostCardDTO.getStartDate())
+                        .endDate(requestPostCardDTO.getEndDate())
+                        .cardStatus(requestPostCardDTO.getCardStatus())
+                        .plannerEntity(savedPlannerEntity)
+                        .build();
+                savedPlannerEntity.getCards().add(cardEntity);
+            }
+        }
+
+        try {
+            savedPlannerEntity = plannerRepository.save(savedPlannerEntity);
+            System.out.println("3");
+            System.out.println("savedPlannerEntity plannerId = " + savedPlannerEntity.getPlannerId());
+            System.out.println("savedPlannerEntity taglist = " + savedPlannerEntity.getTaglist().toString());
+            System.out.println("savedPlannerEntity cards = " + savedPlannerEntity.getCards().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("3");
+            return null;
+        }
+
+        return dtoConversionUtil.toResponsePlannerDTO(savedPlannerEntity);
     }
 }

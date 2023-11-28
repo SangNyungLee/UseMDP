@@ -45,7 +45,7 @@ const _Star = styled.img`
   margin-right: 2px;
 `;
 
-export default function LoadMap2(props) {
+export default function LoadMap(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -58,7 +58,7 @@ export default function LoadMap2(props) {
     description,
   } = props.datas;
   // console.log(props);
-  const like = props.likes;
+  const like = props.like;
 
   const handleClick = async () => {
     const fetchData = async (btoaId) => {

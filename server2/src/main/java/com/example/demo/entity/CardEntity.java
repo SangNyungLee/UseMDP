@@ -61,7 +61,7 @@ public class CardEntity {
     @JoinColumn(name = "plannerId")
     private PlannerEntity plannerEntity;
 
-    @OneToMany(mappedBy = "cardEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "cardEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<ChecklistEntity> checklists = new ArrayList<>();
 
