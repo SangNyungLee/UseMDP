@@ -187,7 +187,7 @@ public class PlannerController implements SwaggerPlannerAPI {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(APIResponseDTO.<Long>builder()
                 .resultCode("201")
-                .message("플래너 생성 성공")
+                .message("플래너 생성 성공, 생성된 plannerId 반환")
                 .data(result)
                 .build());
     }
@@ -262,7 +262,7 @@ public class PlannerController implements SwaggerPlannerAPI {
                     .build());
         }
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<Long>builder()
-                .resultCode("201")
+                .resultCode("200")
                 .message("플래너 수정 완료")
                 .data(result)
                 .build());

@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TestController {
@@ -39,6 +37,12 @@ public class TestController {
         response.addCookie(cookie);
 
         return "COOKIE";
+    }
+
+    @PatchMapping("/api/tag")
+    public String patchTag(@RequestBody RequestPatchPlannerDTO requestPatchPlannerDTO) {
+        System.out.println("requestPatchPlannerDTO = " + requestPatchPlannerDTO.toString());
+        return "PatchPlanner";
     }
 
 }

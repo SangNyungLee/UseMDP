@@ -17,5 +17,6 @@ public class RequestPostJSONPlannerDTO {
     private String title;
     private String thumbnail;
     private PlannerEntity.PlannerAccess plannerAccess;
+    private List<String> taglist;
     private List<RequestPostJSONCardDTO> cards;
 }
