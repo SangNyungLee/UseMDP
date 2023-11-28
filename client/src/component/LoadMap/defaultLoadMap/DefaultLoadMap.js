@@ -1,14 +1,14 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 // import Header from "../Header";
-import HomeHeader from '../HomeHeader';
+import HomeHeader from '../../home/HomeHeader';
 import { useState } from 'react';
 import DefaultComponent from './DefaultComponent';
-import StarComponent from '../starComponent/StarComponent';
-import MyCalendar from '../home/MyCalendar';
+import StarComponent from '../../home/starComponent/StarComponent';
+import MyCalendar from '../../home/MyCalendar';
 import styled from 'styled-components';
-import SearchComponent from '../searchComponent/SearchComponent';
-import HomeComponent from '../home/calendar/HomeComponent';
-import CalendarSideBar from '../home/calendar/CalendarSideBar';
+import SearchComponent from '../../home/searchComponent/SearchComponent';
+import HomeComponent from '../../home/HomeComponent';
+import CalendarSideBar from '../../home/calendar/CalendarSideBar';
 
 const _Button = styled.button`
     border: none;
