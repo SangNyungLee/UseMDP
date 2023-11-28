@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Nav, Navbar, Container, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -9,13 +9,26 @@ import {
   GoogleLoginButton,
   GithubLoginButton,
 } from "react-social-login-buttons";
-
-const MySwal = withReactContent(Swal);
-
+import { useDispatch, useSelector } from "react-redux";
+import { siteActions } from "../store/site";
 export default function Header() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
   const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
   const githubLoginId = process.env.REACT_APP_GITHUB_LOGIN_CLIENT_ID;
+  const MySwal = withReactContent(Swal);
+
+  //Redux에서 isLogin상태 가져오는거
+  const isLoginRedux = useSelector((state) => state.site.isLogin);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // 로컬스토리지에 저장된 isLogin을 가져와서 변수에 저장해놓음
+  useEffect(() => {
+    const checkIsLogin = localStorage.getItem("isLogin");
+    if (checkIsLogin) {
+      dispatch(siteActions.setIsLogin(checkIsLogin === "true"));
+    }
+  }, [dispatch]);
 
   const isMobile = useMediaQuery({
     query: "(max-width: 576px)",
@@ -27,6 +40,14 @@ export default function Header() {
 
   const githubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
+  };
+
+  //로그아웃
+  const Logout = () => {
+    dispatch(siteActions.setIsLogin(false));
+    localStorage.removeItem("isLogin");
+    alert("로그아웃 되셨습니다.");
+    navigate("/");
   };
 
   const showLoginModal = () => {
@@ -56,23 +77,38 @@ export default function Header() {
             useMDP
           </Navbar.Brand>
           <Nav>
-            <Button
-              onClick={showLoginModal}
-              className="mx-2"
-              variant="outline-success"
-              size={isMobile ? "sm" : "md"}
-            >
-              Log In
-            </Button>
-            <Button
-              as={NavLink}
-              to={"/roadmap"}
-              className="mx-2"
-              variant="success"
-              size={isMobile ? "sm" : "md"}
-            >
-              My Roadmap
-            </Button>
+            {isLoginRedux ? (
+              <>
+                <Button
+                  as={NavLink}
+                  to={"/roadmap"}
+                  className="mx-2"
+                  variant="success"
+                  size={isMobile ? "sm" : "md"}
+                >
+                  My Roadmap
+                </Button>
+                <Button
+                  onClick={Logout}
+                  className="mx-2"
+                  variant="success"
+                  size={isMobile ? "sm" : "md"}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={showLoginModal}
+                  className="mx-2"
+                  variant="outline-success"
+                  size={isMobile ? "sm" : "md"}
+                >
+                  Log In
+                </Button>
+              </>
+            )}
           </Nav>
         </Container>
       </Navbar>
