@@ -13,7 +13,7 @@ const SearchContainer = styled.div`
   justify-content: center;
 `;
 const tags = [
-  { value: "Spring", label: "Spring", image: "/svg/spring.svg" },
+  { value: "Spring", label: "Spring", image: "/svg/.svg" },
   { value: "HTML", label: "HTML", image: "/svg/HTML.svg" },
   { value: "CSS", label: "CSS", image: "/svg/css.svg" },
   { value: "JS", label: "JS", image: "/svg/JS.svg" },
@@ -32,15 +32,17 @@ export default function SearchComponent() {
   const [filteredDatas, setFilteredDatas] = useState([]);
   const [selectTag, setSelectTag] = useState(tags[0]);
   const [option, setOption] = useState(options[0]);
+  const [tags2, setTags] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       let data;
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/getPlanner/trending"
+          "http://localhost:8080/api/getPlanner/trendings"
         );
         console.log("res : ", response.data);
+
         if (response.data.data.length == 0) {
         } else {
           const newData = response.data.data.map((item, idx) => {
@@ -50,6 +52,9 @@ export default function SearchComponent() {
           data = newData;
         }
       } catch {
+        const res = await axios.get("http://localhost:8080/api/getTags");
+        console.log("데이터 받아온 결과 : ", res.data.data);
+        setTags(res.data.data);
         const tmp = [
           {
             plannerId: 1,
@@ -187,7 +192,7 @@ export default function SearchComponent() {
                   // backgroundColor: "lightblue", // 선택된 항목의 배경색
                 }),
               }}
-              options={tags} //위에서 만든 배열을 select로 넣기
+              options={tags2} //위에서 만든 배열을 select로 넣기
               //label custom 해주는거임
               formatOptionLabel={(tag) => (
                 <div className="tag-option">
