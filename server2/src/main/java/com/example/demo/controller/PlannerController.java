@@ -275,8 +275,8 @@ public class PlannerController implements SwaggerPlannerAPI {
 
     // 특정 플래너 좋아요 -1
     @Override
-    @PatchMapping("/api/patchPlanner/unlike")
-    public ResponseEntity<APIResponseDTO<Long>> unlikePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token) {
+    @DeleteMapping("/api/patchPlanner/unlike")
+    public ResponseEntity<APIResponseDTO<Long>> unlikePlanner(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "auth", required = false) String token) {
         if(token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
                     .resultCode("401")
@@ -296,7 +296,7 @@ public class PlannerController implements SwaggerPlannerAPI {
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
 
-        long result = plannerService.unlikePlanner(plannerId, memberId);
+        long result = plannerService.unlikePlanner(plannerIdDTO, memberId);
         if(result == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponseDTO.<Long>builder()
                     .resultCode("400")

@@ -105,6 +105,16 @@ public class PlannerService {
         List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
+            List<LikeEntity> likeEntity = planner.getLikes();
+            List<ResponseLikeDTO> likeDTOS = new ArrayList<>();
+            for(LikeEntity like : likeEntity) {
+                ResponseLikeDTO likeDTO = ResponseLikeDTO.builder()
+                        .like_id(like.getLike_id())
+                        .plannerId(like.getPlannerId())
+                        .memberId(like.getMemberId())
+                        .build();
+                likeDTOS.add(likeDTO);
+            }
             ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
@@ -448,8 +458,8 @@ public class PlannerService {
     }
 
     //성공 -> 1, 실패 -> 0
-    public long unlikePlanner(long plannerId, String memberId) {
-        LikeEntity result = likeRepository.getLikeEntity(plannerId,memberId);
+    public long unlikePlanner(PlannerIdDTO plannerIdDTO, String memberId) {
+        LikeEntity result = likeRepository.getLikeEntity(plannerIdDTO.getPlannerId(),memberId);
         likeRepository.delete(result);
         return 1;
     }

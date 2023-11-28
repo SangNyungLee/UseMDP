@@ -14,16 +14,19 @@ const _Star = styled.img`
   z-index: 5;
 `;
 
-const LikeButton = ({ plannerId }, like) => {
-  console.log("likebutton의 like" + like);
-  const isLiked = like.some((like) => like.plannerId === plannerId);
+const LikeButton = (props) => {
+  // console.log("likebutton의 like" + JSON.stringify(like));
+  // const isLiked = like.some((like) => like.plannerId === plannerId);
   const dispatch = useDispatch();
-  const [isLike, setIsLike] = useState(false);
+  const [isLiked, setIsLike] = useState(false);
 
-  const isStarCilckLike = (e) => {
-    e.preventDefault();
-    isLiked = 1;
-    dispatch(addLike({ plannerId }));
+  const plannerId = props.plannerId;
+  const like = props.like;
+
+  const isStarCilckLike = () => {
+    // isLiked = 1;
+    // setIsLike(true);
+    // dispatch(addLike({ plannerId }));
     const res = axios.post(
       "http://localhost:8080/api/postPlanner/like",
       {
@@ -34,26 +37,23 @@ const LikeButton = ({ plannerId }, like) => {
     console.log(res);
   };
 
-  const isStarCilckUnLike = (e) => {
-    e.preventDefault();
-    isLiked = 0;
-    setIsLike(false);
-    dispatch(removeLike({ plannerId }));
-    const res = axios.patch(
-      "http://localhost:8080/api/patchPlanner/unlike",
-      {
-        plannerId,
-      },
-      { withCredentials: true }
-    );
+  const isStarCilckUnLike = () => {
+    //isLiked = 0;
+    // setIsLike(false);
+    // dispatch(removeLike({ plannerId }));
+    const res = axios.delete("http://localhost:8080/api/patchPlanner/unlike", {
+      data: { plannerId },
+      withCredentials: true,
+    });
+    console.log(res);
   };
 
   return (
     <>
-      {isLiked ? (
-        <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
+      {like ? (
+        <_Star src={yellowStar} onClick={() => isStarCilckUnLike()}></_Star>
       ) : (
-        <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
+        <_Star src={star} onClick={() => isStarCilckLike()}></_Star>
       )}
     </>
   );

@@ -8,6 +8,7 @@ export default function CustomListHiddable(props) {
   console.log(props.datas);
   const data = props.datas;
   const like = props.like;
+  console.log(props.like);
   const [point, setPoint] = props.points;
   const handleRightClick = (e, newTitle, newId) => {
     e.preventDefault();
@@ -31,20 +32,31 @@ export default function CustomListHiddable(props) {
             <Container key={idx} style={{ marginTop: "30px" }}>
               <Row style={{ justifyContent: "space-between" }}>
                 {Array.from({ length: Math.min(4, data.length) }).map(
-                  (_, i) => (
-                    <Col key={data[i].plannerId}>
-                      <div
-                        onContextMenu={(e) =>
-                          handleRightClick(e, data[i].title, data[i].plannerId)
-                        }
-                      >
-                        <CustomLoadMap
-                          datas={data[i]}
-                          like={like}
-                        ></CustomLoadMap>
-                      </div>
-                    </Col>
-                  )
+                  (_, i) => {
+                    const planner = data[i];
+                    const isLiked = like.some(
+                      (like) => like.plannerId === planner.plannerId
+                    );
+
+                    return (
+                      <Col key={planner.plannerId}>
+                        <div
+                          onContextMenu={(e) =>
+                            handleRightClick(
+                              e,
+                              planner.title,
+                              planner.plannerId
+                            )
+                          }
+                        >
+                          <CustomLoadMap
+                            datas={planner}
+                            likes={isLiked ? 1 : 0}
+                          />
+                        </div>
+                      </Col>
+                    );
+                  }
                 )}
                 {Array.from({ length: 4 - data.length }).map((_, i) => (
                   <Col key={`empty-${i}`}></Col>

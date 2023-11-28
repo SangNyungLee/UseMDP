@@ -13,6 +13,7 @@ export default function DefaultComponent() {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [point, setPoint] = useState([-1, -1]);
+  const [like, setLike] = useState([]);
   const [hide, setHide] = useState(true);
 
   const [rightClickData, setRightClickData] = useState([]);
@@ -104,7 +105,16 @@ export default function DefaultComponent() {
         ]);
       }
     }
+    async function getLike() {
+      const likeResponse = await axios.get(
+        "http://localhost:8080/api/getLikes",
+        { withCredentials: true }
+      );
+      console.log("starComponent의 like" + JSON.stringify(likeResponse.data));
+      setLike(likeResponse.data);
+    }
     getData();
+    getLike();
   }, []);
 
   if (data.length == 0) {
@@ -131,6 +141,7 @@ export default function DefaultComponent() {
           datas={data}
           loadMap={LoadMap2}
           points={[point, setPoint]}
+          like={like}
         ></CustomListHiddable>
 
         <h2 style={{ marginTop: "50px" }}>내 로드맵</h2>

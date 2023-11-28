@@ -56,7 +56,7 @@ export default function LoadMap2(props) {
     createAt,
     description,
   } = props.datas;
-  const like = props.like;
+  const like = props.likes;
 
   console.log("loadmap 의 like" + like);
 
