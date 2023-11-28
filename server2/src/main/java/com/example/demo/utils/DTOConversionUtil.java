@@ -10,6 +10,7 @@ import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.CardRepository;
 import com.example.demo.repository.ChecklistRepository;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PlannerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,16 @@ public class DTOConversionUtil {
     @Autowired
     private ChecklistRepository checklistRepository;
 
+    @Autowired
+    private PlannerRepository plannerRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     public ResponsePlannerDTO toResponsePlannerDTO(PlannerEntity plannerEntity) {
+        System.out.println("cards????" + plannerEntity.getCards().toString());
         List<ResponseCardDTO> responseCardDTOS = plannerEntity.getCards().stream().map(this::toResponseCardDTO).toList();
+        List<String> taglist = plannerEntity.getTaglist().stream().map(TagEntity::getTitle).toList();
         return ResponsePlannerDTO.builder()
                 .plannerId(plannerEntity.getPlannerId())
                 .creator(plannerEntity.getCreator())
@@ -35,6 +44,7 @@ public class DTOConversionUtil {
                 .isDefault(plannerEntity.getIsDefault())
                 .createdAt(plannerEntity.getCreatedAt())
                 .updatedAt(plannerEntity.getUpdatedAt())
+                .taglist(taglist)
                 .cards(responseCardDTOS)
                 .build();
     }
@@ -55,7 +65,6 @@ public class DTOConversionUtil {
                 .checklists(responseChecklistDTOS)
                 .build();
     }
-
 
     public ResponseChecklistDTO toResponseChecklistDTO(ChecklistEntity checklistEntity) {
         return ResponseChecklistDTO.builder()

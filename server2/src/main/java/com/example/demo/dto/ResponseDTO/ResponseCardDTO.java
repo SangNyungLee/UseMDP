@@ -21,9 +21,9 @@ public class ResponseCardDTO {
     private int intOrder;
     private Date startDate;
     private Date endDate;
+    private CardEntity.CardStatus cardStatus;
     private Date createdAt;
     private Date updatedAt;
-    private CardEntity.CardStatus cardStatus;
     private List<ResponseChecklistDTO> checklists;
     private String sourceResource;
 }

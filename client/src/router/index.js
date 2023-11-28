@@ -5,7 +5,7 @@ import MyPage from "../pages/MyPage";
 import PlannerPage from "../pages/PlannerPage";
 import App from "../App";
 import MyCalendar from "../component/home/MyCalendar";
-import DefaultLoadMap from "../component/defaultLoadMap/DefaultLoadMap";
+import DefaultLoadMap from "../component/LoadMap/defaultLoadMap/DefaultLoadMap";
 import Redirection from "../pages/Redirection";
 
 const Router = createBrowserRouter([
