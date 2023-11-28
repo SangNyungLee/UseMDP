@@ -56,7 +56,9 @@ export default function LoadMap2(props) {
     createAt,
     description,
   } = props.datas;
-  // console.log(props);
+  const like = props.like;
+
+  console.log("loadmap 의 like" + like);
 
   const handleClick = async () => {
     const btoaId = btoa(plannerId);
@@ -75,7 +77,8 @@ export default function LoadMap2(props) {
       <div>
         <_Felx>
           <_TitleStyle>{title}</_TitleStyle>
-          <LikeButton plannerId={plannerId} />
+
+          <LikeButton plannerId={plannerId} like={like} />
         </_Felx>
         <_DescriptionStyle>{description}</_DescriptionStyle>
       </div>

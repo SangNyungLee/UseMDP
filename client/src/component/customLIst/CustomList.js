@@ -3,7 +3,6 @@ import { Container, Row, Col, Spinner, Button } from "react-bootstrap";
 import LoadMap from "../LoadMap";
 import LoadMap2 from "../LoadMap2/LoadMap";
 export default function CustomList(props) {
-  console.log(props.datas);
   const data = props.datas;
   const CustomLoadMap = props.loadMap;
 

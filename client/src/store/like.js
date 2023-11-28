@@ -8,14 +8,14 @@ const likeSlice = createSlice({
   reducers: {
     //좋아요
     addLike: (state, action) => {
-      const { plannerId, memberId } = action.payload;
-      state.likedPlanners.push({ plannerId, memberId });
+      const { plannerId } = action.payload;
+      state.likedPlanners.push({ plannerId });
     },
     //좋아요 취소
     removeLike: (state, action) => {
-      const { plannerId, memberId } = action.payload;
+      const { plannerId } = action.payload;
       state.likedPlanners = state.likedPlanners.filter(
-        (like) => !(like.plannerId === plannerId && like.memberId === memberId)
+        (like) => !(like.plannerId === plannerId)
       );
     },
   },

@@ -8,9 +8,11 @@ import MyLoadMap from "../LoadMap2/MyLoadMap";
 import LoadMap2 from "../LoadMap2/LoadMap";
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../../store/plannerList";
+import { CookiesProvider, useCookies } from "react-cookie";
 export default function StarComponent() {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [like, setLike] = useState([]);
 
   const [point, setPoint] = useState([-1, -1]);
 
@@ -19,6 +21,7 @@ export default function StarComponent() {
       setPoint([-1, -1]);
     }
   };
+
   useEffect(() => {
     async function getData() {
       try {
@@ -26,10 +29,16 @@ export default function StarComponent() {
           "http://localhost:8080/api/getPlanner/trending"
         );
         console.log("res : ", response.data);
+        console.log("like : ", response.data.data[0].likes);
         if (response.data.data.length == 0) {
         } else {
           const newData = response.data.data.map((item, idx) => {
-            const newItem = { ...item, cards: item.cards ? item.cards : [] };
+            console.log("item" + JSON.stringify(item));
+            const newItem = {
+              ...item,
+              cards: item.cards ? item.cards : [],
+              likes: item.likes !== null ? item.likes : [],
+            };
             return newItem;
           });
           setData(newData);
@@ -101,7 +110,16 @@ export default function StarComponent() {
         ]);
       }
     }
+    async function getLike() {
+      const likeResponse = await axios.get(
+        "http://localhost:8080/api/getLikes",
+        { withCredentials: true }
+      );
+      console.log("starComponent의 like" + JSON.stringify(likeResponse.data));
+      setLike(likeResponse.data);
+    }
     getData();
+    getLike();
   }, []);
 
   if (data.length === 0) {
@@ -128,6 +146,7 @@ export default function StarComponent() {
           datas={data}
           points={[point, setPoint]}
           loadMap={LoadMap2}
+          like={like}
         ></CustomListHiddable>
         {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}

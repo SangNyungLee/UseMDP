@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.LikeEntity;
 import com.example.demo.entity.PlannerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,5 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
 
     @Query(value = "UPDATE PlannerEntity p SET p.likePlanner = p.likePlanner - 1 WHERE p.plannerId = :plannerId")
     int unlikePlanner(@Param("plannerId") long plannerId);
+
 }

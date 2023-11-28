@@ -21,4 +21,5 @@ public class PlannerDTO {
     private int isDefault;
     private PlannerEntity.PlannerAccess plannerAccess;
     private List<CardDTO> cards;
+    private List<LikeDTO> likes;
 }

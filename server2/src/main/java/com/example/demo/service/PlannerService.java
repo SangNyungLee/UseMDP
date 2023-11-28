@@ -7,6 +7,7 @@ import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
 import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
+import com.example.demo.dto.ResponseDTO.ResponseLikeDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -70,6 +71,16 @@ public class PlannerService {
         List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
+            List<LikeEntity> likeEntity = planner.getLikes();
+            List<ResponseLikeDTO> likeDTOS = new ArrayList<>();
+            for(LikeEntity like : likeEntity) {
+                ResponseLikeDTO likeDTO = ResponseLikeDTO.builder()
+                        .like_id(like.getLike_id())
+                        .plannerId(like.getPlannerId())
+                        .memberId(like.getMemberId())
+                        .build();
+                likeDTOS.add(likeDTO);
+            }
             ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
@@ -80,8 +91,10 @@ public class PlannerService {
                     .isDefault(planner.getIsDefault())
                     .createdAt(planner.getCreatedAt())
                     .updatedAt(planner.getUpdatedAt())
+                    .likes(likeDTOS)
                     .build();
             plannerDTOList.add(plannerDTO);
+
         }
         return plannerDTOList;
     }
@@ -117,6 +130,7 @@ public class PlannerService {
         PlannerEntity plannerEntity = optionalPlannerEntity.get();
 
         List<CardEntity> cardEntities = plannerEntity.getCards();
+
 
         List<ResponseCardDTO> responseCardDTOS = cardEntities.stream().map(cardEntity -> dtoConversionUtil.toResponseCardDTO(cardEntity)).toList();
 

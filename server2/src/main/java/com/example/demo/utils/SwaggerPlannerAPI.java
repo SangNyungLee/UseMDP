@@ -62,7 +62,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token);
+    ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(
             summary = "특정 플래너 좋아요 -1",

@@ -1,4 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import move from "./move";
 import card from "./card";
 import planner from "./planner";
@@ -7,6 +10,13 @@ import plannerInfo from "./plannerInfo";
 import calendar from "./calendar";
 import site from "./site";
 import like from "./like";
+
+// const persistConfig = {
+//   key: 'like',
+//   storage,
+// };
+
+//const persistedReducer = persistReducer(persistConfig, like);
 
 const store = configureStore({
   reducer: {
@@ -17,8 +27,10 @@ const store = configureStore({
     plannerList,
     plannerInfo,
     calendar,
-    like,
+    // persistedReducer,
   },
 });
+
+//const persistor = persistStore(store);
 
 export default store;

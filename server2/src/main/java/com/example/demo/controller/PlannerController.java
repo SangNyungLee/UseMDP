@@ -235,7 +235,8 @@ public class PlannerController implements SwaggerPlannerAPI {
     // 특정 플래너 좋아요 +1
     @Override
     @PostMapping("/api/postPlanner/like")
-    public ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody long plannerId, @CookieValue(name = "auth", required = false) String token) {
+    public ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "auth", required = false) String token) {
+        System.out.println("token = "+token);
         if(token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
                     .resultCode("401")
@@ -254,6 +255,7 @@ public class PlannerController implements SwaggerPlannerAPI {
         }
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+        long plannerId = plannerIdDTO.getPlannerId();
 
         long result = plannerService.likePlanner(plannerId, memberId);
         if(result == 0) {
