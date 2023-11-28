@@ -584,6 +584,7 @@ public class PlannerService {
                         .startDate(requestPostCardDTO.getStartDate())
                         .endDate(requestPostCardDTO.getEndDate())
                         .cardStatus(requestPostCardDTO.getCardStatus())
+                        .plannerEntity(savedPlannerEntity)
                         .build();
                 savedPlannerEntity.getCards().add(cardEntity);
             }
