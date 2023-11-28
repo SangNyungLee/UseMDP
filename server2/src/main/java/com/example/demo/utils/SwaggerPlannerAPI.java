@@ -1,10 +1,7 @@
 package com.example.demo.utils;
 
 import com.example.demo.dto.PlannerIdDTO;
-import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
-import com.example.demo.dto.RequestDTO.RequestPostJSONPlannerDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
+import com.example.demo.dto.RequestDTO.*;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,8 +34,11 @@ public interface SwaggerPlannerAPI {
     @Operation(summary = "특정 사용자가 가지고있는 모든 플래너들 조회", description = "DB에 존재하는 특정 사용자의 모든 기본 플래너들 가져오기")
     ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getPlanners(@CookieValue(name = "auth") String token);
 
-    @Operation(summary = "특정 사용자의 플래너 생성", description = "DB에 존재하는 특정 사용자의 플래너 새로 생성")
+    @Operation(summary = "특정 사용자의 플래너 생성", description = "DB에 존재하는 특정 사용자의 플래너 새로 생성, 생성된 plannerId 반환")
     ResponseEntity<APIResponseDTO<Long>> postPlanner(@RequestBody RequestPostPlannerDTO requestPostPlannerDTO, @CookieValue(name = "auth") String token);
+
+    @Operation(summary = "특정 사용자의 플래너 (카드들과 함께) 생성", description = "DB에 존재하는 특정 사용자의 플래너 카드들과 함께 새로 생성, 생성된 planner 객체 반환")
+    ResponseEntity<APIResponseDTO<ResponsePlannerDTO>> postPlannerWithCards(@RequestBody RequestPostPlannerWithCardsDTO requestPostPlannerWithCardsDTO, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(summary = "JSON으로 받는 플래너 사용자한테 생성", description = "DB에 존재하는 특정 사용자의 플래너 새로 생성(JSON으로 전체 플래너 정보 받고 db에 모두 저장 (cards, checklists 포함)")
     ResponseEntity<APIResponseDTO<Long>> postJSONPlanner(@RequestBody RequestPostJSONPlannerDTO requestPostJSONPlannerDTO, @CookieValue(name = "auth", required = false) String token);

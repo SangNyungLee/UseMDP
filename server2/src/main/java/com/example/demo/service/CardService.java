@@ -1,12 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CardDTO;
-import com.example.demo.dto.ChecklistDTO;
 import com.example.demo.dto.RequestDTO.RequestChangeCardOrderDTO;
 import com.example.demo.dto.RequestDTO.RequestChecklistDTO;
 import com.example.demo.dto.RequestDTO.RequestPatchCardDTO;
 import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
-import com.example.demo.dto.ResponseDTO.APIResponseDTO;
+import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.entity.CardEntity;
 import com.example.demo.entity.ChecklistEntity;
@@ -18,7 +16,6 @@ import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PlannerRepository;
 import com.example.demo.utils.DTOConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -42,6 +39,35 @@ public class CardService {
     @Autowired
     private DTOConversionUtil dtoConversionUtil;
 
+    public ResponseCardDTO getCard(String cardId, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
+            return null;
+        }
+
+        Optional<CardEntity> optionalCardEntity = cardRepository.findById(cardId);
+        if(optionalCardEntity.isEmpty()) {
+            return null;
+        }
+
+        CardEntity cardEntity = optionalCardEntity.get();
+        List<ChecklistEntity> checklistEntities = cardEntity.getChecklists();
+        List<ResponseChecklistDTO> responseChecklistDTOS = checklistEntities.stream().map(checklistEntity -> dtoConversionUtil.toResponseChecklistDTO(checklistEntity)).toList();
+
+        return ResponseCardDTO.builder()
+                .cardId(cardEntity.getCardId())
+                .title(cardEntity.getTitle())
+                .coverColor(cardEntity.getCoverColor())
+                .post(cardEntity.getPost())
+                .intOrder(cardEntity.getIntOrder())
+                .startDate(cardEntity.getStartDate())
+                .endDate(cardEntity.getEndDate())
+                .cardStatus(cardEntity.getCardStatus())
+                .createdAt(cardEntity.getCreatedAt())
+                .updatedAt(cardEntity.getUpdatedAt())
+                .checklists(responseChecklistDTOS)
+                .build();
+    }
 
     public String postCard(RequestPostCardDTO requestPostCardDTO, String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);

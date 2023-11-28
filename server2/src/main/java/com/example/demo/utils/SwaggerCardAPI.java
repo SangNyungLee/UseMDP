@@ -1,26 +1,23 @@
 package com.example.demo.utils;
 
-import com.example.demo.dto.CardDTO;
 import com.example.demo.dto.RequestDTO.RequestChangeCardOrderDTO;
 import com.example.demo.dto.RequestDTO.RequestPatchCardDTO;
 import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
+import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
 @Tag(name = "Card Controller", description = "Card CRUD API")
 public interface SwaggerCardAPI {
+
+    @Operation(summary = "카드 조회", description = "카드 아이디로 해당 카드 조회 (checklist 포함)")
+    ResponseEntity<APIResponseDTO<ResponseCardDTO>> getCard(@PathVariable String cardId, @CookieValue(name = "auth", required = false) String token);
+
     @Operation(summary = "카드 생성", description = "플래너 아이디로 새로운 카드 생성")
     ResponseEntity<APIResponseDTO<String>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token);
 
