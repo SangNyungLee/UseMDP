@@ -5,7 +5,6 @@ import PlusMap from '../LoadMap2/PlusMap';
 export default function CustomList(props) {
     const data = props.datas;
     const CustomLoadMap = props.loadMap;
-    const dataLength = data.length;
 
     return (
         <div>

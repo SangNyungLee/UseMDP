@@ -1,11 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LikeDTO;
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.RequestDTO.*;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
-import com.example.demo.dto.ResponseDTO.ResponseLikeDTO;
 import com.example.demo.dto.ResponseDTO.ResponsePlannerDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -34,11 +32,7 @@ public class PlannerService {
     private CardRepository cardRepository;
 
     @Autowired
-    private LikeRepository likeRepository;
-
-    @Autowired
     private TagRepository tagRepository;
-
 
     @Autowired
     private DTOConversionUtil dtoConversionUtil;
@@ -71,16 +65,6 @@ public class PlannerService {
         List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
-            List<LikeEntity> likeEntity = planner.getLikes();
-            List<ResponseLikeDTO> likeDTOS = new ArrayList<>();
-            for(LikeEntity like : likeEntity) {
-                ResponseLikeDTO likeDTO = ResponseLikeDTO.builder()
-                        .like_id(like.getLike_id())
-                        .plannerId(like.getPlannerId())
-                        .memberId(like.getMemberId())
-                        .build();
-                likeDTOS.add(likeDTO);
-            }
             ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
@@ -91,10 +75,8 @@ public class PlannerService {
                     .isDefault(planner.getIsDefault())
                     .createdAt(planner.getCreatedAt())
                     .updatedAt(planner.getUpdatedAt())
-                    .likes(likeDTOS)
                     .build();
             plannerDTOList.add(plannerDTO);
-
         }
         return plannerDTOList;
     }
@@ -105,16 +87,6 @@ public class PlannerService {
         List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
 
         for(PlannerEntity planner : result){
-            List<LikeEntity> likeEntity = planner.getLikes();
-            List<ResponseLikeDTO> likeDTOS = new ArrayList<>();
-            for(LikeEntity like : likeEntity) {
-                ResponseLikeDTO likeDTO = ResponseLikeDTO.builder()
-                        .like_id(like.getLike_id())
-                        .plannerId(like.getPlannerId())
-                        .memberId(like.getMemberId())
-                        .build();
-                likeDTOS.add(likeDTO);
-            }
             ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
                     .plannerId(planner.getPlannerId())
                     .creator(planner.getCreator())
@@ -140,7 +112,6 @@ public class PlannerService {
         PlannerEntity plannerEntity = optionalPlannerEntity.get();
 
         List<CardEntity> cardEntities = plannerEntity.getCards();
-
 
         List<ResponseCardDTO> responseCardDTOS = cardEntities.stream().map(cardEntity -> dtoConversionUtil.toResponseCardDTO(cardEntity)).toList();
 
@@ -461,64 +432,21 @@ public class PlannerService {
                 return copyPlannerEntity.getPlannerId();
 
             }else{
-                return 0;
+                return -1;
             }
         }else {
-            return 0;
+            return -1;
         }
     }
 
-    //성공 -> 1, 실패 -> 0
-    public long likePlanner(long plannerId, String memberId) {
-
-        LikeEntity likeEntity = LikeEntity.builder()
-                .plannerEntity(PlannerEntity.builder().plannerId(plannerId).build())
-                .memberEntity(MemberEntity.builder().memberId(memberId).build())
-                .build();
-        likeRepository.save(likeEntity);
-
-        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerId);
-        if(optionalPlannerEntity.isPresent()){
-            PlannerEntity planner = optionalPlannerEntity.get();
-            PlannerEntity updatePlanner = PlannerEntity.builder()
-                    .plannerId(planner.getPlannerId())
-                    .creator(planner.getCreator())
-                    .title(planner.getTitle())
-                    .thumbnail(planner.getThumbnail())
-                    .plannerAccess(planner.getPlannerAccess())
-                    .likePlanner(planner.getLikePlanner()+1)
-                    .isDefault(planner.getIsDefault())
-                    .memberEntity(planner.getMemberEntity())
-                    .build();
-            plannerRepository.save(updatePlanner);
-        }
-
-        return 1;
-
+    public int likePlanner(PlannerIdDTO plannerIdDTO) {
+        long plannerId = plannerIdDTO.getPlannerId();
+        return plannerRepository.likePlanner(plannerId);
     }
 
-    //성공 -> 1, 실패 -> 0
-    public long unlikePlanner(PlannerIdDTO plannerIdDTO, String memberId) {
-        LikeEntity result = likeRepository.getLikeEntity(plannerIdDTO.getPlannerId(),memberId);
-        likeRepository.delete(result);
-
-        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerIdDTO.getPlannerId());
-        if(optionalPlannerEntity.isPresent()){
-            PlannerEntity planner = optionalPlannerEntity.get();
-            PlannerEntity updatePlanner = PlannerEntity.builder()
-                    .plannerId(planner.getPlannerId())
-                    .creator(planner.getCreator())
-                    .title(planner.getTitle())
-                    .thumbnail(planner.getThumbnail())
-                    .plannerAccess(planner.getPlannerAccess())
-                    .likePlanner(planner.getLikePlanner()-1)
-                    .isDefault(planner.getIsDefault())
-                    .memberEntity(planner.getMemberEntity())
-                    .build();
-            plannerRepository.save(updatePlanner);
-        }
-
-        return 1;
+    public int unlikePlanner(PlannerIdDTO plannerIdDTO) {
+        long plannerId = plannerIdDTO.getPlannerId();
+        return plannerRepository.unlikePlanner(plannerId);
     }
 
     public long postJSONPlanner(RequestPostJSONPlannerDTO requestPostJSONPlannerDTO, String memberId) {
@@ -594,4 +522,3 @@ public class PlannerService {
         return savedPlannerEntity.getPlannerId();
     }
 }
-

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeDTO {
-    private Long like_id;
     private Long plannerId;
     private String memberId;
 
