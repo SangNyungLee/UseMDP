@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
     List<PlannerEntity> findByMemberEntity_MemberId(String memberId);
@@ -21,4 +22,7 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
 
     @Query(value = "UPDATE PlannerEntity p SET p.likePlanner = p.likePlanner - 1 WHERE p.plannerId = :plannerId")
     int unlikePlanner(@Param("plannerId") long plannerId);
+
+    @Query(nativeQuery = true, value = "select * from planner p where planner_id = :plannerId")
+    Optional<PlannerEntity> getPlanner(@Param("plannerId")long plannerId);
 }
