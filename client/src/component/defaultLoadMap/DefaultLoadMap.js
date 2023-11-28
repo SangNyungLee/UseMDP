@@ -13,14 +13,6 @@ import CalendarSideBar from '../home/calendar/CalendarSideBar';
 const _Button = styled.button`
     border: none;
     background: none;
-    /* color: gray; */
-
-    /* &:active {
-    color: black;
-  }
-  &:focus {
-    color: black;
-  } */
 `;
 
 const _Flex = styled.div`

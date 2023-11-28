@@ -1,12 +1,23 @@
 import copy from 'fast-copy';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
-import { useSelector } from 'react-redux';
 import { getItemStyle, getItems, getListStyle } from '../../utils/QuoteSetting';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import QuoteCard from './QuoteCard';
 import axios from 'axios';
 import { siteActions } from '../../store/site';
+import styled from 'styled-components';
+import CardListHeader from './CardListHeader/CardListHeader';
+
+const DivButton = styled.div`
+    text-align: center;
+    background-color: '#f1f3f5';
+    text-size-adjust: 16px;
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
 export default function DroppableComponent(props) {
     const { quote } = useSelector((state) => state.calendar);
     const { cardList, cardStatusIndex, planner, handleClick, plannerId } = props;
@@ -86,23 +97,24 @@ export default function DroppableComponent(props) {
         <Droppable key={cardStatusIndex} droppableId={`${cardStatusIndex}`}>
             {(provided, snapshot) => {
                 //Droppable에서 제공하는 무언가 같음. 환경 설정이 들어가 있음.
+                console.log('provided', provided, snapshot);
                 return (
-                    <div {...droppableComponentRegister(provided, snapshot)}>
-                        {cardList.map((card, id) => (
-                            <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
-                                {(provided, snapshot) => (
-                                    <div {...draggableComponentRegister(provided, snapshot, id)}>
-                                        <QuoteCard card={card} deleteCard={deleteCard} cardIndex={id} />
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                        <button type="button" onClick={addCard}>
-                            {' '}
-                            Add new item{' '}
-                        </button>
-                    </div>
+                    <>
+                        <div {...droppableComponentRegister(provided, snapshot)}>
+                            <CardListHeader index={provided.droppableProps['data-rbd-droppable-id']}></CardListHeader>
+                            {cardList.map((card, id) => (
+                                <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
+                                    {(provided, snapshot) => (
+                                        <div {...draggableComponentRegister(provided, snapshot, id)}>
+                                            <QuoteCard card={card} deleteCard={deleteCard} cardIndex={id} />
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                            <DivButton onClick={addCard}>+ Add new item</DivButton>
+                        </div>
+                    </>
                 );
             }}
         </Droppable>
