@@ -24,22 +24,6 @@ export function getItems(count, offset = 0, separatorStr = 'TODO') {
             createdAt: currentTime.toISOString(),
             updatedAt: currentTime.toISOString(),
             cardStatus: separatorStr,
-            checklists: [
-                {
-                    checklistId: (k + offset) * 2,
-                    checked: 0,
-                    title: 'done',
-                    createdAt: currentTime.toISOString(),
-                    updatedAt: currentTime.toISOString(),
-                },
-                {
-                    checklistId: (k + offset) * 2 + 1,
-                    checked: 0,
-                    title: 'jpa',
-                    createdAt: currentTime.toISOString(),
-                    updatedAt: currentTime.toISOString(),
-                },
-            ],
             intOrder: offset,
             sourceResource: null,
         };
@@ -64,9 +48,12 @@ export function getItemStyle(isDragging, draggableStyle) {
 
 export function getListStyle(isDraggingOver) {
     return {
-        background: isDraggingOver ? 'lightblue' : 'lightgrey',
+        background: isDraggingOver ? 'lightblue' : '#f1f3f5',
         padding: grid,
         width: 250,
+        borderRadius: '10px',
+        marginRight: '10px',
+        minHeight: 'auto', // Set minHeight to 'auto' to adjust the height based on content
     };
 }
 
@@ -88,6 +75,7 @@ export function getOneDefaultPlanner() {
         createdAt: currentTime.toISOString(),
         updatedAt: currentTime.toISOString(),
         cards,
+        taglist:[],
     };
     return planner;
 }

@@ -2,9 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.LikeDTO;
 import com.example.demo.dto.PlannerIdDTO;
-import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerCopyDTO;
-import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
+import com.example.demo.dto.RequestDTO.*;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;
 import com.example.demo.dto.ResponseDTO.ResponseLikeDTO;
@@ -15,14 +13,12 @@ import com.example.demo.utils.DTOConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.HTML;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +35,10 @@ public class PlannerService {
 
     @Autowired
     private LikeRepository likeRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
 
     @Autowired
     private DTOConversionUtil dtoConversionUtil;
@@ -144,6 +144,8 @@ public class PlannerService {
 
         List<ResponseCardDTO> responseCardDTOS = cardEntities.stream().map(cardEntity -> dtoConversionUtil.toResponseCardDTO(cardEntity)).toList();
 
+        List<String> taglist = plannerEntity.getTaglist().stream().map(TagEntity::getTitle).toList();
+
         return ResponsePlannerDTO.builder()
                 .plannerId(plannerEntity.getPlannerId())
                 .creator(plannerEntity.getCreator())
@@ -155,6 +157,7 @@ public class PlannerService {
                 .createdAt(plannerEntity.getCreatedAt())
                 .updatedAt(plannerEntity.getUpdatedAt())
                 .cards(responseCardDTOS)
+                .taglist(taglist)
                 .build();
     }
 
@@ -168,6 +171,7 @@ public class PlannerService {
                     .creator(member.getSocialNickname())
                     .title(requestPostPlannerDTO.getTitle())
                     .thumbnail(requestPostPlannerDTO.getThumbnail())
+                    .plannerAccess(requestPostPlannerDTO.getPlannerAccess())
                     .memberEntity(member)
                     .build();
             try {
@@ -186,32 +190,50 @@ public class PlannerService {
     //성공 -> 1, 실패 -> 0
     public long patchPlanner(RequestPatchPlannerDTO requestPatchPlannerDTO, String memberId) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
+            return 0;
+        }
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestPatchPlannerDTO.getPlannerId());
+        if(optionalPlannerEntity.isEmpty()) {
+            return 0;
+        }
 
-        if (optionalMemberEntity.isPresent()) {
-            MemberEntity member = optionalMemberEntity.get();
-            Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.findById(requestPatchPlannerDTO.getPlannerId());
-            if(optionalPlannerEntity.isPresent()) {
-                PlannerEntity planner = optionalPlannerEntity.get();
-                PlannerEntity updatedPlanner = PlannerEntity.builder()
-                        .plannerId(planner.getPlannerId())
-                        .creator(requestPatchPlannerDTO.getCreator())
-                        .title(requestPatchPlannerDTO.getTitle())
-                        .thumbnail(requestPatchPlannerDTO.getThumbnail())
-                        .plannerAccess(requestPatchPlannerDTO.getPlannerAccess())
-                        .createdAt(planner.getCreatedAt())
-                        .memberEntity(member)
-                        .build();
-                try {
-                    PlannerEntity savedPlannerEntity = plannerRepository.save(updatedPlanner);
-                    return savedPlannerEntity.getPlannerId();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
-            } else {
-                return 0;
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        PlannerEntity plannerEntity = optionalPlannerEntity.get();
+
+        PlannerEntity newPlannerEntity = PlannerEntity.builder()
+                .plannerId(plannerEntity.getPlannerId())
+                .creator(requestPatchPlannerDTO.getCreator())
+                .title(requestPatchPlannerDTO.getTitle())
+                .thumbnail(requestPatchPlannerDTO.getThumbnail())
+                .plannerAccess(requestPatchPlannerDTO.getPlannerAccess())
+                .createdAt(plannerEntity.getCreatedAt())
+                .memberEntity(memberEntity)
+                .build();
+        try {
+            plannerEntity = plannerRepository.save(newPlannerEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        if(!requestPatchPlannerDTO.getTaglist().isEmpty()) {
+            for (String tag : requestPatchPlannerDTO.getTaglist()) {
+                Optional<TagEntity> optionalTagEntity = tagRepository.findByTitle(tag);
+                TagEntity tagEntity = optionalTagEntity.orElseGet(() -> {
+                    TagEntity newTag = TagEntity.builder()
+                            .title(tag)
+                            .thumbnail("DEFAULT")
+                            .build();
+                    return tagRepository.save(newTag);
+                });
+                plannerEntity.getTaglist().add(tagEntity);
             }
-        } else {
+        }
+        try {
+            plannerRepository.save(plannerEntity);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
             return 0;
         }
     }
@@ -249,6 +271,7 @@ public class PlannerService {
             for(PlannerEntity plannerEntity : plannerEntities) {
                 List<CardEntity> cardEntities = plannerEntity.getCards();
                 List<ResponseCardDTO> cardDTOS = new ArrayList<>();
+                List<String> taglist = plannerEntity.getTaglist().stream().map(TagEntity::getTitle).toList();
 
                 for(CardEntity cardEntity : cardEntities) {
                     List<ChecklistEntity> checklistEntities = cardEntity.getChecklists();
@@ -292,6 +315,7 @@ public class PlannerService {
                         .plannerAccess(plannerEntity.getPlannerAccess())
                         .isDefault(plannerEntity.getIsDefault())
                         .cards(cardDTOS)
+                        .taglist(taglist)
                         .build();
                 plannerDTOS.add(plannerDTO);
             }
@@ -497,6 +521,77 @@ public class PlannerService {
         return 1;
     }
 
+    public long postJSONPlanner(RequestPostJSONPlannerDTO requestPostJSONPlannerDTO, String memberId) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        if(optionalMemberEntity.isEmpty()) {
+            return 0;
+        }
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        PlannerEntity plannerEntity = PlannerEntity.builder()
+                .creator(requestPostJSONPlannerDTO.getCreator())
+                .title(requestPostJSONPlannerDTO.getTitle())
+                .thumbnail(requestPostJSONPlannerDTO.getThumbnail())
+                .plannerAccess(requestPostJSONPlannerDTO.getPlannerAccess())
+                .memberEntity(memberEntity)
+                .build();
 
+        PlannerEntity savedPlannerEntity;
+        try {
+            savedPlannerEntity = plannerRepository.save(plannerEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+        if(!requestPostJSONPlannerDTO.getTaglist().isEmpty()) {
+            for(String tag : requestPostJSONPlannerDTO.getTaglist()) {
+                Optional<TagEntity> optionalTagEntity = tagRepository.findByTitle(tag);
+                TagEntity tagEntity = optionalTagEntity.orElseGet(() -> {
+                    TagEntity newTagEntity = TagEntity.builder()
+                            .title(tag)
+                            .thumbnail("DEFAULT")
+                            .build();
+                    return tagRepository.save(newTagEntity);
+                });
+                savedPlannerEntity.getTaglist().add(tagEntity);
+            }
+        }
+
+        try {
+            savedPlannerEntity = plannerRepository.save(savedPlannerEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+        List<RequestPostJSONCardDTO> requestPostJSONCardDTOS = requestPostJSONPlannerDTO.getCards();
+
+        if(!requestPostJSONCardDTOS.isEmpty()) {
+            for(RequestPostJSONCardDTO requestPostJSONCardDTO : requestPostJSONCardDTOS) {
+                CardEntity cardEntity = CardEntity.builder()
+                        .title(requestPostJSONCardDTO.getTitle())
+                        .coverColor(requestPostJSONCardDTO.getCoverColor())
+                        .post(requestPostJSONCardDTO.getPost())
+                        .intOrder(requestPostJSONCardDTO.getIntOrder())
+                        .startDate(requestPostJSONCardDTO.getStartDate())
+                        .endDate(requestPostJSONCardDTO.getEndDate())
+                        .cardStatus(requestPostJSONCardDTO.getCardStatus())
+                        .plannerEntity(savedPlannerEntity)
+                        .build();
+                CardEntity savedCardEntity = cardRepository.save(cardEntity);
+
+                List<RequestChecklistDTO> requestChecklistDTOS = requestPostJSONCardDTO.getChecklists();
+                for(RequestChecklistDTO requestChecklistDTO : requestChecklistDTOS) {
+                    ChecklistEntity checklistEntity = ChecklistEntity.builder()
+                            .checked(requestChecklistDTO.getChecked())
+                            .title(requestChecklistDTO.getTitle())
+                            .cardEntity(savedCardEntity)
+                            .build();
+                    checklistRepository.save(checklistEntity);
+                }
+            }
+        }
+        return savedPlannerEntity.getPlannerId();
+    }
 }
 

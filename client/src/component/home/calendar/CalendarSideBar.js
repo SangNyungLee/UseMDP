@@ -3,16 +3,30 @@ import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../../../store/plannerList";
-import DataReaderModal from "../../reader/DataReaderModal";
 import PlannerListLi from "./PlannerListLi";
 import useRead from "../../../hook/useRead";
-import { plannerCardStatusDevide, plannerListCardStatusDevide } from "../../../utils/DataParsing";
+import { plannerCardStatusDevide, plannerListCardStatusDevide, readSpecifiedPlanner, readUnspecifiedPlanner, readUnspecifiedPlannerList, specifyPlanner } from "../../../utils/DataParsing";
 import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../../../utils/DataValidate";
+import { calendarActions } from "../../../store/calendar";
 
 const _Container = styled.div`
+    border-radius: 20px;
     background-color: skyblue;
     height: 100vh;
-    width: 200px;
+    max-width: 270px;
+    min-width: 270px;
+    width: 270px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding-top: 30px;
+    margin: 30px;
+    margin-top: 0px;
+`
+
+const _PlannerListUl = styled.ul`
+    list-style-type: none;
+    padding: 5px;
 `
 
 export default function CalendarSideBar(){
@@ -26,46 +40,48 @@ export default function CalendarSideBar(){
         if(readData){
             const data = JSON.parse(readData)
             console.log("data",data);
-            // Unspecified인 애들은 이런식으로 데이터가 온다길레 추가로 작업한것..
-            // 혹시나 형태가 달라지면 이거도 수정해야함
             if (validatePlannerData(data)) {
                 // cards = [ [] , [] , [] ] 형태
                 console.log("planner")
-                dispatch(plannerListActions.addPlanner(data))
+                const planner = readSpecifiedPlanner(data);
+                const newPlanner = plannerCardStatusDevide(planner)
+                const { plannerId } = newPlanner
+                dispatch(plannerListActions.addPlanner(newPlanner))
+                dispatch(calendarActions.setHome([plannerId]))
             } else if (validateUnspecifiedPlannerData(data)) {
                 // cards = [] 형태
                 console.log("planner2")
-                const specifiedPlanner = plannerCardStatusDevide(data);
-                specifiedPlanner.title = "default title"; // 없는 데이터 셋이길레 추가
-                dispatch(plannerListActions.addPlanner(specifiedPlanner))
+                const planner = readUnspecifiedPlanner(data);
+                const newPlanner = plannerCardStatusDevide(planner);
+                const { plannerId } = newPlanner
+                dispatch(plannerListActions.addPlanner(newPlanner))
+                dispatch(calendarActions.setHome([plannerId]))
             } else if (validatePlannerListData(data)) {
                 // cards = [ [] , [] , [] ] 형태
                 console.log("plannerList")
-                dispatch(plannerListActions.addPlannerList(data))
+                const plannerList = readSpecifiedPlanner(data);
+                const newPlannerList = plannerListCardStatusDevide(plannerList);
+                dispatch(plannerListActions.addPlannerList(newPlannerList))
             } else if (validateUnspecifiedPlannerListData(data)) {
                 // cards = [] 형태
                 console.log("unspecified plannerList")
-                const specifiedPlannerList = plannerListCardStatusDevide(data)
-                dispatch(plannerListActions.addPlannerList(specifiedPlannerList))
+                const plannerList = readUnspecifiedPlannerList(data);
+                const newPlannerList = plannerListCardStatusDevide(plannerList)
+                dispatch(plannerListActions.addPlannerList(newPlannerList))
             } else {
                 console.log("error")
             }
             setReadData();
         }
     },[readData])
-    
-    console.log("plannerList",plannerList)
 
     return(<>
         <_Container {...readerRegister}>
-            <ul>
+            <_PlannerListUl>
                 { plannerList.map((planner) =>
-                    <li key={planner.plannerId}>
-                        <PlannerListLi planner={planner}/>
-                    </li>
+                    <PlannerListLi key={planner.plannerId} planner={planner}/>
                 )}
-            </ul>
-            <DataReaderModal setState={setReadData}/>
+            </_PlannerListUl>
         </_Container>
     </>)
 }

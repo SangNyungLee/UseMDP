@@ -3,6 +3,7 @@ import Header from '../component/Header';
 import { NavLink } from 'react-router-dom';
 import { Container, Image, Row, Col, Card, Button, Stack } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
+import { useState } from 'react';
 
 export default function WelcomePage() {
 	const isMobile = useMediaQuery({
@@ -11,7 +12,6 @@ export default function WelcomePage() {
 
 	return (
 		<>
-			<Header />
 			<Container className='px-5' style={{ height: '600px', paddingTop: '180px' }}>
 				<Row xs={1} sm={1} md={2}>
 					<Col className='mb-5'>

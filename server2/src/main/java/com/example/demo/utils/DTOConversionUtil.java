@@ -2,6 +2,7 @@ package com.example.demo.utils;
 
 import com.example.demo.dto.RequestDTO.RequestChecklistDTO;
 import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
+import com.example.demo.dto.RequestDTO.RequestPostJSONCardDTO;
 import com.example.demo.dto.RequestDTO.RequestPostPlannerDTO;
 import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.dto.ResponseDTO.ResponseChecklistDTO;

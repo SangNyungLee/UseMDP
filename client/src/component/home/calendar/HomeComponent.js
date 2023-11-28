@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { plannerListActions } from "../../store/plannerList";
-import base64Str from "../../constant/ImageBase64";
-import CustomList from "../customLIst/CustomList";
-import MyLoadMap from "../LoadMap2/MyLoadMap";
+import { plannerListActions } from "../../../store/plannerList";
+import base64Str from "../../../constant/ImageBase64";
+import CustomList from "../../customLIst/CustomList";
+import MyLoadMap from "../../LoadMap2/MyLoadMap";
 import copy from "fast-copy";
 const statusIndexMap = {
   TODO: 0,
@@ -72,8 +72,6 @@ export default function HomeComponent() {
           dispatch(plannerListActions.setPlannersInit(newData));
         }
       } catch {
-        console.log("error");
-
         setData(testData);
         dispatch(plannerListActions.setPlannersInit(testData));
       }

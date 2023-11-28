@@ -1,6 +1,7 @@
 package com.example.demo.dto.ResponseDTO;
 
 import com.example.demo.entity.PlannerEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class ResponsePlannerDTO {
     private int isDefault;
     private Date createdAt;
     private Date updatedAt;
+    private List<String> taglist;
     private List<ResponseCardDTO> cards;
     private List<ResponseLikeDTO> likes;
 }

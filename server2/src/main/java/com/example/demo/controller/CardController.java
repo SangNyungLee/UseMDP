@@ -26,11 +26,12 @@ public class CardController implements SwaggerCardAPI {
     // 특정 카드 생성
     @Override
     @PostMapping("/api/postCard")
-    public ResponseEntity<APIResponseDTO<Integer>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token) {
+    public ResponseEntity<APIResponseDTO<String>> postCard(@RequestBody RequestPostCardDTO requestPostCardDTO, @CookieValue(name = "auth", required = false) String token) {
         System.out.println("token = " + token);
         System.out.println(token == null);
+        System.out.println(requestPostCardDTO.getChecklists().get(0).toString() ) ;
         if(token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Integer>builder()
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<String>builder()
                     .resultCode("401")
                     .message("로그인 되지 않은 사용자입니다")
                     .data(null)
@@ -38,7 +39,7 @@ public class CardController implements SwaggerCardAPI {
         }
         boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
         if(tokenExpired) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Integer>builder()
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<String>builder()
                     .resultCode("401")
                     .message("만료된 토큰입니다. 다시 로그인하세요")
                     .data(null)
@@ -46,16 +47,16 @@ public class CardController implements SwaggerCardAPI {
         }
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
-        int result = cardService.postCard(requestPostCardDTO, memberId);
-        if(result == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<Integer>builder()
+        String result = cardService.postCard(requestPostCardDTO, memberId);
+        if(result == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<String>builder()
                     .resultCode("404")
                     .message("일치하는 memberId 없거나 plannerId 없음")
                     .data(result)
                     .build());
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(APIResponseDTO.<Integer>builder()
+        return ResponseEntity.status(HttpStatus.CREATED).body(APIResponseDTO.<String>builder()
                 .resultCode("201")
                 .message("카드 생성완료")
                 .data(result)
@@ -86,7 +87,6 @@ public class CardController implements SwaggerCardAPI {
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
         int result = cardService.patchCard(requestPatchCardDTO, memberId);
-        System.out.println("requestPostCardDTO : "+ requestPatchCardDTO.getChecklists().get(0).getTitle()+result);
         if(result == 0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<Integer>builder()
                     .resultCode("404")

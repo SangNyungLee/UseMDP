@@ -67,12 +67,12 @@ public class LoginController implements SocialLoginAPI {
                 .build();
 
         // 갱신된 사용자 정보의 memberId 로 JWT 토큰 발행
-        String token = jwtTokenUtil.createToken(member.getMemberId());
+        String token = jwtTokenUtil.createToken(member.getMemberId(), user.getSocialLoginAccessToken());
         System.out.println("JWT token = " + token);
 
         // 발행된 JWT 토큰을 쿠키로 설정 및 전달
         Cookie cookie = new Cookie("auth", token);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         cookie.setMaxAge(24 * 60 * 60);
         cookie.setPath("/");
 
@@ -90,17 +90,4 @@ public class LoginController implements SocialLoginAPI {
                         .build()
                 );
     }
-
-//    @GetMapping("/login/oauth2/code/{registrationId}")
-//    public void googleLogin(@RequestParam String code, @PathVariable String registrationId){
-//        if ("github".equals(registrationId)) {
-//            System.out.println(code);
-//            githubLoginService.gitLogin(code);
-//        }else{
-//                Map<String, String> result = googleLoginService.socialLogin(code, registrationId);
-//                System.out.println("2번 register" + registrationId);
-//                System.out.println("아이디: " + result.get("id"));
-//                System.out.println("닉네임: " + result.get("nickname"));
-//        }
-//    }
 }
