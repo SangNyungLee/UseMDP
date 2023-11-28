@@ -10,7 +10,7 @@ export default function useDefaultCheck(){
     const site = useSelector( state => state.site);
     const { isLogin, isData } = site;
 
-    const [ cookies ] = useCookies('auth');
+    const [cookies, setCookie, removeCookie] = useCookies('auth');
 
     const dispatch = useDispatch();
 

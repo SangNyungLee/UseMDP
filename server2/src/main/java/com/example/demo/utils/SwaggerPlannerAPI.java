@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.dto.LikeDTO;
 import com.example.demo.dto.PlannerIdDTO;
 import com.example.demo.dto.RequestDTO.RequestPatchPlannerDTO;
 import com.example.demo.dto.RequestDTO.RequestPostJSONPlannerDTO;
@@ -49,6 +50,7 @@ public interface SwaggerPlannerAPI {
     @Operation(summary = "특정 플래너 수정", description = "DB에 존재하는 특정 플래너 수정")
     ResponseEntity<APIResponseDTO<Long>> patchPlanner(@RequestBody RequestPatchPlannerDTO requestPatchPlannerDTO, @CookieValue(name = "auth", required = false) String token);
 
+
     @Operation(
             summary = "특정 플래너 좋아요 +1",
             description = "DB에 존재하는 특정 플래너의 plannerLike 값 +1")
@@ -63,7 +65,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    int likePlanner(@RequestBody PlannerIdDTO plannerIdDTO);
+    ResponseEntity<APIResponseDTO<Long>> likePlanner(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "auth", required = false) String token);
 
     @Operation(
             summary = "특정 플래너 좋아요 -1",
@@ -79,7 +81,7 @@ public interface SwaggerPlannerAPI {
                     }
             )
     })
-    int unlikePlanner(@RequestBody PlannerIdDTO plannerIdDTO);
+    ResponseEntity<APIResponseDTO<Long>> unlikePlanner(@RequestBody PlannerIdDTO plannerIdDTO, @CookieValue(name = "auth", required = false) String token);
 
 
     @Operation(summary = "특정 플래너 삭제", description = "DB에 존재하는 특정 플래너 삭제")

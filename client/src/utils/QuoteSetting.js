@@ -24,22 +24,6 @@ export function getItems(count, offset = 0, separatorStr = 'TODO') {
             createdAt: currentTime.toISOString(),
             updatedAt: currentTime.toISOString(),
             cardStatus: separatorStr,
-            checklists: [
-                {
-                    checklistId: (k + offset) * 2,
-                    checked: 0,
-                    title: 'done',
-                    createdAt: currentTime.toISOString(),
-                    updatedAt: currentTime.toISOString(),
-                },
-                {
-                    checklistId: (k + offset) * 2 + 1,
-                    checked: 0,
-                    title: 'jpa',
-                    createdAt: currentTime.toISOString(),
-                    updatedAt: currentTime.toISOString(),
-                },
-            ],
             intOrder: offset,
             sourceResource: null,
         };
@@ -91,6 +75,7 @@ export function getOneDefaultPlanner() {
         createdAt: currentTime.toISOString(),
         updatedAt: currentTime.toISOString(),
         cards,
+        taglist:[],
     };
     return planner;
 }
