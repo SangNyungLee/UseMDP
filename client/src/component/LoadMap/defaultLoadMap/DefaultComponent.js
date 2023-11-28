@@ -1,14 +1,15 @@
 import axios from 'axios';
-import base64Str from '../../constant/ImageBase64';
-import LoadMap2 from '../LoadMap2/LoadMap';
-import MyLoadMap from '../LoadMap2/MyLoadMap';
+import base64Str from '../../../constant/ImageBase64';
+import LoadMap from '../LoadMap';
+import MyLoadMap from '../MyLoadMap';
 import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
-import RightClicker from '../post/RightClicker/RightClicker';
+import RightClicker from '../../post/RightClicker/RightClicker';
 import { useEffect, useState } from 'react';
-import CustomList from '../customLIst/CustomList';
-import CustomListHiddable from '../customLIst/CustomListHiddable';
+import CustomList from '../../home/customList/CustomList';
+import CustomListHiddable from '../../home/customList/CustomListHiddable';
 import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../store/plannerList';
+import { plannerListActions } from '../../../store/plannerList';
+
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
@@ -125,7 +126,7 @@ export default function DefaultComponent() {
         return (
             <div onClick={handlePoint}>
                 <h2>기본로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap2} points={[point, setPoint]}></CustomListHiddable>
+                <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]}></CustomListHiddable>
 
                 <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
                 <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
@@ -147,7 +148,7 @@ export default function DefaultComponent() {
 //                     {Array.from({ length: Math.min(4, data.length) }).map((_, i) => (
 //                         <Col key={data[i].plannerId}>
 //                             <div onContextMenu={(e) => handleRightClick(e, data[i].title, data[i].plannerId)}>
-//                                 <LoadMap2 datas={data[i]}></LoadMap2>
+//                                 <LoadMap datas={data[i]}></LoadMap>
 //                             </div>
 //                         </Col>
 //                     ))}
@@ -164,7 +165,7 @@ export default function DefaultComponent() {
 //                     {Array.from({ length: endIdx - idx + 1 }).map((_, i) => (
 //                         <Col key={data[idx + i].plannerId}>
 //                             <div onContextMenu={handleRightClick}>
-//                                 <LoadMap2 datas={data[idx + i]}></LoadMap2>
+//                                 <LoadMap datas={data[idx + i]}></LoadMap>
 //                             </div>
 //                         </Col>
 //                     ))}

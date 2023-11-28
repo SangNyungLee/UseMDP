@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useState } from 'react';
-import RightClicker from '../post/RightClicker/RightClicker';
+import RightClicker from '../../post/RightClicker/RightClicker';
 
 export default function CustomListHiddable(props) {
     const [hide, setHide] = useState(true);

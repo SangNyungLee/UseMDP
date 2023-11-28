@@ -3,7 +3,7 @@ import { Nav, Navbar, Container, Button, Modal } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { GithubLoginButton, GoogleLoginButton } from 'react-social-login-buttons';
-import FileInputComponent from './FileInputComponent';
+import FileInputComponent from '../FileInputComponent';
 
 export default function HomeHeader() {
     // 모달창 보여주기, 숨기기 상태
