@@ -19,15 +19,15 @@ export function plannerListCardStatusDevide( plannerList ){
     return plannerList.map( planner => plannerCardStatusDevide(planner))
 }
 
-export function readSpecifiedPlanner(planner){
-    const removedPlanner = removeUnspecifiedIdProperty(planner)
-    const newPlanner = postPlannerCards(removedPlanner)
+export async function readSpecifiedPlanner(planner){
+    const removedPlanner = removeSpecifiedIdProperty(planner)
+    const newPlanner = await postPlannerCards(removedPlanner)
     return plannerCardStatusDevide(newPlanner);
 }
 
-export function readUnspecifiedPlanner(planner){
+export async function readUnspecifiedPlanner(planner){
     const removedPlanner = removeSpecifiedIdProperty(planner);
-    const newPlanner = postPlannerCards(removedPlanner)
+    const newPlanner = await postPlannerCards(removedPlanner)
     return plannerCardStatusDevide(newPlanner);
 }
 
@@ -49,9 +49,14 @@ export function removeUnspecifiedIdProperty(planner){
     return newPlanner
 }
 
-export function readSpecifiedPlannerList(plannerList){
-    const removedPlannerList = removeSpecifiedListIdProperty(plannerList);
-    const newPlannerList = removedPlannerList.map( planner => postPlannerCards(planner))
+export async function readSpecifiedPlannerList(plannerList){
+    const removedPlannerList = await removeSpecifiedListIdProperty(plannerList);
+    let newPlannerList = [];
+    for ( const planner of removedPlannerList){
+        const newPlanner = await postPlannerCards(planner);
+        newPlannerList = [...newPlannerList,newPlanner];
+    }
+    console.log("newPlannerList",newPlannerList)
     return newPlannerList;
 }
 
@@ -65,9 +70,13 @@ export function removeSpecifiedListIdProperty(plannerList){
     return newPlannerList
 }
 
-export function readUnspecifiedPlannerList(plannerList){
+export async function readUnspecifiedPlannerList(plannerList){
     const removedPlannerList = removeUnspecifiedListIdProperty(plannerList);
-    const newPlannerList = removedPlannerList.map( planner => postPlannerCards(planner) )
+    let newPlannerList = [];
+    for (const planner of removedPlannerList){
+        const newPlanner = await postPlannerCards(planner)
+        newPlannerList = [...newPlannerList,newPlanner]
+    }
     return newPlannerList;
 }
 
