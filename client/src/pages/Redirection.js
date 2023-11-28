@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { siteActions } from "../store/site";
 
 export default function Redirection({ provider }) {
-
   //쿼리스트링에서 code값만 가져와서 변수에 저장
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get("code");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const func = async () => {
       try {
@@ -24,6 +27,8 @@ export default function Redirection({ provider }) {
             )
             .then((res) => {
               navigate("/");
+              dispatch(siteActions.setIsLogin(true));
+              localStorage.setItem("isLogin", true);
               alert("구글 로그인에 성공하셨습니다.");
             })
             .catch((res) => {
@@ -31,14 +36,17 @@ export default function Redirection({ provider }) {
             });
         } else if (provider === "github") {
           await axios
-            .post(`${process.env.REACT_APP_GITHUB_LOCAL_API_URI}`, {
-              authorizationCode: code,
-            },
-                  							{ withCredentials: true }
-
-                 )
+            .post(
+              `${process.env.REACT_APP_GITHUB_LOCAL_API_URI}`,
+              {
+                authorizationCode: code,
+              },
+              { withCredentials: true }
+            )
             .then((res) => {
               console.log(res);
+              dispatch(siteActions.setIsLogin(true));
+              localStorage.setItem("isLogin", true);
               navigate("/");
               alert("깃허브 로그인 성공");
             })
@@ -46,8 +54,10 @@ export default function Redirection({ provider }) {
               alert("깃허브 로그인에 실패하셨습니다..");
             });
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log("error", error);
+      }
     };
     func();
-  }, []);
+  }, [dispatch, navigate, provider, code]);
 }
