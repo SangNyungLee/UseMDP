@@ -6,8 +6,6 @@ export default function CustomList(props) {
     const data = props.datas;
     const CustomLoadMap = props.loadMap;
     const dataLength = data.length;
-    console.log(dataLength);
-
     return (
         <div>
             <PlusMap></PlusMap>

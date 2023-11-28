@@ -24,16 +24,10 @@ export default function DroppableComponent(props) {
 
     const dispatch = useDispatch();
 
-    const deleteCard = async (e, id, card) => {
+    const deleteCard = (e, id, card) => {
         e.stopPropagation();
-        console.log('삭제');
-        const result = await axios.delete(`http://localhost:8080/api/deleteCard/${cardList[id].cardId}`, { withCredentials: true });
-        // console.log(card);
-        try {
-        } catch (error) {
-            console.log(error);
-        }
-
+        //  const result = axios.delete(`http://localhost:8080/api/deleteCard/${cardList[id].cardId}`, { withCredentials: true });
+        console.log('del', id, card);
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
         for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {
