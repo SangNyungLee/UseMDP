@@ -4,6 +4,7 @@ import com.example.demo.dto.RequestDTO.RequestChangeCardOrderDTO;
 import com.example.demo.dto.RequestDTO.RequestPatchCardDTO;
 import com.example.demo.dto.RequestDTO.RequestPostCardDTO;
 import com.example.demo.dto.ResponseDTO.APIResponseDTO;
+import com.example.demo.dto.ResponseDTO.ResponseCardDTO;
 import com.example.demo.service.CardService;
 import com.example.demo.utils.JwtTokenUtil;
 import com.example.demo.utils.SwaggerCardAPI;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class CardController implements SwaggerCardAPI {
@@ -22,6 +21,41 @@ public class CardController implements SwaggerCardAPI {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    // 특정 카드 불러오기
+    @Override
+    @GetMapping("/api/getCard/{cardId}")
+    public ResponseEntity<APIResponseDTO<ResponseCardDTO>> getCard(@PathVariable String cardId, @CookieValue(name = "auth", required = false) String token) {
+        if(token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<ResponseCardDTO>builder()
+                    .resultCode("401")
+                    .message("로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
+        }
+        boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
+        if(tokenExpired) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<ResponseCardDTO>builder()
+                    .resultCode("401")
+                    .message("만료된 토큰입니다. 다시 로그인하세요")
+                    .data(null)
+                    .build());
+        }
+        String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+        ResponseCardDTO data = cardService.getCard(cardId, memberId);
+        if(data == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(APIResponseDTO.<ResponseCardDTO>builder()
+                    .resultCode("204")
+                    .message("memberId 혹은 cardId가 존재하지 않음")
+                    .data(data)
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<ResponseCardDTO>builder()
+                .resultCode("200")
+                .message("카드조회 성공")
+                .data(data)
+                .build());
+    }
 
     // 특정 카드 생성
     @Override
