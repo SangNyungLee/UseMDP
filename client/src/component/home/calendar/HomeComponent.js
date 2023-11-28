@@ -43,8 +43,6 @@ export default function HomeComponent() {
                     dispatch(plannerListActions.setPlannersInit(newData));
                 }
             } catch {
-                console.log('error');
-
                 setData(testData);
                 dispatch(plannerListActions.setPlannersInit(testData));
             }

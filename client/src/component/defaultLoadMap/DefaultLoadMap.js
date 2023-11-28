@@ -13,14 +13,6 @@ import CalendarSideBar from '../home/calendar/CalendarSideBar';
 const _Button = styled.button`
     border: none;
     background: none;
-    /* color: gray; */
-
-    /* &:active {
-    color: black;
-  }
-  &:focus {
-    color: black;
-  } */
 `;
 
 const _Flex = styled.div`
@@ -67,7 +59,7 @@ export default function DefaultLoadMap() {
         <>
             <HomeHeader />
             <_Flex>
-                <div style={{display:"flex"}}>
+                <div style={{ display: 'flex' }}>
                     <_FlexNavi>
                         <_Button className="default" onClick={() => handleNumber(1)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
@@ -95,7 +87,7 @@ export default function DefaultLoadMap() {
                             </i>
                         </_Button>
                     </_FlexNavi>
-                    <CalendarSideBar/>
+                    <CalendarSideBar />
                 </div>
                 <_RenderComponent>{renderComponent()}</_RenderComponent>
             </_Flex>

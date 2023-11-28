@@ -10,6 +10,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +55,8 @@ public class PlannerEntity {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<CardEntity> cards;
+    @Builder.Default
+    private List<CardEntity> cards = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "memberId")
@@ -65,10 +68,12 @@ public class PlannerEntity {
             joinColumns = @JoinColumn(name = "plannerId"),
             inverseJoinColumns = @JoinColumn(name = "tagId")
     )
-    private Set<TagEntity> tags;
+    @Builder.Default
+    private Set<TagEntity> taglist = new HashSet<>();
 
     @OneToMany(mappedBy = "plannerEntity", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<LikeEntity> likes;
+    @Builder.Default
+    private List<LikeEntity> likes = new ArrayList<>();
 
     @Getter
     public enum PlannerAccess {

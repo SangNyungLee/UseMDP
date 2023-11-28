@@ -11,7 +11,7 @@ const plannerListSlice = createSlice({
             state = action.payload;
             return state;
         },
-        addPlannerList(state,action){
+        addPlannerList(state, action) {
             state = [...state, ...action.payload];
             return state;
         },
@@ -19,28 +19,23 @@ const plannerListSlice = createSlice({
             state = [...state, action.payload];
             return state;
         },
-        delPlanner(state,action){
-            state = state.filter( planner => planner.plannerId !== action.payload)
+        delPlanner(state, action) {
+            state = state.filter((planner) => planner.plannerId !== action.payload);
             return state;
         },
         addCard(state, action) {
-            const { plannerId, cardStatusIndex, card } = action.payload; 
-            state = state.map( planner => ({
+            const { plannerId, cardStatusIndex, card } = action.payload;
+            state = state.map((planner) => ({
                 ...planner,
-                cards: planner.plannerId === plannerId ? planner.cards.map(
-                    (cardList,index) => cardStatusIndex === index ? [...cardList,card] : cardList
-                ) : planner.cards
-            }))
+                cards: planner.plannerId === plannerId ? planner.cards.map((cardList, index) => (cardStatusIndex === index ? [...cardList, card] : cardList)) : planner.cards,
+            }));
             return state;
         },
         delCard(state, action) {
-            state = state.map( planner => ({
+            state = state.map((planner) => ({
                 ...planner,
-                cards: planner.cards.map(
-                cardList => cardList.filter(
-                    card => card.cardId !== action.payload
-                ) 
-            )}));
+                cards: planner.cards.map((cardList) => cardList.filter((card) => card.cardId !== action.payload)),
+            }));
             return state;
         },
         //id에 있는 planner를 그대로 바꿔치기한다.
@@ -73,12 +68,11 @@ const plannerListSlice = createSlice({
         },
         updatePlannerTitle(state, action) {
             const { plannerId, title } = action.payload;
-            return state.map( e => (e.plannerId === plannerId ? { ...e, title } : e));
+            return state.map((e) => (e.plannerId === plannerId ? { ...e, title } : e));
         },
         updatePlanner(state, action) {
             const { plannerId, planner } = action.payload;
-            state = state.map( prevPlanner => prevPlanner.plannerId === plannerId ?
-                { ...prevPlanner, cards: planner } : prevPlanner)
+            state = state.map((prevPlanner) => (prevPlanner.plannerId === plannerId ? { ...prevPlanner, cards: planner } : prevPlanner));
             return state;
         },
     },

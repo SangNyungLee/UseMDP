@@ -14,6 +14,14 @@ const _CardBody = styled.div`
     justify-content: space-around;
 `;
 
+const CardParagraph = styled.p`
+    margin: 0;
+
+    &:not(:last-child) {
+        margin-bottom: 1.5em;
+    }
+`;
+
 export default function QuoteCard({ card, deleteCard, cardIndex }) {
     return (
         <>
@@ -21,10 +29,18 @@ export default function QuoteCard({ card, deleteCard, cardIndex }) {
             <_CardBody>
                 {card.title}
                 <button type="button" onClick={(e) => deleteCard(e, cardIndex)}>
-                    {' '}
-                    delete{' '}
+                    delete
                 </button>
             </_CardBody>
+            {/* <GlassCard>
+                <CardParagraph>
+                    {card.title}
+                    <button type="button" onClick={(e) => deleteCard(e, cardIndex)}>
+                        X
+                    </button>
+                </CardParagraph>
+                <CardFooter> </CardFooter>
+            </GlassCard> */}
         </>
     );
 }
