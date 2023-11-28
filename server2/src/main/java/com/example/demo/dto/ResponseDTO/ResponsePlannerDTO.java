@@ -26,5 +26,4 @@ public class ResponsePlannerDTO {
     private Date updatedAt;
     private List<String> taglist;
     private List<ResponseCardDTO> cards;
-    private List<ResponseLikeDTO> likes;
 }
