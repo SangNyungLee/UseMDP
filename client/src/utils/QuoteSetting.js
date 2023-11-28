@@ -69,6 +69,7 @@ export function getListStyle(isDraggingOver) {
         width: 250,
         borderRadius: '10px',
         marginRight: '10px',
+        minHeight: 'auto', // Set minHeight to 'auto' to adjust the height based on content
     };
 }
 

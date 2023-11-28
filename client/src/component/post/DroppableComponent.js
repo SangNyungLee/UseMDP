@@ -97,7 +97,6 @@ export default function DroppableComponent(props) {
         <Droppable key={cardStatusIndex} droppableId={`${cardStatusIndex}`}>
             {(provided, snapshot) => {
                 //Droppable에서 제공하는 무언가 같음. 환경 설정이 들어가 있음.
-                console.log('provided', provided, snapshot);
                 return (
                     <>
                         <div {...droppableComponentRegister(provided, snapshot)}>
