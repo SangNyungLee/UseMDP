@@ -1,15 +1,22 @@
-import QuoteApp from "../component/post/QuoteApp";
-import "../constant/css/index.css";
-import styled from "styled-components";
-
+import QuoteApp from '../component/post/QuoteApp';
+import '../constant/css/index.css';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { pointActions } from '../store/pointer';
 const _Font = styled.div`
-  font-family: "SUITE-Regular";
+    font-family: 'SUITE-Regular';
 `;
 
 export default function PlannerPage() {
-  return (
-    <_Font>
-      <QuoteApp />
-    </_Font>
-  );
+    const dispatch = useDispatch();
+    const handlePoint = () => {
+        console.log('point clear');
+        dispatch(pointActions.clearPoint());
+    };
+
+    return (
+        <_Font onClick={handlePoint}>
+            <QuoteApp />
+        </_Font>
+    );
 }
