@@ -9,8 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
 import CalendarModal from './calendar/CalendarModal';
 
-import CalendarSideBar from './calendar/CalendarSideBar';
-
 import axios from 'axios';
 import { eventStyleGetter, getNestedElement } from '../../utils/CalendarController';
 import { getOneCard } from '../../utils/QuoteSetting';
