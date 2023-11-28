@@ -1,11 +1,9 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addLike, removeLike } from "../../store/like";
 import styled from "styled-components";
 import star from "../../constant/img/star.png";
 import yellowStar from "../../constant/img/yellowStar.png";
 import axios from "axios";
+import { useState } from "react";
 
 const _Star = styled.img`
   width: 23px;
@@ -15,19 +13,21 @@ const _Star = styled.img`
 `;
 
 const LikeButton = (props) => {
-  // console.log("likebutton의 like" + JSON.stringify(like));
-  // const isLiked = like.some((like) => like.plannerId === plannerId);
-  const dispatch = useDispatch();
-  const [isLiked, setIsLike] = useState(false);
-
   const plannerId = props.plannerId;
   const like = props.like;
 
-  const isStarCilckLike = () => {
-    // isLiked = 1;
-    // setIsLike(true);
-    // dispatch(addLike({ plannerId }));
-    const res = axios.post(
+  const [isClick, setIsClick] = useState(false);
+  const [isLike, setIsLike] = useState(true);
+
+  // if (like === 1) {
+  //   setIsClick(true);
+  // }
+
+  const isStarCilckLike = async (e) => {
+    e.stopPropagation();
+    setIsClick(true);
+    setIsLike(true);
+    const res = await axios.post(
       "http://localhost:8080/api/postPlanner/like",
       {
         plannerId,
@@ -37,23 +37,37 @@ const LikeButton = (props) => {
     console.log(res);
   };
 
-  const isStarCilckUnLike = () => {
-    //isLiked = 0;
-    // setIsLike(false);
-    // dispatch(removeLike({ plannerId }));
-    const res = axios.delete("http://localhost:8080/api/patchPlanner/unlike", {
-      data: { plannerId },
-      withCredentials: true,
-    });
+  const isStarCilckUnLike = async (e) => {
+    e.stopPropagation();
+    setIsClick(false);
+    setIsLike(false);
+    const res = await axios.delete(
+      "http://localhost:8080/api/patchPlanner/unlike",
+      {
+        data: { plannerId },
+        withCredentials: true,
+      }
+    );
     console.log(res);
   };
 
   return (
     <>
-      {like ? (
-        <_Star src={yellowStar} onClick={() => isStarCilckUnLike()}></_Star>
+      {/* {state && like ? (
+        <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
       ) : (
-        <_Star src={star} onClick={() => isStarCilckLike()}></_Star>
+        <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
+      )} */}
+      {like ? (
+        isLike ? (
+          <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
+        ) : (
+          <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
+        )
+      ) : isClick ? (
+        <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
+      ) : (
+        <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
       )}
     </>
   );

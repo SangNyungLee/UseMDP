@@ -453,6 +453,22 @@ public class PlannerService {
                 .build();
         likeRepository.save(likeEntity);
 
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerId);
+        if(optionalPlannerEntity.isPresent()){
+            PlannerEntity planner = optionalPlannerEntity.get();
+            PlannerEntity updatePlanner = PlannerEntity.builder()
+                    .plannerId(planner.getPlannerId())
+                    .creator(planner.getCreator())
+                    .title(planner.getTitle())
+                    .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .likePlanner(planner.getLikePlanner()+1)
+                    .isDefault(planner.getIsDefault())
+                    .memberEntity(planner.getMemberEntity())
+                    .build();
+            plannerRepository.save(updatePlanner);
+        }
+
         return 1;
 
     }
@@ -461,6 +477,23 @@ public class PlannerService {
     public long unlikePlanner(PlannerIdDTO plannerIdDTO, String memberId) {
         LikeEntity result = likeRepository.getLikeEntity(plannerIdDTO.getPlannerId(),memberId);
         likeRepository.delete(result);
+
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerIdDTO.getPlannerId());
+        if(optionalPlannerEntity.isPresent()){
+            PlannerEntity planner = optionalPlannerEntity.get();
+            PlannerEntity updatePlanner = PlannerEntity.builder()
+                    .plannerId(planner.getPlannerId())
+                    .creator(planner.getCreator())
+                    .title(planner.getTitle())
+                    .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .likePlanner(planner.getLikePlanner()-1)
+                    .isDefault(planner.getIsDefault())
+                    .memberEntity(planner.getMemberEntity())
+                    .build();
+            plannerRepository.save(updatePlanner);
+        }
+
         return 1;
     }
 
