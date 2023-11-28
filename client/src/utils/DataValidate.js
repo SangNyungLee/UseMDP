@@ -34,27 +34,17 @@ export function validatePlannerData(data) {
                             createdAt: { type: 'string' },
                             updatedAt: { type: 'string' },
                             cardStatus: { type: 'string' },
-                            checklists: {
-                                type: 'array',
-                                items: {
-                                    type: 'object',
-                                    properties: {
-                                        checklistId: { type: 'integer' },
-                                        checked: { type: 'integer' },
-                                        title: { type: 'string' },
-                                        createdAt: { type: 'string' },
-                                        updatedAt: { type: 'string' },
-                                    },
-                                    required: [ 'checklistId', 'checked', 'title' ]
-                                }
-                            },
                             intOrder: { type: 'integer' },
                             sourceResource: { type: 'null' },
                         },
-                        required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'checklists', 'intOrder'],
+                        required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
                     },
                 },
             },
+            taglist: {
+                type:'array',
+                items: { type: 'string' },
+            }
         },
         required: [ 'plannerId', 'creator' ,'title', 'cards'],
     };
@@ -82,6 +72,15 @@ export function validateUnspecifiedPlannerData(data) {
     const schema = {
         type: 'object',
         properties: {
+            plannerId: { type: 'integer' },
+            creator: { type: 'string' },
+            title: { type: 'string' },
+            likePlanner: { type: 'integer' },
+            thumbnail: { type: 'string' },
+            plannerAccess: { type: 'string' },
+            isDefault: { type: 'integer' },
+            createdAt: { type: 'string' },
+            updatedAt: { type: 'string' },
             cards: {
                 type: 'array',
                 items: {
@@ -96,26 +95,16 @@ export function validateUnspecifiedPlannerData(data) {
                             createdAt: { type: 'string' },
                             updatedAt: { type: 'string' },
                             cardStatus: { type: 'string' },
-                            checklists: {
-                                type: 'array',
-                                items: {
-                                    type: 'object',
-                                    properties: {
-                                        checklistId: { type: 'integer' },
-                                        checked: { type: 'integer' },
-                                        title: { type: 'string' },
-                                        createdAt: { type: 'string' },
-                                        updatedAt: { type: 'string' },
-                                    },
-                                    required: [ 'checklistId', 'checked', 'title' ]
-                                }
-                            },
                             intOrder: { type: 'integer' },
                             sourceResource: { type: 'null' },
                         },
-                        required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'checklists', 'intOrder'],
+                        required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
                 },
             },
+            taglist: {
+                type:'array',
+                items: { type: 'string' },
+            }
         },
         required: [ 'cards' ],
     };
@@ -170,27 +159,17 @@ export function validatePlannerListData(data) {
                                 createdAt: { type: 'string' },
                                 updatedAt: { type: 'string' },
                                 cardStatus: { type: 'string' },
-                                checklists: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            checklistId: { type: 'integer' },
-                                            checked: { type: 'integer' },
-                                            title: { type: 'string' },
-                                            createdAt: { type: 'string' },
-                                            updatedAt: { type: 'string' },
-                                        },
-                                        required: [ 'checklistId', 'checked', 'title' ]
-                                    }
-                                },
                                 intOrder: { type: 'integer' },
                                 sourceResource: { type: 'null' },
                             },
-                            required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'checklists', 'intOrder'],
+                            required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
                         },
                     },
                 },
+                taglist: {
+                    type:'array',
+                    items: { type: 'string' },
+                }
             },
             required: [ 'plannerId', 'creator' ,'title', 'cards'],
         }
@@ -244,30 +223,106 @@ export function validateUnspecifiedPlannerListData(data) {
                             createdAt: { type: 'string' },
                             updatedAt: { type: 'string' },
                             cardStatus: { type: 'string' },
-                            checklists: {
-                                type: 'array',
-                                items: {
-                                    type: 'object',
-                                    properties: {
-                                        checklistId: { type: 'integer' },
-                                        checked: { type: 'integer' },
-                                            title: { type: 'string' },
-                                        createdAt: { type: 'string' },
-                                        updatedAt: { type: 'string' },
-                                    },
-                                    required: [ 'checklistId', 'checked', 'title' ]
-                                }
-                            },
                             intOrder: { type: 'integer' },
                             sourceResource: { type: 'null' },
                         },
-                        required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'checklists', 'intOrder'],
+                        required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
                     },
                 },
+                taglist: {
+                    type:'array',
+                    items: { type: 'string' },
+                }
             },
             required: [ 'plannerId', 'creator' ,'title', 'cards'],
         }
     };
+  
+    // 검증
+    const Ajv = require('ajv');
+    const ajv = new Ajv();
+    const validate = ajv.compile(schema);
+  
+    const isValid = validate(data);
+  
+    // if (!isValid) {
+    //   console.error('Received data does not match the expected format:', validate.errors);
+    //   // 여기서 에러 처리 또는 원하는 작업을 수행할 수 있습니다.
+    // } else {
+    //   // 데이터가 유효할 경우 원하는 작업을 수행합니다.
+    //   console.log('Received data is valid:', data);
+    // }
+
+    return isValid
+};
+
+
+export function validateSpecifiedCards(data) {
+    // JSON Schema 정의
+    const schema = {
+        type: 'array',
+        items: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    cardId: { type: 'string' },
+                    post: { type: 'string' },
+                    title: { type: 'string' },
+                    coverColor: { type: 'string' },
+                    startDate: { type: 'string' },
+                    endDate: { type: 'string' },
+                    createdAt: { type: 'string' },
+                    updatedAt: { type: 'string' },
+                    cardStatus: { type: 'string' },
+                    intOrder: { type: 'integer' },
+                    sourceResource: { type: 'null' },
+                },
+                required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
+            },
+        },
+    }
+  
+    // 검증
+    const Ajv = require('ajv');
+    const ajv = new Ajv();
+    const validate = ajv.compile(schema);
+  
+    const isValid = validate(data);
+  
+    // if (!isValid) {
+    //   console.error('Received data does not match the expected format:', validate.errors);
+    //   // 여기서 에러 처리 또는 원하는 작업을 수행할 수 있습니다.
+    // } else {
+    //   // 데이터가 유효할 경우 원하는 작업을 수행합니다.
+    //   console.log('Received data is valid:', data);
+    // }
+
+    return isValid
+};
+
+export function validateUnspecifiedCards(data) {
+    // JSON Schema 정의
+    const schema = {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: {
+                cardId: { type: 'string' },
+                post: { type: 'string' },
+                title: { type: 'string' },
+                coverColor: { type: 'string' },
+                startDate: { type: 'string' },
+                endDate: { type: 'string' },
+                createdAt: { type: 'string' },
+                updatedAt: { type: 'string' },
+                cardStatus: { type: 'string' },
+                intOrder: { type: 'integer' },
+                sourceResource: { type: 'null' },
+            },
+            required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
+        },
+    }
   
     // 검증
     const Ajv = require('ajv');

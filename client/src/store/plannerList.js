@@ -58,14 +58,14 @@ const plannerListSlice = createSlice({
                     r.map((d) =>
                         d.cardId === cardId
                             ? {
-                                  ...d,
-                                  ...Object.keys(rest).reduce((acc, key) => {
-                                      if (rest.hasOwnProperty(key)) {
-                                          acc[key] = rest[key];
-                                      }
-                                      return acc;
-                                  }, {}),
-                              }
+                                ...d,
+                                ...Object.keys(rest).reduce((acc, key) => {
+                                if (rest.hasOwnProperty(key)) {
+                                        acc[key] = rest[key];
+                                }
+                                    return acc;
+                                }, {}),
+                            }
                             : d
                     )
                 ),

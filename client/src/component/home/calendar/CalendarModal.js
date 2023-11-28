@@ -108,16 +108,16 @@ export default function CalendarModal({ selectedCard, modalStatus, modalClose, p
 
     useEffect(() => {
         console.log('HI');
-        const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
+        const { title, post, startDate, endDate, coverColor, cardStatus } = selectedCard;
         setTitle(title);
         setPost(post);
         setStartDate(new Date(startDate));
         setEndDate(new Date(endDate));
         setCoverColor(coverColor);
-        setChecklists(checklists);
         setCardStatus(cardStatus);
         setShow(modalStatus);
         setModalOpen(false);
+        // const checklist = getCheckListAxios();
     }, [modalStatus]);
 
     // useEffect(() => {

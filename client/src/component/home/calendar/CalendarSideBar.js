@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { plannerListActions } from "../../../store/plannerList";
 import PlannerListLi from "./PlannerListLi";
 import useRead from "../../../hook/useRead";
-import { plannerCardStatusDevide, plannerListCardStatusDevide } from "../../../utils/DataParsing";
+import { plannerCardStatusDevide, plannerListCardStatusDevide, readSpecifiedPlanner, readUnspecifiedPlanner, readUnspecifiedPlannerList, specifyPlanner } from "../../../utils/DataParsing";
 import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../../../utils/DataValidate";
 import { calendarActions } from "../../../store/calendar";
 
@@ -40,31 +40,34 @@ export default function CalendarSideBar(){
         if(readData){
             const data = JSON.parse(readData)
             console.log("data",data);
-            // Unspecified인 애들은 이런식으로 데이터가 온다길레 추가로 작업한것..
-            // 혹시나 형태가 달라지면 이거도 수정해야함
             if (validatePlannerData(data)) {
                 // cards = [ [] , [] , [] ] 형태
                 console.log("planner")
-                dispatch(plannerListActions.addPlanner(data))
+                const planner = readSpecifiedPlanner(data);
+                const newPlanner = plannerCardStatusDevide(planner)
+                const { plannerId } = newPlanner
+                dispatch(plannerListActions.addPlanner(newPlanner))
+                dispatch(calendarActions.setHome([plannerId]))
             } else if (validateUnspecifiedPlannerData(data)) {
                 // cards = [] 형태
                 console.log("planner2")
-                const specifiedPlanner = plannerCardStatusDevide(data);
-                specifiedPlanner.title = "default title"; // 없는 데이터 셋이길레 추가
-                const totalPlannerId = plannerList.reduce((sum, planner) => sum + planner.plannerId, 0);
-                console.log("total planner",totalPlannerId)
-                specifiedPlanner.plannerId = totalPlannerId + 1 // 마찬가지로 없어서 추가하는데 곂치지 않도록
-                dispatch(plannerListActions.addPlanner(specifiedPlanner))
-                dispatch(calendarActions.setHome([totalPlannerId + 1]))
+                const planner = readUnspecifiedPlanner(data);
+                const newPlanner = plannerCardStatusDevide(planner);
+                const { plannerId } = newPlanner
+                dispatch(plannerListActions.addPlanner(newPlanner))
+                dispatch(calendarActions.setHome([plannerId]))
             } else if (validatePlannerListData(data)) {
                 // cards = [ [] , [] , [] ] 형태
                 console.log("plannerList")
-                dispatch(plannerListActions.addPlannerList(data))
+                const plannerList = readSpecifiedPlanner(data);
+                const newPlannerList = plannerListCardStatusDevide(plannerList);
+                dispatch(plannerListActions.addPlannerList(newPlannerList))
             } else if (validateUnspecifiedPlannerListData(data)) {
                 // cards = [] 형태
                 console.log("unspecified plannerList")
-                const specifiedPlannerList = plannerListCardStatusDevide(data)
-                dispatch(plannerListActions.addPlannerList(specifiedPlannerList))
+                const plannerList = readUnspecifiedPlannerList(data);
+                const newPlannerList = plannerListCardStatusDevide(plannerList)
+                dispatch(plannerListActions.addPlannerList(newPlannerList))
             } else {
                 console.log("error")
             }
