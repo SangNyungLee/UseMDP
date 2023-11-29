@@ -28,9 +28,7 @@ export async function postPlannerCards(unspecifiedplanner) {
     const res = await axios({
         method: 'POST',
         url: getURL('/api/postPlannerWithCards'),
-        data: {
-            planner: unspecifiedplanner,
-        },
+        data: unspecifiedplanner,
         withCredentials: true,
     });
     return res.data.data;
@@ -127,4 +125,21 @@ export async function postCard(data) {
         withCredentials: true,
     });
     return res;
+}
+export async function getMyPlanner() {
+    const res = await axios({
+        method: 'GET',
+        url: getURL('/api/getMyPlanner'),
+        withCredentials: true,
+    });
+    return res.data.data;
+}
+
+export async function deleteMyPlanner(plannerId) {
+    const res = await axios({
+        method: 'DELETE',
+        url: getURL(`/api/deletePlanner/${plannerId}`),
+        withCredentials: true,
+    });
+    console.log('del', res);
 }

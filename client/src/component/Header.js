@@ -11,6 +11,7 @@ import {
 } from "react-social-login-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../store/site";
+import { logoutModal, nyanCat } from "./etc/SweetModal";
 export default function Header() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
   const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
@@ -34,29 +35,33 @@ export default function Header() {
     query: "(max-width: 576px)",
   });
 
-  const googleLogin = async () => {
+  const googleLogin = async (e) => {
+    e.stopPropagation()
     window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
-  const githubLogin = () => {
+  const githubLogin = (e) => {
+    e.stopPropagation()
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
 
   //로그아웃
-  const Logout = () => {
+  const Logout = (e) => {
+    e.stopPropagation()
     dispatch(siteActions.setIsLogin(false));
     localStorage.removeItem("isLogin");
-    alert("로그아웃 되셨습니다.");
+    logoutModal();
     navigate("/");
   };
 
-  const showLoginModal = () => {
+  const showLoginModal = (e) => {
+    e.stopPropagation()
     MySwal.fire({
       title: "LogIn",
       html: (
         <div>
-          <GoogleLoginButton onClick={googleLogin} />
-          <GithubLoginButton onClick={githubLogin} />
+          <GoogleLoginButton onClick={ e => googleLogin(e) } />
+          <GithubLoginButton onClick={ e => githubLogin(e) } />
         </div>
       ),
       showCloseButton: true,
@@ -68,7 +73,7 @@ export default function Header() {
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">
         <Container className="px-3 px-sm-5">
-          <Navbar.Brand className="text-success fw-bold">
+          <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
             <img
               src="https://picsum.photos/40/40"
               className="d-inline-block rounded"
@@ -89,18 +94,26 @@ export default function Header() {
                   My Roadmap
                 </Button>
                 <Button
-                  onClick={Logout}
+                  onClick={ e => Logout(e) }
                   className="mx-2"
                   variant="success"
                   size={isMobile ? "sm" : "md"}
                 >
                   Logout
                 </Button>
+                <Button
+                  onClick={nyanCat}
+                  className="mx-2"
+                  variant="success"
+                  size={isMobile ? "sm" : "md"}
+                >
+                  눌러보세요
+                </Button>
               </>
             ) : (
               <>
                 <Button
-                  onClick={showLoginModal}
+                  onClick={ e => showLoginModal(e) }
                   className="mx-2"
                   variant="outline-success"
                   size={isMobile ? "sm" : "md"}

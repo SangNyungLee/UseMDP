@@ -6,9 +6,13 @@ import { useDispatch } from "react-redux";
 import { siteActions } from "../store/site";
 import { plannerListActions } from "../store/plannerList";
 import { plannerListCardStatusDevide } from "../utils/DataParsing";
+import { getMyPlanner } from "../utils/DataAxios";
+import { useLocation, useNavigate } from "react-router";
 
 export default function useDefaultCheck(){
     const site = useSelector( state => state.site);
+    const navi = useNavigate();
+    const location = useLocation();
     const { isLogin, isData } = site;
 
     const [cookies, setCookie, removeCookie] = useCookies('auth');
@@ -16,32 +20,23 @@ export default function useDefaultCheck(){
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if( !isLogin && Object.keys(cookies).length > 0 ) {
-            const fetchData = async() => {
-                const res = await axios({
-                    method: "GET",
-                    url: "http://localhost:8080/api/getMyPlanner",
-                    withCredentials: true
-                })
-                const plannerList = plannerListCardStatusDevide(res.data.data);
-                dispatch(plannerListActions.setPlannersInit(plannerList))
+        if(Object.keys(cookies).length === 0){
+            if(isLogin){
+                navi("/home",{ message: "쿠키가 만료되어 재로그인이 필요합니다" })
+            } else if (location.pathname !== "/home") {
+                navi("/home",{ message: "로그인 되지 않은 사용자입니다" });
             }
-            fetchData()
-            dispatch(siteActions.setAllTrue(true));
-        } else if( isLogin && !isData ) {
-            const fetchData = async() => {
-                const res = await axios({
-                    method: "GET",
-                    url: "http://localhost:8080/api/getMyPlanner",
-                    withCredentials: true
-                })
-                const plannerList = plannerListCardStatusDevide(res.data.data);
-                dispatch(plannerListActions.setPlannersInit(plannerList))
-            }
-            fetchData()
-            dispatch(siteActions.setIsData(true));
-        }
+        } else if ( !isLogin || !isData ){
+            getMyPlannerAndDispatch()
+        } 
     },[site])
+
+    const getMyPlannerAndDispatch = async () => {
+        const plannerList = await getMyPlanner();
+        const newPlannerList = plannerListCardStatusDevide(plannerList);
+        dispatch(plannerListActions.setPlannersInit(newPlannerList))
+        dispatch(siteActions.setAllTrue(true));
+    }
 
     return isLogin;
 }

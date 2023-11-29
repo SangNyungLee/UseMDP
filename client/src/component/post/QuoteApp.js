@@ -104,13 +104,14 @@ export default function QuoteApp() {
         fetchData();
     }, [plannerList]);
 
-    async function cardClick(ind, index) {
+    async function cardClick(e, ind, index) {
+        e.stopPropagation();
         const cardResult = await getCardAxios(planner[ind][index].cardId);
         console.log('newchecklist', cardResult);
 
         setSelectedCard(cardResult);
-        // setSelectedCard(planner[ind][index]);
         setVisible(true);
+        // setSelectedCard(planner[ind][index]);
     }
 
     //dnd에서는, dragend와 onclick이 구분되게 됨.

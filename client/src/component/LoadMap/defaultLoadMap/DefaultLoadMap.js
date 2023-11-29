@@ -42,18 +42,15 @@ export default function DefaultLoadMap() {
             case 3:
                 return <HomeComponent />;
             case 4:
-                return (
-                    <>
-                        <MyCalendar />
-                    </>
-                );
+                return <MyCalendar />;
             case 5:
                 return <SearchComponent />;
             default:
                 return <HomeComponent />;
         }
     };
-    const handleNumber = (number) => {
+    const handleNumber = (e, number) => {
+        e.stopPropagation();
         setMenuNumber(number);
     };
 
@@ -63,27 +60,27 @@ export default function DefaultLoadMap() {
             <_Flex>
                 <div style={{ display: 'flex' }}>
                     <_FlexNavi>
-                        <_Button className="default" onClick={() => handleNumber(1)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 1)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 description
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={() => handleNumber(2)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 2)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 star
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={() => handleNumber(3)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 3)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 account_circle
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={() => handleNumber(4)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 4)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 calendar_month
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={() => handleNumber(5)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 5)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 search
                             </i>
