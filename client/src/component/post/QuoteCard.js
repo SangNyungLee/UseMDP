@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import trash from '../../constant/img/trash.svg';
 const _CardHeader = styled.div`
     position: relative;
     background-color: ${(props) => props.color}; // lowercase를 쓰래서 color로 수정
@@ -22,15 +22,21 @@ const CardParagraph = styled.p`
     }
 `;
 
+const DelDiv = styled.div`
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
 export default function QuoteCard({ card, deleteCard, cardIndex }) {
     return (
         <>
             <_CardHeader color={card.coverColor} />
             <_CardBody>
                 {card.title}
-                <button type="button" onClick={(e) => deleteCard(e, cardIndex, card)}>
-                    delete
-                </button>
+                <DelDiv>
+                    <img onClick={(e) => deleteCard(e, cardIndex, card)} src={trash} alt="trashicon" />
+                </DelDiv>
             </_CardBody>
         </>
     );
