@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { siteActions } from "../store/site";
+import { loginFail, loginSuccess } from "../component/etc/SweetModal";
 
 export default function Redirection({ provider }) {
   //쿼리스트링에서 code값만 가져와서 변수에 저장
@@ -29,10 +30,10 @@ export default function Redirection({ provider }) {
               navigate("/");
               dispatch(siteActions.setIsLogin(true));
               localStorage.setItem("isLogin", true);
-              alert("구글 로그인에 성공하셨습니다.");
+              loginSuccess("구글");
             })
             .catch((res) => {
-              alert("구글 로그인에 실패하셨습니다..");
+              loginFail("구글");
             });
         } else if (provider === "github") {
           await axios
@@ -48,10 +49,10 @@ export default function Redirection({ provider }) {
               dispatch(siteActions.setIsLogin(true));
               localStorage.setItem("isLogin", true);
               navigate("/");
-              alert("깃허브 로그인 성공");
+              loginSuccess("깃허브");
             })
             .catch((res) => {
-              alert("깃허브 로그인에 실패하셨습니다..");
+              loginFail("깃허브");
             });
         }
       } catch (error) {
