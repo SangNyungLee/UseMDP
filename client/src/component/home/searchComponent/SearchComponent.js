@@ -155,7 +155,6 @@ export default function SearchComponent() {
         return (
             <div style={{ padding: '15px' }}>
                 <h2>로드맵 검색</h2>
-
                 <SearchContainer>
                     <div>
                         <Select options={options} onChange={changeOption} defaultValue={options[0]} isSearchable={false} />

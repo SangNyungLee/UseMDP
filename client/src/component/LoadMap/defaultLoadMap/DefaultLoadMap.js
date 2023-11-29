@@ -1,34 +1,34 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 // import Header from "../Header";
-import HomeHeader from '../../home/HomeHeader';
-import { useState } from 'react';
-import DefaultComponent from './DefaultComponent';
-import StarComponent from '../../home/starComponent/StarComponent';
-import MyCalendar from '../../home/MyCalendar';
-import styled from 'styled-components';
-import SearchComponent from '../../home/searchComponent/SearchComponent';
-import HomeComponent from '../../home/HomeComponent';
+import HomeHeader from "../../home/HomeHeader";
+import { useState } from "react";
+import DefaultComponent from "./DefaultComponent";
+import StarComponent from "../../home/starComponent/StarComponent";
+import MyCalendar from "../../home/MyCalendar";
+import styled from "styled-components";
+import SearchComponent from "../../home/searchComponent/SearchComponent";
+import HomeComponent from "../../home/HomeComponent";
 
 const _Button = styled.button`
-    border: none;
-    background: none;
+  border: none;
+  background: none;
 `;
 
 const _Flex = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    width: 100vw;
-    margin-top: 80px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100vw;
+  margin-top: 80px;
 `;
 
 const _FlexNavi = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const _RenderComponent = styled.div`
-    z-index: 50;
+  z-index: 50;
 `;
 
 export default function DefaultLoadMap() {

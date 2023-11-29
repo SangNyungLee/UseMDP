@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import React, { useEffect, useState } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -23,6 +23,32 @@ const DnDCalendar = withDragAndDrop(Calendar);
 const _Container = styled.div`
   display: flex;
 `
+
+const _ToGoButton = styled.div`
+  border: none;
+  background: none;
+  font-size: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const _Label = styled.span`
+  font-size: 25px;
+  font-weight: bolder;
+`;
+
+const _SwitchButton = styled.button`
+  background: none;
+  border: none;
+  margin: 0px 5px;
+  width: 70px;
+
+  &:hover {
+    background-color: #ccc;
+  }
+`;
 
 const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
     const goToToday = (e) => {
@@ -60,139 +86,155 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
       onView('agenda'); // 날짜 단위(view)로 전환
     };
 
-    return (
-        <div style={{ width: '70vw', marginBottom: '10px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button onClick={ e => goToPrev(e) }>{'<'}</button>
-                <div onClick={ e => goToToday(e)} style={{ textAlign: 'center' }}>
-                    <span>{label}</span>
-                </div>
-                <button onClick={ e => goToNext(e)}>{'>'}</button>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button onClick={ e => switchToMonthView(e)}>Month</button>
-                <button onClick={ e => switchToWeekView(e)}>Week</button>
-                <button onClick={ e => switchToDayView(e)}>Day</button>
-                <button onClick={ e => switchToAgendaView(e)}>Agenda</button>
-            </div>
+  return (
+    <div style={{ width: "70vw", marginBottom: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginBottom: "10px",
+        }}
+      >
+        <_ToGoButton onClick={ e => goToPrev(e) }>{"<"}</_ToGoButton>
+        <div onClick={ e => goToToday(e) } style={{ textAlign: "center" }}>
+          <_Label>{label}</_Label>
         </div>
-    );
+        <_ToGoButton onClick={ e => goToNext(e) }>{">"}</_ToGoButton>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <_SwitchButton onClick={ e => switchToMonthView(e) }>Month</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToWeekView(e) }>Week</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToDayView(e) }>Day</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToAgendaView(e)}>Agenda</_SwitchButton>
+      </div>
+    </div>
+  );
 };
 
 export default function MyCalendar() {
-  const plannerList = useSelector( state => state.plannerList );
-  const { home } = useSelector( state => state.calendar );
-  const site = useSelector( state => state.site );
-  
+  const plannerList = useSelector((state) => state.plannerList);
+  const { home } = useSelector((state) => state.calendar);
+  const site = useSelector((state) => state.site);
+
   useDefaultCheck();
 
   const [events, setEvents] = useState();
-  const [ selectedCard, setSelectedCard ] = useState(getOneCard(0,"TODO"));
-  const [ visible, setVisible ] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(getOneCard(0, "TODO"));
+  const [visible, setVisible] = useState(false);
 
   const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log(plannerList, home);
-        const selectedEvents = getNestedElement(plannerList, home);
-        setEvents(dateParsing(selectedEvents));
-    }, [plannerList, home]);
+  useEffect(() => {
+    console.log(plannerList, home);
+    const selectedEvents = getNestedElement(plannerList, home);
+    setEvents(dateParsing(selectedEvents));
+  }, [plannerList, home]);
 
-    
   const plannerUpdateCard = (data) => {
     const { start, end, event } = data;
 
-    dispatch(plannerListActions.updateCard({
-      cardId: event.cardId,
-      startDate: start.toISOString(),
-      endDate: end.toISOString(),
-    }))
-  
+    dispatch(
+      plannerListActions.updateCard({
+        cardId: event.cardId,
+        startDate: start.toISOString(),
+        endDate: end.toISOString(),
+      })
+    );
+
     setEvents((prevEvents) =>
       prevEvents.map((e) =>
-          e.cardId === event.cardId ? { ...e, startDate:start, endDate:end } : e
+        e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e
       )
     );
   };
-  
 
   const onSelectSlot = (slotInfo) => {
     const plannerId = home[0];
 
     const cardStatusIndex = home[1] ? home[1] : 0;
-    const cardStatus = cardStatusIndex ?
-      ( cardStatusIndex === 0 ? "TODO"
-        : ( cardStatusIndex === 1 ? "DOING" : "DONE" ) )
-          : "TODO";
+    const cardStatus = cardStatusIndex
+      ? cardStatusIndex === 0
+        ? "TODO"
+        : cardStatusIndex === 1
+        ? "DOING"
+        : "DONE"
+      : "TODO";
 
-    const newEvent = getOneCard(events.length,cardStatus);
+    const newEvent = getOneCard(events.length, cardStatus);
 
     const startDate = moment(slotInfo.start).toDate();
     const endDate = moment(slotInfo.end).toDate();
-    
-    if(plannerList.length === 0){
-      dispatch(plannerListActions.addPlanner(
-        {
+
+    if (plannerList.length === 0) {
+      dispatch(
+        plannerListActions.addPlanner({
           plannerId: 0,
           title: "default title",
-          cards: [[{...newEvent,
+          cards: [
+            [
+              {
+                ...newEvent,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+              },
+            ],
+            [],
+            [],
+          ],
+        })
+      );
+    } else {
+      dispatch(
+        plannerListActions.addCard({
+          plannerId,
+          cardStatusIndex,
+          card: {
+            ...newEvent,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
-          }],[],[]]
-        }
-      ))
-    } else {
-      dispatch(plannerListActions.addCard({
-        plannerId,
-        cardStatusIndex,
-        card: {...newEvent,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-        }
-      }))
+          },
+        })
+      );
     }
-    setEvents(prev => [...prev,{...newEvent,
-      startDate,
-      endDate,}]);
+    setEvents((prev) => [...prev, { ...newEvent, startDate, endDate }]);
   };
 
-    const onSelectEvent = (event, e) => {
-        setSelectedCard(event);
-        setVisible(true);
-    };
-
+  const onSelectEvent = (event, e) => {
+    setSelectedCard(event);
+    setVisible(true);
+  };
 
   const testLogin = () => {
     const loginAxios = async () => {
       const result = await axios({
-        method:"POST",
-        url:"http://localhost:8080/api/postMember",
-        data:{
-          socialId:0,
-          socialNickname:"aymrm",
+        method: "POST",
+        url: "http://localhost:8080/api/postMember",
+        data: {
+          socialId: 0,
+          socialNickname: "aymrm",
         },
-      })
-      console.log("login",result)
-    }
+      });
+      console.log("login", result);
+    };
     loginAxios();
-  }
+  };
 
   const createPlanner = () => {
-    const creator = "aymrm"
-    const title = "적당한 이름"
-    const thumbnail = "적당한 문자열"
+    const creator = "aymrm";
+    const title = "적당한 이름";
+    const thumbnail = "적당한 문자열";
     const plannerIdAxios = async () => {
       const plannerId = await axios({
-        method:"POST",
-        url:"http://localhost:8080/api/postPlanner",
-        data:{
+        method: "POST",
+        url: "http://localhost:8080/api/postPlanner",
+        data: {
           creator,
           title,
           thumbnail,
         },
-        withCredentials:true,
-      })
-      console.log("plannerId",plannerId)
+        withCredentials: true,
+      });
+      console.log("plannerId", plannerId);
 
       // const result = await axios({
       //   method:"POST",
@@ -205,21 +247,20 @@ export default function MyCalendar() {
       //   },
       //   withCredentials:true,
       // })
-    }
+    };
     plannerIdAxios();
-  }
+  };
 
   const defaultPlanner = () => {
     const defaultPlannerAxios = async () => {
       const result = await axios({
-        method:"GET",
-        url:"http://localhost:8080/api/getPlanner/default",
-      })
-      console.log("defaultPlanner",result)
-    }
+        method: "GET",
+        url: "http://localhost:8080/api/getPlanner/default",
+      });
+      console.log("defaultPlanner", result);
+    };
     defaultPlannerAxios();
-  }
-
+  };
 
   return (
     <_Container>
@@ -258,4 +299,4 @@ export default function MyCalendar() {
       />
     </_Container>
   );
-};
+}
