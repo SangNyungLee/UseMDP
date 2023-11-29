@@ -189,7 +189,7 @@ export default function SearchComponent() {
                 }),
                 multiValue: (baseStyles) => ({
                   ...baseStyles,
-                  // backgroundColor: "lightblue", // 선택된 항목의 배경색
+                  backgroundColor: "ghostwhite", // 선택된 항목의 배경색
                 }),
               }}
               options={tags2} //위에서 만든 배열을 select로 넣기

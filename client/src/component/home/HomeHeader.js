@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../../store/site";
+import { logoutModal } from "../etc/SweetModal";
 
 export default function HomeHeader() {
   // 모달창 보여주기, 숨기기 상태
@@ -79,15 +80,14 @@ export default function HomeHeader() {
   const Logout = () => {
     dispatch(siteActions.setIsLogin(false));
     localStorage.removeItem("isLogin");
-    alert("로그아웃 되셨습니다.");
+    logoutModal();
     navigate("/");
   };
-
   return (
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">
         <Container className="px-3 px-sm-5">
-          <Navbar.Brand className="text-success fw-bold">
+          <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
             <img
               src="https://picsum.photos/40/40"
               className="d-inline-block rounded"
