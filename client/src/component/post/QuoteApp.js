@@ -104,8 +104,7 @@ export default function QuoteApp() {
         fetchData();
     }, [plannerList]);
 
-    async function cardClick(e, ind, index) {
-        e.stopPropagation();
+    async function cardClick(ind, index) {
         const cardResult = await getCardAxios(planner[ind][index].cardId);
         console.log('newchecklist', cardResult);
 

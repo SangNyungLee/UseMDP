@@ -41,13 +41,15 @@ public class GithubLoginService {
         System.out.println("socialId" + socialId);
         System.out.println("socialNickname" + socialNickname);
         System.out.println("socialProfilePicture" + socialProfilePicture);
-        return SocialDTO.builder()
+        SocialDTO socialDTO =  SocialDTO.builder()
                 .socialCategory(MemberEntity.socialCategory.GITHUB)
                 .socialId(socialId)
                 .socialNickname(socialNickname)
                 .socialProfilePicture(socialProfilePicture)
                 .socialLoginAccessToken(accessToken)
                 .build();
+        System.out.println("socialDTO" + socialDTO.getSocialCategory());
+        return socialDTO;
     }
     public String getGithubAccessToken(String code){
         //여기로 보내서 토큰 발급받아야됨

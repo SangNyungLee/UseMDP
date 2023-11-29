@@ -12,6 +12,8 @@ import { plannerListActions } from "../../store/plannerList";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "use-local-storage";
 import { getPlannerBtoA } from "../../utils/DataAxios";
+import Swal from "sweetalert2";
+
 const _Container = styled.div`
   margin-bottom: 20px;
   width: fit-content;
@@ -161,16 +163,75 @@ export default function MyLoadMap(props) {
 
     //업데이트하고, axios보내줘야한다.
 
-    const result = await axios.patch("http://localhost:8080/api/patchPlanner", {
-      plannerId,
-      creator,
-      title: editedTitle,
-      likePlanner,
-      thumbnail,
-      isDefault,
-      plannerAccess: editedPlannerAccess,
-    });
+    const result = await axios.patch(
+      "http://localhost:8080/api/patchPlanner",
+      {
+        plannerId,
+        creator,
+        title: editedTitle,
+        likePlanner,
+        thumbnail,
+        isDefault,
+        plannerAccess: editedPlannerAccess,
+        taglist: [],
+      },
+      { withCredentials: true }
+    );
     setShowModal(false);
+  };
+  //sweetAlert창
+  const sweetModal = async (e) => {
+    // SweetAlert을 이용하여 입력 폼을 보여줌
+    e.stopPropagation();
+    const result = await Swal.fire({
+      title: "플래너 생성",
+      html: `
+      <input id="swal-input1" class="swal2-input" placeholder="제목" value="${editedTitle}">
+    `,
+      input: "radio",
+      inputOptions: {
+        PUBLIC: "Public",
+        PRIVATE: "Private",
+      },
+      inputValue: editedPlannerAccess,
+      inputValidator: (value) => {
+        if (!value) {
+          return "공개범위를 선택하세요.";
+        }
+      },
+      preConfirm: async () => {
+        // 확인을 눌렀을 때의 로직
+        const inputValue = document.getElementById("swal-input1").value;
+        const radioValue = document.querySelector(
+          'input[name="swal2-radio"]:checked'
+        ).value;
+        console.log(inputValue);
+        // axios 요청을 보내고 모달을 닫음
+        const axiosResult = await axios.patch(
+          "http://localhost:8080/api/patchPlanner",
+          {
+            plannerId,
+            creator,
+            title: inputValue,
+            likePlanner,
+            thumbnail,
+            isDefault,
+            plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
+            taglist: [],
+          },
+          { withCredentials: true }
+        );
+        console.log("?? : ", axiosResult);
+      },
+      confirmButtonText: "확인",
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      // 값이 없을 경우 빈 문자열로 설정
+      setEditedTitle(result.value[0] || "");
+      setEditedPlannerAccess(result.value[1] || "");
+    }
   };
 
   return (
@@ -186,6 +247,7 @@ export default function MyLoadMap(props) {
         <_Felx>
           <_isOpen>{editedPlannerAccess}</_isOpen>
           <_Button onClick={(e) => changeDataByButton(e)}>수정</_Button>
+          <_Button onClick={(e) => sweetModal(e)}>Test</_Button>
         </_Felx>
       </div>
 

@@ -40,12 +40,12 @@ export default function HomeHeader() {
   }, [readData]);
 
   // 로컬스토리지에 저장된 isLogin을 가져와서 변수에 저장해놓음
-  useEffect(() => {
-    const checkIsLogin = localStorage.getItem("isLogin");
-    if (checkIsLogin) {
-      dispatch(siteActions.setIsLogin(checkIsLogin === "true"));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const checkIsLogin = localStorage.getItem("isLogin");
+  //   if (checkIsLogin) {
+  //     dispatch(siteActions.setIsLogin(checkIsLogin === "true"));
+  //   }
+  // }, [dispatch]);
 
   // 반응형으로 모바일 화면일때 헤더 버튼 크기 줄이기
   const isMobile = useMediaQuery({
@@ -87,6 +87,7 @@ export default function HomeHeader() {
     logoutModal();
     navigate("/");
   };
+  
   return (
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">

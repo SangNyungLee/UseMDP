@@ -28,19 +28,10 @@ export default function QuoteCard({ card, deleteCard, cardIndex }) {
             <_CardHeader color={card.coverColor} />
             <_CardBody>
                 {card.title}
-                <button type="button" onClick={(event) => deleteCard(event, cardIndex, card)}>
+                <button type="button" onClick={(e) => deleteCard(e, cardIndex, card)}>
                     delete
                 </button>
             </_CardBody>
-            {/* <GlassCard>
-                <CardParagraph>
-                    {card.title}
-                    <button type="button" onClick={(e) => deleteCard(e, cardIndex)}>
-                        X
-                    </button>
-                </CardParagraph>
-                <CardFooter> </CardFooter>
-            </GlassCard> */}
         </>
     );
 }

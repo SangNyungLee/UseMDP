@@ -340,7 +340,8 @@ public class PlannerService {
             Optional<PlannerEntity> result = plannerRepository.findById(requestPostPlannerCopyDTO.getPlannerId());
             if(result.isPresent()) {
                 PlannerEntity planner = result.get();
-
+                Set<TagEntity> tagEntities = planner.getTaglist();
+                List<String> taglist = tagEntities.stream().map(TagEntity::getTitle).toList();
                 List<CardEntity> cards = planner.getCards();
                 List<ResponseCardDTO> responseCardDTOList = new ArrayList<>();
 
@@ -354,6 +355,7 @@ public class PlannerService {
                         .isDefault(planner.getIsDefault())
                         .createdAt(planner.getCreatedAt())
                         .updatedAt(planner.getUpdatedAt())
+                        .taglist(taglist)
                         .cards(responseCardDTOList)
                         .build();
 
@@ -366,6 +368,7 @@ public class PlannerService {
                         .thumbnail(responsePlannerDTO.getThumbnail())
                         .isDefault(0)
                         .memberEntity(member.get())
+                        .taglist(tagEntities)
                         .build();
                 plannerRepository.save(copyPlannerEntity);
 

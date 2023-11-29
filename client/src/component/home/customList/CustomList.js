@@ -2,34 +2,38 @@ import { Container, Row, Col } from 'react-bootstrap';
 import PlusMap from '../../LoadMap/PlusMap';
 
 export default function CustomList(props) {
-    const data = props.datas;
-    const CustomLoadMap = props.loadMap;
-    //이게 4의 배수면 plusmap을 새로운 Row에 넣어야한다.
-    const isMultipleOfFour = data.length % 4 === 0;
-    return (
-        <Container>
-            {data.map((item, idx) => {
-                if (idx % 4 === 0) {
-                    // Start a new row
-                    return (
-                        <Row key={`row-${idx / 4}`} style={{ marginTop: idx !== 0 ? '30px' : 0 }}>
-                            {[...Array(4)].map((_, i) => {
-                                const tmp = idx + i <= data.length ? <Col key={data[idx + i]?.plannerId}>{data[idx + i] ? <CustomLoadMap datas={data[idx + i]}></CustomLoadMap> : <PlusMap></PlusMap>}</Col> : null;
-                                return tmp;
-                            })}
-                        </Row>
-                    );
-                }
-                return null; //4의 배수가 아니라면 null
-            })}
-            {/* 마지막 4의 배수라면 줄을 바꿔서 PlusMap을 넣어야함. */}
-            {isMultipleOfFour && (
-                <Row style={{ marginTop: '30px' }}>
-                    {[...Array(Math.max(4 - (data.length % 4), 1))].map((_, i) => (
-                        <Col key={`empty-${i}`}>{i === 0 && <PlusMap></PlusMap>}</Col>
-                    ))}
-                </Row>
-            )}
-        </Container>
-    );
+	const data = props.datas;
+	console.log('css', data);
+	const CustomLoadMap = props.loadMap;
+	//이게 4의 배수면 plusmap을 새로운 Row에 넣어야한다.
+	const isMultipleOfFour = data.length % 4 === 0;
+	const lastIdx = data.length - 1;
+	return (
+		<Container>
+			<PlusMap></PlusMap>
+			{data.map((item, idx) => {
+				if (idx % 4 === 0) {
+					// Start a new row
+					return (
+						<Row key={`row-${idx / 4}`} style={{ marginTop: idx !== 0 ? '30px' : 0 }}>
+							{[...Array(4)].map((_, i) => (
+								<Col key={data[idx + i]?.plannerId}>
+									{data[idx + i] && <CustomLoadMap datas={data[idx + i]}></CustomLoadMap>}
+								</Col>
+							))}
+						</Row>
+					);
+				}
+				return null; //4의 배수가 아니라면 null
+			})}
+			{/* 마지막 4의 배수라면 줄을 바꿔서 PlusMap을 넣어야함. */}
+			{isMultipleOfFour && (
+				<Row style={{ marginTop: '30px' }}>
+					{[...Array(Math.max(4 - (data.length % 4), 1))].map((_, i) => (
+						<Col key={`empty-${i}`}>{i === 0 && <PlusMap></PlusMap>}</Col>
+					))}
+				</Row>
+			)}
+		</Container>
+	);
 }
