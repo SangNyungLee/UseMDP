@@ -36,6 +36,33 @@ public class LoginController implements SocialLoginAPI {
     }
 
     @Override
+    @PostMapping("/api/logout")
+    public ResponseEntity<APIResponseDTO<ResponseMemberDTO>> logout(@CookieValue(name = "auth", required = false) String token, HttpServletResponse response) {
+        if(token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<ResponseMemberDTO>builder()
+                    .resultCode("401")
+                    .message("이미 로그인 되지 않은 사용자입니다")
+                    .data(null)
+                    .build());
+        }
+
+        Cookie cookie = new Cookie("auth", "token");
+        cookie.setHttpOnly(false);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+
+        System.out.println("cookie = " + cookie.getValue());
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<ResponseMemberDTO>builder()
+                .resultCode("200")
+                .message("로그아웃 완료")
+                .data(null)
+                .build());
+    }
+
+    @Override
     @PostMapping("/api/socialLogin/{loginProvider}")
     public ResponseEntity<APIResponseDTO<ResponseMemberDTO>> socialLogin(@PathVariable String loginProvider, @RequestBody CodeDTO codeDTO, HttpServletResponse response){
         // 서버에서 받은 authorizationCode
@@ -55,7 +82,7 @@ public class LoginController implements SocialLoginAPI {
                             .data(null)
                             .build());
         }
-
+        System.out.println("user" + user.getSocialCategory());
         // 사용자 정보 DB에 갱신
         MemberDTO member = memberService.saveMember(user);
         if(member == null) {
@@ -67,6 +94,8 @@ public class LoginController implements SocialLoginAPI {
         }
         // 갱신된 사용자 정보 DTO 생성
         ResponseMemberDTO responseMemberDTO = ResponseMemberDTO.builder()
+                .memberId(member.getMemberId())
+                .socialCategory(member.getSocialCategory())
                 .socialId(member.getSocialId())
                 .socialNickname(member.getSocialNickname())
                 .socialProfilePicture(member.getSocialProfilePicture())

@@ -9,88 +9,98 @@ import styled from 'styled-components';
 import SearchComponent from '../../home/searchComponent/SearchComponent';
 import HomeComponent from '../../home/HomeComponent';
 const _Button = styled.button`
-    border: none;
-    background: none;
+	border: none;
+	background: none;
 `;
 
 const _Flex = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    width: 100vw;
-    margin-top: 80px;
+	display: flex;
+	justify-content: flex-start;
+	width: 100vw;
+	margin-top: 80px;
+	padding-left: 8%;
+`;
+
+const _FlexNaviContainer = styled.div`
+	height: 100vh;
+	background-color: red;
+	flex-direction: column;
 `;
 
 const _FlexNavi = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	background-color: white;
+	top: 300px;
+	height: 100vh;
 `;
 
 const _RenderComponent = styled.div`
-    z-index: 50;
+	z-index: 50;
 `;
 
 export default function DefaultLoadMap() {
-    const [menuNumber, setMenuNumber] = useState();
-    const [isActive, setIsActive] = useState(false);
-    const renderComponent = () => {
-        switch (menuNumber) {
-            case 1:
-                return <DefaultComponent />;
-            case 2:
-                return <StarComponent />;
-            case 3:
-                return <HomeComponent />;
-            case 4:
-                return <MyCalendar />;
-            case 5:
-                return <SearchComponent />;
-            default:
-                return <HomeComponent />;
-        }
-    };
-    const handleNumber = (e, number) => {
-        e.stopPropagation();
-        setMenuNumber(number);
-    };
+	const [menuNumber, setMenuNumber] = useState();
+	const [isActive, setIsActive] = useState(false);
+	const renderComponent = () => {
+		switch (menuNumber) {
+			case 1:
+				return <DefaultComponent />;
+			case 2:
+				return <StarComponent />;
+			case 3:
+				return <HomeComponent />;
+			case 4:
+				return <MyCalendar />;
+			case 5:
+				return <SearchComponent />;
+			default:
+				return <HomeComponent />;
+		}
+	};
+	const handleNumber = (e, number) => {
+		e.stopPropagation();
+		setMenuNumber(number);
+	};
 
-    return (
-        <>
-            <HomeHeader />
-            <_Flex>
-                <div style={{ display: 'flex' }}>
-                    <_FlexNavi>
-                        <_Button className="default" onClick={(e) => handleNumber(e, 1)}>
-                            <i className="material-icons" style={{ fontSize: '40px' }}>
-                                description
-                            </i>
-                        </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e, 2)}>
-                            <i className="material-icons" style={{ fontSize: '40px' }}>
-                                star
-                            </i>
-                        </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e, 3)}>
-                            <i className="material-icons" style={{ fontSize: '40px' }}>
-                                account_circle
-                            </i>
-                        </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e, 4)}>
-                            <i className="material-icons" style={{ fontSize: '40px' }}>
-                                calendar_month
-                            </i>
-                        </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e, 5)}>
-                            <i className="material-icons" style={{ fontSize: '40px' }}>
-                                search
-                            </i>
-                        </_Button>
-                    </_FlexNavi>
-                </div>
-                <_RenderComponent>{renderComponent()}</_RenderComponent>
-            </_Flex>
-        </>
-    );
+	return (
+		<>
+			<HomeHeader />
+			<_FlexNaviContainer>
+				<_FlexNavi>
+					<_Button className='default' onClick={(e) => handleNumber(e, 1)}>
+						<i className='material-icons' style={{ fontSize: '40px' }}>
+							description
+						</i>
+					</_Button>
+					<_Button className='default' onClick={(e) => handleNumber(e, 2)}>
+						<i className='material-icons' style={{ fontSize: '40px' }}>
+							star
+						</i>
+					</_Button>
+					<_Button className='default' onClick={(e) => handleNumber(e, 3)}>
+						<i className='material-icons' style={{ fontSize: '40px' }}>
+							account_circle
+						</i>
+					</_Button>
+					<_Button className='default' onClick={(e) => handleNumber(e, 4)}>
+						<i className='material-icons' style={{ fontSize: '40px' }}>
+							calendar_month
+						</i>
+					</_Button>
+					<_Button className='default' onClick={(e) => handleNumber(e, 5)}>
+						<i className='material-icons' style={{ fontSize: '40px' }}>
+							search
+						</i>
+					</_Button>
+				</_FlexNavi>
+			</_FlexNaviContainer>
+			<_Flex>
+				<_RenderComponent>{renderComponent()}</_RenderComponent>
+			</_Flex>
+		</>
+	);
 }
 
 // export default function DefaultLoadMap() {

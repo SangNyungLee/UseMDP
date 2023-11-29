@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class ResponseMemberDTO {
+    private String memberId;
     private MemberEntity.socialCategory socialCategory;
     private String socialId;
     private String socialNickname;

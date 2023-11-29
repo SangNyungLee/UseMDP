@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -14,4 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface SocialLoginAPI {
     @Operation(summary = "소셜 로그인", description = "구글 혹은 깃허브에서 사용자 정보 받아와서 우리 DB에 저장하고 사용자의 정보 반환, 그리고 사용자의 memberId 가 인코딩된 jwt 가 담긴 쿠키 발급")
     ResponseEntity<APIResponseDTO<ResponseMemberDTO>> socialLogin(@PathVariable String loginProvider, @RequestBody CodeDTO codeDTO, HttpServletResponse response);
+
+    @Operation(summary = "로그아웃", description = "쿠키가 없다면 로그인 되지 않았다라고 알리고 있다면 쿠키 삭제")
+    ResponseEntity<APIResponseDTO<ResponseMemberDTO>> logout(@CookieValue(name = "auth", required = false) String token, HttpServletResponse response);
+
 }
