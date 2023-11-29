@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { plannerListActions } from "../../store/plannerList";
-import CalendarModal from "../home/calendar/CalendarModal";
+import MDPModal from "../modal/MDPModal";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { eventStyleGetter, getNestedElement } from "../../utils/CalendarController";
@@ -99,7 +99,7 @@ export default function QuoteAppCalendar() {
   
     return (
       <>
-        <CalendarModal
+        <MDPModal
         selectedCard={selectedCard}
         modalStatus={visible}
         modalClose={()=>setVisible(false)}

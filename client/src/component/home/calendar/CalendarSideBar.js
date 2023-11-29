@@ -8,6 +8,7 @@ import useRead from "../../../hook/useRead";
 import { plannerCardStatusDevide, plannerListCardStatusDevide, readSpecifiedPlanner, readUnspecifiedPlanner, readUnspecifiedPlannerList, specifyPlanner } from "../../../utils/DataParsing";
 import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../../../utils/DataValidate";
 import { calendarActions } from "../../../store/calendar";
+import { HOME } from "../../../constant/constant";
 
 const _Container = styled.div`
     border-radius: 20px;
@@ -31,49 +32,8 @@ const _PlannerListUl = styled.ul`
 
 export default function CalendarSideBar(){
     const plannerList = useSelector( state => state.plannerList );
-    const [ readData, setReadData ] = useState();
-    const dispatch = useDispatch();
 
-    const readerRegister = useRead(setReadData);
-
-    useEffect(()=>{
-        if(readData){
-            const data = JSON.parse(readData)
-            console.log("data",data);
-            if (validatePlannerData(data)) {
-                // cards = [ [] , [] , [] ] 형태
-                console.log("planner")
-                const planner = readSpecifiedPlanner(data);
-                const newPlanner = plannerCardStatusDevide(planner)
-                const { plannerId } = newPlanner
-                dispatch(plannerListActions.addPlanner(newPlanner))
-                dispatch(calendarActions.setHome([plannerId]))
-            } else if (validateUnspecifiedPlannerData(data)) {
-                // cards = [] 형태
-                console.log("planner2")
-                const planner = readUnspecifiedPlanner(data);
-                const newPlanner = plannerCardStatusDevide(planner);
-                const { plannerId } = newPlanner
-                dispatch(plannerListActions.addPlanner(newPlanner))
-                dispatch(calendarActions.setHome([plannerId]))
-            } else if (validatePlannerListData(data)) {
-                // cards = [ [] , [] , [] ] 형태
-                console.log("plannerList")
-                const plannerList = readSpecifiedPlanner(data);
-                const newPlannerList = plannerListCardStatusDevide(plannerList);
-                dispatch(plannerListActions.addPlannerList(newPlannerList))
-            } else if (validateUnspecifiedPlannerListData(data)) {
-                // cards = [] 형태
-                console.log("unspecified plannerList")
-                const plannerList = readUnspecifiedPlannerList(data);
-                const newPlannerList = plannerListCardStatusDevide(plannerList)
-                dispatch(plannerListActions.addPlannerList(newPlannerList))
-            } else {
-                console.log("error")
-            }
-            setReadData();
-        }
-    },[readData])
+    const readerRegister = useRead(HOME);
 
     return(<>
         <_Container {...readerRegister}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import DataDownload from '../../utils/DataDownload';
-import CalendarModal from '../home/calendar/CalendarModal';
+import MDPModal from '../modal/MDPModal';
 import DataReaderModal from '../reader/DataReaderModal';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
 import { useDispatch } from 'react-redux';
@@ -40,7 +40,7 @@ export default function QuoteHeader(props) {
 
     return (
         <>
-            <CalendarModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
+            <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             <button
                 type="button"
                 onClick={() => {
