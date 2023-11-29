@@ -108,7 +108,7 @@ export function patchMoveCards(data) {
     return res;
 }
 
-export function deleteCard(cardId) {
+export function deleteCardById(cardId) {
     const res = axios({
         method: 'DELETE',
         url: getURL(`/api/deleteCard/${cardId}`),
