@@ -24,9 +24,9 @@ export default function DroppableComponent(props) {
 
     const dispatch = useDispatch();
 
-    const deleteCard = (e, id, card) => {
-        e.stopPropagation();
-        console.log('del', id, card.cardId);
+    const deleteCard = (event, id, card) => {
+        event.stopPropagation();
+        console.log('del', event, id, card.cardId);
         const result = deleteCard(card.cardId);
         // const result = axios.delete(
         //   `http://localhost:8080/api/deleteCard/${card.cardId}`,
