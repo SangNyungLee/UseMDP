@@ -6,7 +6,7 @@ import plannerList from './plannerList';
 import plannerInfo from './plannerInfo';
 import calendar from './calendar';
 import site from './site';
-
+import pointer from './pointer';
 const store = configureStore({
     reducer: {
         site,
@@ -16,6 +16,7 @@ const store = configureStore({
         plannerList,
         plannerInfo,
         calendar,
+        pointer,
     },
 });
 

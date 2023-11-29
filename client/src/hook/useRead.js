@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { plannerListActions } from "../store/plannerList";
 import { calendarActions } from "../store/calendar";
 import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../utils/DataValidate";
-import { plannerCardStatusDevide, plannerListCardStatusDevide, readSpecifiedPlanner, readSpecifiedPlannerList, readUnspecifiedPlanner, readUnspecifiedPlannerList } from "../utils/DataParsing";
+import { readPlanner, readPlannerList } from "../utils/DataAxiosParsing";
 
-export default function useRead(page){
+export default function useRead(target){
     const [ readData, setReadData ] = useState();
 
     const dispatch = useDispatch();
@@ -17,19 +17,19 @@ export default function useRead(page){
             if (validatePlannerData(data)) {
                 // cards = [ [] , [] , [] ] 형태
                 console.log("planner")
-                readSpecifiedPlannerData(data)
+                readPlannerData(data,true);
             } else if (validateUnspecifiedPlannerData(data)) {
                 // cards = [] 형태
                 console.log("planner2")
-                readUnspecifiedPlannerData(data);
+                readPlannerData(data,false);
             } else if (validatePlannerListData(data)) {
                 // cards = [ [] , [] , [] ] 형태
                 console.log("plannerList")
-                readSpecifiedPlannerListData(data);
+                readPlannerListData(data,true);
             } else if (validateUnspecifiedPlannerListData(data)) {
                 // cards = [] 형태
                 console.log("unspecified plannerList")
-                readUnspecifiedPlannerListData(data);
+                readPlannerListData(data,false);
             } else {
                 console.log("error")
             }
@@ -37,32 +37,24 @@ export default function useRead(page){
         }
     },[readData])
 
-    const readSpecifiedPlannerData = async (data) => {
-        const planner = await readSpecifiedPlanner(data);
-        console.log("readSpecifiedPlanner",planner);
+    const readPlannerData = async (data,specified) => {
+        const planner = await readPlanner(data,specified);
         const { plannerId } = planner
         dispatch(plannerListActions.addPlanner(planner))
-        dispatch(calendarActions.setHome([plannerId]))
+        dispatch(calendarActions.setSelect({
+            target,
+            value: [plannerId]
+        }))
     }
 
-    const readUnspecifiedPlannerData = async (data) => {
-        const planner = await readUnspecifiedPlanner(data);
-        console.log("readUnspecifiedPlanner",planner);
-        const { plannerId } = planner
-        dispatch(plannerListActions.addPlanner(planner))
-        dispatch(calendarActions.setHome([plannerId]))
-    }
-
-    const readSpecifiedPlannerListData = async (data) => {
-        const plannerList = await readSpecifiedPlannerList(data);
-        const newPlannerList = plannerListCardStatusDevide(plannerList)
-        dispatch(plannerListActions.addPlannerList(newPlannerList))
-    }
-
-    const readUnspecifiedPlannerListData = async (data) => {
-        const plannerList = await readUnspecifiedPlannerList(data);
-        const newPlannerList = plannerListCardStatusDevide(plannerList)
-        dispatch(plannerListActions.addPlannerList(newPlannerList))
+    const readPlannerListData = async (data,specified) => {
+        const plannerList = await readPlannerList(data,specified);
+        const plannerId = plannerList[0].plannerId
+        dispatch(plannerListActions.addPlannerList(plannerList))
+        dispatch(calendarActions.setSelect({
+            target,
+            value: [plannerId]
+        }))
     }
 
     const handleDrop = (e) => {

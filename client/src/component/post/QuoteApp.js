@@ -15,7 +15,9 @@ import DroppableComponent from './DroppableComponent';
 import useLocalStorage from 'use-local-storage';
 
 import axios from 'axios';
+import { getPlannerBtoA } from '../../utils/DataAxios';
 const _QuoteAppContainer = styled.div`
+    margin: '20px';
     display: flex;
 `;
 
@@ -70,7 +72,7 @@ export default function QuoteApp() {
     // }, [localdata, localQuote]);
     useEffect(() => {
         async function fetchData() {
-            const result = await axios(`http://localhost:8080/api/getPlanner/${btoa(plannerId)}`);
+            const result = await getPlannerBtoA(btoa(plannerId));
             const cardList = result.data.data.cards;
             const cards = [[], [], []];
             for (let i = 0; i < cardList.length; i++) {
@@ -100,7 +102,6 @@ export default function QuoteApp() {
             }
         };
         fetchData();
-        console.log('Check local');
     }, [plannerList]);
 
     function cardClick(ind, index) {
@@ -160,7 +161,6 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-            console.log('move', data);
             const result2 = axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
             const result = move(planner[sInd], planner[dInd], source, destination);
             const newState = [...planner];
@@ -183,23 +183,25 @@ export default function QuoteApp() {
         return <QuoteSpinner />;
     } else {
         return (
-            <_QuoteAppContainer>
-                <div ref={thumnnailRef}>
-                    <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
-                    <_QuoteContainer>
-                        <DragDropContext
-                            onDragEnd={(result, provided) => {
-                                onDragEnd(result, provided);
-                            }}
-                        >
-                            {planner.map((cardList, index) => (
-                                <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
-                            ))}
-                        </DragDropContext>
-                    </_QuoteContainer>
-                </div>
-                <QuoteAppCalendar />
-            </_QuoteAppContainer>
+            <div>
+                <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
+                <_QuoteAppContainer>
+                    <div>
+                        <_QuoteContainer ref={thumnnailRef}>
+                            <DragDropContext
+                                onDragEnd={(result, provided) => {
+                                    onDragEnd(result, provided);
+                                }}
+                            >
+                                {planner.map((cardList, index) => (
+                                    <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                                ))}
+                            </DragDropContext>
+                        </_QuoteContainer>
+                    </div>
+                    <QuoteAppCalendar />
+                </_QuoteAppContainer>
+            </div>
         );
     }
 }

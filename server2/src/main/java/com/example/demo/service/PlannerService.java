@@ -33,6 +33,9 @@ public class PlannerService {
     private TagRepository tagRepository;
 
     @Autowired
+    private LikeRepository likeRepository;
+
+    @Autowired
     private DTOConversionUtil dtoConversionUtil;
 
     //모든 플래너 가져오기
@@ -437,14 +440,57 @@ public class PlannerService {
         }
     }
 
-    public int likePlanner(PlannerIdDTO plannerIdDTO) {
-        long plannerId = plannerIdDTO.getPlannerId();
-        return plannerRepository.likePlanner(plannerId);
+    //성공 -> 1, 실패 -> 0
+    public long likePlanner(long plannerId, String memberId) {
+
+        LikeEntity likeEntity = LikeEntity.builder()
+                .plannerEntity(PlannerEntity.builder().plannerId(plannerId).build())
+                .memberEntity(MemberEntity.builder().memberId(memberId).build())
+                .build();
+        likeRepository.save(likeEntity);
+
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerId);
+        if(optionalPlannerEntity.isPresent()){
+            PlannerEntity planner = optionalPlannerEntity.get();
+            PlannerEntity updatePlanner = PlannerEntity.builder()
+                    .plannerId(planner.getPlannerId())
+                    .creator(planner.getCreator())
+                    .title(planner.getTitle())
+                    .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .likePlanner(planner.getLikePlanner()+1)
+                    .isDefault(planner.getIsDefault())
+                    .memberEntity(planner.getMemberEntity())
+                    .build();
+            plannerRepository.save(updatePlanner);
+        }
+
+        return 1;
+
     }
 
-    public int unlikePlanner(PlannerIdDTO plannerIdDTO) {
-        long plannerId = plannerIdDTO.getPlannerId();
-        return plannerRepository.unlikePlanner(plannerId);
+    //성공 -> 1, 실패 -> 0
+    public long unlikePlanner(PlannerIdDTO plannerIdDTO, String memberId) {
+        LikeEntity result = likeRepository.getLikeEntity(plannerIdDTO.getPlannerId(),memberId);
+        likeRepository.delete(result);
+
+        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerIdDTO.getPlannerId());
+        if(optionalPlannerEntity.isPresent()){
+            PlannerEntity planner = optionalPlannerEntity.get();
+            PlannerEntity updatePlanner = PlannerEntity.builder()
+                    .plannerId(planner.getPlannerId())
+                    .creator(planner.getCreator())
+                    .title(planner.getTitle())
+                    .thumbnail(planner.getThumbnail())
+                    .plannerAccess(planner.getPlannerAccess())
+                    .likePlanner(planner.getLikePlanner()-1)
+                    .isDefault(planner.getIsDefault())
+                    .memberEntity(planner.getMemberEntity())
+                    .build();
+            plannerRepository.save(updatePlanner);
+        }
+
+        return 1;
     }
 
     public long postJSONPlanner(RequestPostJSONPlannerDTO requestPostJSONPlannerDTO, String memberId) {
