@@ -8,7 +8,7 @@ import MyCalendar from '../../home/MyCalendar';
 import styled from 'styled-components';
 import SearchComponent from '../../home/searchComponent/SearchComponent';
 import HomeComponent from '../../home/HomeComponent';
-
+import CalendarSideBar from '../../home/calendar/CalendarSideBar';
 const _Button = styled.button`
     border: none;
     background: none;
@@ -45,7 +45,6 @@ export default function DefaultLoadMap() {
             case 4:
                 return (
                     <>
-                        <CalendarSideBar />
                         <MyCalendar />
                     </>
                 );

@@ -73,7 +73,7 @@ export default function QuoteApp() {
     useEffect(() => {
         async function fetchData() {
             const result = await getPlannerBtoA(btoa(plannerId));
-            const cardList = result.data.data.cards;
+            const cardList = result.data.cards;
             const cards = [[], [], []];
             for (let i = 0; i < cardList.length; i++) {
                 if (cardList[i].cardStatus === 'TODO') {
