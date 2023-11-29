@@ -60,7 +60,8 @@ export default function LoadMap(props) {
   // console.log(props);
   const like = props.like;
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.stopPropagation();
     const fetchData = async (btoaId) => {
       return await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
     };
@@ -106,7 +107,7 @@ export default function LoadMap(props) {
   };
 
   return (
-    <_Container onClick={handleClick}>
+    <_Container onClick={ e => handleClick(e) }>
       <_ImageStyle src={thumbnail}></_ImageStyle>
       <div>
         <_Felx>

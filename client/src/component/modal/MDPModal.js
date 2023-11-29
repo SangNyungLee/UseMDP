@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import CardEditor from "../post/Editor/CardEditor";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import { useDispatch } from "react-redux";
-import MyDayPicker from "../post/RightClicker/MyDayPicker";
-import copy from "fast-copy";
-import { siteActions } from "../../store/site";
-import { HexColorPicker } from "react-colorful";
-import { darken } from "polished";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import CardEditor from '../post/Editor/CardEditor';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import { useDispatch } from 'react-redux';
+import MyDayPicker from '../post/RightClicker/MyDayPicker';
+import copy from 'fast-copy';
+import { siteActions } from '../../store/site';
+import { HexColorPicker } from 'react-colorful';
+import { darken } from 'polished';
+import axios from 'axios';
 
 const FlexContainer = styled.div`
   display: flex;

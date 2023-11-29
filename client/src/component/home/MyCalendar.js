@@ -3,25 +3,26 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useDispatch, useSelector } from "react-redux";
-import { plannerListActions } from "../../store/plannerList";
-import CalendarModal from "../modal/MDPModal";
-import styled from "styled-components";
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { plannerListActions } from '../../store/plannerList';
+import MDPModal from '../modal/MDPModal';
 
-import axios from "axios";
-import {
-  eventStyleGetter,
-  getNestedElement,
-} from "../../utils/CalendarController";
-import { getOneCard } from "../../utils/QuoteSetting";
-import { dateParsing } from "../../utils/DataParsing";
-import useDefaultCheck from "../../hook/useDefaultCheck";
-import CalendarSideBar from "./calendar/CalendarSideBar";
+import axios from 'axios';
+import { eventStyleGetter, getNestedElement } from '../../utils/CalendarController';
+import { getOneCard } from '../../utils/QuoteSetting';
+import { dateParsing } from '../../utils/DataParsing';
+import useDefaultCheck from '../../hook/useDefaultCheck';
+import CalendarSideBar from './calendar/CalendarSideBar';
+import styled from 'styled-components';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
+
+const _Container = styled.div`
+  display: flex;
+`
 
 const _ToGoButton = styled.div`
   border: none;
@@ -50,33 +51,40 @@ const _SwitchButton = styled.button`
 `;
 
 const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
-  const goToToday = () => {
-    onNavigate("TODAY"); // 오늘 날짜로 이동
-  };
+    const goToToday = (e) => {
+      e.stopPropagation()
+      onNavigate('TODAY'); // 오늘 날짜로 이동
+    };
 
-  const goToNext = () => {
-    onNavigate("NEXT"); // 다음 달로 이동
-  };
+    const goToNext = (e) => {
+      e.stopPropagation()
+      onNavigate('NEXT'); // 다음 달로 이동
+    };
 
-  const goToPrev = () => {
-    onNavigate("PREV"); // 이전 달로 이동
-  };
+    const goToPrev = (e) => {
+      e.stopPropagation()
+      onNavigate('PREV'); // 이전 달로 이동
+    };
 
-  const switchToMonthView = () => {
-    onView("month"); // 주 단위(view)로 전환
-  };
+    const switchToMonthView = (e) => {
+      e.stopPropagation()
+      onView('month'); // 주 단위(view)로 전환
+    };
 
-  const switchToWeekView = () => {
-    onView("week"); // 주 단위(view)로 전환
-  };
+    const switchToWeekView = (e) => {
+      e.stopPropagation()
+      onView('week'); // 주 단위(view)로 전환
+    };
 
-  const switchToDayView = () => {
-    onView("day"); // 날짜 단위(view)로 전환
-  };
+    const switchToDayView = (e) => {
+      e.stopPropagation()
+      onView('day'); // 날짜 단위(view)로 전환
+    };
 
-  const switchToAgendaView = () => {
-    onView("agenda"); // 날짜 단위(view)로 전환
-  };
+    const switchToAgendaView = (e) => {
+      e.stopPropagation()
+      onView('agenda'); // 날짜 단위(view)로 전환
+    };
 
   return (
     <div style={{ width: "70vw", marginBottom: "10px" }}>
@@ -87,17 +95,17 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
           marginBottom: "10px",
         }}
       >
-        <_ToGoButton onClick={goToPrev}>{"<"}</_ToGoButton>
-        <div onClick={goToToday} style={{ textAlign: "center" }}>
+        <_ToGoButton onClick={ e => goToPrev(e) }>{"<"}</_ToGoButton>
+        <div onClick={ e => goToToday(e) } style={{ textAlign: "center" }}>
           <_Label>{label}</_Label>
         </div>
-        <_ToGoButton onClick={goToNext}>{">"}</_ToGoButton>
+        <_ToGoButton onClick={ e => goToNext(e) }>{">"}</_ToGoButton>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <_SwitchButton onClick={switchToMonthView}>Month</_SwitchButton>
-        <_SwitchButton onClick={switchToWeekView}>Week</_SwitchButton>
-        <_SwitchButton onClick={switchToDayView}>Day</_SwitchButton>
-        <_SwitchButton onClick={switchToAgendaView}>Agenda</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToMonthView(e) }>Month</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToWeekView(e) }>Week</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToDayView(e) }>Day</_SwitchButton>
+        <_SwitchButton onClick={ e => switchToAgendaView(e)}>Agenda</_SwitchButton>
       </div>
     </div>
   );
@@ -255,17 +263,17 @@ export default function MyCalendar() {
   };
 
   return (
-    <>
-      <CalendarSideBar />
+    <_Container>
+      <CalendarSideBar/>
       {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>
         <button onClick={defaultPlanner}>기본 플래너 조회</button>
       </div> */}
-      <CalendarModal
-        selectedCard={selectedCard}
-        modalStatus={visible}
-        modalClose={() => setVisible(false)}
+      <MDPModal
+      selectedCard={selectedCard}
+      modalStatus={visible}
+      modalClose={()=>setVisible(false)}
       />
       <DnDCalendar
         defaultDate={moment().toDate()}
@@ -280,12 +288,15 @@ export default function MyCalendar() {
         onSelectEvent={onSelectEvent}
         resizable
         selectable
-        style={{ flex: 1 }}
+        style={{
+          flex: 1,
+          height: '100vh'
+        }}
         eventPropGetter={eventStyleGetter}
         components={{
           toolbar: CustomToolbar,
         }}
       />
-    </>
+    </_Container>
   );
 }

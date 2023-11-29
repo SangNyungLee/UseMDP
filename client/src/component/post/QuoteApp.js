@@ -104,7 +104,8 @@ export default function QuoteApp() {
         fetchData();
     }, [plannerList]);
 
-    function cardClick(ind, index) {
+    function cardClick(e, ind, index) {
+        e.stopPropagation()
         setSelectedCard(planner[ind][index]);
         setVisible(true);
     }

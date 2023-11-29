@@ -38,8 +38,9 @@ export default function CardEditor(props) {
     props.editpost[0] ? props.editpost[0] : "default"
   );
   // console.log(props.editpost);
-  function saveEditArea() {
+  function saveEditArea(e) {
     //객체 로직으로 저장
+    e.stopPropagation();
     console.log("EditArea", EditArea);
     props.editpost[1](EditArea);
   }
@@ -80,7 +81,7 @@ export default function CardEditor(props) {
           }}
         />
       </div>
-      <_Button className="submit-button" onClick={saveEditArea}>
+      <_Button className="submit-button" onClick={ e => saveEditArea(e) }>
         입력
       </_Button>
     </PostContainer>

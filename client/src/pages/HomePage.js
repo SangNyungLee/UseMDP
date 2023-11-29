@@ -16,12 +16,14 @@ const _Flex = styled.div`
 
 export default function HomePage() {
     const dispatch = useDispatch();
-    const handlePoint = () => {
+
+    const handlePoint = (e) => {
+        e.stopPropagation()
         dispatch(pointActions.clearPoint());
     };
 
     return (
-        <_Font onClick={handlePoint}>
+        <_Font onClick={ e => handlePoint(e)}>
             <Header />
             <div>HomePage</div>
             <_Flex>

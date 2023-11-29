@@ -6,6 +6,7 @@ import { plannerListActions } from "../../../store/plannerList";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { darken } from "polished";
+import { deleteMyPlanner } from "../../../utils/DataAxios";
 
 const _PlannerTitle = styled.div`
     white-space: nowrap;
@@ -71,15 +72,17 @@ export default function PlannerListLi({planner}){
     // const checklist = defaultLoad(plan.cards);
     const { cards, plannerId, title } = planner;
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.stopPropagation()
         setVisible( prev => !prev )
         dispatch(calendarActions.setHome([plannerId]))
     }
 
     const delPlanner = (e) => {
         e.stopPropagation()
+        deleteMyPlanner(plannerId)
         dispatch(plannerListActions.delPlanner(plannerId))
-        if (plannerId === home[0]){
+        if ((plannerId === home[0]) && (plannerList.length > 1)){
             const otherPlanner = plannerList.find( planner => planner.plannerId !== plannerId )
             dispatch(calendarActions.setHome([otherPlanner.plannerId]))
         }
@@ -90,7 +93,7 @@ export default function PlannerListLi({planner}){
             <_PlannerDiv
                 $visible={visible ? 1 : undefined}
                 color={"#FFD6DA"}
-                onClick={handleClick}
+                onClick={ e => handleClick(e) }
                 $focus={plannerId == home[0] ? 1 : undefined}>
                 <_PlannerTitle>{title}</_PlannerTitle>
                 <_DelButton onClick={ e => delPlanner(e)}>x</_DelButton>

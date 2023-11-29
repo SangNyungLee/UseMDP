@@ -51,7 +51,8 @@ export default function DroppableComponent(props) {
     );
   };
 
-  const addCard = async () => {
+  const addCard = async (e) => {
+    e.stopPropagation();
     const cardStatus =
       cardStatusIndex === 0 ? "TODO" : cardStatusIndex === 1 ? "DOING" : "DONE";
     const card = getItems(1, planner[cardStatusIndex].length, cardStatus)[0];
@@ -93,7 +94,7 @@ export default function DroppableComponent(props) {
     ...provided.dragHandleProps,
     ref: provided.innerRef,
     style: getItemStyle(snapshot.isDragging, provided.draggableProps.style),
-    onClick: () => handleClick(cardStatusIndex, id),
+    onClick: (e) => handleClick( e, cardStatusIndex, id),
   });
 
   return (
@@ -126,7 +127,7 @@ export default function DroppableComponent(props) {
                 </Draggable>
               ))}
               {provided.placeholder}
-              <DivButton onClick={addCard}>+ Add new item</DivButton>
+              <DivButton onClick={ e => addCard(e)}>+ Add new item</DivButton>
             </div>
           </>
         );

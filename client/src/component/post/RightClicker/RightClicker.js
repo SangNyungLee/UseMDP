@@ -15,14 +15,16 @@ const RightClicker = (props) => {
 
     const [plannerTitle, plannerId] = props.rightClickData;
     //일단 로컬에 저장.
-    const saveState = async () => {
+    const saveState = async (e) => {
+        e.stopPropagation()
         const btoaId = btoa(plannerId);
         const result = await getPlannerBtoA(btoaId);
         // const result = await axios(`/plannerTest`);
         DataDownload(plannerTitle, result.data);
     };
 
-    const toPlannerLink = async () => {
+    const toPlannerLink = async (e) => {
+        e.stopPropagation()
         const btoaId = btoa(plannerId);
         const result = await getPlannerBtoA(btoaId);
         const cardList = result.data.cards;
@@ -41,7 +43,8 @@ const RightClicker = (props) => {
         navigate(`/planner?id=${btoaId}`);
     };
 
-    const toMyLoadMap = async () => {
+    const toMyLoadMap = async (e) => {
+        e.stopPropagation()
         const btoaId = btoa(plannerId);
         const result = await postCopyPlanners(plannerId);
         console.log(result.data);
@@ -61,13 +64,13 @@ const RightClicker = (props) => {
 
     return (
         <ListGroup style={{ position: 'fixed', zIndex: 99, top: props.point[0], left: props.point[1] }}>
-            <ListGroup.Item className="bg-dark" onClick={toPlannerLink} style={{ color: 'white' }}>
+            <ListGroup.Item className="bg-dark" onClick={ e => toPlannerLink(e)} style={{ color: 'white' }}>
                 링크
             </ListGroup.Item>
-            <ListGroup.Item className="bg-dark" onClick={saveState} style={{ color: 'white' }}>
+            <ListGroup.Item className="bg-dark" onClick={ e => saveState(e) } style={{ color: 'white' }}>
                 다운로드
             </ListGroup.Item>
-            <ListGroup.Item className="bg-dark" onClick={toMyLoadMap} style={{ color: 'white' }}>
+            <ListGroup.Item className="bg-dark" onClick={ e => toMyLoadMap(e) } style={{ color: 'white' }}>
                 내로드맵으로
             </ListGroup.Item>
         </ListGroup>
