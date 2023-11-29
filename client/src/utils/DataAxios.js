@@ -79,3 +79,13 @@ export async function getPlanners() {
     });
     return res;
 }
+
+export async function postCopyPlanners(plannerId) {
+    const res = await axios({
+        method: 'POST',
+        url: getURL(`/api/postPlanner/copy`),
+        data: { plannerId },
+        withCredentials: true,
+    });
+    return res;
+}

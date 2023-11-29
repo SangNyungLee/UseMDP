@@ -3,7 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import DataDownload from '../../../utils/DataDownload';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getPlannerBtoA } from '../../../utils/DataAxios';
+import { getCopyPlanners, getPlannerBtoA, postCopyPlanners } from '../../../utils/DataAxios';
 import { calendarActions } from '../../../store/calendar';
 import { plannerListActions } from '../../../store/plannerList';
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
@@ -38,8 +38,25 @@ const RightClicker = (props) => {
         }
         dispatch(calendarActions.setQuote([plannerId]));
         dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-
         navigate(`/planner?id=${btoaId}`);
+    };
+
+    const toMyLoadMap = async () => {
+        const btoaId = btoa(plannerId);
+        const result = await postCopyPlanners(plannerId);
+        console.log(result.data);
+        // //이름을 받아서 지운다
+        // const removeProperties = (obj, ...propsToRemove) => {
+        //     const newObj = { ...obj };
+        //     propsToRemove.forEach((prop) => delete newObj[prop]);
+        //     return newObj;
+        // };
+
+        // const modifiedData = {
+        //     ...removeProperties(inputData, 'plannerId'),
+        //     cards: inputData.cards.map((card) => removeProperties(card, 'cardId')),
+        // };
+        // console.log(modifiedData);
     };
 
     return (
@@ -50,7 +67,7 @@ const RightClicker = (props) => {
             <ListGroup.Item className="bg-dark" onClick={saveState} style={{ color: 'white' }}>
                 다운로드
             </ListGroup.Item>
-            <ListGroup.Item className="bg-dark" style={{ color: 'white' }}>
+            <ListGroup.Item className="bg-dark" onClick={toMyLoadMap} style={{ color: 'white' }}>
                 내로드맵으로
             </ListGroup.Item>
         </ListGroup>
