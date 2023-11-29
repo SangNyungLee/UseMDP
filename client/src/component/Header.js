@@ -24,12 +24,12 @@ export default function Header() {
   const navigate = useNavigate();
 
   // 로컬스토리지에 저장된 isLogin을 가져와서 변수에 저장해놓음
-  useEffect(() => {
-    const checkIsLogin = localStorage.getItem("isLogin");
-    if (checkIsLogin) {
-      dispatch(siteActions.setIsLogin(checkIsLogin === "true"));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const checkIsLogin = localStorage.getItem("isLogin");
+  //   if (checkIsLogin) {
+  //     dispatch(siteActions.setIsLogin(checkIsLogin === "true"));
+  //   }
+  // }, [dispatch]);
 
   const isMobile = useMediaQuery({
     query: "(max-width: 576px)",

@@ -29,7 +29,6 @@ export default function Redirection({ provider }) {
             .then((res) => {
               navigate("/");
               dispatch(siteActions.setIsLogin(true));
-              localStorage.setItem("isLogin", true);
               loginSuccess("구글");
             })
             .catch((res) => {
@@ -47,7 +46,6 @@ export default function Redirection({ provider }) {
             .then((res) => {
               console.log(res);
               dispatch(siteActions.setIsLogin(true));
-              localStorage.setItem("isLogin", true);
               navigate("/");
               loginSuccess("깃허브");
             })
