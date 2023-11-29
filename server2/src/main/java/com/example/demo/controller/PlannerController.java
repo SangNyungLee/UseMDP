@@ -27,8 +27,9 @@ public class PlannerController implements SwaggerPlannerAPI {
     // 모든 플래너들 가져오기
     @Override
     @GetMapping("/api/getPlanners")
-    public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getAllPlanners() {
-        List<ResponsePlannerDTO> data = plannerService.getAllPlanners();
+    // 내꺼여부 상관없이 public 모두 불러오기
+    public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getAllPublicPlanners() {
+        List<ResponsePlannerDTO> data = plannerService.getAllPublicPlanners();
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
                 .resultCode("200")
                 .message("모든 플래너들 불러오기 성공")
@@ -39,12 +40,20 @@ public class PlannerController implements SwaggerPlannerAPI {
     //인기순 정렬된 플래너들 가져오기
     @Override
     @GetMapping("/api/getPlanner/trending")
-    public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getTrendingPlanner() {
-        List<ResponsePlannerDTO> data = plannerService.getTrendingPlanner();
+    // 쿠키 있으면, 내꺼 빼고, public 애들 전부 trending 순으로
+    // 쿠키 없으면 public 전부
+    public ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getTrendingPlanner(@CookieValue(name = "auth", required = false) String token) {
+        String memberId;
+        if(token != null) {
+            memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+        } else {
+            memberId = null;
+        }
+        List<ResponsePlannerDTO> allTrendingPlanners = plannerService.getTrendingPlanner(memberId);
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
                 .resultCode("200")
                 .message("모든 플래너들 인기순으로 불러오기 성공")
-                .data(data)
+                .data(allTrendingPlanners)
                 .build());
     }
 

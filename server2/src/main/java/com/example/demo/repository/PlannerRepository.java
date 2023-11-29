@@ -14,6 +14,10 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
     @Query(nativeQuery = true, value = "select * from planner order by like_planner desc")
     List<PlannerEntity> getTrendingPlanner();
 
+    List<PlannerEntity> findByPlannerAccessOrderByLikePlannerDesc(PlannerEntity.PlannerAccess plannerAccess);
+
+    List<PlannerEntity> findByPlannerAccessAndMemberEntityMemberIdNotOrderByLikePlannerDesc(PlannerEntity.PlannerAccess plannerAccess, String memberId);
+
     @Query(nativeQuery = true, value = "select * from planner where is_default = 1")
     List<PlannerEntity> getDefaultPlanner();
 
@@ -23,6 +27,5 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
     @Query(value = "UPDATE PlannerEntity p SET p.likePlanner = p.likePlanner - 1 WHERE p.plannerId = :plannerId")
     int unlikePlanner(@Param("plannerId") long plannerId);
 
-    @Query("SELECT p FROM PlannerEntity p LEFT JOIN FETCH p.cards WHERE p.plannerId = :plannerId")
-    Optional<PlannerEntity> findPlannerWithCardsById(@Param("plannerId") long plannerId);
+    List<PlannerEntity> findByPlannerAccess(PlannerEntity.PlannerAccess plannerAccess);
 }

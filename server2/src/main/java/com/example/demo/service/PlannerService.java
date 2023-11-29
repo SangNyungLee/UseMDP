@@ -36,47 +36,80 @@ public class PlannerService {
     private DTOConversionUtil dtoConversionUtil;
 
     //모든 플래너 가져오기
-    public List<ResponsePlannerDTO> getAllPlanners() {
-        List<PlannerEntity> result = plannerRepository.findAll();
-        List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
+    public List<ResponsePlannerDTO> getAllPublicPlanners() {
+        List<PlannerEntity> publicPlannerEntities = plannerRepository.findByPlannerAccess(PlannerEntity.PlannerAccess.PUBLIC);
+        List<ResponsePlannerDTO> responsePlannerDTOS = new ArrayList<>();
 
-        for(PlannerEntity planner : result){
-            ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
-                    .plannerId(planner.getPlannerId())
-                    .creator(planner.getCreator())
-                    .title(planner.getTitle())
-                    .likePlanner(planner.getLikePlanner())
-                    .thumbnail(planner.getThumbnail())
-                    .plannerAccess(planner.getPlannerAccess())
-                    .isDefault(planner.getIsDefault())
-                    .createdAt(planner.getCreatedAt())
-                    .updatedAt(planner.getUpdatedAt())
+        for (PlannerEntity publicPlannerEntity: publicPlannerEntities) {
+            Set<TagEntity> tagEntities = publicPlannerEntity.getTaglist();
+            List<String> taglist = tagEntities.stream().map(TagEntity::getTitle).toList();
+
+            ResponsePlannerDTO responsePlannerDTO = ResponsePlannerDTO.builder()
+                    .plannerId(publicPlannerEntity.getPlannerId())
+                    .creator(publicPlannerEntity.getCreator())
+                    .title(publicPlannerEntity.getTitle())
+                    .likePlanner(publicPlannerEntity.getLikePlanner())
+                    .thumbnail(publicPlannerEntity.getThumbnail())
+                    .plannerAccess(publicPlannerEntity.getPlannerAccess())
+                    .isDefault(publicPlannerEntity.getIsDefault())
+                    .createdAt(publicPlannerEntity.getCreatedAt())
+                    .updatedAt(publicPlannerEntity.getUpdatedAt())
+                    .taglist(taglist)
                     .build();
-            plannerDTOList.add(plannerDTO);
+            responsePlannerDTOS.add(responsePlannerDTO);
         }
-        return plannerDTOList;
+        return responsePlannerDTOS;
     }
 
     //인기순으로 정렬된 플래너 가져오기
-    public List<ResponsePlannerDTO> getTrendingPlanner() {
-        List<PlannerEntity> result = plannerRepository.getTrendingPlanner();
-        List<ResponsePlannerDTO> plannerDTOList = new ArrayList<>();
+    public List<ResponsePlannerDTO> getTrendingPlanner(String memberId) {
+        if(memberId == null) {
+            List<PlannerEntity> publicPlannerEntitiesOrderedByLikePlannerDESC = plannerRepository.findByPlannerAccessOrderByLikePlannerDesc(PlannerEntity.PlannerAccess.PUBLIC);
+            List<ResponsePlannerDTO> responsePlannerDTOS = new ArrayList<>();
 
-        for(PlannerEntity planner : result){
-            ResponsePlannerDTO plannerDTO = ResponsePlannerDTO.builder()
-                    .plannerId(planner.getPlannerId())
-                    .creator(planner.getCreator())
-                    .title(planner.getTitle())
-                    .likePlanner(planner.getLikePlanner())
-                    .thumbnail(planner.getThumbnail())
-                    .plannerAccess(planner.getPlannerAccess())
-                    .isDefault(planner.getIsDefault())
-                    .createdAt(planner.getCreatedAt())
-                    .updatedAt(planner.getUpdatedAt())
-                    .build();
-            plannerDTOList.add(plannerDTO);
+            for (PlannerEntity plannerEntity: publicPlannerEntitiesOrderedByLikePlannerDESC) {
+                Set<TagEntity> tagEntities = plannerEntity.getTaglist();
+                List<String> taglist = tagEntities.stream().map(TagEntity::getTitle).toList();
+
+                ResponsePlannerDTO responsePlannerDTO = ResponsePlannerDTO.builder()
+                        .plannerId(plannerEntity.getPlannerId())
+                        .creator(plannerEntity.getCreator())
+                        .title(plannerEntity.getTitle())
+                        .likePlanner(plannerEntity.getLikePlanner())
+                        .thumbnail(plannerEntity.getThumbnail())
+                        .plannerAccess(plannerEntity.getPlannerAccess())
+                        .isDefault(plannerEntity.getIsDefault())
+                        .createdAt(plannerEntity.getCreatedAt())
+                        .updatedAt(plannerEntity.getUpdatedAt())
+                        .taglist(taglist)
+                        .build();
+                responsePlannerDTOS.add(responsePlannerDTO);
+            }
+            return responsePlannerDTOS;
+        } else {
+            List<PlannerEntity> publicPlannerEntitiesExceptMineOrderedByLikePlannerDESC = plannerRepository.findByPlannerAccessAndMemberEntityMemberIdNotOrderByLikePlannerDesc(PlannerEntity.PlannerAccess.PUBLIC, memberId);
+            List<ResponsePlannerDTO> responsePlannerDTOS = new ArrayList<>();
+
+            for (PlannerEntity plannerEntity: publicPlannerEntitiesExceptMineOrderedByLikePlannerDESC) {
+                Set<TagEntity> tagEntities = plannerEntity.getTaglist();
+                List<String> taglist = tagEntities.stream().map(TagEntity::getTitle).toList();
+
+                ResponsePlannerDTO responsePlannerDTO = ResponsePlannerDTO.builder()
+                        .plannerId(plannerEntity.getPlannerId())
+                        .creator(plannerEntity.getCreator())
+                        .title(plannerEntity.getTitle())
+                        .likePlanner(plannerEntity.getLikePlanner())
+                        .thumbnail(plannerEntity.getThumbnail())
+                        .plannerAccess(plannerEntity.getPlannerAccess())
+                        .isDefault(plannerEntity.getIsDefault())
+                        .createdAt(plannerEntity.getCreatedAt())
+                        .updatedAt(plannerEntity.getUpdatedAt())
+                        .taglist(taglist)
+                        .build();
+                responsePlannerDTOS.add(responsePlannerDTO);
+            }
+            return responsePlannerDTOS;
         }
-        return plannerDTOList;
     }
 
     //기본 플래너 가져오기

@@ -23,6 +23,10 @@ public class MemberEntity {
     private String memberId;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private socialCategory socialCategory;
+
+    @Column(nullable = false)
     private String socialId;
 
     @Column(nullable = false)
@@ -47,4 +51,9 @@ public class MemberEntity {
     @Builder.Default
     private List<LikeEntity> likes = new ArrayList<>();
 
+    @Getter
+    public enum socialCategory {
+        GITHUB,
+        GOOGLE
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.SocialLoginDTO.SocialDTO;
+import com.example.demo.entity.MemberEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -39,10 +40,11 @@ public class GoogleLoginService {
         String socialNickname = userResourceNode.get("name").asText();
         String socialProfilePicture = userResourceNode.get("picture").asText();
         return SocialDTO.builder()
-                .socialLoginAccessToken(accessToken)
+                .socialCategory(MemberEntity.socialCategory.GOOGLE)
                 .socialId(socialId)
                 .socialNickname(socialNickname)
                 .socialProfilePicture(socialProfilePicture)
+                .socialLoginAccessToken(accessToken)
                 .build();
     }
 
