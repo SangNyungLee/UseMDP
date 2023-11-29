@@ -15,7 +15,7 @@ import DroppableComponent from './DroppableComponent';
 import useLocalStorage from 'use-local-storage';
 
 import axios from 'axios';
-import { getPlannerBtoA } from '../../utils/DataAxios';
+import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 const _QuoteAppContainer = styled.div`
     margin: '20px';
     display: flex;
@@ -104,8 +104,12 @@ export default function QuoteApp() {
         fetchData();
     }, [plannerList]);
 
-    function cardClick(ind, index) {
-        setSelectedCard(planner[ind][index]);
+    async function cardClick(ind, index) {
+        const cardResult = await getCardAxios(planner[ind][index].cardId);
+        console.log('newchecklist', cardResult);
+
+        setSelectedCard(cardResult);
+        // setSelectedCard(planner[ind][index]);
         setVisible(true);
     }
 
@@ -136,7 +140,7 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-            const result2 = axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
+            const result2 = patchMoveCards(data);
             const items = reorder(planner[sInd], source.index, destination.index);
             const newState = [...planner];
             newState[sInd] = items;
@@ -161,7 +165,7 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-            const result2 = axios.patch('http://localhost:8080/api/patchMoveCards', data, { withCredentials: true });
+            const result2 = patchMoveCards(data);
             const result = move(planner[sInd], planner[dInd], source, destination);
             const newState = [...planner];
             newState[sInd] = result[sInd];

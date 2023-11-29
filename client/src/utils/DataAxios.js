@@ -89,3 +89,42 @@ export async function postCopyPlanners(plannerId) {
     });
     return res;
 }
+
+export async function patchCard(data) {
+    const res = axios({
+        method: 'PATCH',
+        url: getURL(`/api/patchCard`),
+        data,
+        withCredentials: true,
+    });
+    return res;
+}
+
+export function patchMoveCards(data) {
+    const res = axios({
+        method: 'PATCH',
+        url: getURL(`/api/patchMoveCards`),
+        data,
+        withCredentials: true,
+    });
+    return res;
+}
+
+export function deleteCard(cardId) {
+    const res = axios({
+        method: 'DELETE',
+        url: getURL(`/api/deleteCard/${cardId}`),
+        withCredentials: true,
+    });
+    return res;
+}
+
+export async function postCard(data) {
+    const res = await axios({
+        method: 'POST',
+        url: getURL(`/api/postCard`),
+        data,
+        withCredentials: true,
+    });
+    return res;
+}
