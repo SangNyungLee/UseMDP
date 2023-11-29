@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../../store/site";
+import { logoutModal } from "../etc/SweetModal";
 
 export default function HomeHeader() {
   // 모달창 보여주기, 숨기기 상태
@@ -52,13 +53,14 @@ export default function HomeHeader() {
   });
 
   //로그인 모달창
-  const showLoginModal = () => {
+  const showLoginModal = (e) => {
+    e.stopPropagation()
     MySwal.fire({
       title: "LogIn",
       html: (
         <div>
-          <GoogleLoginButton onClick={googleLogin} />
-          <GithubLoginButton onClick={githubLogin} />
+          <GoogleLoginButton onClick={ e => googleLogin(e) } />
+          <GithubLoginButton onClick={ e => githubLogin(e) } />
         </div>
       ),
       showCloseButton: true,
@@ -67,27 +69,29 @@ export default function HomeHeader() {
   };
 
   ///////로그인버튼///////
-  const googleLogin = () => {
+  const googleLogin = (e) => {
+    e.stopPropagation()
     window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
-  const githubLogin = () => {
+  const githubLogin = (e) => {
+    e.stopPropagation()
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
 
   //로그아웃
-  const Logout = () => {
+  const Logout = (e) => {
+    e.stopPropagation()
     dispatch(siteActions.setIsLogin(false));
     localStorage.removeItem("isLogin");
-    alert("로그아웃 되셨습니다.");
+    logoutModal();
     navigate("/");
   };
-
   return (
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">
         <Container className="px-3 px-sm-5">
-          <Navbar.Brand className="text-success fw-bold">
+          <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
             <img
               src="https://picsum.photos/40/40"
               className="d-inline-block rounded"
@@ -99,7 +103,7 @@ export default function HomeHeader() {
             {isLoginRedux ? (
               <>
                 <Button
-                  onClick={Logout}
+                  onClick={ e => Logout(e)}
                   className="mx-2"
                   variant="outline-success"
                   size={isMobile ? "sm" : "md"}
@@ -111,7 +115,7 @@ export default function HomeHeader() {
             ) : (
               <>
                 <Button
-                  onClick={showLoginModal}
+                  onClick={ e => showLoginModal(e) }
                   className="mx-2"
                   variant="outline-success"
                   size={isMobile ? "sm" : "md"}
@@ -146,8 +150,8 @@ export default function HomeHeader() {
               <Modal.Title>LogIn</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <GoogleLoginButton onClick={googleLogin} />
-              <GithubLoginButton onClick={githubLogin} />
+              <GoogleLoginButton onClick={ e => googleLogin(e) } />
+              <GithubLoginButton onClick={ e => githubLogin(e) } />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="primary">Close</Button>

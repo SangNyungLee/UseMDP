@@ -4,10 +4,10 @@ import { plannerListActions } from '../../store/plannerList';
 import { getItemStyle, getItems, getListStyle } from '../../utils/QuoteSetting';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import QuoteCard from './QuoteCard';
-import axios from 'axios';
 import { siteActions } from '../../store/site';
 import styled from 'styled-components';
 import CardListHeader from './CardListHeader/CardListHeader';
+import { postCard } from '../../utils/DataAxios';
 
 const DivButton = styled.div`
     text-align: center;
@@ -24,10 +24,14 @@ export default function DroppableComponent(props) {
 
     const dispatch = useDispatch();
 
-    const deleteCard = (e, id, card) => {
-        e.stopPropagation();
-        console.log('del', id, card.cardId);
-        const result = axios.delete(`http://localhost:8080/api/deleteCard/${card.cardId}`, { withCredentials: true });
+    const deleteCard = (event, id, card) => {
+        event.stopPropagation();
+        console.log('del', event, id, card.cardId);
+        const result = deleteCard(card.cardId);
+        // const result = axios.delete(
+        //   `http://localhost:8080/api/deleteCard/${card.cardId}`,
+        //   { withCredentials: true }
+        // );
 
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
@@ -63,7 +67,7 @@ export default function DroppableComponent(props) {
         }
         console.log('addcard : ', card);
 
-        const result = await axios.post('http://localhost:8080/api/postCard', card, { withCredentials: true });
+        const result = await postCard(card);
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],

@@ -43,7 +43,8 @@ export default function CardLi({ plannerId, cardId, cardStatus, title}){
 
     const dispatch = useDispatch();
 
-    const liHandleClick = (cardId) => {
+    const liHandleClick = (e,cardId) => {
+        e.stopPropagation();
         dispatch(calendarActions.setHome([plannerId,cardStatus,cardId]))
     }
 
@@ -62,7 +63,7 @@ export default function CardLi({ plannerId, cardId, cardStatus, title}){
         key={cardId}
         color={"#FFD6DA"}
         $focus={cardFocus == cardId ? 1 : undefined}
-        onClick={()=>liHandleClick(cardId)}>
+        onClick={(e)=>liHandleClick(e,cardId)}>
         <_CardTitle>{title}</_CardTitle>
         <_DelButton onClick={(e) => delCard(e,cardId)}>x</_DelButton>
     </_CardLi>

@@ -11,10 +11,12 @@ import { siteActions } from '../../store/site';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
 import axios from 'axios';
+import { patchCard } from '../../utils/DataAxios';
 
 const FlexContainer = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const _TitleInput = styled.input`
@@ -31,6 +33,15 @@ const _TitleInput = styled.input`
 const _TodoAddButton = styled.button`
     background-color: white;
     border: none;
+    font-family: 'SUITE-Regular';
+    margin-top: 10px;
+    color: #545454;
+    padding: 0px;
+    border-radius: 3px;
+
+    &:active {
+        background-color: #ccc;
+    }
 `;
 
 const _ColorPickerModal = styled.div`
@@ -39,6 +50,40 @@ const _ColorPickerModal = styled.div`
 `;
 
 const _ChecklistContainer = styled.div`
+    display: flex;
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    justify-content: space-between;
+`;
+
+const _Title = styled.div`
+    margin-top: 50px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bolder;
+    font-family: 'SUITE-Regular';
+    letter-spacing: 1px;
+`;
+
+const _Span = styled.span`
+    font-size: 19px;
+    font-weight: bolder;
+`;
+
+const _CheckBox = styled.input`
+    width: 15px;
+`;
+
+const _TextInput = styled.input`
+    width: 87%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+`;
+
+const _DeleteButton = styled.button`
+    border: none;
+    background: none;
     display: flex;
 `;
 
@@ -80,7 +125,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         };
         console.log('MODAL에서 보내는 item', newCardItem);
         try {
-            const result = await axios.patch('http://localhost:8080/api/patchCard', newCardItem, { withCredentials: true });
+            const result = await patchCard(newCardItem);
             dispatch(siteActions.setIsData(false));
             modalClose();
             setShow(false);
@@ -100,10 +145,14 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     };
 
     const handleProgessBar = () => {
-        const done = checklists.filter((item) => item.checked === 1).length;
-        const total = checklists.length;
-        const progress = (done / total) * 100;
-        return progress;
+        if (checklists) {
+            const done = checklists.filter((item) => item.checked === 1).length;
+            const total = checklists.length;
+            const progress = (done / total) * 100;
+            return progress;
+        } else {
+            return 0;
+        }
     };
 
     useEffect(() => {
@@ -114,6 +163,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setEndDate(new Date(endDate));
         setCoverColor(coverColor);
         setCardStatus(cardStatus);
+        setChecklists(checklists);
         setShow(modalStatus);
         setModalOpen(false);
         // const checklist = getCheckListAxios();
@@ -160,7 +210,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
-    console.log(checklists);
+    // console.log(checklists);
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave}>
@@ -175,31 +225,38 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ProgressBar now={handleProgessBar()} label={`${handleProgessBar()}%`}></ProgressBar>
+                    <ProgressBar now={handleProgessBar()}></ProgressBar>
                     <CardEditor editpost={Edits} post={post}></CardEditor>
+                    <_Title>Check List</_Title>
                     <FlexContainer>
                         <MyDayPicker date={startDate} setDate={setStartDate} />
-                        <span>~</span>
+                        <_Span>~</_Span>
                         <MyDayPicker date={endDate} setDate={setEndDate} />
                     </FlexContainer>
                     <div>
-                        {checklists.map((item, index) => (
-                            <_ChecklistContainer key={index}>
-                                <input type="checkbox" checked={item.checked == 1} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
-                                <input type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
-                                <button type="button" onClick={() => deleteCheck(index)}>
-                                    -
-                                </button>
-                            </_ChecklistContainer>
-                        ))}
-                        <_TodoAddButton onClick={addTodo}>+</_TodoAddButton>
+                        {checklists
+                            ? checklists.map((item, index) => {
+                                  return (
+                                      <_ChecklistContainer key={index}>
+                                          <_CheckBox type="checkbox" checked={item.checked == 1} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
+                                          <_TextInput type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
+                                          <_DeleteButton type="button" onClick={() => deleteCheck(index)}>
+                                              <i class="material-icons" style={{ fontSize: '20px', color: '#ccc' }}>
+                                                  delete
+                                              </i>
+                                          </_DeleteButton>
+                                      </_ChecklistContainer>
+                                  );
+                              })
+                            : null}
+                        <_TodoAddButton onClick={addTodo}>+ add item</_TodoAddButton>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseWithoutSave}>
+                    <Button variant="outline-secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="success" onClick={handleClose}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -207,3 +264,4 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         </>
     );
 }
+//

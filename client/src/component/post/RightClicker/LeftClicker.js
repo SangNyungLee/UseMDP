@@ -8,16 +8,20 @@ const LeftClicker = (props) => {
     //혹은 html을 줘야함.
 
     //일단 로컬에 저장.
-    const saveState = async () => {};
+    const saveState = async (e) => {
+        e.stopPropagation()
+    };
 
-    const toPlannerLink = async () => {};
+    const toPlannerLink = async (e) => {
+        e.stopPropagation()
+    };
 
     return (
         <ListGroup style={{ position: 'fixed', zIndex: 99, top: props.point[0], left: props.point[1] }}>
-            <ListGroup.Item className="bg-dark" onClick={toPlannerLink} style={{ color: 'white' }}>
+            <ListGroup.Item className="bg-dark" onClick={ e => toPlannerLink(e)} style={{ color: 'white' }}>
                 Send Plans by Time
             </ListGroup.Item>
-            <ListGroup.Item className="bg-dark" onClick={saveState} style={{ color: 'white' }}>
+            <ListGroup.Item className="bg-dark" onClick={ e => saveState(e)} style={{ color: 'white' }}>
                 Delete All
             </ListGroup.Item>
         </ListGroup>

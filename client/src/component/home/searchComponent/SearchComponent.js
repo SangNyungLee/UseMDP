@@ -121,8 +121,9 @@ export default function SearchComponent() {
         setOption(v);
     };
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
         // 버튼 클릭 시, option에 따라 데이터 필터링
+        e.stopPropagation()
         if (option.value === 'stack') {
             setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.title.includes(tag.value))));
         } else if (option.value === 'author') {
@@ -154,7 +155,6 @@ export default function SearchComponent() {
         return (
             <div style={{ padding: '15px' }}>
                 <h2>로드맵 검색</h2>
-
                 <SearchContainer>
                     <div>
                         <Select options={options} onChange={changeOption} defaultValue={options[0]} isSearchable={false} />
@@ -223,7 +223,7 @@ export default function SearchComponent() {
                         />
                     )}
 
-                    <Button onClick={handleSearch}>검색</Button>
+                    <Button onClick={ e => handleSearch(e)}>검색</Button>
                 </SearchContainer>
                 <hr></hr>
                 <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>

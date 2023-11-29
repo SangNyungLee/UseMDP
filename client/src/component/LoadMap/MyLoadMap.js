@@ -82,7 +82,8 @@ export default function MyLoadMap(props) {
     const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
     // console.log(props);
     const navigate = useNavigate();
-    const handleClick = async () => {
+    const handleClick = async (e) => {
+        e.stopPropagation()
         //모달이 꺼져있으면
         if (!showModal) {
             const btoaId = btoa(plannerId);
@@ -161,26 +162,18 @@ export default function MyLoadMap(props) {
     };
 
     return (
-        <_Container onClick={handleClick}>
+        <_Container onClick={ e => handleClick(e)}>
             <_ImageStyle src={thumbnail}></_ImageStyle>
             <div>
                 <_Felx>
                     <_TitleStyle>{editedTitle}</_TitleStyle>
-                    <_Share
-                        onClick={(e) => {
-                            handleShareIcon(e);
-                        }}
-                    >
+                    <_Share onClick={ e => handleShareIcon(e)}>
                         <StyledShareIcon className="material-icons">share</StyledShareIcon>
                     </_Share>
                 </_Felx>
                 <_Felx>
                     <_isOpen>{editedPlannerAccess}</_isOpen>
-                    <_Button
-                        onClick={(e) => {
-                            changeDataByButton(e);
-                        }}
-                    >
+                    <_Button onClick={(e) => changeDataByButton(e)}>
                         수정
                     </_Button>
                 </_Felx>
@@ -203,17 +196,13 @@ export default function MyLoadMap(props) {
                 <Modal.Footer>
                     <Button
                         variant="secondary"
-                        onClick={(e) => {
-                            handleCloseModal(e);
-                        }}
+                        onClick={ e => handleCloseModal(e) }
                     >
                         Close
                     </Button>
                     <Button
                         variant="primary"
-                        onClick={(e) => {
-                            handleSaveChanges(e);
-                        }}
+                        onClick={ e => handleSaveChanges(e) }
                     >
                         Save Changes
                     </Button>

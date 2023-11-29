@@ -28,4 +28,10 @@ public interface PlannerRepository extends JpaRepository<PlannerEntity, Long> {
     int unlikePlanner(@Param("plannerId") long plannerId);
 
     List<PlannerEntity> findByPlannerAccess(PlannerEntity.PlannerAccess plannerAccess);
+
+    @Query(nativeQuery = true, value = "select * from planner p where planner_id = :plannerId")
+    Optional<PlannerEntity> getPlanner(@Param("plannerId")long plannerId);
+
+    @Query("SELECT p FROM PlannerEntity p LEFT JOIN FETCH p.cards WHERE p.plannerId = :plannerId")
+    Optional<PlannerEntity> findPlannerWithCardsById(@Param("plannerId") long plannerId);
 }
