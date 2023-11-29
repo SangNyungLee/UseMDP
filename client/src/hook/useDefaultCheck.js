@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { useDispatch } from "react-redux";
 import { siteActions } from "../store/site";
 import { plannerListActions } from "../store/plannerList";
+import { plannerListCardStatusDevide } from "../utils/DataParsing";
 
 export default function useDefaultCheck(){
     const site = useSelector( state => state.site);
@@ -22,7 +23,8 @@ export default function useDefaultCheck(){
                     url: "http://localhost:8080/api/getMyPlanner",
                     withCredentials: true
                 })
-                dispatch(plannerListActions.setPlannersInit(res.data.data))
+                const plannerList = plannerListCardStatusDevide(res.data.data);
+                dispatch(plannerListActions.setPlannersInit(plannerList))
             }
             fetchData()
             dispatch(siteActions.setAllTrue(true));
@@ -33,7 +35,8 @@ export default function useDefaultCheck(){
                     url: "http://localhost:8080/api/getMyPlanner",
                     withCredentials: true
                 })
-                dispatch(plannerListActions.setPlannersInit(res.data.data))
+                const plannerList = plannerListCardStatusDevide(res.data.data);
+                dispatch(plannerListActions.setPlannersInit(plannerList))
             }
             fetchData()
             dispatch(siteActions.setIsData(true));
