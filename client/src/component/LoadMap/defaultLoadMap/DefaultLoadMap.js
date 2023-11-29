@@ -1,34 +1,33 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 // import Header from "../Header";
-import HomeHeader from "../../home/HomeHeader";
-import { useState } from "react";
-import DefaultComponent from "./DefaultComponent";
-import StarComponent from "../../home/starComponent/StarComponent";
-import MyCalendar from "../../home/MyCalendar";
-import styled from "styled-components";
-import SearchComponent from "../../home/searchComponent/SearchComponent";
-import HomeComponent from "../../home/HomeComponent";
-
+import HomeHeader from '../../home/HomeHeader';
+import { useState } from 'react';
+import DefaultComponent from './DefaultComponent';
+import StarComponent from '../../home/starComponent/StarComponent';
+import MyCalendar from '../../home/MyCalendar';
+import styled from 'styled-components';
+import SearchComponent from '../../home/searchComponent/SearchComponent';
+import HomeComponent from '../../home/HomeComponent';
 const _Button = styled.button`
-  border: none;
-  background: none;
+    border: none;
+    background: none;
 `;
 
 const _Flex = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 100vw;
-  margin-top: 80px;
+    display: flex;
+    justify-content: flex-start;
+    width: 100vw;
+    margin-top: 80px;
 `;
 
 const _FlexNavi = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 `;
 
 const _RenderComponent = styled.div`
-  z-index: 50;
+    z-index: 50;
 `;
 
 export default function DefaultLoadMap() {
@@ -50,8 +49,8 @@ export default function DefaultLoadMap() {
                 return <HomeComponent />;
         }
     };
-    const handleNumber = (e,number) => {
-        e.stopPropagation()
+    const handleNumber = (e, number) => {
+        e.stopPropagation();
         setMenuNumber(number);
     };
 
@@ -61,27 +60,27 @@ export default function DefaultLoadMap() {
             <_Flex>
                 <div style={{ display: 'flex' }}>
                     <_FlexNavi>
-                        <_Button className="default" onClick={(e) => handleNumber(e,1)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 1)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 description
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e,2)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 2)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 star
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e,3)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 3)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 account_circle
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e,4)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 4)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 calendar_month
                             </i>
                         </_Button>
-                        <_Button className="default" onClick={(e) => handleNumber(e,5)}>
+                        <_Button className="default" onClick={(e) => handleNumber(e, 5)}>
                             <i class="material-icons" style={{ fontSize: '40px' }}>
                                 search
                             </i>

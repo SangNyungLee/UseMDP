@@ -45,6 +45,11 @@ const plannerListSlice = createSlice({
             state = state.map((plan) => (plan.plannerId === id ? { ...plan, cards: cards } : plan));
             return state;
         },
+        replaceCardCheckListByIdx(state, action) {
+            const { ind, index, checkLists } = action.payload;
+            state[ind][index].checkLists = checkLists;
+            return state;
+        },
         updateCard(state, action) {
             const { cardId, ...rest } = action.payload;
             return state.map((e) => ({
@@ -53,14 +58,14 @@ const plannerListSlice = createSlice({
                     r.map((d) =>
                         d.cardId === cardId
                             ? {
-                                ...d,
-                                ...Object.keys(rest).reduce((acc, key) => {
-                                if (rest.hasOwnProperty(key)) {
-                                        acc[key] = rest[key];
-                                }
-                                    return acc;
-                                }, {}),
-                            }
+                                  ...d,
+                                  ...Object.keys(rest).reduce((acc, key) => {
+                                      if (rest.hasOwnProperty(key)) {
+                                          acc[key] = rest[key];
+                                      }
+                                      return acc;
+                                  }, {}),
+                              }
                             : d
                     )
                 ),
