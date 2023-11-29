@@ -71,3 +71,11 @@ export async function getPlannerByBasic() {
     });
     return res;
 }
+export async function getPlanners() {
+    const res = await axios({
+        method: 'GET',
+        url: getURL(`/api/getPlanners`),
+        withCredentials: true,
+    });
+    return res;
+}

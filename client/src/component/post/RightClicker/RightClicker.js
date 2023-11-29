@@ -1,12 +1,11 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
-import axios from 'axios';
 import DataDownload from '../../../utils/DataDownload';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { planActions } from '../../../store/planner';
-import { planInfoActions } from '../../../store/plannerInfo';
 import { getPlannerBtoA } from '../../../utils/DataAxios';
+import { calendarActions } from '../../../store/calendar';
+import { plannerListActions } from '../../../store/plannerList';
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
 const RightClicker = (props) => {
     //실제 예제에서는 여러 방법으로 Ref를 가져와야함.
@@ -25,13 +24,22 @@ const RightClicker = (props) => {
 
     const toPlannerLink = async () => {
         const btoaId = btoa(plannerId);
-        // const result = await axios(`/api/planner/${btoaId}`);
         const result = await getPlannerBtoA(btoaId);
-        const Planner = result.data[0];
-        const { cardList, ...newPlanner } = Planner;
-        dispatch(planActions.setPlansInit([cardList, [], []]));
-        dispatch(planInfoActions.setPlanInfoInit(newPlanner));
-        navigate('/planner');
+        const cardList = result.data.cards;
+        const cards = [[], [], []];
+        for (let i = 0; i < cardList.length; i++) {
+            if (cardList[i].cardStatus === 'TODO') {
+                cards[0].push(cardList[i]);
+            } else if (cardList[i].cardStatus === 'DOING') {
+                cards[1].push(cardList[i]);
+            } else if (cardList[i].cardStatus === 'DONE') {
+                cards[2].push(cardList[i]);
+            }
+        }
+        dispatch(calendarActions.setQuote([plannerId]));
+        dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+
+        navigate(`/planner?id=${btoaId}`);
     };
 
     return (

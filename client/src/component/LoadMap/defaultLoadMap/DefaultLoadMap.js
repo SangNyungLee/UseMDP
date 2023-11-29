@@ -44,7 +44,12 @@ export default function DefaultLoadMap() {
             case 3:
                 return <HomeComponent />;
             case 4:
-                return <MyCalendar />;
+                return (
+                    <>
+                        <CalendarSideBar />
+                        <MyCalendar />
+                    </>
+                );
             case 5:
                 return <SearchComponent />;
             default:
@@ -87,7 +92,6 @@ export default function DefaultLoadMap() {
                             </i>
                         </_Button>
                     </_FlexNavi>
-                    <CalendarSideBar />
                 </div>
                 <_RenderComponent>{renderComponent()}</_RenderComponent>
             </_Flex>

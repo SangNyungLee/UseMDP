@@ -7,8 +7,8 @@ import CustomListHiddable from '../customList/CustomListHiddable';
 import MyLoadMap from '../../LoadMap/MyLoadMap';
 import LoadMap from '../../LoadMap/LoadMap';
 import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../store/plannerList';
-import { getPlannerByTrend } from '../../utils/DataAxios';
+import { plannerListActions } from '../../../store/plannerList';
+import { getPlannerByTrend } from '../../../utils/DataAxios';
 export default function StarComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);

@@ -2,24 +2,17 @@ import axios from 'axios';
 import base64Str from '../../../constant/ImageBase64';
 import LoadMap from '../LoadMap';
 import MyLoadMap from '../MyLoadMap';
-import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
-import RightClicker from '../../post/RightClicker/RightClicker';
+import { Spinner } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import CustomList from '../../home/customList/CustomList';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
 import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../store/plannerList';
-import { getPlannerByBasic } from '../../utils/DataAxios';
+import { plannerListActions } from '../../../store/plannerList';
+import { getPlannerByBasic } from '../../../utils/DataAxios';
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
-    const [point, setPoint] = useState([-1, -1]);
 
-    const handlePoint = () => {
-        if (point[0] !== -1 && point[1] !== -1) {
-            setPoint([-1, -1]);
-        }
-    };
     useEffect(() => {
         async function getData() {
             try {
@@ -101,7 +94,7 @@ export default function DefaultComponent() {
             }
         }
         getData();
-    }, []);
+    }, [dispatch]);
 
     if (data.length == 0) {
         return (
@@ -121,12 +114,16 @@ export default function DefaultComponent() {
         );
     } else {
         return (
-            <div onClick={handlePoint}>
-                <h2>기본로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap2}></CustomListHiddable>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <div style={{ width: '100%' }}>
+                    <h2>기본로드맵</h2>
+                    <CustomListHiddable datas={data} loadMap={LoadMap}></CustomListHiddable>
+                </div>
 
-                <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
-                <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
+                <div style={{ width: '100%', marginTop: '50px' }}>
+                    <h2>내 로드맵</h2>
+                    <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
+                </div>
             </div>
         );
     }
