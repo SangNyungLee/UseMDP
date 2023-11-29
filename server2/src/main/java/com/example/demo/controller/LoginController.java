@@ -58,7 +58,13 @@ public class LoginController implements SocialLoginAPI {
 
         // 사용자 정보 DB에 갱신
         MemberDTO member = memberService.saveMember(user);
-
+        if(member == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(APIResponseDTO.<ResponseMemberDTO>builder()
+                    .resultCode("500")
+                    .message("서버에서 소셜로그인한 사용자의 정보를 db에 저장하는데 문제 생김")
+                    .data(null)
+                    .build());
+        }
         // 갱신된 사용자 정보 DTO 생성
         ResponseMemberDTO responseMemberDTO = ResponseMemberDTO.builder()
                 .socialId(member.getSocialId())
@@ -85,7 +91,7 @@ public class LoginController implements SocialLoginAPI {
                 .status(HttpStatus.OK)
                 .body(APIResponseDTO.<ResponseMemberDTO>builder()
                         .resultCode("201")
-                        .message("로그인 성공")
+                        .message("소결 로그인 성공")
                         .data(responseMemberDTO)
                         .build()
                 );

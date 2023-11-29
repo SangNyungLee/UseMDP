@@ -19,11 +19,11 @@ import java.util.List;
 
 @Tag(name = "Planner Controller", description = "Planner CRUD API")
 public interface SwaggerPlannerAPI {
-    @Operation(summary = "전체 플래너들 조회", description = "DB에 존재하는 모든 플래너들 가져오기")
-    ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getAllPlanners();
+    @Operation(summary = "DB에 있는 모든 PUBLIC 플래너들 기본정보 조회", description = "DB에 있는 모든 PUBLIC 플래너들 기본정보 조회")
+    ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getAllPublicPlanners();
 
-    @Operation(summary = "전체 플래너들 조회 (인기순)", description = "DB에 존재하는 모든 플래너들 인기순으로 가져오기")
-    ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getTrendingPlanner();
+    @Operation(summary = "전체 플래너들 조회 (인기순)", description = "DB에 있는 모든 PUBLIC 플래너들 인기순으로 조회 (쿠키값 있으면 내꺼 빼고)")
+    ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getTrendingPlanner(@CookieValue(name = "auth", required = false) String token);
 
     @Operation(summary = "기본 플래너들 조회", description = "DB에 존재하는 모든 기본 플래너들 가져오기")
     ResponseEntity<APIResponseDTO<List<ResponsePlannerDTO>>> getDefaultPlanner();

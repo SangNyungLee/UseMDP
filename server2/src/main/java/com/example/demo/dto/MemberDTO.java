@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.entity.PlannerEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,10 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberDTO {
     private String memberId;
+    private MemberEntity.socialCategory socialCategory;
     private String socialId;
     private String socialNickname;
     private String socialProfilePicture;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private List<PlannerDTO> planners;
 }

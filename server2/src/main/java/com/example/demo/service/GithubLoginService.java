@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.SocialLoginDTO.SocialDTO;
+import com.example.demo.entity.MemberEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,10 +42,11 @@ public class GithubLoginService {
         System.out.println("socialNickname" + socialNickname);
         System.out.println("socialProfilePicture" + socialProfilePicture);
         return SocialDTO.builder()
-                .socialLoginAccessToken(accessToken)
+                .socialCategory(MemberEntity.socialCategory.GITHUB)
                 .socialId(socialId)
                 .socialNickname(socialNickname)
                 .socialProfilePicture(socialProfilePicture)
+                .socialLoginAccessToken(accessToken)
                 .build();
     }
     public String getGithubAccessToken(String code){
