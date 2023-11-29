@@ -1,7 +1,6 @@
 import { Outlet } from "react-router";
 import "../constant/css/index.css";
 import styled from "styled-components";
-import CalendarSideBar from "../component/home/calendar/CalendarSideBar";
 import Header from "../component/Header";
 
 const _Font = styled.div`
