@@ -54,13 +54,13 @@ export default function HomeHeader() {
 
   //로그인 모달창
   const showLoginModal = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     MySwal.fire({
       title: "LogIn",
       html: (
         <div>
-          <GoogleLoginButton onClick={ e => googleLogin(e) } />
-          <GithubLoginButton onClick={ e => githubLogin(e) } />
+          <GoogleLoginButton onClick={(e) => googleLogin(e)} />
+          <GithubLoginButton onClick={(e) => githubLogin(e)} />
         </div>
       ),
       showCloseButton: true,
@@ -70,18 +70,18 @@ export default function HomeHeader() {
 
   ///////로그인버튼///////
   const googleLogin = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
   const githubLogin = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
 
   //로그아웃
   const Logout = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     dispatch(siteActions.setIsLogin(false));
     localStorage.removeItem("isLogin");
     logoutModal();
@@ -103,7 +103,7 @@ export default function HomeHeader() {
             {isLoginRedux ? (
               <>
                 <Button
-                  onClick={ e => Logout(e)}
+                  onClick={(e) => Logout(e)}
                   className="mx-2"
                   variant="outline-success"
                   size={isMobile ? "sm" : "md"}
@@ -115,7 +115,7 @@ export default function HomeHeader() {
             ) : (
               <>
                 <Button
-                  onClick={ e => showLoginModal(e) }
+                  onClick={(e) => showLoginModal(e)}
                   className="mx-2"
                   variant="outline-success"
                   size={isMobile ? "sm" : "md"}
@@ -150,8 +150,8 @@ export default function HomeHeader() {
               <Modal.Title>LogIn</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <GoogleLoginButton onClick={ e => googleLogin(e) } />
-              <GithubLoginButton onClick={ e => githubLogin(e) } />
+              <GoogleLoginButton onClick={(e) => googleLogin(e)} />
+              <GithubLoginButton onClick={(e) => githubLogin(e)} />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="primary">Close</Button>
