@@ -49,6 +49,10 @@ const _SwitchButton = styled.button`
   }
 `;
 
+const _Flex = styled.div`
+  display: flex;
+`;
+
 const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
   const goToToday = () => {
     onNavigate("TODAY"); // 오늘 날짜로 이동
@@ -255,37 +259,39 @@ export default function MyCalendar() {
   };
 
   return (
-    <>
+    <_Flex>
       <CalendarSideBar />
       {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>
         <button onClick={defaultPlanner}>기본 플래너 조회</button>
       </div> */}
-      <CalendarModal
-        selectedCard={selectedCard}
-        modalStatus={visible}
-        modalClose={() => setVisible(false)}
-      />
-      <DnDCalendar
-        defaultDate={moment().toDate()}
-        defaultView="month"
-        startAccessor="startDate"
-        endAccessor="endDate"
-        events={events}
-        localizer={localizer}
-        onEventDrop={plannerUpdateCard}
-        onEventResize={plannerUpdateCard}
-        onSelectSlot={onSelectSlot}
-        onSelectEvent={onSelectEvent}
-        resizable
-        selectable
-        style={{ flex: 1 }}
-        eventPropGetter={eventStyleGetter}
-        components={{
-          toolbar: CustomToolbar,
-        }}
-      />
-    </>
+      <div>
+        <CalendarModal
+          selectedCard={selectedCard}
+          modalStatus={visible}
+          modalClose={() => setVisible(false)}
+        />
+        <DnDCalendar
+          defaultDate={moment().toDate()}
+          defaultView="month"
+          startAccessor="startDate"
+          endAccessor="endDate"
+          events={events}
+          localizer={localizer}
+          onEventDrop={plannerUpdateCard}
+          onEventResize={plannerUpdateCard}
+          onSelectSlot={onSelectSlot}
+          onSelectEvent={onSelectEvent}
+          resizable
+          selectable
+          style={{ flex: 1 }}
+          eventPropGetter={eventStyleGetter}
+          components={{
+            toolbar: CustomToolbar,
+          }}
+        />
+      </div>
+    </_Flex>
   );
 }

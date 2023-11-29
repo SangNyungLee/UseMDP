@@ -23,8 +23,8 @@ import { calendarActions } from "../../../store/calendar";
 import { HOME } from "../../../constant/constant";
 
 const _Container = styled.div`
-  border-radius: 20px;
-  background-color: skyblue;
+  border-radius: 5px;
+  background-color: whitesmoke;
   height: 78vh;
   width: 240px;
   white-space: nowrap;
@@ -40,6 +40,16 @@ const _PlannerListUl = styled.ul`
   padding: 5px;
 `;
 
+const _Flex = styled.div`
+  display: flex;
+`;
+
+const _Title = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+`;
+
 export default function CalendarSideBar() {
   const plannerList = useSelector((state) => state.plannerList);
 
@@ -48,6 +58,7 @@ export default function CalendarSideBar() {
   return (
     <>
       <_Container {...readerRegister}>
+        <_Title>Planner List</_Title>
         <_PlannerListUl>
           {plannerList.map((planner) => (
             <PlannerListLi key={planner.plannerId} planner={planner} />
