@@ -25,7 +25,7 @@ import { HOME } from "../../../constant/constant";
 const _Container = styled.div`
   border-radius: 5px;
   background-color: whitesmoke;
-  height: 78vh;
+  height: 80vh;
   width: 240px;
   white-space: nowrap;
   overflow-x: hidden;

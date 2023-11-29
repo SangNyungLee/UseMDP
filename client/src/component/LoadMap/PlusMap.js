@@ -53,8 +53,9 @@ export default function PlusMap(props) {
     }
   };
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
     // SweetAlert을 이용하여 입력 폼을 보여줌
+    e.stopPropagation();
     const result = await Swal.fire({
       title: "플래너 생성",
       html:
@@ -90,7 +91,7 @@ export default function PlusMap(props) {
   };
 
   return (
-    <PlusDiv onClick={handleClick}>
+    <PlusDiv onClick={ e => handleClick(e) }>
       <PlusImg src={plus}></PlusImg>
     </PlusDiv>
   );

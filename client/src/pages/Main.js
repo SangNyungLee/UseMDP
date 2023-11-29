@@ -40,28 +40,33 @@ export default function Main(){
     }
 
     
-    const readerToggle = () => {
+    const readerToggle = (e) => {
+        e.stopPropagation()
         setReaderVisible(prev => !prev);
     }
 
-    const dataCheck = () => {
+    const dataCheck = (e) => {
+        e.stopPropagation()
         console.log(data);
     }
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-    const openModal = () => {
-      setIsModalOpen(true);
+    const openModal = (e) => {
+        e.stopPropagation()
+        setIsModalOpen(true);
     };
   
-    const closeModal = () => {
-      setIsModalOpen(false);
+    const closeModal = (e) => {
+        e.stopPropagation()
+        setIsModalOpen(false);
     };
 
     const { componentCompress, componentDecompress } = useComponentCompress();
 
-    const componentSaveCheck = () => {
+    const componentSaveCheck = (e) => {
+        e.stopPropagation()
         console.log("origin",<DataReader setState={setData}/>);
         const compressstring = componentCompress(<DataReader setState={setData}/>)
         console.log("compress",compressstring);
@@ -84,21 +89,21 @@ export default function Main(){
                 <button type="submit">다운로드</button>
             </form>
             <br/>
-            <button onClick={readerToggle}>데이터 리더기 열기</button><br/>
+            <button onClick={ e => readerToggle(e) }>데이터 리더기 열기</button><br/>
             { readerVisble && <DataReader setState={setData}/>}
             <br/>
-            <button onClick={dataCheck}>데이터 확인</button><br/>
+            <button onClick={ e => dataCheck(e) }>데이터 확인</button><br/>
             <br/>
-            <button onClick={openModal}>모달 열기</button><br/>
+            <button onClick={ e => openModal(e) }>모달 열기</button><br/>
             <br/>
             { isModalOpen && <_Modal>
                 <div className="modal-content">
                     <h2>모달 내용</h2>
-                    <button onClick={closeModal}>모달 닫기</button>
+                    <button onClick={ e => closeModal(e) }>모달 닫기</button>
                 </div>
             </_Modal> }
 
-            <button onClick={componentSaveCheck}>컴포넌트 저장 확인</button>
+            <button onClick={ e => componentSaveCheck(e) }>컴포넌트 저장 확인</button>
             { dataArr.map( (e,id) => {
                 return <div key={id}>{e}</div>;
             })}

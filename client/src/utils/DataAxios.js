@@ -28,9 +28,7 @@ export async function postPlannerCards(unspecifiedplanner) {
     const res = await axios({
         method: 'POST',
         url: getURL('/api/postPlannerWithCards'),
-        data: {
-            planner: unspecifiedplanner,
-        },
+        data: unspecifiedplanner,
         withCredentials: true,
     });
     return res.data.data;
@@ -88,4 +86,60 @@ export async function postCopyPlanners(plannerId) {
         withCredentials: true,
     });
     return res;
+}
+
+export async function patchCard(data) {
+    const res = axios({
+        method: 'PATCH',
+        url: getURL(`/api/patchCard`),
+        data,
+        withCredentials: true,
+    });
+    return res;
+}
+
+export function patchMoveCards(data) {
+    const res = axios({
+        method: 'PATCH',
+        url: getURL(`/api/patchMoveCards`),
+        data,
+        withCredentials: true,
+    });
+    return res;
+}
+
+export function deleteCard(cardId) {
+    const res = axios({
+        method: 'DELETE',
+        url: getURL(`/api/deleteCard/${cardId}`),
+        withCredentials: true,
+    });
+    return res;
+}
+
+export async function postCard(data) {
+    const res = await axios({
+        method: 'POST',
+        url: getURL(`/api/postCard`),
+        data,
+        withCredentials: true,
+    });
+    return res;
+}
+export async function getMyPlanner() {
+    const res = await axios({
+        method: 'GET',
+        url: getURL('/api/getMyPlanner'),
+        withCredentials: true,
+    });
+    return res.data.data;
+}
+
+export async function deleteMyPlanner(plannerId) {
+    const res = await axios({
+        method: 'DELETE',
+        url: getURL(`/api/deletePlanner/${plannerId}`),
+        withCredentials: true,
+    });
+    console.log('del', res);
 }

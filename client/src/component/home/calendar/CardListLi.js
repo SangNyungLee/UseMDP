@@ -62,7 +62,7 @@ export default function CardListLi({ cardList, plannerId, cardStatus }) {
   return (
     <>
       <_PlannerLi
-        color={"white"}
+        color={"#000000"}
         $visible={visible ? 1 : undefined}
         onClick={(e) => cardListHandleClick(e)}
         $focus={cardListFocus ? 1 : undefined}

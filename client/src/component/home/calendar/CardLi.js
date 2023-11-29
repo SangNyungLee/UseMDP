@@ -7,11 +7,12 @@ import { plannerListActions } from "../../../store/plannerList";
 
 const _CardLi = styled.li`
   display: flex;
-  border-radius: 20px;
+  border-radius: 5px;
   background-color: ${(props) =>
     props.$focus ? darken(0.1, props.color) : props.color};
   padding: 10px;
   margin: 5px;
+  align-items: center;
 
   &:hover {
     background-color: ${(props) => darken(0.1, props.color)};
@@ -29,10 +30,12 @@ const _DelButton = styled.button`
   margin-left: 5px;
   border: none;
   background: none;
+  display: flex;
+  align-items: center;
 `;
 
 const _CardTitle = styled.span`
-  max-width: 200px;
+  width: 100%;
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
@@ -44,7 +47,8 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
 
   const dispatch = useDispatch();
 
-  const liHandleClick = (cardId) => {
+  const liHandleClick = (e, cardId) => {
+    e.stopPropagation();
     dispatch(calendarActions.setHome([plannerId, cardStatus, cardId]));
   };
 
@@ -64,16 +68,15 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
         key={cardId}
         color={"#FFD6DA"}
         $focus={cardFocus == cardId ? 1 : undefined}
-        onClick={() => liHandleClick(cardId)}
+        onClick={(e) => liHandleClick(e, cardId)}
       >
         <_CardTitle>{title}</_CardTitle>
+        <_DelButton onClick={(e) => delCard(e, cardId)}>
+          <i class="material-icons" style={{ fontSize: "20px", color: "#ccc" }}>
+            delete
+          </i>
+        </_DelButton>
       </_CardLi>
-
-      <_DelButton onClick={(e) => delCard(e, cardId)}>
-        <i class="material-icons" style={{ fontSize: "20px", color: "#ccc" }}>
-          delete
-        </i>
-      </_DelButton>
     </>
   );
 }

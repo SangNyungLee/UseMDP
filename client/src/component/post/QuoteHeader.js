@@ -19,7 +19,8 @@ export default function QuoteHeader(props) {
         ThumbnailMaker(thumnnailRef);
     }
 
-    const saveState = () => {
+    const saveState = (e) => {
+        e.stopPropagation()
         DataDownload(plannerTitle, plannerList);
     };
 
@@ -43,14 +44,15 @@ export default function QuoteHeader(props) {
             <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             <button
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
+                    e.stopPropagation()
                     handleThumbnailDownload();
                 }}
             >
                 ThumbnailMaker
             </button>
             <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} onBlur={handleBlur} />
-            <button type="button" onClick={saveState}>
+            <button type="button" onClick={ e => saveState(e)}>
                 저장하기
             </button>
             <DataReaderModal setState={setReadData} />
