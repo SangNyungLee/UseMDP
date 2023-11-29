@@ -20,6 +20,7 @@ import {
   validateUnspecifiedPlannerListData,
 } from "../../../utils/DataValidate";
 import { calendarActions } from "../../../store/calendar";
+import { HOME } from "../../../constant/constant";
 
 const _Container = styled.div`
   border-radius: 20px;
@@ -42,7 +43,7 @@ const _PlannerListUl = styled.ul`
 export default function CalendarSideBar() {
   const plannerList = useSelector((state) => state.plannerList);
 
-  const readerRegister = useRead();
+  const readerRegister = useRead(HOME);
 
   return (
     <>

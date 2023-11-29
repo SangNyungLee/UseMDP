@@ -7,7 +7,8 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { plannerListActions } from "../../store/plannerList";
-import CalendarModal from "./calendar/CalendarModal";
+import CalendarModal from "../modal/MDPModal";
+import styled from "styled-components";
 
 import axios from "axios";
 import {
@@ -17,8 +18,7 @@ import {
 import { getOneCard } from "../../utils/QuoteSetting";
 import { dateParsing } from "../../utils/DataParsing";
 import useDefaultCheck from "../../hook/useDefaultCheck";
-import styled from "styled-components";
-// import "../../constant/css/calendar.css";
+import CalendarSideBar from "./calendar/CalendarSideBar";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -256,6 +256,7 @@ export default function MyCalendar() {
 
   return (
     <>
+      <CalendarSideBar />
       {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>

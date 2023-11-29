@@ -110,10 +110,10 @@ export default function CustomListHiddable(props) {
           <Button
             className="w-25 float-end"
             onClick={() => {
-              setHide(true);
+              setHide(!hide);
             }}
           >
-            접기
+            {hide ? "더보기" : "접기"}
           </Button>
         </div>
       )}

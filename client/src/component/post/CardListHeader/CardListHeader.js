@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import menuicon from '../../../constant/img/menu.svg';
 import LeftClicker from '../RightClicker/LeftClicker';
+import { pointActions } from '../../../store/pointer';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 const HeaderDiv = styled.div`
     text-align: left;
@@ -22,18 +24,19 @@ const FlexContainer = styled.div`
 
 export default function CardListHeader(props) {
     const { index } = props;
-    const [point, setPoint] = useState([-1, -1]);
 
+    const dispatch = useDispatch();
+    const pointer = useSelector((state) => state.pointer);
     const handleLeftClicker = (e) => {
-        e.preventDefault();
-        setPoint([e.clientY, e.clientX]);
+        e.stopPropagation();
+        dispatch(pointActions.setPoint([e.clientY, e.clientX]));
     };
 
     switch (index) {
         case '0':
             return (
                 <>
-                    {point[0] !== -1 && point[1] !== -1 ? <LeftClicker point={point}></LeftClicker> : null}
+                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker point={pointer}></LeftClicker> : null}
                     <FlexContainer>
                         <HeaderDiv>TODO</HeaderDiv>
                         <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
@@ -44,14 +47,14 @@ export default function CardListHeader(props) {
             return (
                 <FlexContainer>
                     <HeaderDiv>DOING</HeaderDiv>
-                    <MenuImg src={menuicon}></MenuImg>
+                    <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
                 </FlexContainer>
             );
         case '2':
             return (
                 <FlexContainer>
                     <HeaderDiv>DONE</HeaderDiv>
-                    <MenuImg src={menuicon}></MenuImg>
+                    <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
                 </FlexContainer>
             );
         default:
