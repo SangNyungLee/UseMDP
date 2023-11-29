@@ -9,16 +9,28 @@ import CardLi from "./CardLi";
 const _PlannerLi = styled.li`
   display: flex;
   border-radius: 5px;
+  color: white;
   background-color: ${(props) =>
     props.$focus ? darken(0.1, props.color) : props.color};
   padding: 10px;
   margin: 5px;
-  background-color: white;
   box-shadow: 1px 1px 1px 1px lightgrey;
+
+  @keyframes dropdown {
+    0% {
+      transform: translateY(-30%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  animation: dropdown 0.5s ease;
 
   &:hover {
     cursor: pointer;
-    background-color: #eeeeee;
+    background-color: ${(props) =>
+      props.$focus ? darken(0.1, props.color) : props.color};
   }
 
   &::before {
@@ -62,7 +74,7 @@ export default function CardListLi({ cardList, plannerId, cardStatus }) {
   return (
     <>
       <_PlannerLi
-        color={"#000000"}
+        color={"#198754"}
         $visible={visible ? 1 : undefined}
         onClick={(e) => cardListHandleClick(e)}
         $focus={cardListFocus ? 1 : undefined}

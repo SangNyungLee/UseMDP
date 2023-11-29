@@ -27,6 +27,16 @@ const _Container = styled.div`
   display: flex;
 `;
 
+const _Toolbar = styled.div`
+  width: 70vw;
+  margin-bottom: 10px;
+  @media screen and (max-width: 1200px) {
+    & {
+      width: 60vw;
+    }
+  }
+`;
+
 const _ToGoButton = styled.div`
   border: none;
   background: none;
@@ -94,7 +104,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
   };
 
   return (
-    <div style={{ width: "70vw", marginBottom: "10px" }}>
+    <_Toolbar>
       <div
         style={{
           display: "flex",
@@ -118,7 +128,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
           Agenda
         </_SwitchButton>
       </div>
-    </div>
+    </_Toolbar>
   );
 };
 

@@ -13,6 +13,18 @@ const _CardLi = styled.li`
   padding: 10px;
   margin: 5px;
   align-items: center;
+  box-shadow: 1px 1px 1px 1px lightgrey;
+
+  @keyframes dropdown {
+    0% {
+      transform: translateY(-30%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  animation: dropdown 0.5s ease;
 
   &:hover {
     background-color: ${(props) => darken(0.1, props.color)};
@@ -66,7 +78,7 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
     <>
       <_CardLi
         key={cardId}
-        color={"#FFD6DA"}
+        color={"#FFFFFF"}
         $focus={cardFocus == cardId ? 1 : undefined}
         onClick={(e) => liHandleClick(e, cardId)}
       >

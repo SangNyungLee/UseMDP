@@ -33,6 +33,18 @@ const _Container = styled.div`
   text-overflow: ellipsis;
   padding-top: 30px;
   margin: 0px 30px;
+
+  @media screen and (max-width: 1170px) {
+    & {
+      width: 200px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    & {
+      width: 180px;
+    }
+  }
 `;
 
 const _PlannerListUl = styled.ul`

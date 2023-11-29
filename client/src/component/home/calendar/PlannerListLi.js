@@ -25,9 +25,9 @@ const _PlannerDiv = styled.div`
   border-radius: 5px;
   padding: 10px;
   margin: 5px;
-  background-color: white;
   box-shadow: 1px 1px 1px 1px lightgrey;
   align-items: center;
+  background-color: white;
 
   &:hover {
     cursor: pointer;
@@ -102,7 +102,6 @@ export default function PlannerListLi({ planner }) {
     <_PlannerLi>
       <_PlannerDiv
         $visible={visible ? 1 : undefined}
-        color={"#white"}
         onClick={(e) => handleClick(e)}
         $focus={plannerId == home[0] ? 1 : undefined}
       >
