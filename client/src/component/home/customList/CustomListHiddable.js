@@ -40,7 +40,8 @@ export default function CustomListHiddable(props) {
             <div>
                 <Button
                     className="w-25 float-end"
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation()
                         setHide(!hide);
                     }}
                 >

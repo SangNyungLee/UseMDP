@@ -50,7 +50,8 @@ export default function LoadMap(props) {
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
     // console.log(props);
 
-    const handleClick = async () => {
+    const handleClick = async (e) => {
+        e.stopPropagation()
         const fetchData = async (btoaId) => {
             return await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
         };
@@ -90,7 +91,7 @@ export default function LoadMap(props) {
     };
 
     return (
-        <_Container onClick={handleClick}>
+        <_Container onClick={ e => handleClick(e) }>
             {/* 추천할때 추천 수 올라가는 로직, 애니메이션 필요 */}
             <_ImageStyle src={thumbnail}></_ImageStyle>
             <div>

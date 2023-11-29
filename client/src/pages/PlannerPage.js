@@ -9,12 +9,14 @@ const _Font = styled.div`
 
 export default function PlannerPage() {
     const dispatch = useDispatch();
-    const handlePoint = () => {
+
+    const handlePoint = (e) => {
+        e.stopPropagation()
         dispatch(pointActions.clearPoint());
     };
 
     return (
-        <_Font onClick={handlePoint}>
+        <_Font onClick={ e => handlePoint(e)}>
             <QuoteApp />
         </_Font>
     );

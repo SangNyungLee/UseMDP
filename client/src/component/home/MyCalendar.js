@@ -7,7 +7,7 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
-import CalendarModal from '../modal/MDPModal';
+import MDPModal from '../modal/MDPModal';
 
 import axios from 'axios';
 import { eventStyleGetter, getNestedElement } from '../../utils/CalendarController';
@@ -15,53 +15,65 @@ import { getOneCard } from '../../utils/QuoteSetting';
 import { dateParsing } from '../../utils/DataParsing';
 import useDefaultCheck from '../../hook/useDefaultCheck';
 import CalendarSideBar from './calendar/CalendarSideBar';
+import styled from 'styled-components';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
+const _Container = styled.div`
+  display: flex;
+`
+
 const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
-    const goToToday = () => {
-        onNavigate('TODAY'); // 오늘 날짜로 이동
+    const goToToday = (e) => {
+      e.stopPropagation()
+      onNavigate('TODAY'); // 오늘 날짜로 이동
     };
 
-    const goToNext = () => {
-        onNavigate('NEXT'); // 다음 달로 이동
+    const goToNext = (e) => {
+      e.stopPropagation()
+      onNavigate('NEXT'); // 다음 달로 이동
     };
 
-    const goToPrev = () => {
-        onNavigate('PREV'); // 이전 달로 이동
+    const goToPrev = (e) => {
+      e.stopPropagation()
+      onNavigate('PREV'); // 이전 달로 이동
     };
 
-    const switchToMonthView = () => {
-        onView('month'); // 주 단위(view)로 전환
+    const switchToMonthView = (e) => {
+      e.stopPropagation()
+      onView('month'); // 주 단위(view)로 전환
     };
 
-    const switchToWeekView = () => {
-        onView('week'); // 주 단위(view)로 전환
+    const switchToWeekView = (e) => {
+      e.stopPropagation()
+      onView('week'); // 주 단위(view)로 전환
     };
 
-    const switchToDayView = () => {
-        onView('day'); // 날짜 단위(view)로 전환
+    const switchToDayView = (e) => {
+      e.stopPropagation()
+      onView('day'); // 날짜 단위(view)로 전환
     };
 
-    const switchToAgendaView = () => {
-        onView('agenda'); // 날짜 단위(view)로 전환
+    const switchToAgendaView = (e) => {
+      e.stopPropagation()
+      onView('agenda'); // 날짜 단위(view)로 전환
     };
 
     return (
         <div style={{ width: '70vw', marginBottom: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button onClick={goToPrev}>{'<'}</button>
-                <div onClick={goToToday} style={{ textAlign: 'center' }}>
+                <button onClick={ e => goToPrev(e) }>{'<'}</button>
+                <div onClick={ e => goToToday(e)} style={{ textAlign: 'center' }}>
                     <span>{label}</span>
                 </div>
-                <button onClick={goToNext}>{'>'}</button>
+                <button onClick={ e => goToNext(e)}>{'>'}</button>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button onClick={switchToMonthView}>Month</button>
-                <button onClick={switchToWeekView}>Week</button>
-                <button onClick={switchToDayView}>Day</button>
-                <button onClick={switchToAgendaView}>Agenda</button>
+                <button onClick={ e => switchToMonthView(e)}>Month</button>
+                <button onClick={ e => switchToWeekView(e)}>Week</button>
+                <button onClick={ e => switchToDayView(e)}>Day</button>
+                <button onClick={ e => switchToAgendaView(e)}>Agenda</button>
             </div>
         </div>
     );
@@ -210,14 +222,14 @@ export default function MyCalendar() {
 
 
   return (
-    <>
+    <_Container>
       <CalendarSideBar/>
       {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>
         <button onClick={defaultPlanner}>기본 플래너 조회</button>
       </div> */}
-      <CalendarModal
+      <MDPModal
       selectedCard={selectedCard}
       modalStatus={visible}
       modalClose={()=>setVisible(false)}
@@ -235,12 +247,15 @@ export default function MyCalendar() {
         onSelectEvent={onSelectEvent}
         resizable
         selectable
-        style={{ flex:1 }}
+        style={{
+          flex: 1,
+          height: '100vh'
+        }}
         eventPropGetter={eventStyleGetter}
         components={{
           toolbar: CustomToolbar,
         }}
       />
-    </>
+    </_Container>
   );
 };

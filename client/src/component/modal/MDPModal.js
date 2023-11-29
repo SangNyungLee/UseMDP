@@ -11,7 +11,6 @@ import { siteActions } from '../../store/site';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
 import axios from 'axios';
-
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-evenly;

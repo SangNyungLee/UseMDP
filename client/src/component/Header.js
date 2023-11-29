@@ -34,29 +34,33 @@ export default function Header() {
     query: "(max-width: 576px)",
   });
 
-  const googleLogin = async () => {
+  const googleLogin = async (e) => {
+    e.stopPropagation()
     window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
   };
 
-  const githubLogin = () => {
+  const githubLogin = (e) => {
+    e.stopPropagation()
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
 
   //로그아웃
-  const Logout = () => {
+  const Logout = (e) => {
+    e.stopPropagation()
     dispatch(siteActions.setIsLogin(false));
     localStorage.removeItem("isLogin");
     alert("로그아웃 되셨습니다.");
     navigate("/");
   };
 
-  const showLoginModal = () => {
+  const showLoginModal = (e) => {
+    e.stopPropagation()
     MySwal.fire({
       title: "LogIn",
       html: (
         <div>
-          <GoogleLoginButton onClick={googleLogin} />
-          <GithubLoginButton onClick={githubLogin} />
+          <GoogleLoginButton onClick={e => googleLogin(e)} />
+          <GithubLoginButton onClick={e => githubLogin(e)} />
         </div>
       ),
       showCloseButton: true,
@@ -89,7 +93,7 @@ export default function Header() {
                   My Roadmap
                 </Button>
                 <Button
-                  onClick={Logout}
+                  onClick={ e => Logout(e)}
                   className="mx-2"
                   variant="success"
                   size={isMobile ? "sm" : "md"}
@@ -100,7 +104,7 @@ export default function Header() {
             ) : (
               <>
                 <Button
-                  onClick={showLoginModal}
+                  onClick={ e => showLoginModal(e)}
                   className="mx-2"
                   variant="outline-success"
                   size={isMobile ? "sm" : "md"}

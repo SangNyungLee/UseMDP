@@ -7,6 +7,7 @@ export default function DataReaderModal({setState}){
 
 
     const handleMouseClick = (e) => {
+        e.stopPropagation()
         const { clientX, clientY } = e;
         setModalPosition({ left: clientX + 10, top: clientY + window.scrollY });
         setModalVisible( prev => !prev )
@@ -14,7 +15,7 @@ export default function DataReaderModal({setState}){
 
     return (
         <>
-            <button type="button" onClick={handleMouseClick}> 데이터 읽기 </button>
+            <button type="button" onClick={ e => handleMouseClick(e)}> 데이터 읽기 </button>
             { modalVisible &&
                 <div style={{...modalPosition,position:"absolute", zIndex: 1}}>
                     <DataReader setState={setState} onRead={setModalVisible}/>

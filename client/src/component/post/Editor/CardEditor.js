@@ -11,7 +11,8 @@ const PostContainer = styled.div`
 export default function CardEditor(props) {
     const [EditArea, setEditArea] = useState(props.editpost[0] ? props.editpost[0] : 'default');
     // console.log(props.editpost);
-    function saveEditArea() {
+    function saveEditArea(e) {
+        e.stopPropagation()
         //객체 로직으로 저장
         console.log('EditArea', EditArea);
         props.editpost[1](EditArea);
@@ -49,7 +50,7 @@ export default function CardEditor(props) {
                     }}
                 />
             </div>
-            <button className="submit-button" onClick={saveEditArea}>
+            <button className="submit-button" onClick={ e => saveEditArea(e) }>
                 입력
             </button>
         </PostContainer>
