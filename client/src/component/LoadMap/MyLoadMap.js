@@ -11,6 +11,7 @@ import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch, useSelector } from 'react-redux';
 import useLocalStorage from 'use-local-storage';
+import { getPlannerBtoA } from '../../utils/DataAxios';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -78,7 +79,6 @@ export default function MyLoadMap(props) {
     const dispatch = useDispatch();
 
     const state = useSelector((state) => state.plannerList);
-    const [data, setData] = useLocalStorage('List', '');
     const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
     // console.log(props);
     const navigate = useNavigate();
@@ -86,8 +86,9 @@ export default function MyLoadMap(props) {
         //모달이 꺼져있으면
         if (!showModal) {
             const btoaId = btoa(plannerId);
-            const result = await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
-            const cardList = result.data.data.cards;
+            const result = await getPlannerBtoA(btoaId);
+            console.log('click', result.data);
+            const cardList = result.data.cards;
             const cards = [[], [], []];
             for (let i = 0; i < cardList.length; i++) {
                 if (cardList[i].cardStatus === 'TODO') {

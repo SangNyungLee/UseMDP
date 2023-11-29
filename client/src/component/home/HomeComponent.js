@@ -7,6 +7,7 @@ import base64Str from '../../constant/ImageBase64';
 import CustomList from './customList/CustomList';
 import MyLoadMap from '../LoadMap/MyLoadMap';
 import copy from 'fast-copy';
+import { getPlanners } from '../../utils/DataAxios';
 const statusIndexMap = {
     TODO: 0,
     DOING: 1,
@@ -28,7 +29,7 @@ export default function HomeComponent() {
             ];
             // const response = await axios.get('/api/myplanner');
             try {
-                const response = await axios.get('http://localhost:8080/api/getPlanners');
+                const response = await getPlanners();
                 console.log('res : ', response.data);
                 if (response.data.length == 0) {
                     setData(testData);

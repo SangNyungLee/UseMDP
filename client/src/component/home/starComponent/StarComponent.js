@@ -8,21 +8,14 @@ import MyLoadMap from '../../LoadMap/MyLoadMap';
 import LoadMap from '../../LoadMap/LoadMap';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../../store/plannerList';
+import { getPlannerByTrend } from '../../../utils/DataAxios';
 export default function StarComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
-
-    const [point, setPoint] = useState([-1, -1]);
-
-    const handlePoint = () => {
-        if (point[0] !== -1 && point[1] !== -1) {
-            setPoint([-1, -1]);
-        }
-    };
     useEffect(() => {
         async function getData() {
             try {
-                const response = await axios.get('http://localhost:8080/api/getPlanner/trending');
+                const response = await getPlannerByTrend();
                 console.log('res : ', response.data);
                 if (response.data.data.length == 0) {
                 } else {
@@ -59,9 +52,9 @@ export default function StarComponent() {
         );
     } else {
         return (
-            <div style={{ padding: '15px' }} onClick={handlePoint}>
+            <div style={{ padding: '15px' }}>
                 <h2>인기 로드맵</h2>
-                <CustomListHiddable datas={data} points={[point, setPoint]} loadMap={LoadMap}></CustomListHiddable>
+                <CustomListHiddable datas={data} loadMap={LoadMap}></CustomListHiddable>
                 {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}
 
