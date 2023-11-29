@@ -3,12 +3,14 @@ import PlusMap from '../../LoadMap/PlusMap';
 
 export default function CustomList(props) {
     const data = props.datas;
+    console.log('css', data);
     const CustomLoadMap = props.loadMap;
     //이게 4의 배수면 plusmap을 새로운 Row에 넣어야한다.
     const isMultipleOfFour = data.length % 4 === 0;
-    const remainingItems = 4 - (data.length % 4);
+    const lastIdx = data.length - 1;
     return (
         <Container>
+            <PlusMap></PlusMap>
             {data.map((item, idx) => {
                 if (idx % 4 === 0) {
                     // Start a new row

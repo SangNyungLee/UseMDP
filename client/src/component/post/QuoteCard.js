@@ -32,15 +32,6 @@ export default function QuoteCard({ card, deleteCard, cardIndex }) {
                     delete
                 </button>
             </_CardBody>
-            {/* <GlassCard>
-                <CardParagraph>
-                    {card.title}
-                    <button type="button" onClick={(e) => deleteCard(e, cardIndex)}>
-                        X
-                    </button>
-                </CardParagraph>
-                <CardFooter> </CardFooter>
-            </GlassCard> */}
         </>
     );
 }

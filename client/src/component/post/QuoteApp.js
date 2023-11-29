@@ -104,7 +104,7 @@ export default function QuoteApp() {
         fetchData();
     }, [plannerList]);
 
-    async function cardClick(e, ind, index) {
+    async function cardClick(ind, index) {
         const cardResult = await getCardAxios(planner[ind][index].cardId);
         console.log('newchecklist', cardResult);
 
@@ -198,16 +198,7 @@ export default function QuoteApp() {
                                 }}
                             >
                                 {planner.map((cardList, index) => (
-                                    <DroppableComponent
-                                        key={index}
-                                        cardList={cardList}
-                                        cardStatusIndex={index}
-                                        planner={planner}
-                                        handleClick={(e) => {
-                                            cardClick(e, ind, index);
-                                        }}
-                                        plannerId={plannerId}
-                                    />
+                                    <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
                                 ))}
                             </DragDropContext>
                         </_QuoteContainer>

@@ -7,8 +7,7 @@ import QuoteCard from './QuoteCard';
 import { siteActions } from '../../store/site';
 import styled from 'styled-components';
 import CardListHeader from './CardListHeader/CardListHeader';
-import { postCard } from '../../utils/DataAxios';
-
+import { postCard, deleteCardById } from '../../utils/DataAxios';
 const DivButton = styled.div`
     text-align: center;
     background-color: '#f1f3f5';
@@ -25,9 +24,10 @@ export default function DroppableComponent(props) {
     const dispatch = useDispatch();
 
     const deleteCard = (e, id, card) => {
+        console.log('del', e, id, card.cardId);
         e.stopPropagation();
-        console.log('del', id, card.cardId);
-        const result = deleteCard(card.cardId);
+        //
+        const result = deleteCardById(card.cardId);
         // const result = axios.delete(
         //   `http://localhost:8080/api/deleteCard/${card.cardId}`,
         //   { withCredentials: true }
@@ -55,16 +55,18 @@ export default function DroppableComponent(props) {
     const addCard = async () => {
         const cardStatus = cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE';
         const card = getItems(1, planner[cardStatusIndex].length, cardStatus)[0];
-        card.checklists = card.checklists.map((checklist) => {
-            console.log(checklist);
-            const { checklistId, ...newCheckList } = checklist;
-            return newCheckList;
-        });
+        // card.checklists = card.checklists.map((checklist) => {
+        //     console.log(checklist);
+        //     const { checklistId, ...newCheckList } = checklist;
+        //     return newCheckList;
+        // });
+
+        // for (let i = 0; i < card.checklists.length; i++) {
+        //     const { checklistId, ...newCheckList } = card.checklists[i];
+        //     card.checklists[i] = newCheckList;
+        // }
         card.plannerId = plannerId;
-        for (let i = 0; i < card.checklists.length; i++) {
-            const { checklistId, ...newCheckList } = card.checklists[i];
-            card.checklists[i] = newCheckList;
-        }
+        card.checklists = [{ checked: 0, title: 'done' }];
         console.log('addcard : ', card);
 
         const result = await postCard(card);
