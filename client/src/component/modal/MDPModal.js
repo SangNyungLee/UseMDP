@@ -210,7 +210,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
-    // console.log(checklists);
+    console.log(checklists);
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave}>

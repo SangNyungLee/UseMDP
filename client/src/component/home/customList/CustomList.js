@@ -6,6 +6,7 @@ export default function CustomList(props) {
     const CustomLoadMap = props.loadMap;
     //이게 4의 배수면 plusmap을 새로운 Row에 넣어야한다.
     const isMultipleOfFour = data.length % 4 === 0;
+    const remainingItems = 4 - (data.length % 4);
     return (
         <Container>
             {data.map((item, idx) => {
@@ -13,10 +14,9 @@ export default function CustomList(props) {
                     // Start a new row
                     return (
                         <Row key={`row-${idx / 4}`} style={{ marginTop: idx !== 0 ? '30px' : 0 }}>
-                            {[...Array(4)].map((_, i) => {
-                                const tmp = idx + i <= data.length ? <Col key={data[idx + i]?.plannerId}>{data[idx + i] ? <CustomLoadMap datas={data[idx + i]}></CustomLoadMap> : <PlusMap></PlusMap>}</Col> : null;
-                                return tmp;
-                            })}
+                            {[...Array(4)].map((_, i) => (
+                                <Col key={data[idx + i]?.plannerId}>{data[idx + i] && <CustomLoadMap datas={data[idx + i]}></CustomLoadMap>}</Col>
+                            ))}
                         </Row>
                     );
                 }
