@@ -1,5 +1,3 @@
-import { postPlannerCards } from "./DataAxios";
-
 export function dateParsing(planner){
     return planner.flat().map( e => ({ ...e,
         startDate: new Date(e.startDate),
@@ -19,17 +17,6 @@ export function plannerListCardStatusDevide( plannerList ){
     return plannerList.map( planner => plannerCardStatusDevide(planner))
 }
 
-export async function readSpecifiedPlanner(planner){
-    const removedPlanner = removeSpecifiedIdProperty(planner)
-    const newPlanner = await postPlannerCards(removedPlanner)
-    return plannerCardStatusDevide(newPlanner);
-}
-
-export async function readUnspecifiedPlanner(planner){
-    const removedPlanner = removeSpecifiedIdProperty(planner);
-    const newPlanner = await postPlannerCards(removedPlanner)
-    return plannerCardStatusDevide(newPlanner);
-}
 
 export function removeSpecifiedIdProperty(planner){
     const newPlanner = {...planner, cards: planner.cards.flat().map( card => {
@@ -49,17 +36,6 @@ export function removeUnspecifiedIdProperty(planner){
     return newPlanner
 }
 
-export async function readSpecifiedPlannerList(plannerList){
-    const removedPlannerList = await removeSpecifiedListIdProperty(plannerList);
-    let newPlannerList = [];
-    for ( const planner of removedPlannerList){
-        const newPlanner = await postPlannerCards(planner);
-        newPlannerList = [...newPlannerList,newPlanner];
-    }
-    console.log("newPlannerList",newPlannerList)
-    return newPlannerList;
-}
-
 export function removeSpecifiedListIdProperty(plannerList){
     const newPlannerList = plannerList.map( planner => {
         delete planner.plannerId;
@@ -68,16 +44,6 @@ export function removeSpecifiedListIdProperty(plannerList){
         }
     })
     return newPlannerList
-}
-
-export async function readUnspecifiedPlannerList(plannerList){
-    const removedPlannerList = removeUnspecifiedListIdProperty(plannerList);
-    let newPlannerList = [];
-    for (const planner of removedPlannerList){
-        const newPlanner = await postPlannerCards(planner)
-        newPlannerList = [...newPlannerList,newPlanner]
-    }
-    return newPlannerList;
 }
 
 export function removeUnspecifiedListIdProperty(plannerList){

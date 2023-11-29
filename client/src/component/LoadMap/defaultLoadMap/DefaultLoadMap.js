@@ -8,7 +8,6 @@ import MyCalendar from '../../home/MyCalendar';
 import styled from 'styled-components';
 import SearchComponent from '../../home/searchComponent/SearchComponent';
 import HomeComponent from '../../home/HomeComponent';
-import CalendarSideBar from '../../home/calendar/CalendarSideBar';
 
 const _Button = styled.button`
     border: none;
@@ -87,7 +86,6 @@ export default function DefaultLoadMap() {
                             </i>
                         </_Button>
                     </_FlexNavi>
-                    <CalendarSideBar />
                 </div>
                 <_RenderComponent>{renderComponent()}</_RenderComponent>
             </_Flex>
