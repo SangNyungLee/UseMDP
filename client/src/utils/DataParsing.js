@@ -6,11 +6,11 @@ export function dateParsing(planner){
 
 export function plannerCardStatusDevide(planner){
     const { cards } = planner
-    return {...planner, cards :[
-        cards.filter( card => card.cardStatus === "TODO"),
+    return {...planner, cards : cards.length > 0 ? [
+        cards.filter( card => card.cardStatus === "TODO" ),
         cards.filter( card => card.cardStatus === "DOING"),
         cards.filter( card => card.cardStatus === "DONE"),
-    ]}
+    ] : [[],[],[]]}
 }
 
 export function plannerListCardStatusDevide( plannerList ){

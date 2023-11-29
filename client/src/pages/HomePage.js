@@ -5,6 +5,9 @@ import CalendarSideBar from '../component/home/calendar/CalendarSideBar';
 import Header from '../component/Header';
 import { useDispatch } from 'react-redux';
 import { pointActions } from '../store/pointer';
+import useDefaultCheck from '../hook/useDefaultCheck';
+import { HOME } from '../constant/constant';
+import { useSelector } from 'react-redux';
 const _Font = styled.div`
     font-family: 'SUITE-Regular';
 `;

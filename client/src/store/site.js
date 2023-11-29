@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLogin: false,
   isData: false,
+  memberId:''
 };
 
 const siteSlice = createSlice({
@@ -22,6 +23,9 @@ const siteSlice = createSlice({
       state.isLogin = true;
       // return state;
     },
+    setMemberId(state,action){
+      state.memberId = action.payload;
+    }
   },
 });
 

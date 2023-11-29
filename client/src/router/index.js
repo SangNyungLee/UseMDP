@@ -4,7 +4,6 @@ import HomePage from "../pages/HomePage";
 import MyPage from "../pages/MyPage";
 import PlannerPage from "../pages/PlannerPage";
 import App from "../App";
-import MyCalendar from "../component/home/MyCalendar";
 import DefaultLoadMap from "../component/LoadMap/defaultLoadMap/DefaultLoadMap";
 import Redirection from "../pages/Redirection";
 

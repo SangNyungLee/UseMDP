@@ -8,9 +8,10 @@ import { plannerListActions } from "../store/plannerList";
 import { plannerListCardStatusDevide } from "../utils/DataParsing";
 import { getMyPlanner } from "../utils/DataAxios";
 import { useLocation, useNavigate } from "react-router";
+import { calendarActions } from "../store/calendar";
 
-export default function useDefaultCheck(){
-    const site = useSelector( state => state.site);
+export default function useDefaultCheck(target){
+    const site = useSelector( state => state.site );
     const navi = useNavigate();
     const location = useLocation();
     const { isLogin, isData } = site;
@@ -22,19 +23,37 @@ export default function useDefaultCheck(){
     useEffect(()=>{
         if(Object.keys(cookies).length === 0){
             if(isLogin){
-                navi("/home",{ message: "쿠키가 만료되어 재로그인이 필요합니다" })
-            } else if (location.pathname !== "/home") {
-                navi("/home",{ message: "로그인 되지 않은 사용자입니다" });
+                navi("/",{ state: {
+                    message: "쿠키가 만료되어 재로그인이 필요합니다"
+                }})
+            } else if (location.pathname !== "/") {
+                navi("/",{ state: {
+                    message: "로그인 되지 않은 사용자 입니다"
+                }});
             }
         } else if ( !isLogin || !isData ){
             getMyPlannerAndDispatch()
-        } 
+        }
+
+        return () => {
+            if(Object.keys(cookies).length === 0){
+                navi("/", { state: null });
+            }
+        };
     },[site])
 
     const getMyPlannerAndDispatch = async () => {
         const plannerList = await getMyPlanner();
         const newPlannerList = plannerListCardStatusDevide(plannerList);
+        console.log("plannerList",newPlannerList)
         dispatch(plannerListActions.setPlannersInit(newPlannerList))
+        if( newPlannerList.length > 0 ){
+            const plannerId = newPlannerList[0].plannerId
+            dispatch(calendarActions.setSelect({
+                target,
+                value:[plannerId]
+            }))
+        }
         dispatch(siteActions.setAllTrue(true));
     }
 

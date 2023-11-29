@@ -1,14 +1,23 @@
 import Footer from '../component/Footer';
 import Header from '../component/Header';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Container, Image, Row, Col, Card, Button, Stack } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function WelcomePage() {
 	const isMobile = useMediaQuery({
 		query: '(max-width: 576px)',
 	});
+
+	const location = useLocation();
+	const [ message, setMessage ] = useState( location.state?.message || "" );
+	console.log("message",message);
+
+	//이건 확인해봐야 함
+	const [ visible, setIsVisible ] = useState( message? true : false )
+	console.log("visible",visible)
+
 
 	return (
 		<>
