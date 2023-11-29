@@ -53,6 +53,7 @@ public class MemberService {
             MemberEntity originalMember = optionalMemberEntity.get();
             MemberEntity memberEntity = MemberEntity.builder()
                 .memberId(originalMember.getMemberId())
+                .socialCategory(originalMember.getSocialCategory())
                 .socialId(user.getSocialId())
                 .socialNickname(user.getSocialNickname())
                 .socialProfilePicture(user.getSocialProfilePicture())
