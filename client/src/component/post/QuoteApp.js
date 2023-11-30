@@ -25,16 +25,17 @@ const _QuoteAppContainer = styled.div`
 const _QuoteContainer = styled.div`
     display: flex;
     margin: '20px';
+    align-items: flex-start;
 `;
 
 const _Thumbnail = styled.div`
     display: flex;
     width: 100%;
     height: 100vh;
-    background-image: url(${props => props.image});
+    background-image: url(${(props) => props.image});
     background-size: contain;
     background-repeat: no-repeat;
-`
+`;
 
 export default function QuoteApp() {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -79,7 +80,7 @@ export default function QuoteApp() {
             thumbnail,
             plannerAccess: access,
             taglist: list,
-        }
+        };
     } else if (localdata.length > 0) {
         console.log('local in if', localdata);
         const { cards, plannerId: id, title, ...rest } = localdata[0];
@@ -228,17 +229,10 @@ export default function QuoteApp() {
     } else {
         return (
             <div>
-                <QuoteHeader
-                selectedCard={selectedCard}
-                thumnnailRef={thumnnailRef}
-                visible={visible}
-                setVisible={setVisible}
-                plannerList={plannerList}
-                plannerId={plannerId}
-                title={plannerTitle}
-                plannerInfo={plannerInfo}/>
+                <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} plannerInfo={plannerInfo} />
                 <_QuoteAppContainer>
-                    <_Thumbnail ref={thumnnailRef} image={`data:image/webp;base64,${plannerThumbnail}`}>
+                    {/*image={plannerThumbnail}  */}
+                    <_Thumbnail ref={thumnnailRef}>
                         <_QuoteContainer>
                             <DragDropContext
                                 onDragEnd={(result, provided) => {
@@ -250,7 +244,7 @@ export default function QuoteApp() {
                                 ))}
                             </DragDropContext>
                         </_QuoteContainer>
-                    <QuoteAppCalendar />
+                        <QuoteAppCalendar />
                     </_Thumbnail>
                 </_QuoteAppContainer>
             </div>

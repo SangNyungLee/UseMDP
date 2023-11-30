@@ -20,8 +20,8 @@ const _Container = styled.div`
 `;
 
 const _ImageStyle = styled.img`
-    width: 230px;
-    height: 150px;
+    width: 240px;
+    height: 160px;
     border-radius: 5px;
 `;
 
