@@ -5,6 +5,8 @@ import DataReaderModal from "../reader/DataReaderModal";
 import ThumbnailMaker from "./RightClicker/ThumbnailMaker";
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../../store/plannerList";
+
+import CustomHeader2 from "./CustomHeader2";
 import CustomHeader from "./CustomHeader";
 import FileInputComponent from "../FileInputComponent";
 import FileImageInputComponent from "../FileImageInputComponent";
@@ -81,7 +83,7 @@ export default function QuoteHeader(props) {
 
   return (
     <>
-      <CustomHeader />
+      <CustomHeader2 />
       <MDPModal
         selectedCard={selectedCard}
         modalStatus={visible}
