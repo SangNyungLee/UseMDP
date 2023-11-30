@@ -23,9 +23,9 @@ import { calendarActions } from "../../../store/calendar";
 import { HOME } from "../../../constant/constant";
 
 const _Container = styled.div`
-  border-radius: 20px;
-  background-color: skyblue;
-  height: 78vh;
+  border-radius: 5px;
+  background-color: whitesmoke;
+  height: 80vh;
   width: 240px;
   white-space: nowrap;
   overflow-x: hidden;
@@ -33,6 +33,12 @@ const _Container = styled.div`
   text-overflow: ellipsis;
   padding-top: 30px;
   margin: 0px 30px;
+
+  @media screen and (max-width: 1300px) {
+    & {
+      display: none;
+    }
+  }
 `;
 
 const _PlannerListUl = styled.ul`
@@ -40,14 +46,34 @@ const _PlannerListUl = styled.ul`
   padding: 5px;
 `;
 
+const _Flex = styled.div`
+  display: flex;
+`;
+
+const _Title = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+`;
+
+const _SelectContainer = styled.div`
+  display: none;
+`;
+
 export default function CalendarSideBar() {
   const plannerList = useSelector((state) => state.plannerList);
-
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState("{planner[0].title}");
   const readerRegister = useRead(HOME);
+
+  const isClickSelect = (e) => {
+    setVisible(!visible);
+  };
 
   return (
     <>
       <_Container {...readerRegister}>
+        <_Title>Planner List</_Title>
         <_PlannerListUl>
           {plannerList.map((planner) => (
             <PlannerListLi key={planner.plannerId} planner={planner} />
