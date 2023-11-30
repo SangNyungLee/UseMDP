@@ -6,6 +6,7 @@ import CustomList from '../customList/CustomList';
 import base64Str from '../../../constant/ImageBase64';
 import axios from 'axios';
 import LoadMap from '../../LoadMap/LoadMap';
+import { getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 
 const SearchContainer = styled.div`
     width: 75vw;
@@ -24,6 +25,10 @@ const options = [
     { value: 'title', label: '제목' },
     // Add more options as needed
 ];
+const nullOptions = [
+    { value: 'null', label: '해당하는 결과가 없습니다' },
+    // Add more options as needed
+];
 export default function SearchComponent() {
     const selectInputRef = useRef();
     const [author, setAuthor] = useState([]);
@@ -38,9 +43,11 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await axios.get('http://localhost:8080/api/getPlanner/trending');
+                const response = await getPlannerByTrend();
                 console.log('res : ', response.data);
-
+                const res = await getTags();
+                console.log('태그 데이터 받아온 결과 : ', res.data);
+                setTags(res.data);
                 if (response.data.data.length == 0) {
                 } else {
                     const newData = response.data.data.map((item, idx) => {
@@ -50,9 +57,9 @@ export default function SearchComponent() {
                     data = newData;
                 }
             } catch {
-                const res = await axios.get('http://localhost:8080/api/getTags');
-                console.log('데이터 받아온 결과 : ', res.data.data);
-                setTags(res.data.data);
+                const res = await getTags();
+                console.log('데이터 받아온 결과 : ', res.data);
+                setTags(res.data);
                 const tmp = [
                     {
                         plannerId: 1,
@@ -96,20 +103,27 @@ export default function SearchComponent() {
             const Title = [];
             // uniqueTitles에도 값을 넣어서, 값을 체크하는 메커니즘.
             const Author = [];
-            data.map((item) => {
-                if (!uniqueAuthors.has(item.creator)) {
-                    uniqueAuthors.add(item.creator);
-                    Author.push({ value: item.creator, label: item.creator });
-                }
-                if (!uniqueTitles.has(item.title)) {
-                    uniqueTitles.add(item.title);
-                    Title.push({ value: item.title, label: item.title });
-                }
-                return null;
-            });
-            setAuthor(Author);
-            setTitle(Title);
-            console.log('uniqueTitles : ', Author);
+            console.log('data', data);
+            if (!data || data.length === 0) {
+                setAuthor(nullOptions);
+                setTitle(nullOptions);
+            } else {
+                data.map((item) => {
+                    if (!uniqueAuthors.has(item.creator)) {
+                        uniqueAuthors.add(item.creator);
+                        Author.push({ value: item.creator, label: item.creator });
+                    }
+                    if (!uniqueTitles.has(item.title)) {
+                        uniqueTitles.add(item.title);
+                        Title.push({ value: item.title, label: item.title });
+                    }
+                    return null;
+                });
+                setAuthor(Author);
+                setTitle(Title);
+                console.log('uniqueTitles : ', Author);
+            }
+
             // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
             // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
@@ -123,7 +137,7 @@ export default function SearchComponent() {
 
     const handleSearch = (e) => {
         // 버튼 클릭 시, option에 따라 데이터 필터링
-        e.stopPropagation()
+        e.stopPropagation();
         if (option.value === 'stack') {
             setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.title.includes(tag.value))));
         } else if (option.value === 'author') {
@@ -134,8 +148,8 @@ export default function SearchComponent() {
     };
 
     //안에 들어가는 값을 받아야해서 state사용
-    // console.log('State 확인 : ', selectTag, option);
-    if (!datas) {
+    //검색결과가 없습니다로 바꿔야할듯.
+    if (!datas || datas.length === 0) {
         return (
             //Spinner
             <div
@@ -223,7 +237,7 @@ export default function SearchComponent() {
                         />
                     )}
 
-                    <Button onClick={ e => handleSearch(e)}>검색</Button>
+                    <Button onClick={(e) => handleSearch(e)}>검색</Button>
                 </SearchContainer>
                 <hr></hr>
                 <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>

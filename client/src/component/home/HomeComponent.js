@@ -1,9 +1,3 @@
-import { useEffect, useState } from 'react';
-import useLocalStorage from 'use-local-storage';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../store/plannerList';
-import base64Str from '../../constant/ImageBase64';
 import CustomList from './customList/CustomList';
 import MyLoadMap from '../LoadMap/MyLoadMap';
 import copy from 'fast-copy';
@@ -11,7 +5,7 @@ import { getPlanners } from '../../utils/DataAxios';
 import { useSelect } from '@mui/base';
 import useDefaultCheck from '../../hook/useDefaultCheck';
 import { HOME } from '../../constant/constant';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 const statusIndexMap = {
     TODO: 0,
     DOING: 1,
@@ -21,8 +15,7 @@ const statusIndexMap = {
 export default function HomeComponent() {
     //이미 저장된 값이 있으면 그 list를 불러온다.
 
-    const plannerList = useSelector( state => state.plannerList );
-
+    const plannerList = useSelector((state) => state.plannerList);
     useDefaultCheck(HOME);
 
     // const [data, setData] = useState();
