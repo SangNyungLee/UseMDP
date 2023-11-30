@@ -24,31 +24,35 @@ import {
 import { PiMapTrifoldFill, PiFireBold, PiCalendarBlankFill } from 'react-icons/pi';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
-// 아이콘 서타일
-const iconStyle = {
-	fontSize: '2rem',
-};
 
+// 아이콘 서타일
+import { HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
+import { getMyPlanner } from '../../../utils/DataAxios';
+
+const iconStyle = {
+    fontSize: '2rem',
+};
+    
 export default function DefaultLoadMap() {
-	const [menuNumber, setMenuNumber] = useState();
-	const [isActive, setIsActive] = useState(false);
-	const renderComponent = () => {
-		switch (menuNumber) {
-			case 1:
-				return <DefaultComponent />;
-			case 2:
-				return <StarComponent />;
-			case 3:
-				return <HomeComponent />;
-			case 4:
-				return <MyCalendar />;
-			case 5:
-				return <SearchComponent />;
-			default:
-				return <HomeComponent />;
-		}
-	};
-	const handleNumber = (e, number) => {
+    const [menuNumber, setMenuNumber] = useState();
+    const [isActive, setIsActive] = useState(false);
+    const renderComponent = () => {
+        switch (menuNumber) {
+            case 1:
+                return <DefaultComponent />;
+            case 2:
+                return <StarComponent />;
+            case 3:
+                return <HomeComponent />;
+            case 4:
+                return <MyCalendar />;
+            case 5:
+                return <SearchComponent />;
+            default:
+                return <HomeComponent />;
+        }
+    };
+    const handleNumber = (e, number) => {
 		e.stopPropagation();
 		setMenuNumber(number);
 	};
