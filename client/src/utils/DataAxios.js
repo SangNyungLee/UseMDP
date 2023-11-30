@@ -43,6 +43,15 @@ export async function getCardAxios(cardId) {
     return res.data.data;
 }
 
+export async function getTags() {
+    const res = await axios({
+        method: 'GET',
+        url: getURL(`/api/getTags`),
+        withCredentials: true,
+    });
+    return res.data;
+}
+
 export async function getPlannerBtoA(btoaId) {
     const res = await axios({
         method: 'GET',
@@ -139,6 +148,16 @@ export async function deleteMyPlanner(plannerId) {
     const res = await axios({
         method: 'DELETE',
         url: getURL(`/api/deletePlanner/${plannerId}`),
+        withCredentials: true,
+    });
+    console.log('del', res);
+}
+
+export async function patchPlanner(plannerData) {
+    const res = await axios({
+        method: 'PATCH',
+        url: getURL(`/api/patchPlanner`),
+        data: plannerData,
         withCredentials: true,
     });
     console.log('del', res);
