@@ -8,9 +8,19 @@ import MyCalendar from '../../home/MyCalendar';
 import styled from 'styled-components';
 import SearchComponent from '../../home/searchComponent/SearchComponent';
 import HomeComponent from '../../home/HomeComponent';
+import { PiMapTrifoldFill, PiFireBold, PiCalendarBlankFill } from 'react-icons/pi';
+import { FaUserCircle } from 'react-icons/fa';
+import { IoSearch } from 'react-icons/io5';
+import { HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
+
+const iconStyle = {
+	fontSize: '2rem',
+};
+
 const _Button = styled.button`
 	border: none;
 	background: none;
+	margin: 20px 0 20px 0;
 `;
 
 const _Flex = styled.div`
@@ -18,23 +28,30 @@ const _Flex = styled.div`
 	justify-content: flex-start;
 	width: 100vw;
 	margin-top: 80px;
+	padding-left: 20%;
+`;
+
+const _SidebarContainer = styled.div`
+	position: fixed;
+	left: 0;
+	width: 300px;
+	min-width: 300px;
+	height: 100vh;
+	background-color: whitesmoke;
 	padding-left: 8%;
 `;
 
-const _FlexNaviContainer = styled.div`
-	height: 100vh;
-	background-color: red;
-	flex-direction: column;
-`;
-
-const _FlexNavi = styled.div`
+const _Sidebar = styled.div`
+	padding-top: 5%;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: flex-start;
-	background-color: white;
-	top: 300px;
-	height: 100vh;
+	left: 0;
+	height: 100%;
 `;
+
+const _SidebarBtnContainer = styled.div``;
 
 const _RenderComponent = styled.div`
 	z-index: 50;
@@ -67,35 +84,40 @@ export default function DefaultLoadMap() {
 	return (
 		<>
 			<HomeHeader />
-			<_FlexNaviContainer>
-				<_FlexNavi>
-					<_Button className='default' onClick={(e) => handleNumber(e, 1)}>
-						<i className='material-icons' style={{ fontSize: '40px' }}>
-							description
-						</i>
-					</_Button>
-					<_Button className='default' onClick={(e) => handleNumber(e, 2)}>
-						<i className='material-icons' style={{ fontSize: '40px' }}>
-							star
-						</i>
-					</_Button>
-					<_Button className='default' onClick={(e) => handleNumber(e, 3)}>
-						<i className='material-icons' style={{ fontSize: '40px' }}>
-							account_circle
-						</i>
-					</_Button>
-					<_Button className='default' onClick={(e) => handleNumber(e, 4)}>
-						<i className='material-icons' style={{ fontSize: '40px' }}>
-							calendar_month
-						</i>
-					</_Button>
-					<_Button className='default' onClick={(e) => handleNumber(e, 5)}>
-						<i className='material-icons' style={{ fontSize: '40px' }}>
-							search
-						</i>
-					</_Button>
-				</_FlexNavi>
-			</_FlexNaviContainer>
+			<_SidebarContainer>
+				<_Sidebar>
+					<div>
+						<_Button className='default' onClick={(e) => handleNumber(e, 1)}>
+							<PiMapTrifoldFill style={iconStyle} />
+							Get Started
+						</_Button>
+					</div>
+					<div>
+						<_Button className='default' onClick={(e) => handleNumber(e, 2)}>
+							<PiFireBold style={iconStyle} />
+							Trending
+						</_Button>
+					</div>
+					<div>
+						<_Button className='default' onClick={(e) => handleNumber(e, 3)}>
+							<FaUserCircle style={iconStyle} />
+							My Collection
+						</_Button>
+					</div>
+					<div>
+						<_Button className='default' onClick={(e) => handleNumber(e, 4)}>
+							<PiCalendarBlankFill style={iconStyle} />
+							Calendar
+						</_Button>
+					</div>
+					<div>
+						<_Button className='default' onClick={(e) => handleNumber(e, 5)}>
+							<IoSearch style={iconStyle} />
+							Search
+						</_Button>
+					</div>
+				</_Sidebar>
+			</_SidebarContainer>
 			<_Flex>
 				<_RenderComponent>{renderComponent()}</_RenderComponent>
 			</_Flex>
