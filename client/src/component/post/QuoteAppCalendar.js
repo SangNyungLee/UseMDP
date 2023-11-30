@@ -32,12 +32,6 @@ export default function QuoteAppCalendar(props) {
         setEvents(dateParsing(selectedEvents));
     }, [plannerList, quote]);
 
-    useEffect(() => {
-        const selectedEvents = getNestedElement(plannerList, quote);
-        setEvents(dateParsing(selectedEvents));
-    }, [plannerList, quote]);
-
-
     const plannerUpdateCard = async (data) => {
         const { start, end, event } = data;
         const cardId = event.cardId

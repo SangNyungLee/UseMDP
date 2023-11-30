@@ -16,6 +16,8 @@ import { dateParsing } from '../../utils/DataParsing';
 import useDefaultCheck from '../../hook/useDefaultCheck';
 import CalendarSideBar from './calendar/CalendarSideBar';
 import styled from 'styled-components';
+import { getPlannerId, patchCard, postCard } from '../../utils/DataAxios';
+import { calendarActions } from '../../store/calendar';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -117,6 +119,10 @@ export default function MyCalendar() {
     const { home } = useSelector((state) => state.calendar);
     const site = useSelector((state) => state.site);
 
+    const plannerId = home[0];
+    const cardStatusIndex = home[1] ? home[1] : 0;
+    const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
+
     useDefaultCheck();
 
     const [events, setEvents] = useState();
@@ -131,136 +137,123 @@ export default function MyCalendar() {
         setEvents(dateParsing(selectedEvents));
     }, [plannerList, home]);
 
-    const plannerUpdateCard = (data) => {
+    const plannerUpdateCard = async (data) => {
         const { start, end, event } = data;
+
+        const cardId = event.cardId
+        const startDate = start.toISOString()
+        const endDate = end.toISOString()
+        const card = events.find( e => e.cardId === cardId )
+
+        const requestData = {
+            ...card,
+            startDate,
+            endDate,
+            plannerId,
+            checklists: [{ title: 'done', checked:0 }]
+        }
+
+        const res = await patchCard(requestData);
+
+        console.log("patch res",res)
 
         dispatch(
             plannerListActions.updateCard({
-                cardId: event.cardId,
-                startDate: start.toISOString(),
-                endDate: end.toISOString(),
+                cardId,
+                startDate,
+                endDate,
             })
         );
 
-        setEvents((prevEvents) => prevEvents.map((e) => (e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e)));
+        // setEvents((prevEvents) => prevEvents.map((e) => (e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e)));
     };
 
-    const onSelectSlot = (slotInfo) => {
-        const plannerId = home[0];
+    console.log("test",plannerList)
 
-        const cardStatusIndex = home[1] ? home[1] : 0;
-        const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
-
+    const onSelectSlot = async (slotInfo) => {
         const newEvent = getOneCard(events.length, cardStatus);
+        
+        delete newEvent.cardId
 
-        const startDate = moment(slotInfo.start).toDate();
-        const endDate = moment(slotInfo.end).toDate();
+        const startDate = moment(slotInfo.start).toDate().toISOString();
+        const endDate = moment(slotInfo.end).toDate().toISOString();
 
+        
         if (plannerList.length === 0) {
+            const newPlannerData = {
+                creator: 'default creator',
+                title: 'default title',
+                thumbnail: '',
+                plannerAccess: 'PUBLIC',
+            }
+            const getPlannerIdData = await getPlannerId(newPlannerData)
+            const newPlannerId = getPlannerIdData.data
+            const newCardData = {
+                ...newEvent,
+                plannerId: newPlannerId,
+                cardStatus,
+                checklists:[{checked:0,title:'done'}]
+            }
+            const newCardId = await postCard(newCardData)
+
             dispatch(
                 plannerListActions.addPlanner({
-                    plannerId: 0,
-                    title: 'default title',
+                    ...newPlannerData,
+                    plannerId: newPlannerId,
                     cards: [
                         [
                             {
                                 ...newEvent,
-                                startDate: startDate.toISOString(),
-                                endDate: endDate.toISOString(),
+                                cardId: newCardId.data.data,
+                                startDate,
+                                endDate,
                             },
                         ],
                         [],
                         [],
                     ],
                 })
-            );
+                );
+            dispatch(
+                calendarActions.setHome([newPlannerId])
+            )
         } else {
+            const requestData = {
+                ...newEvent,
+                plannerId,
+                cardStatus,
+                checklists:[{checked:0,title:'done'}]
+            }
+    
+            const res = await postCard(requestData);
             dispatch(
                 plannerListActions.addCard({
                     plannerId,
                     cardStatusIndex,
                     card: {
                         ...newEvent,
-                        startDate: startDate.toISOString(),
-                        endDate: endDate.toISOString(),
+                        cardId: res.data.data,
+                        startDate,
+                        endDate,
                     },
                 })
             );
         }
-        setEvents((prev) => [...prev, { ...newEvent, startDate, endDate }]);
+        // setEvents((prev) => [...prev, { ...newEvent, startDate, endDate }]);
     };
 
     const onSelectEvent = (event, e) => {
         setSelectedCard(event);
         setVisible(true);
     };
-
-    const testLogin = () => {
-        const loginAxios = async () => {
-            const result = await axios({
-                method: 'POST',
-                url: 'http://localhost:8080/api/postMember',
-                data: {
-                    socialId: 0,
-                    socialNickname: 'aymrm',
-                },
-            });
-            console.log('login', result);
-        };
-        loginAxios();
-    };
-
-    const createPlanner = () => {
-        const creator = 'aymrm';
-        const title = '적당한 이름';
-        const thumbnail = '적당한 문자열';
-        const plannerIdAxios = async () => {
-            const plannerId = await axios({
-                method: 'POST',
-                url: 'http://localhost:8080/api/postPlanner',
-                data: {
-                    creator,
-                    title,
-                    thumbnail,
-                },
-                withCredentials: true,
-            });
-            console.log('plannerId', plannerId);
-
-            // const result = await axios({
-            //   method:"POST",
-            //   url:"http://localhost:8080/api/postCard",
-            //   data:{
-            //     plannerId,
-            //     creator,
-            //     title,
-            //     thumbnail,
-            //   },
-            //   withCredentials:true,
-            // })
-        };
-        plannerIdAxios();
-    };
-
-    const defaultPlanner = () => {
-        const defaultPlannerAxios = async () => {
-            const result = await axios({
-                method: 'GET',
-                url: 'http://localhost:8080/api/getPlanner/default',
-            });
-            console.log('defaultPlanner', result);
-        };
-        defaultPlannerAxios();
-    };
-
+    
     return (
         <_Container>
-            <CalendarSideBar />
             {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>
         <button onClick={defaultPlanner}>기본 플래너 조회</button>
-      </div> */}
+    </div> */}
             <MDPModal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
             <DnDCalendar
                 defaultDate={moment().toDate()}
@@ -277,6 +270,7 @@ export default function MyCalendar() {
                 selectable
                 style={{
                     flex: 1,
+                    width: '40vw',
                     height: '100vh',
                 }}
                 eventPropGetter={eventStyleGetter}
@@ -284,6 +278,7 @@ export default function MyCalendar() {
                     toolbar: CustomToolbar,
                 }}
             />
+            <CalendarSideBar />
         </_Container>
     );
 }
