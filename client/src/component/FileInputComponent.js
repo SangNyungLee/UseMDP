@@ -3,9 +3,9 @@ import { Nav, Navbar, Container, Button, Modal } from 'react-bootstrap';
 
 export default function FileInputComponent({ setState }) {
     const fileInputRef = useRef();
-
+    
     const handleButtonClick = (e) => {
-        e.stopPropagation();
+        e.stopPropagation()
         fileInputRef.current.click();
     };
 

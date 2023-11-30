@@ -34,36 +34,27 @@ export default function QuoteAppCalendar() {
       setEvents(dateParsing(selectedEvents))
     },[ plannerList, quote ])
   
-    const onEventResize = (data) => {
-      const { start, end, event } = data;
-    
-      setEvents((prevEvents) =>
-        prevEvents.map((e) =>
-            e.cardId === event.cardId ? { ...e, startDate:start, endDate:end } : e
-        )
-      );
-    };
-    
-    const onEventDrop = (data) => {
+    const plannerUpdateCard = (data) => {
       const { start, end, event } = data;
   
-      dispatch(plannerListActions.updateCard({
-        cardId: event.cardId,
-        startDate: start.toISOString(),
-        endDate: end.toISOString(),
-      }))
-    
+      dispatch(
+        plannerListActions.updateCard({
+          cardId: event.cardId,
+          startDate: start.toISOString(),
+          endDate: end.toISOString(),
+        })
+      );
+  
       setEvents((prevEvents) =>
         prevEvents.map((e) =>
-            e.cardId === event.cardId ? { ...e, startDate:start, endDate:end } : e
+          e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e
         )
       );
     };
     
     const onSelectSlot = (slotInfo) => {
       const newEvent = getOneCard(events.length,cardStatus)
-
-  
+      
       const startDate = moment(slotInfo.start).toDate();
       const endDate = moment(slotInfo.end).toDate()
       
@@ -80,7 +71,7 @@ export default function QuoteAppCalendar() {
       } else {
         dispatch(plannerListActions.addCard({
           plannerId,
-          cardStatusIndex: 0,
+          cardStatusIndex,
           card: {...newEvent,
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
@@ -111,13 +102,13 @@ export default function QuoteAppCalendar() {
           endAccessor="endDate"
           events={events}
           localizer={localizer}
-          onEventDrop={onEventDrop}
-          onEventResize={onEventResize}
+          onEventDrop={plannerUpdateCard}
+          onEventResize={plannerUpdateCard}
           onSelectSlot={onSelectSlot}
           onSelectEvent={onSelectEvent}
           resizable
           selectable
-          style={{ height: "100vh" }}
+          style={{ height: "100vh", backgroundColor: "white", flex: 1 }}
           eventPropGetter={eventStyleGetter}
           // components={{
           //   toolbar: CustomToolbar,
