@@ -326,7 +326,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                         <MyDayPicker date={endDate} setDate={setEndDate} />
                     </FlexContainer>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ backgroundColor: '#091E420F' }}>
                     <Button variant="outline-secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
