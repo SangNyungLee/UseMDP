@@ -38,6 +38,8 @@ export function getItemStyle(isDragging, draggableStyle) {
         margin: `0 0 ${grid}px 0`,
         borderTopRightRadius: '10px',
         borderTopLeftRadius: '10px',
+        borderBottomRightRadius: '10px',
+        borderBottomLeftRadius: '10px',
         // change background colour if dragging
         background: isDragging ? 'lightgreen' : 'white',
 
@@ -75,7 +77,7 @@ export function getOneDefaultPlanner() {
         createdAt: currentTime.toISOString(),
         updatedAt: currentTime.toISOString(),
         cards,
-        taglist:[],
+        taglist: [],
     };
     return planner;
 }

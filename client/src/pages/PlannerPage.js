@@ -5,18 +5,19 @@ import { useDispatch } from 'react-redux';
 import { pointActions } from '../store/pointer';
 const _Font = styled.div`
     font-family: 'SUITE-Regular';
+    height: auto;
 `;
 
 export default function PlannerPage() {
     const dispatch = useDispatch();
 
     const handlePoint = (e) => {
-        e.stopPropagation()
+        e.stopPropagation();
         dispatch(pointActions.clearPoint());
     };
 
     return (
-        <_Font onClick={ e => handlePoint(e)}>
+        <_Font onClick={(e) => handlePoint(e)}>
             <QuoteApp />
         </_Font>
     );

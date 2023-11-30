@@ -23,6 +23,7 @@ const _QuoteAppContainer = styled.div`
 
 const _QuoteContainer = styled.div`
     display: flex;
+    margin: '20px';
 `;
 
 export default function QuoteApp() {
@@ -190,7 +191,7 @@ export default function QuoteApp() {
             <div>
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
                 <_QuoteAppContainer>
-                    <div>
+                    <div style={{ margin: '20px' }}>
                         <_QuoteContainer ref={thumnnailRef}>
                             <DragDropContext
                                 onDragEnd={(result, provided) => {

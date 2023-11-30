@@ -10,9 +10,11 @@ import copy from 'fast-copy';
 import { siteActions } from '../../store/site';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
-import axios from 'axios';
 import { patchCard } from '../../utils/DataAxios';
-
+import description from '../../constant/img/description.svg';
+import list2 from '../../constant/img/list2.svg';
+import list1 from '../../constant/img/list.svg';
+import parse from 'html-react-parser';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -31,17 +33,15 @@ const _TitleInput = styled.input`
 `;
 
 const _TodoAddButton = styled.button`
-    background-color: white;
-    border: none;
-    font-family: 'SUITE-Regular';
-    margin-top: 10px;
-    color: #545454;
-    padding: 0px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #091e420f;
+    border: 3px #091e420f;
     border-radius: 3px;
-
-    &:active {
-        background-color: #ccc;
+    &:hover {
+        background-color: #091e424f;
     }
+    margin-bottom: 10px;
 `;
 
 const _ColorPickerModal = styled.div`
@@ -52,8 +52,8 @@ const _ColorPickerModal = styled.div`
 const _ChecklistContainer = styled.div`
     display: flex;
     width: 100%;
-    margin-top: 25px;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     justify-content: space-between;
 `;
 
@@ -78,6 +78,7 @@ const _CheckBox = styled.input`
 const _TextInput = styled.input`
     width: 87%;
     border: none;
+    outline: none;
     border-bottom: 1px solid #ccc;
 `;
 
@@ -87,6 +88,34 @@ const _DeleteButton = styled.button`
     display: flex;
 `;
 
+const TitleEdit = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bolder;
+`;
+
+const IconImg = styled.img`
+    margin: 10px;
+`;
+const ParseContainer = styled.div`
+    margin-left: 35px;
+`;
+
+const DefaultBtn = styled.button`
+    width: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #091e420f;
+    border: 3px #091e420f;
+    border-radius: 3px;
+    &:hover {
+        background-color: #091e424f;
+    }
+`;
 export default function MDPModal({ selectedCard, modalStatus, modalClose, plannerId }) {
     //구조 분해할당
     const [show, setShow] = useState(false);
@@ -98,9 +127,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const [endDate, setEndDate] = useState(new Date());
     const [coverColor, setCoverColor] = useState('');
     const [cardStatus, setCardStatus] = useState('');
-
+    const [editorHide, setEditorHide] = useState(false);
+    //내부에서 쓰는 로직 밖으로 내보내지 않음.
     const Edits = [post, setPost];
-
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [progress, setProgress] = useState(0);
     const dispatch = useDispatch();
 
     const handleCloseWithoutSave = () => {
@@ -137,6 +168,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     //체크박스 온체인지
     const handleCheckboxChange = (index, value) => {
         const changeValue = value ? 1 : 0;
+        handleProgessBar();
         setChecklists((prevCheckLists) => {
             const updatedCheckLists = copy(prevCheckLists);
             updatedCheckLists[index]['checked'] = changeValue;
@@ -166,14 +198,28 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setChecklists(checklists);
         setShow(modalStatus);
         setModalOpen(false);
+        setEditorHide(post == '' ? false : true);
+        if (checklists) {
+            const done = checklists.filter((item) => item.checked === 1).length;
+            const total = checklists.length;
+            const progress = (done / total) * 100;
+            setProgress(progress);
+        } else {
+            setProgress(0);
+        }
         // const checklist = getCheckListAxios();
     }, [modalStatus]);
 
-    // useEffect(() => {
-    //     if (checklists) {
-    //         setChecklists(checklists);
-    //     }
-    // }, [checklists]);
+    useEffect(() => {
+        if (checklists) {
+            const done = checklists.filter((item) => item.checked === 1).length;
+            const total = checklists.length;
+            const progress = (done / total) * 100;
+            setProgress(progress);
+        } else {
+            setProgress(0);
+        }
+    }, [checklists]);
 
     const addTodo = () => {
         const currentTime = new Date();
@@ -210,10 +256,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
+
     console.log(checklists);
     return (
         <>
-            <Modal show={show} onHide={handleCloseWithoutSave}>
+            <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
                 <Modal.Header style={{ backgroundColor: coverColor }} onClick={handleHeaderClick} closeButton>
                     {isModalOpen && (
                         <_ColorPickerModal style={modalPosition}>
@@ -224,22 +271,60 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                         <_TitleInput value={title} color={coverColor} onChange={(e) => setTitle(e.target.value)} onClick={(e) => e.stopPropagation()} />
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <ProgressBar now={handleProgessBar()}></ProgressBar>
-                    <CardEditor editpost={Edits} post={post}></CardEditor>
-                    <_Title>Check List</_Title>
-                    <FlexContainer>
-                        <MyDayPicker date={startDate} setDate={setStartDate} />
-                        <_Span>~</_Span>
-                        <MyDayPicker date={endDate} setDate={setEndDate} />
-                    </FlexContainer>
+                <Modal.Body style={{ backgroundColor: '#091E420F' }}>
+                    {/*여기에 overDue되면   */}
+                    {startDate.getTime() < new Date().getTime() && endDate.getTime() < new Date().getTime() ? <DefaultBtn style={{ width: 'auto', height: '40px' }}>기간이 지났습니다.</DefaultBtn> : null}
+                    <TitleEdit>
+                        <div>
+                            <IconImg src={description}></IconImg>Content
+                        </div>
+                        <DefaultBtn
+                            onClick={() => {
+                                setEditorHide((prev) => !prev);
+                            }}
+                        >
+                            Edit
+                        </DefaultBtn>
+                    </TitleEdit>
+                    {editorHide ? (
+                        <ParseContainer
+                            onClick={() => {
+                                setEditorHide((prev) => !prev);
+                            }}
+                        >
+                            {parse(post)}
+                        </ParseContainer>
+                    ) : (
+                        <CardEditor editpost={Edits} post={post} setHide={setEditorHide}></CardEditor>
+                    )}
+                    <TitleEdit>
+                        <div>
+                            <IconImg src={list1}></IconImg>Progress
+                        </div>
+                    </TitleEdit>
+                    <ProgressBar now={progress}></ProgressBar>
+
+                    <TitleEdit>
+                        <div>
+                            <IconImg src={list2}></IconImg>Check List
+                        </div>
+                    </TitleEdit>
+                    {/* <_Title>Check List</_Title> */}
                     <div>
                         {checklists
                             ? checklists.map((item, index) => {
                                   return (
                                       <_ChecklistContainer key={index}>
                                           <_CheckBox type="checkbox" checked={item.checked == 1} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
-                                          <_TextInput type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
+
+                                          {editingIndex === index ? (
+                                              <_TextInput type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
+                                          ) : (
+                                              <div style={{ width: '87%' }} onClick={() => setEditingIndex(index)}>
+                                                  {item.checked == 1 ? <strike>{item.title}</strike> : item.title}
+                                              </div>
+                                          )}
+
                                           <_DeleteButton type="button" onClick={() => deleteCheck(index)}>
                                               <i class="material-icons" style={{ fontSize: '20px', color: '#ccc' }}>
                                                   delete
@@ -251,8 +336,13 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                             : null}
                         <_TodoAddButton onClick={addTodo}>+ add item</_TodoAddButton>
                     </div>
+                    <FlexContainer>
+                        <MyDayPicker date={startDate} setDate={setStartDate} />
+                        <_Span>~</_Span>
+                        <MyDayPicker date={endDate} setDate={setEndDate} />
+                    </FlexContainer>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ backgroundColor: '#091E420F' }}>
                     <Button variant="outline-secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
@@ -265,3 +355,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     );
 }
 //
+const ChildrenComponent = () => {
+    return <></>;
+};
