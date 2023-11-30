@@ -346,7 +346,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                     <Button variant="outline-secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
-                    <Button variant="success" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleClose}>
                         Save Changes
                     </Button>
                 </Modal.Footer>

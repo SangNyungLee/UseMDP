@@ -12,14 +12,6 @@ const planSlice = createSlice({
             state = action.payload;
             return state;
         },
-        setPlans(state, action) {
-            state = action.payload;
-            return state;
-        },
-        patchCardsByIdx(state, action) {
-            console.log('patchCardByIdx', action.payload);
-            state[action.payload.idx1][action.payload.idx2] = action.payload.cardItem;
-        },
     },
 });
 export const planActions = planSlice.actions;

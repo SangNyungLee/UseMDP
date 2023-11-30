@@ -43,6 +43,15 @@ export async function getCardAxios(cardId) {
     return res.data.data;
 }
 
+export async function getTags() {
+    const res = await axios({
+        method: 'GET',
+        url: getURL(`/api/getTags`),
+        withCredentials: true,
+    });
+    return res.data;
+}
+
 export async function getPlannerBtoA(btoaId) {
     const res = await axios({
         method: 'GET',

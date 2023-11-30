@@ -31,6 +31,7 @@ export default function PlusMap(props) {
         };
 
         try {
+            console.log('myData', data);
             const result = await axios.post('http://localhost:8080/api/postPlanner', data, { withCredentials: true });
 
             // SweetAlert을 이용하여 성공 메시지를 보여줌
