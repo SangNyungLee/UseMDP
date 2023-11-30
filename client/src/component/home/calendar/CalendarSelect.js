@@ -32,37 +32,76 @@ const _Flex = styled.div`
   height: fit-content;
   position: fixed;
   z-index: 10;
+  margin-top: -10px;
+
+  @media screen and (min-width: 1300px) {
+    & {
+      display: none;
+    }
+  }
 `;
 
 const _Container = styled.div`
   width: 146px;
   overflow-y: hidden;
-  background-color: black;
+  background-color: white;
   height: 150px;
   border-radius: 2px;
 `;
 
+const _Title = styled.div`
+  margin-left: 10px;
+  text-overflow: ellipsis;
+`;
+
 export default function CalendarSelect() {
-  const [isClick, setIsClick] = useState("false");
+  const [isClick, setIsClick] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const plannerList = useSelector((state) => state.plannerList);
+  const [isTitle, setIsTitle] = useState("");
+
+  const selectClickDrop = () => {
+    setIsClick(true);
+    setIsVisible(true);
+  };
 
   const selectClick = () => {
-    setIsClick(!isClick);
+    setIsClick(false);
+    setIsVisible(false);
   };
+
+  const plannerTitleChange = (title, visible, click) => {
+    setIsTitle(title);
+    setIsVisible(visible);
+    setIsClick(click);
+  };
+
+  // const plannerTitleClick = (value) => {
+  //   setIsVisible(value);
+  // };
 
   return (
     <_Flex>
       <_SelectContainer>
         {isClick ? (
-          <_SelectArrow onClick={(e) => selectClick(e)}>{"▼"}</_SelectArrow>
+          <_SelectArrow onClick={(e) => selectClick(e)}>
+            <div>{"▼"}</div>
+          </_SelectArrow>
         ) : (
-          <_SelectArrow onClick={(e) => selectClick(e)}>{"▶"}</_SelectArrow>
+          <_SelectArrow onClick={(e) => selectClickDrop(e)}>
+            <div>{"▶"}</div>
+          </_SelectArrow>
         )}
+        <_Title>{isTitle}</_Title>
       </_SelectContainer>
-      {isClick ? (
+      {isVisible ? (
         <_Container>
           {plannerList.map((planner) => (
-            <CalendarSelectList key={planner.plannerId} planner={planner} />
+            <CalendarSelectList
+              key={planner.plannerId}
+              planner={planner}
+              onTitleChange={plannerTitleChange}
+            />
           ))}
         </_Container>
       ) : (

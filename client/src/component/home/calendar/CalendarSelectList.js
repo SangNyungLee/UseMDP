@@ -11,7 +11,7 @@ import { deleteMyPlanner } from "../../../utils/DataAxios";
 const _Container = styled.div`
   width: 146px;
   height: 35px;
-  background-color: aqua;
+  background-color: none;
   border-radius: 2px;
   display: flex;
   align-items: center;
@@ -42,7 +42,10 @@ const _PlannerTitle = styled.div`
   padding: 5px;
 `;
 
-export default function CalendarSelectList({ planner }) {
+export default function CalendarSelectList({
+  planner,
+  onTitleChange,
+}) {
   const { home } = useSelector((state) => state.calendar);
   const plannerList = useSelector((state) => state.plannerList);
   const [visible, setVisible] = useState(false);
@@ -54,6 +57,8 @@ export default function CalendarSelectList({ planner }) {
     e.stopPropagation();
     setVisible((prev) => !prev);
     dispatch(calendarActions.setHome([plannerId]));
+    onTitleChange(title,false,false);
+
   };
 
   return (

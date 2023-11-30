@@ -233,7 +233,7 @@ export default function MyCalendar() {
   return (
     <_Flex>
       <_Container>
-        {/* <CalendarSideBar /> */}
+        <CalendarSideBar />
         {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>

@@ -33,6 +33,12 @@ const _Container = styled.div`
   text-overflow: ellipsis;
   padding-top: 30px;
   margin: 0px 30px;
+
+  @media screen and (max-width: 1300px) {
+    & {
+      display: none;
+    }
+  }
 `;
 
 const _PlannerListUl = styled.ul`
@@ -57,7 +63,7 @@ const _SelectContainer = styled.div`
 export default function CalendarSideBar() {
   const plannerList = useSelector((state) => state.plannerList);
   const [visible, setVisible] = useState(false);
-  const [title, setTitle] = useState("플래너 선택");
+  const [title, setTitle] = useState("{planner[0].title}");
   const readerRegister = useRead(HOME);
 
   const isClickSelect = (e) => {
