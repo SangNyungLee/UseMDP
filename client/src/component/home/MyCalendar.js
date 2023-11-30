@@ -19,6 +19,7 @@ import { dateParsing } from "../../utils/DataParsing";
 import useDefaultCheck from "../../hook/useDefaultCheck";
 import CalendarSideBar from "./calendar/CalendarSideBar";
 import styled from "styled-components";
+import CalendarSelect from "./calendar/CalendarSelect";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -28,11 +29,11 @@ const _Container = styled.div`
 `;
 
 const _Toolbar = styled.div`
-  width: 70vw;
+  width: 55vw;
   margin-bottom: 10px;
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1300px) {
     & {
-      width: 60vw;
+      width: 65vw;
     }
   }
 `;
@@ -64,7 +65,9 @@ const _SwitchButton = styled.button`
 `;
 
 const _Flex = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
@@ -118,6 +121,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
         </div>
         <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
       </div>
+      <CalendarSelect />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <_SwitchButton onClick={(e) => switchToMonthView(e)}>
           Month
@@ -284,40 +288,42 @@ export default function MyCalendar() {
   };
 
   return (
-    <_Container>
-      <CalendarSideBar />
-      {/* <div>
+    <_Flex>
+      <_Container>
+        {/* <CalendarSideBar /> */}
+        {/* <div>
         <button onClick={testLogin}>테스트 로그인</button>
         <button onClick={createPlanner}>플래너 생성</button>
         <button onClick={defaultPlanner}>기본 플래너 조회</button>
       </div> */}
-      <MDPModal
-        selectedCard={selectedCard}
-        modalStatus={visible}
-        modalClose={() => setVisible(false)}
-      />
-      <DnDCalendar
-        defaultDate={moment().toDate()}
-        defaultView="month"
-        startAccessor="startDate"
-        endAccessor="endDate"
-        events={events}
-        localizer={localizer}
-        onEventDrop={plannerUpdateCard}
-        onEventResize={plannerUpdateCard}
-        onSelectSlot={onSelectSlot}
-        onSelectEvent={onSelectEvent}
-        resizable
-        selectable
-        style={{
-          flex: 1,
-          height: "80vh",
-        }}
-        eventPropGetter={eventStyleGetter}
-        components={{
-          toolbar: CustomToolbar,
-        }}
-      />
-    </_Container>
+        <MDPModal
+          selectedCard={selectedCard}
+          modalStatus={visible}
+          modalClose={() => setVisible(false)}
+        />
+        <DnDCalendar
+          defaultDate={moment().toDate()}
+          defaultView="month"
+          startAccessor="startDate"
+          endAccessor="endDate"
+          events={events}
+          localizer={localizer}
+          onEventDrop={plannerUpdateCard}
+          onEventResize={plannerUpdateCard}
+          onSelectSlot={onSelectSlot}
+          onSelectEvent={onSelectEvent}
+          resizable
+          selectable
+          style={{
+            flex: 1,
+            height: "80vh",
+          }}
+          eventPropGetter={eventStyleGetter}
+          components={{
+            toolbar: CustomToolbar,
+          }}
+        />
+      </_Container>
+    </_Flex>
   );
 }

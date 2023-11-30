@@ -33,18 +33,6 @@ const _Container = styled.div`
   text-overflow: ellipsis;
   padding-top: 30px;
   margin: 0px 30px;
-
-  @media screen and (max-width: 1170px) {
-    & {
-      width: 200px;
-    }
-  }
-
-  @media screen and (max-width: 800px) {
-    & {
-      width: 180px;
-    }
-  }
 `;
 
 const _PlannerListUl = styled.ul`
@@ -62,10 +50,19 @@ const _Title = styled.div`
   font-size: 20px;
 `;
 
+const _SelectContainer = styled.div`
+  display: none;
+`;
+
 export default function CalendarSideBar() {
   const plannerList = useSelector((state) => state.plannerList);
-
+  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState("플래너 선택");
   const readerRegister = useRead(HOME);
+
+  const isClickSelect = (e) => {
+    setVisible(!visible);
+  };
 
   return (
     <>
