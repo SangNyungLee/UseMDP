@@ -5,7 +5,7 @@ import DataReaderModal from "../reader/DataReaderModal";
 import ThumbnailMaker from "./RightClicker/ThumbnailMaker";
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../../store/plannerList";
-import CustomHeader from "./CustomHeader";
+import CustomHeader2 from "./CustomHeader2";
 
 export default function QuoteHeader(props) {
   const {
@@ -50,7 +50,7 @@ export default function QuoteHeader(props) {
 
   return (
     <>
-      <CustomHeader />
+      <CustomHeader2 />
       <MDPModal
         selectedCard={selectedCard}
         modalStatus={visible}
