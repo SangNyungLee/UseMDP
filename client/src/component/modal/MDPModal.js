@@ -15,7 +15,6 @@ import description from '../../constant/img/description.svg';
 import list2 from '../../constant/img/list2.svg';
 import list1 from '../../constant/img/list.svg';
 import parse from 'html-react-parser';
-import './modalCss/modal.css';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
