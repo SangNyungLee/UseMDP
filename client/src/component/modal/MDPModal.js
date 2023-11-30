@@ -243,6 +243,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
     console.log(checklists);
+    console.log('start:', startDate.getTime() < new Date().getTime());
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
@@ -257,6 +258,8 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#091E420F' }}>
+                    {/*여기에 overDue되면   */}
+                    {startDate.getTime() < new Date().getTime() && endDate.getTime() < new Date().getTime() ? <DefaultBtn style={{ width: 'auto', height: '40px' }}>기간이 지났습니다.</DefaultBtn> : null}
                     <TitleEdit>
                         <div>
                             <IconImg src={description}></IconImg>Content
@@ -304,7 +307,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                                               <_TextInput type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
                                           ) : (
                                               <div style={{ width: '87%' }} onClick={() => setEditingIndex(index)}>
-                                                  {item.title}
+                                                  {item.checked == 1 ? <strike>{item.title}</strike> : item.title}
                                               </div>
                                           )}
 
@@ -325,7 +328,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                         <MyDayPicker date={endDate} setDate={setEndDate} />
                     </FlexContainer>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer style={{ backgroundColor: '#091E420F' }}>
                     <Button variant="outline-secondary" onClick={handleCloseWithoutSave}>
                         Close
                     </Button>
