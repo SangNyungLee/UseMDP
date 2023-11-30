@@ -128,10 +128,10 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const [coverColor, setCoverColor] = useState('');
     const [cardStatus, setCardStatus] = useState('');
     const [editorHide, setEditorHide] = useState(false);
-
     //내부에서 쓰는 로직 밖으로 내보내지 않음.
     const Edits = [post, setPost];
     const [editingIndex, setEditingIndex] = useState(null);
+    const [progress, setProgress] = useState(0);
     const dispatch = useDispatch();
 
     const handleCloseWithoutSave = () => {
@@ -168,6 +168,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     //체크박스 온체인지
     const handleCheckboxChange = (index, value) => {
         const changeValue = value ? 1 : 0;
+        handleProgessBar();
         setChecklists((prevCheckLists) => {
             const updatedCheckLists = copy(prevCheckLists);
             updatedCheckLists[index]['checked'] = changeValue;
@@ -198,14 +199,27 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setShow(modalStatus);
         setModalOpen(false);
         setEditorHide(post == '' ? false : true);
+        if (checklists) {
+            const done = checklists.filter((item) => item.checked === 1).length;
+            const total = checklists.length;
+            const progress = (done / total) * 100;
+            setProgress(progress);
+        } else {
+            setProgress(0);
+        }
         // const checklist = getCheckListAxios();
     }, [modalStatus]);
 
-    // useEffect(() => {
-    //     if (checklists) {
-    //         setChecklists(checklists);
-    //     }
-    // }, [checklists]);
+    useEffect(() => {
+        if (checklists) {
+            const done = checklists.filter((item) => item.checked === 1).length;
+            const total = checklists.length;
+            const progress = (done / total) * 100;
+            setProgress(progress);
+        } else {
+            setProgress(0);
+        }
+    }, [checklists]);
 
     const addTodo = () => {
         const currentTime = new Date();
@@ -242,8 +256,8 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const deleteCheck = (index) => {
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
+
     console.log(checklists);
-    console.log('start:', startDate.getTime() < new Date().getTime());
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
@@ -288,7 +302,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                             <IconImg src={list1}></IconImg>Progress
                         </div>
                     </TitleEdit>
-                    <ProgressBar now={handleProgessBar()}></ProgressBar>
+                    <ProgressBar now={progress}></ProgressBar>
 
                     <TitleEdit>
                         <div>
