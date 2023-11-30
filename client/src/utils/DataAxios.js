@@ -152,3 +152,13 @@ export async function deleteMyPlanner(plannerId) {
     });
     console.log('del', res);
 }
+
+export async function patchPlanner(plannerData) {
+    const res = await axios({
+        method: 'PATCH',
+        url: getURL(`/api/patchPlanner`),
+        data: plannerData,
+        withCredentials: true,
+    });
+    console.log('del', res);
+}

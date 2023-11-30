@@ -15,7 +15,8 @@ import DroppableComponent from './DroppableComponent';
 import useLocalStorage from 'use-local-storage';
 
 import axios from 'axios';
-import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
+import { getCardAxios, getPlannerBtoA, patchMoveCards, patchPlanner } from '../../utils/DataAxios';
+
 const _QuoteAppContainer = styled.div`
     margin: '20px';
     display: flex;
@@ -25,6 +26,15 @@ const _QuoteContainer = styled.div`
     display: flex;
     margin: '20px';
 `;
+
+const _Thumbnail = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-image: url(${props => props.image});
+    background-size: contain;
+    background-repeat: no-repeat;
+`
 
 export default function QuoteApp() {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -40,7 +50,11 @@ export default function QuoteApp() {
 
     let planner;
     let plannerId = quote[0];
+
     let plannerTitle;
+    let plannerThumbnail;
+
+    let plannerInfo;
 
     function sortByIntOrder(data) {
         // intOrder를 기준으로 오름차순 정렬
@@ -53,10 +67,19 @@ export default function QuoteApp() {
         return tmp;
     }
     if (plannerList.length > 0 && plannerList[0]) {
-        const { cards, plannerId: id, title, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
+        const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
+        plannerThumbnail = thumbnail;
+        plannerInfo = {
+            plannerId: id,
+            creator,
+            title,
+            thumbnail,
+            plannerAccess: access,
+            taglist: list,
+        }
     } else if (localdata.length > 0) {
         console.log('local in if', localdata);
         const { cards, plannerId: id, title, ...rest } = localdata[0];
@@ -205,10 +228,18 @@ export default function QuoteApp() {
     } else {
         return (
             <div>
-                <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} />
+                <QuoteHeader
+                selectedCard={selectedCard}
+                thumnnailRef={thumnnailRef}
+                visible={visible}
+                setVisible={setVisible}
+                plannerList={plannerList}
+                plannerId={plannerId}
+                title={plannerTitle}
+                plannerInfo={plannerInfo}/>
                 <_QuoteAppContainer>
-                    <div style={{ margin: '20px' }}>
-                        <_QuoteContainer ref={thumnnailRef}>
+                    <_Thumbnail ref={thumnnailRef} image={`data:image/webp;base64,${plannerThumbnail}`}>
+                        <_QuoteContainer>
                             <DragDropContext
                                 onDragEnd={(result, provided) => {
                                     onDragEnd(result, provided);
@@ -219,8 +250,8 @@ export default function QuoteApp() {
                                 ))}
                             </DragDropContext>
                         </_QuoteContainer>
-                    </div>
-                    {isCalendarVisible && <QuoteAppCalendar />}
+                    <QuoteAppCalendar />
+                    </_Thumbnail>
                 </_QuoteAppContainer>
             </div>
         );

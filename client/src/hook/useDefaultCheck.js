@@ -16,7 +16,7 @@ export default function useDefaultCheck(target) {
     const location = useLocation();
     const { isLogin, isData } = site;
 
-    const [cookies, setCookie, removeCookie] = useCookies('auth');
+    const [ cookies ] = useCookies('auth');
 
     const dispatch = useDispatch();
 

@@ -31,49 +31,65 @@ export default function QuoteAppCalendar(props) {
         setEvents(dateParsing(selectedEvents));
     }, [plannerList, quote]);
 
-    const onEventResize = (data) => {
-        const { start, end, event } = data;
-
-        setEvents((prevEvents) => prevEvents.map((e) => (e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e)));
-    };
-
-    const onEventDrop = (data) => {
-        const { start, end, event } = data;
-
-        dispatch(
-            plannerListActions.updateCard({
-                cardId: event.cardId,
-                startDate: start.toISOString(),
-                endDate: end.toISOString(),
-            })
-        );
-
-        setEvents((prevEvents) => prevEvents.map((e) => (e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e)));
+    const plannerId = quote[0]
+    const cardStatusIndex = quote[1] ? quote[1] : 0
+    const cardStatus = cardStatusIndex ?
+      ( cardStatusIndex === 0 ? "TODO"
+        : cardStatusIndex === 1 ? "DOING"
+          : "DONE" ) : "TODO";
+  
+    useEffect(()=>{
+      const selectedEvents = getNestedElement(plannerList,quote)
+      setEvents(dateParsing(selectedEvents))
+    },[ plannerList, quote ])
+  
+    const plannerUpdateCard = (data) => {
+      const { start, end, event } = data;
+  
+      dispatch(
+        plannerListActions.updateCard({
+          cardId: event.cardId,
+          startDate: start.toISOString(),
+          endDate: end.toISOString(),
+        })
+      );
+  
+      setEvents((prevEvents) =>
+        prevEvents.map((e) =>
+          e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e
+        )
+      );
     };
 
     const onSelectSlot = (slotInfo) => {
-        const newEvent = getOneCard(events.length, cardStatus);
-
-        const startDate = moment(slotInfo.start).toDate();
-        const endDate = moment(slotInfo.end).toDate();
-
-        if (plannerList.length === 0) {
-            dispatch(
-                plannerListActions.addPlanner({
-                    title: 'default title',
-                    cards: [[{ ...newEvent, startDate: startDate.toISOString(), endDate: endDate.toISOString() }], [], []],
-                })
-            );
-        } else {
-            dispatch(
-                plannerListActions.addCard({
-                    plannerId,
-                    cardStatusIndex: 0,
-                    card: { ...newEvent, startDate: startDate.toISOString(), endDate: endDate.toISOString() },
-                })
-            );
-        }
-        setEvents((prev) => [...prev, { ...newEvent, startDate, endDate }]);
+      const newEvent = getOneCard(events.length,cardStatus)
+      
+      const startDate = moment(slotInfo.start).toDate();
+      const endDate = moment(slotInfo.end).toDate()
+      
+      if(plannerList.length === 0){
+        dispatch(plannerListActions.addPlanner(
+          {
+            title: "default title",
+            cards: [[{...newEvent,
+              startDate: startDate.toISOString(),
+              endDate: endDate.toISOString(),
+            }],[],[]]
+          }
+        ))
+      } else {
+        dispatch(plannerListActions.addCard({
+          plannerId,
+          cardStatusIndex,
+          card: {...newEvent,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+          }
+        }))
+      }
+      setEvents(prev => [...prev,{...newEvent,
+        startDate,
+        endDate,}]);
     };
 
     const onSelectEvent = (event, e) => {
@@ -82,27 +98,31 @@ export default function QuoteAppCalendar(props) {
     };
 
     return (
-        <>
-            <MDPModal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
-            <DnDCalendar
-                defaultDate={moment().toDate()}
-                defaultView="month"
-                startAccessor="startDate"
-                endAccessor="endDate"
-                events={events}
-                localizer={localizer}
-                onEventDrop={onEventDrop}
-                onEventResize={onEventResize}
-                onSelectSlot={onSelectSlot}
-                onSelectEvent={onSelectEvent}
-                resizable
-                selectable
-                style={{ height: '80vh' }}
-                eventPropGetter={eventStyleGetter}
-                // components={{
-                //   toolbar: CustomToolbar,
-                // }}
-            />
-        </>
+      <>
+        <MDPModal
+        selectedCard={selectedCard}
+        modalStatus={visible}
+        modalClose={()=>setVisible(false)}
+        />
+        <DnDCalendar
+          defaultDate={moment().toDate()}
+          defaultView="month"
+          startAccessor="startDate"
+          endAccessor="endDate"
+          events={events}
+          localizer={localizer}
+          onEventDrop={plannerUpdateCard}
+          onEventResize={plannerUpdateCard}
+          onSelectSlot={onSelectSlot}
+          onSelectEvent={onSelectEvent}
+          resizable
+          selectable
+          style={{ height: "80vh", backgroundColor: "white", flex: 1 }}
+          eventPropGetter={eventStyleGetter}
+          // components={{
+          //   toolbar: CustomToolbar,
+          // }}
+        />
+      </>
     );
 }
