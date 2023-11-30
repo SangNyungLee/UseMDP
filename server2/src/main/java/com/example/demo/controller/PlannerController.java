@@ -46,10 +46,13 @@ public class PlannerController implements SwaggerPlannerAPI {
         String memberId;
         if(token != null) {
             memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
+            System.out.println("error1 : "+memberId);
         } else {
             memberId = null;
         }
+        System.out.println("error2 : "+memberId);
         List<ResponsePlannerDTO> allTrendingPlanners = plannerService.getTrendingPlanner(memberId);
+        System.out.println("error3 : "+allTrendingPlanners.get(0).getTitle());
         return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<List<ResponsePlannerDTO>>builder()
                 .resultCode("200")
                 .message("모든 플래너들 인기순으로 불러오기 성공")
