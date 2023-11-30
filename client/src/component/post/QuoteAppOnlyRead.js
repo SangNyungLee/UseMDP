@@ -27,7 +27,6 @@ const _QuoteContainer = styled.div`
 `;
 
 export default function QuoteApp() {
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const plannerList = useSelector((state) => state.plannerList);
     const { quote } = useSelector((state) => state.calendar);
     const site = useSelector((state) => state.site);
@@ -182,22 +181,7 @@ export default function QuoteApp() {
         }
     }
     // ...state, getItems(1)
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
 
-        // Attach the event listener on component mount
-        window.addEventListener('resize', handleResize);
-
-        // Clean up the event listener on component unmount
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    // If the window width is greater than or equal to 800px, hide the calendar
-    const isCalendarVisible = windowWidth > 1024;
     console.log('plannerList', plannerList);
 
     if (!planner) {
@@ -220,7 +204,7 @@ export default function QuoteApp() {
                             </DragDropContext>
                         </_QuoteContainer>
                     </div>
-                    {isCalendarVisible && <QuoteAppCalendar />}
+                    <QuoteAppCalendar />
                 </_QuoteAppContainer>
             </div>
         );

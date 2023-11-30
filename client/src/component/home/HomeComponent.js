@@ -5,7 +5,7 @@ import { getPlanners } from '../../utils/DataAxios';
 import { useSelect } from '@mui/base';
 import useDefaultCheck from '../../hook/useDefaultCheck';
 import { HOME } from '../../constant/constant';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 const statusIndexMap = {
     TODO: 0,
     DOING: 1,
@@ -16,7 +16,6 @@ export default function HomeComponent() {
     //이미 저장된 값이 있으면 그 list를 불러온다.
 
     const plannerList = useSelector((state) => state.plannerList);
-
     useDefaultCheck(HOME);
 
     // const [data, setData] = useState();
