@@ -137,6 +137,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
 };
 
 export default function MyCalendar() {
+  //지금은 상위꺼를 가져오는데, myPlanner만 가져오는 식으로.
   const plannerList = useSelector((state) => state.plannerList);
   const { home } = useSelector((state) => state.calendar);
   const site = useSelector((state) => state.site);
@@ -227,64 +228,6 @@ export default function MyCalendar() {
   const onSelectEvent = (event, e) => {
     setSelectedCard(event);
     setVisible(true);
-  };
-
-  const testLogin = () => {
-    const loginAxios = async () => {
-      const result = await axios({
-        method: "POST",
-        url: "http://localhost:8080/api/postMember",
-        data: {
-          socialId: 0,
-          socialNickname: "aymrm",
-        },
-      });
-      console.log("login", result);
-    };
-    loginAxios();
-  };
-
-  const createPlanner = () => {
-    const creator = "aymrm";
-    const title = "적당한 이름";
-    const thumbnail = "적당한 문자열";
-    const plannerIdAxios = async () => {
-      const plannerId = await axios({
-        method: "POST",
-        url: "http://localhost:8080/api/postPlanner",
-        data: {
-          creator,
-          title,
-          thumbnail,
-        },
-        withCredentials: true,
-      });
-      console.log("plannerId", plannerId);
-
-      // const result = await axios({
-      //   method:"POST",
-      //   url:"http://localhost:8080/api/postCard",
-      //   data:{
-      //     plannerId,
-      //     creator,
-      //     title,
-      //     thumbnail,
-      //   },
-      //   withCredentials:true,
-      // })
-    };
-    plannerIdAxios();
-  };
-
-  const defaultPlanner = () => {
-    const defaultPlannerAxios = async () => {
-      const result = await axios({
-        method: "GET",
-        url: "http://localhost:8080/api/getPlanner/default",
-      });
-      console.log("defaultPlanner", result);
-    };
-    defaultPlannerAxios();
   };
 
   return (

@@ -8,6 +8,19 @@ import MyCalendar from "../../home/MyCalendar";
 import styled from "styled-components";
 import SearchComponent from "../../home/searchComponent/SearchComponent";
 import HomeComponent from "../../home/HomeComponent";
+
+// 서타일
+import {
+  _Container,
+  _SidebarCol,
+  _RenderComponentCol,
+  _RenderComponent,
+  _Navbar,
+  _Nav,
+  _NavItem,
+  _Row,
+  _Button,
+} from "../../../constant/css/styledComponents/__DefaultLoadMap";
 import {
   PiMapTrifoldFill,
   PiFireBold,
@@ -15,51 +28,14 @@ import {
 } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
+
+// 아이콘 서타일
 import { HiTable, HiUser, HiViewBoards } from "react-icons/hi";
+import { getMyPlanner } from "../../../utils/DataAxios";
 
 const iconStyle = {
   fontSize: "2rem",
 };
-
-const _Button = styled.button`
-  border: none;
-  background: none;
-  margin: 20px 0 20px 0;
-`;
-
-const _Flex = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  margin-top: 80px;
-  padding-left: 20%;
-`;
-
-const _SidebarContainer = styled.div`
-  position: fixed;
-  left: 0;
-  width: 300px;
-  min-width: 300px;
-  height: 100vh;
-  background-color: whitesmoke;
-  padding-left: 8%;
-`;
-
-const _Sidebar = styled.div`
-  padding-top: 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  left: 0;
-  height: 100%;
-`;
-
-const _SidebarBtnContainer = styled.div``;
-
-const _RenderComponent = styled.div`
-  z-index: 50;
-`;
 
 export default function DefaultLoadMap() {
   const [menuNumber, setMenuNumber] = useState();
@@ -88,43 +64,75 @@ export default function DefaultLoadMap() {
   return (
     <>
       <HomeHeader />
-      <_SidebarContainer>
-        <_Sidebar>
-          <div>
-            <_Button className="default" onClick={(e) => handleNumber(e, 1)}>
-              <PiMapTrifoldFill style={iconStyle} />
-              Get Started
-            </_Button>
-          </div>
-          <div>
-            <_Button className="default" onClick={(e) => handleNumber(e, 2)}>
-              <PiFireBold style={iconStyle} />
-              Trending
-            </_Button>
-          </div>
-          <div>
-            <_Button className="default" onClick={(e) => handleNumber(e, 3)}>
-              <FaUserCircle style={iconStyle} />
-              My Collection
-            </_Button>
-          </div>
-          <div>
-            <_Button className="default" onClick={(e) => handleNumber(e, 4)}>
-              <PiCalendarBlankFill style={iconStyle} />
-              Calendar
-            </_Button>
-          </div>
-          <div>
-            <_Button className="default" onClick={(e) => handleNumber(e, 5)}>
-              <IoSearch style={iconStyle} />
-              Search
-            </_Button>
-          </div>
-        </_Sidebar>
-      </_SidebarContainer>
-      <_Flex>
-        <_RenderComponent>{renderComponent()}</_RenderComponent>
-      </_Flex>
+      <_Container className="mt-5 pt-5 px-sm-5 justify-content-end">
+        <_Row>
+          <_SidebarCol
+            xs={12}
+            sm={2}
+            className="d-flex flex-row flex-sm-column flex-nowrap position-fixed"
+          >
+            <_Navbar>
+              <_Container fluid>
+                <_Nav className="d-flex flex-column">
+                  <_NavItem className="flex-shrink-0 mb-4">
+                    <_Button
+                      variant="none"
+                      className="default"
+                      onClick={(e) => handleNumber(e, 1)}
+                    >
+                      <PiMapTrifoldFill style={iconStyle} />
+                      Get Started
+                    </_Button>
+                  </_NavItem>
+                  <_NavItem className="flex-shrink-0 mb-4">
+                    <_Button
+                      variant="none"
+                      className="default"
+                      onClick={(e) => handleNumber(e, 2)}
+                    >
+                      <PiFireBold style={iconStyle} />
+                      Trending
+                    </_Button>
+                  </_NavItem>
+                  <_NavItem className="flex-shrink-0 mb-4">
+                    <_Button
+                      variant="none"
+                      className="default"
+                      onClick={(e) => handleNumber(e, 3)}
+                    >
+                      <FaUserCircle style={iconStyle} />
+                      My Collection
+                    </_Button>
+                  </_NavItem>
+                  <_NavItem className="flex-shrink-0 mb-4">
+                    <_Button
+                      variant="none"
+                      className="default"
+                      onClick={(e) => handleNumber(e, 4)}
+                    >
+                      <PiCalendarBlankFill style={iconStyle} />
+                      Calendar
+                    </_Button>
+                  </_NavItem>
+                  <_NavItem className="flex-shrink-0 mb-4">
+                    <_Button
+                      variant="none"
+                      className="default"
+                      onClick={(e) => handleNumber(e, 5)}
+                    >
+                      <IoSearch style={iconStyle} />
+                      Search
+                    </_Button>
+                  </_NavItem>
+                </_Nav>
+              </_Container>
+            </_Navbar>
+          </_SidebarCol>
+          <_RenderComponentCol xs={12} sm={10}>
+            <_RenderComponent>{renderComponent()}</_RenderComponent>
+          </_RenderComponentCol>
+        </_Row>
+      </_Container>
     </>
   );
 }
