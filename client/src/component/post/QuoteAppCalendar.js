@@ -9,6 +9,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { eventStyleGetter, getNestedElement } from '../../utils/CalendarController';
 import { getOneCard } from '../../utils/QuoteSetting';
 import { dateParsing } from '../../utils/DataParsing';
+import { patchCard, postCard } from '../../utils/DataAxios';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -36,43 +37,53 @@ export default function QuoteAppCalendar(props) {
         setEvents(dateParsing(selectedEvents));
     }, [plannerList, quote]);
 
-    const plannerUpdateCard = (data) => {
-        const { start, end, event } = data;
 
+    const plannerUpdateCard = async (data) => {
+        const { start, end, event } = data;
+        const cardId = event.cardId
+        const startDate = start.toISOString()
+        const endDate = end.toISOString()
+        const card = events.find( e => e.cardId === cardId )
+        const requestData = {
+            ...card,
+            startDate,
+            endDate,
+            plannerId,
+        }
+        await patchCard(requestData);
         dispatch(
             plannerListActions.updateCard({
-                cardId: event.cardId,
-                startDate: start.toISOString(),
-                endDate: end.toISOString(),
+                cardId,
+                startDate,
+                endDate,
             })
         );
+    }
 
-        setEvents((prevEvents) => prevEvents.map((e) => (e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e)));
-    };
-
-    const onSelectSlot = (slotInfo) => {
+    const onSelectSlot = async (slotInfo) => {
         const newEvent = getOneCard(events.length, cardStatus);
 
-        const startDate = moment(slotInfo.start).toDate();
-        const endDate = moment(slotInfo.end).toDate();
+        delete newEvent.cardId;
 
-        if (plannerList.length === 0) {
-            dispatch(
-                plannerListActions.addPlanner({
-                    title: 'default title',
-                    cards: [[{ ...newEvent, startDate: startDate.toISOString(), endDate: endDate.toISOString() }], [], []],
-                })
-            );
-        } else {
-            dispatch(
-                plannerListActions.addCard({
-                    plannerId,
-                    cardStatusIndex,
-                    card: { ...newEvent, startDate: startDate.toISOString(), endDate: endDate.toISOString() },
-                })
-            );
+        const startDate = moment(slotInfo.start).toDate().toISOString();
+        const endDate = moment(slotInfo.end).toDate().toISOString();
+
+        const requestData = {
+            ...newEvent,
+            plannerId,
+            cardStatus,
+            checklists:[{checked:0,title:'done'}]
         }
-        setEvents((prev) => [...prev, { ...newEvent, startDate, endDate }]);
+
+        const res = await postCard(requestData);
+
+        dispatch(
+            plannerListActions.addCard({
+                plannerId,
+                cardStatusIndex,
+                card: { ...newEvent, cardId: res.data.data, startDate, endDate },
+            })
+        );
     };
 
     const onSelectEvent = (event, e) => {
