@@ -22,13 +22,13 @@ import styled from "styled-components";
 import CalendarSelect from "./calendar/CalendarSelect";
 import { getPlannerId, patchCard, postCard } from '../../utils/DataAxios';
 import { calendarActions } from '../../store/calendar';
+import { HOME } from "../../constant/constant";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const _Container = styled.div`
   display: flex;
-  z-index: 100;
 `;
 
 const _Toolbar = styled.div`
@@ -115,7 +115,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
         style={{
           display: "flex",
           justifyContent: "space-around",
-          marginBottom: "10px",
+          marginBottom: "20px",
         }}
       >
         <_ToGoButton onClick={(e) => goToPrev(e)}>{"<"}</_ToGoButton>
@@ -124,7 +124,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
         </div>
         <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
       </div>
-      <CalendarSelect />
+      <CalendarSelect target={HOME}/>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <_SwitchButton onClick={(e) => switchToMonthView(e)}>
           Month

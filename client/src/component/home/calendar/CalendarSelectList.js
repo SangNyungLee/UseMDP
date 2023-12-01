@@ -7,14 +7,33 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { darken } from "polished";
 import { deleteMyPlanner } from "../../../utils/DataAxios";
+import CardStatusSelectList from "./CardStatusSelectList";
 
-const _Container = styled.div`
+const _SelectContainer = styled.div`
+  background-color: aliceblue;
   width: 146px;
-  height: 35px;
+  height: 40px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+`;
+
+const _SelectArrow = styled.div`
+  width: fit-content;
+  margin-left: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const _PlannerContainer = styled.div`
+  width: 146px;
   background-color: none;
   border-radius: 2px;
   display: flex;
   align-items: center;
+  flex-direction: column;
   border-bottom: 1px solid #ccc;
 
   @keyframes dropdown {
@@ -42,30 +61,77 @@ const _PlannerTitle = styled.div`
   padding: 5px;
 `;
 
+const _CardsContainer = styled.div`
+  display: flex;
+  width: 146px;
+  overflow-y: hidden;
+  background-color: aliceblue;
+  border-radius: 2px;
+  flex-direction: column;
+  margin-left: 15px;
+`;
+
 export default function CalendarSelectList({
   planner,
-  onTitleChange,
+  setIsVisible,
+  target,
+  index
 }) {
-  const { home } = useSelector((state) => state.calendar);
-  const plannerList = useSelector((state) => state.plannerList);
-  const [visible, setVisible] = useState(false);
+  const [ isClick, setIsClick ] = useState(false);
   const dispatch = useDispatch();
 
   const { cards, plannerId, title } = planner;
 
   const handleClick = (e) => {
     e.stopPropagation();
-    setVisible((prev) => !prev);
-    dispatch(calendarActions.setHome([plannerId]));
-    onTitleChange(title,false,false);
-
+    dispatch(calendarActions.setSelect({
+      target,
+      value:[plannerId]
+    }));
+    setIsVisible(false);
   };
+
+  const selectClick = (e) => {
+    e.stopPropagation();
+    dispatch(calendarActions.setSelect({
+      target,
+      value:[plannerId]
+    }));
+    setIsClick((prev) => !prev);
+  }
 
   return (
     <>
-      <_Container onClick={(e) => handleClick(e)}>
-        <_PlannerTitle>{title}</_PlannerTitle>
-      </_Container>
+      <_PlannerContainer>
+        <_SelectContainer>
+          {isClick ? (
+            <_SelectArrow onClick={(e) => selectClick(e)}>
+              <div>{"▼"}</div>
+            </_SelectArrow>
+          ) : (
+            <_SelectArrow onClick={(e) => selectClick(e)}>
+              <div>{"▶"}</div>
+            </_SelectArrow>
+          )}
+          <_PlannerTitle onClick={(e) => handleClick(e)}>{(index + 1) + '. ' + title}</_PlannerTitle>
+        </_SelectContainer>
+        { isClick ? (
+          <_CardsContainer>
+            {cards.map((cardStatusArr,id) => (
+              <CardStatusSelectList
+                key={id}
+                cardStatusArr={cardStatusArr}
+                target={target}
+                index={id}
+                plannerId={plannerId}
+                setIsVisible={setIsVisible}
+              />
+            ))}
+          </_CardsContainer>
+        ) : (
+          <></>
+        )}
+      </_PlannerContainer>
     </>
   );
 }
