@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { plannerListActions } from "../../../store/plannerList";
-import PlannerListLi from "./PlannerListLi";
-import useRead from "../../../hook/useRead";
 import CalendarSelectList from "./CalendarSelectList";
 import { HOME, QUOTE } from "../../../constant/constant";
 
@@ -31,7 +27,8 @@ const _Flex = styled.div`
   align-content: center;
   flex-direction: column;
   height: fit-content;
-  position: fixed;
+  position: absolute;
+  left: 10px;
   z-index: 10;
   margin-top: -10px;
 

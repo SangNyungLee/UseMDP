@@ -92,28 +92,28 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
     return (
       <_Toolbar>
         <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            marginBottom: "10px",
-          }}
+            style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginBottom: "10px",
+            }}
         >
-          <_ToGoButton onClick={(e) => goToPrev(e)}>{"<"}</_ToGoButton>
-          <div onClick={(e) => goToToday(e)} style={{ textAlign: "center" }}>
-            <_Label>{label}</_Label>
-          </div>
-          <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
+        <_ToGoButton onClick={(e) => goToPrev(e)}>{"<"}</_ToGoButton>
+            <div onClick={(e) => goToToday(e)} style={{ textAlign: "center" }}>
+                <_Label>{label}</_Label>
+            </div>
+            <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
         </div>
-        <CalendarSelect target={QUOTE} />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <_SwitchButton onClick={(e) => switchToMonthView(e)}>
-            Month
-          </_SwitchButton>
-          <_SwitchButton onClick={(e) => switchToWeekView(e)}>Week</_SwitchButton>
-          <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
-          <_SwitchButton onClick={(e) => switchToAgendaView(e)}>
-            Agenda
-          </_SwitchButton>
+        <div style={{ display: "flex", justifyContent: "center", position:'relative' }}>
+            <CalendarSelect target={QUOTE} />
+            <_SwitchButton onClick={(e) => switchToMonthView(e)}>
+                Month
+            </_SwitchButton>
+            <_SwitchButton onClick={(e) => switchToWeekView(e)}>Week</_SwitchButton>
+            <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
+            <_SwitchButton onClick={(e) => switchToAgendaView(e)}>
+                Agenda
+            </_SwitchButton>
         </div>
       </_Toolbar>
     );
@@ -206,7 +206,7 @@ export default function QuoteAppCalendar(props) {
                 onSelectEvent={onSelectEvent}
                 resizable
                 selectable
-                style={{ height: '100%', backgroundColor: 'white', flex: 2 }}
+                style={{ height: '100%', backgroundColor: 'white', flex: 2, overflowY: 'hidden' }}
                 eventPropGetter={eventStyleGetter}
                 components={{
                   toolbar: CustomToolbar,

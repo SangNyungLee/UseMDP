@@ -32,7 +32,13 @@ export default function QuoteHeader(props) {
         DataDownload(plannerTitle, plannerList);
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = async (e) => {
+        const data = {
+            ...plannerInfo,
+            title:plannerTitle,
+        }
+        const res = await patchPlanner(data);
+        console.log("title 수정",res)
         dispatch(
             plannerListActions.updatePlannerTitle({
                 plannerId,
