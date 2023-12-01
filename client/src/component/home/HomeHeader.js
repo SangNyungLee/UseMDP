@@ -13,6 +13,16 @@ import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../../store/site";
 import { logoutModal } from "../etc/SweetModal";
+import styled from "styled-components";
+
+const _Logo = styled.img`
+  width: 75px;
+  height: 45px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 export default function HomeHeader() {
   // 모달창 보여주기, 숨기기 상태
@@ -87,19 +97,24 @@ export default function HomeHeader() {
     logoutModal();
     navigate("/");
   };
-  
+
+  const clickLogo = (e) => {
+    navigate("/");
+  };
+
   return (
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">
         <Container className="px-3 px-sm-5">
-          <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
+          {/* <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
             <img
               src="https://picsum.photos/40/40"
               className="d-inline-block rounded"
               alt="useMPD logo"
             />
             useMDP
-          </Navbar.Brand>
+          </Navbar.Brand> */}
+          <_Logo src="/images/004.png" onClick={(e) => clickLogo(e)} />
           <Nav>
             {isLoginRedux ? (
               <>
