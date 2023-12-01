@@ -104,8 +104,8 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
                 </div>
                 <_ToGoButton onClick={(e) => goToNext(e)}>{'>'}</_ToGoButton>
             </div>
-            <CalendarSelect target={QUOTE} />
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
+                <CalendarSelect target={QUOTE} />
                 <_SwitchButton onClick={(e) => switchToMonthView(e)}>Month</_SwitchButton>
                 <_SwitchButton onClick={(e) => switchToWeekView(e)}>Week</_SwitchButton>
                 <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
@@ -202,7 +202,7 @@ export default function QuoteAppCalendar(props) {
                 onSelectEvent={onSelectEvent}
                 resizable
                 selectable
-                style={{ height: '100%', backgroundColor: 'white', flex: 2 }}
+                style={{ height: '100%', backgroundColor: 'white', flex: 2, overflowY: 'hidden' }}
                 eventPropGetter={eventStyleGetter}
                 components={{
                     toolbar: CustomToolbar,

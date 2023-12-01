@@ -5,7 +5,6 @@ import { calendarActions } from "../../../store/calendar";
 import { plannerListActions } from "../../../store/plannerList";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { darken } from "polished";
 import { deleteMyPlanner } from "../../../utils/DataAxios";
 
 const _PlannerTitle = styled.div`

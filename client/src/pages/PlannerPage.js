@@ -3,6 +3,7 @@ import '../constant/css/index.css';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { pointActions } from '../store/pointer';
+
 const _Font = styled.div`
     font-family: 'SUITE-Regular';
     height: 100vh;
