@@ -7,6 +7,7 @@ export const _cardContainer = styled(Card)`
 	border: none;
 	cursor: pointer;
 	margin: 5%;
+	height: 120px;
 `;
 
 export const _cardHeader = styled(Card.Header)``;
