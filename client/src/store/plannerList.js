@@ -75,9 +75,15 @@ const plannerListSlice = createSlice({
             const { plannerId, title } = action.payload;
             return state.map((e) => (e.plannerId === plannerId ? { ...e, title } : e));
         },
-        updatePlannerThumbnail(state,action){
+        //plannerAccess버전
+        updatePlannerAccess(state, action) {
+            const { plannerId, plannerAccess } = action.payload;
+            return state.map((e) => (e.plannerId === plannerId ? { ...e, plannerAccess } : e));
+        },
+
+        updatePlannerThumbnail(state, action) {
             const { plannerId, thumbnail } = action.payload;
-            return state.map( e => e.plannerId === plannerId ? {...e,thumbnail} : e )
+            return state.map((e) => (e.plannerId === plannerId ? { ...e, thumbnail } : e));
         },
         updatePlanner(state, action) {
             const { plannerId, planner } = action.payload;
