@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import Editor from '@ckeditor/ckeditor5-custom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import Editor from '@ckeditor/ckeditor5-custom';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
 import Base64UploaderPlugin from './plugin/Plugin';
 import '../../../constant/css/index.css';
@@ -55,12 +57,10 @@ export default function CardEditor(props) {
         <PostContainer className="App">
             <div className="form-wrapper">
                 <CKEditor
-                    editor={Editor}
+                    editor={ClassicEditor}
                     config={{
                         // (4)
-                        // plugins: [CodeBlock],
                         extraPlugins: [Base64UploaderPlugin],
-                        // toolbar: ['codeBlock'],
                     }}
                     //뭔가 쓰고 싶으면 html 형식으로
                     data={props.post}
