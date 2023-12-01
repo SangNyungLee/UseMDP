@@ -8,6 +8,8 @@ export default function CustomListHiddable(props) {
   const [hide, setHide] = useState(true);
   const [rightClickData, setRightClickData] = useState([]);
 
+  const CustomLoadMap = props.loadMap;
+
   const like = useSelector( state => state.like)
 
   const data = props.datas;
@@ -54,7 +56,7 @@ export default function CustomListHiddable(props) {
                             )
                           }
                         >
-                          <LoadMap
+                          <CustomLoadMap
                             datas={planner}
                             isLike={isLiked ? 1 : 0}
                           />
@@ -79,7 +81,7 @@ export default function CustomListHiddable(props) {
                 {Array.from({ length: endIdx - idx + 1 }).map((_, i) => (
                   <Col key={data[idx + i].plannerId}>
                     <div onContextMenu={handleRightClick}>
-                      <LoadMap
+                      <CustomLoadMap
                         datas={data[i]}
                         isLike={like}
                       />

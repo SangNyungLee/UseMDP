@@ -263,7 +263,7 @@ export default function MyLoadMap(props) {
 		// </_Container>
 
 		<_cardContainer text='white' onClick={(e) => handleClick(e)}>
-			<_cardImg src={skyImg} alt='planner thumbnail' />
+			<_cardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
 			<_cardImgOverlay>
 				<_cardBody>
 					<_cardTitle as={'h5'}>{editedTitle}</_cardTitle>
