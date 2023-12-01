@@ -1,7 +1,8 @@
 import React from 'react';
 import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser } from 'react-icons/fa';
 import '../../constant/css/customHeader2.css';
-function CustomHeader2() {
+function CustomHeader2(props) {
+    // console.log(props.setSwitch);
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -54,7 +55,15 @@ function CustomHeader2() {
             </div>
 
             <div className="content-header-right">
-                <button type="button" className="button-style-header-right">
+                <button
+                    type="button"
+                    onClick={() => {
+                        props.setSwitch((prev) => {
+                            return prev == 0 ? 1 : 0;
+                        });
+                    }}
+                    className="button-style-header-right"
+                >
                     <FaEllipsisH style={{ fontSize: '12px', color: 'white' }} />
                     <span className="menu-text">Show menu</span>
                 </button>

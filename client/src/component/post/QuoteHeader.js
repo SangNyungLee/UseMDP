@@ -13,8 +13,7 @@ import FileImageInputComponent from '../FileImageInputComponent';
 import { patchPlanner } from '../../utils/DataAxios';
 
 export default function QuoteHeader(props) {
-    const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo } = props;
-
+    const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo, setSwitch } = props;
     const [plannerId, setPlannerId] = useState();
     const [plannerTitle, setPlannerTitle] = useState();
     const [readData, setReadData] = useState();
@@ -77,7 +76,7 @@ export default function QuoteHeader(props) {
 
     return (
         <>
-            <CustomHeader2 />
+            <CustomHeader2 setSwitch={setSwitch} />
             <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             {/* <div>
                

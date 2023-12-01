@@ -234,7 +234,7 @@ export default function QuoteApp() {
     } else {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} plannerInfo={plannerInfo} />
+                <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} plannerInfo={plannerInfo} setSwitch={setSwitchContext} />
                 <_QuoteAppContainer image={plannerThumbnail ? sky : plannerThumbnail}>
                     <_Thumbnail ref={thumnnailRef}>
                         {/* 1024보다 클때 -> 모두 출력 */}
