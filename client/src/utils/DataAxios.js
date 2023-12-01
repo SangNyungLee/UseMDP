@@ -162,3 +162,12 @@ export async function patchPlanner(plannerData) {
     });
     console.log('del', res);
 }
+export async function deleteCheckList(id) {
+    const res = await axios({
+        method: 'DELETE',
+        url: getURL(`/api/deleteCheckList/${id}`),
+        withCredentials: true,
+    });
+    console.log('del', res);
+    return res.data;
+}

@@ -86,9 +86,9 @@ export default function PlannerListLi({ planner }) {
     dispatch(calendarActions.setHome([plannerId]));
   };
 
-  const delPlanner = (e) => {
+  const delPlanner = async (e) => {
     e.stopPropagation();
-    deleteMyPlanner(plannerId);
+    await deleteMyPlanner(plannerId);
     dispatch(plannerListActions.delPlanner(plannerId));
     if (plannerId === home[0] && plannerList.length > 1) {
       const otherPlanner = plannerList.find(

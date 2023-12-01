@@ -10,9 +10,114 @@ import { eventStyleGetter, getNestedElement } from '../../utils/CalendarControll
 import { getOneCard } from '../../utils/QuoteSetting';
 import { dateParsing } from '../../utils/DataParsing';
 import { patchCard, postCard } from '../../utils/DataAxios';
+import styled from 'styled-components';
+import CalendarSelect from '../home/calendar/CalendarSelect';
+import { QUOTE } from '../../constant/constant';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
+
+const _Toolbar = styled.div`
+  width: 55vw;
+  margin-bottom: 10px;
+  @media screen and (max-width: 1300px) {
+    & {
+      width: 65vw;
+    }
+  }
+`;
+
+const _ToGoButton = styled.div`
+  border: none;
+  background: none;
+  font-size: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const _Label = styled.span`
+  font-size: 25px;
+  font-weight: bolder;
+`;
+
+const _SwitchButton = styled.button`
+  background: none;
+  border: none;
+  margin: 0px 5px;
+  width: 70px;
+
+  &:hover {
+    background-color: #ccc;
+  }
+`;
+
+const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
+    const goToToday = (e) => {
+      e.stopPropagation();
+      onNavigate("TODAY"); // 오늘 날짜로 이동
+    };
+  
+    const goToNext = (e) => {
+      e.stopPropagation();
+      onNavigate("NEXT"); // 다음 달로 이동
+    };
+  
+    const goToPrev = (e) => {
+      e.stopPropagation();
+      onNavigate("PREV"); // 이전 달로 이동
+    };
+  
+    const switchToMonthView = (e) => {
+      e.stopPropagation();
+      onView("month"); // 주 단위(view)로 전환
+    };
+  
+    const switchToWeekView = (e) => {
+      e.stopPropagation();
+      onView("week"); // 주 단위(view)로 전환
+    };
+  
+    const switchToDayView = (e) => {
+      e.stopPropagation();
+      onView("day"); // 날짜 단위(view)로 전환
+    };
+  
+    const switchToAgendaView = (e) => {
+      e.stopPropagation();
+      onView("agenda"); // 날짜 단위(view)로 전환
+    };
+  
+    return (
+      <_Toolbar>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            marginBottom: "10px",
+          }}
+        >
+          <_ToGoButton onClick={(e) => goToPrev(e)}>{"<"}</_ToGoButton>
+          <div onClick={(e) => goToToday(e)} style={{ textAlign: "center" }}>
+            <_Label>{label}</_Label>
+          </div>
+          <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
+        </div>
+        <CalendarSelect target={QUOTE} />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <_SwitchButton onClick={(e) => switchToMonthView(e)}>
+            Month
+          </_SwitchButton>
+          <_SwitchButton onClick={(e) => switchToWeekView(e)}>Week</_SwitchButton>
+          <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
+          <_SwitchButton onClick={(e) => switchToAgendaView(e)}>
+            Agenda
+          </_SwitchButton>
+        </div>
+      </_Toolbar>
+    );
+  };
 
 export default function QuoteAppCalendar(props) {
     const plannerList = useSelector((state) => state.plannerList);
@@ -26,11 +131,6 @@ export default function QuoteAppCalendar(props) {
     const plannerId = quote[0];
     const cardStatusIndex = quote[1] ? quote[1] : 0;
     const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
-
-    useEffect(() => {
-        const selectedEvents = getNestedElement(plannerList, quote);
-        setEvents(dateParsing(selectedEvents));
-    }, [plannerList, quote]);
 
     useEffect(() => {
         const selectedEvents = getNestedElement(plannerList, quote);
@@ -108,9 +208,9 @@ export default function QuoteAppCalendar(props) {
                 selectable
                 style={{ height: '100%', backgroundColor: 'white', flex: 2 }}
                 eventPropGetter={eventStyleGetter}
-                // components={{
-                //   toolbar: CustomToolbar,
-                // }}
+                components={{
+                  toolbar: CustomToolbar,
+                }}
             />
         </>
     );

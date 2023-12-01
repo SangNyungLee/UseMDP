@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import CardEditor from '../post/Editor/CardEditor';
 import ProgressBar from 'react-bootstrap/ProgressBar';
@@ -10,7 +9,7 @@ import copy from 'fast-copy';
 import { siteActions } from '../../store/site';
 import { HexColorPicker } from 'react-colorful';
 import { darken } from 'polished';
-import { patchCard } from '../../utils/DataAxios';
+import { deleteCheckList, patchCard } from '../../utils/DataAxios';
 import description from '../../constant/img/description.svg';
 import list2 from '../../constant/img/list2.svg';
 import list1 from '../../constant/img/list.svg';
@@ -59,17 +58,7 @@ const _ChecklistContainer = styled.div`
     justify-content: space-between;
 `;
 
-const _Title = styled.div`
-    margin-top: 50px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: bolder;
-    font-family: 'SUITE-Regular';
-    letter-spacing: 1px;
-`;
-
 const _Span = styled.span`
-    margin-left: 10px;
     font-size: 19px;
     font-weight: bolder;
 `;
@@ -80,10 +69,16 @@ const _CheckBox = styled.input`
 `;
 
 const _TextInput = styled.input`
+    height: 35px;
     width: 87%;
-    border: none;
+    margin-left: 5px;
+    border: 1px solid #091e420f;
+    border-radius: 3px;
     outline: none;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
+    &:focus {
+        border: 2px solid #007bff;
+    }
 `;
 
 const _DeleteButton = styled.button`
@@ -103,7 +98,7 @@ const TitleEdit = styled.div`
 `;
 
 const IconImg = styled.img`
-    margin: 10px;
+    margin: 0 10px 10px 10px;
 `;
 const ParseContainer = styled.div`
     margin-left: 35px;
@@ -127,11 +122,11 @@ const AcceptButton = styled.button`
     width: 50px;
     font-size: 12px;
     font-weight: bold;
+    margin-left: 5px;
     border: 3px #091e420f;
     border-radius: 3px;
     height: 35px;
     margin-right: 5px;
-    margin-top: 10px;
 `;
 
 const CancelButton = styled.button`
@@ -142,7 +137,6 @@ const CancelButton = styled.button`
     background-color: #091e420f;
     border: 3px #091e420f;
     border-radius: 3px;
-    margin-top: 10px;
     background-color: '#091E420F';
     &:hover {
         background: #ccc;
@@ -164,6 +158,8 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const Edits = [post, setPost];
     const [editingIndex, setEditingIndex] = useState(null);
     const [progress, setProgress] = useState(0);
+    const [tmpEdit, setTmpEdit] = useState('');
+    const [deletedCheckList, setDeletedCheckList] = useState([]);
     const dispatch = useDispatch();
 
     const handleCloseWithoutSave = () => {
@@ -189,7 +185,14 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         console.log('MODAL에서 보내는 item', newCardItem);
         try {
             const result = await patchCard(newCardItem);
+            console.log('deletedCheckList', deletedCheckList);
+            for (let id of deletedCheckList) {
+                if (!isNaN(id)) {
+                    await deleteCheckList(id);
+                }
+            }
             dispatch(siteActions.setIsData(false));
+            setDeletedCheckList([]);
             modalClose();
             setShow(false);
         } catch (err) {
@@ -279,13 +282,18 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         });
     };
 
-    const checkTitleEdit = (index, value) => {
+    const checkTitleEdit = (index) => {
         const newChecklist = [...checklists];
-        newChecklist[index] = { ...newChecklist[index], title: value };
+        newChecklist[index] = { ...newChecklist[index], title: tmpEdit };
         setChecklists(newChecklist);
+        editClose();
+    };
+    const editClose = () => {
+        setEditingIndex(null);
     };
 
     const deleteCheck = (index) => {
+        setDeletedCheckList((prev) => [...prev, checklists[index].checklistId]);
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
 
@@ -350,9 +358,15 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                                           <_CheckBox type="checkbox" checked={item.checked == 1} onChange={(e) => handleCheckboxChange(index, e.target.checked)} />
 
                                           {editingIndex === index ? (
-                                              <_TextInput type="text" value={item.title} onChange={(e) => checkTitleEdit(index, e.target.value)} />
+                                              <>
+                                                  <_TextInput type="text" value={item.title} onChange={(e) => setTmpEdit(e.target.value)} />
+                                                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                                      <AcceptButton onClick={(e) => checkTitleEdit(index)}>저장</AcceptButton>
+                                                      <CancelButton onClick={editClose}>취소</CancelButton>
+                                                  </div>
+                                              </>
                                           ) : (
-                                              <div style={{ width: '87%' }} onClick={() => setEditingIndex(index)}>
+                                              <div style={{ marginLeft: '5px', width: '87%' }} onClick={() => setEditingIndex(index)}>
                                                   {item.checked == 1 ? <strike>{item.title}</strike> : item.title}
                                               </div>
                                           )}
@@ -377,12 +391,13 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
 
                     <FlexContainer>
                         <div>
+                            <IconImg src={calendarImg}></IconImg>
                             <_Span>Start Date</_Span>
                             <MyDayPicker date={startDate} setDate={setStartDate} />
                         </div>
                         {/* <_Span>~</_Span> */}
                         <div>
-                            <_Span>End Date</_Span>
+                            <IconImg src={calendarImg}></IconImg> <_Span>End Date</_Span>
                             <MyDayPicker date={endDate} setDate={setEndDate} />
                         </div>
                     </FlexContainer>

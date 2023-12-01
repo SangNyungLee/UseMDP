@@ -23,7 +23,7 @@ const FlexContainer = styled.div`
 `;
 
 export default function CardListHeader(props) {
-    const { index } = props;
+    const { index, pid } = props;
 
     const dispatch = useDispatch();
     const pointer = useSelector((state) => state.pointer);
@@ -36,7 +36,7 @@ export default function CardListHeader(props) {
         case '0':
             return (
                 <>
-                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker index={index} point={pointer}></LeftClicker> : null}
+                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker index={index} point={pointer} pid={pid}></LeftClicker> : null}
                     <FlexContainer>
                         <HeaderDiv>TODO</HeaderDiv>
                         <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
