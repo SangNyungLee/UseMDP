@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function dateParsing(planner){
     return planner.flat().map( e => ({ ...e,
         startDate: moment(e.startDate),
