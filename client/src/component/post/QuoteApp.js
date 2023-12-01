@@ -22,7 +22,7 @@ const _QuoteAppContainer = styled.div`
     display: flex;
     flex: 1;
     background-image: url(${(props) => props.image});
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
 `;
 
@@ -41,6 +41,7 @@ const _Thumbnail = styled.div`
 `;
 
 export default function QuoteApp() {
+    const [switchContext, setSwitchContext] = useState(0);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const plannerList = useSelector((state) => state.plannerList);
     const { quote } = useSelector((state) => state.calendar);
@@ -236,18 +237,37 @@ export default function QuoteApp() {
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} plannerInfo={plannerInfo} />
                 <_QuoteAppContainer image={plannerThumbnail ? sky : plannerThumbnail}>
                     <_Thumbnail ref={thumnnailRef}>
-                        <_QuoteContainer>
-                            <DragDropContext
-                                onDragEnd={(result, provided) => {
-                                    onDragEnd(result, provided);
-                                }}
-                            >
-                                {planner.map((cardList, index) => (
-                                    <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
-                                ))}
-                            </DragDropContext>
-                        </_QuoteContainer>
-                        {isCalendarVisible ? <QuoteAppCalendar /> : null}
+                        {/* 1024보다 클때 -> 모두 출력 */}
+                        {isCalendarVisible ? (
+                            <>
+                                <_QuoteContainer>
+                                    <DragDropContext
+                                        onDragEnd={(result, provided) => {
+                                            onDragEnd(result, provided);
+                                        }}
+                                    >
+                                        {planner.map((cardList, index) => (
+                                            <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                                        ))}
+                                    </DragDropContext>
+                                </_QuoteContainer>
+                                <QuoteAppCalendar />
+                            </>
+                        ) : switchContext == 0 ? (
+                            <_QuoteContainer>
+                                <DragDropContext
+                                    onDragEnd={(result, provided) => {
+                                        onDragEnd(result, provided);
+                                    }}
+                                >
+                                    {planner.map((cardList, index) => (
+                                        <DroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                                    ))}
+                                </DragDropContext>
+                            </_QuoteContainer>
+                        ) : (
+                            <QuoteAppCalendar />
+                        )}
                     </_Thumbnail>
                 </_QuoteAppContainer>
             </div>

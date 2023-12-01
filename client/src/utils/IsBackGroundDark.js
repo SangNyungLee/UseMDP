@@ -14,7 +14,6 @@ export default function IsBackGroundDark(color) {
     const sum = max + min;
     // 명도 계산
     const brightness = sum * 50;
-    console.log(color, brightness);
     // return brightness;
     return brightness < 50; // 밝은 경우 true, 어두운 경우 false 반환
 }
