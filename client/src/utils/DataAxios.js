@@ -171,3 +171,35 @@ export async function deleteCheckList(id) {
     console.log('del', res);
     return res.data;
 }
+
+export async function getLikesAxios(){
+    const res = await axios({
+        method: 'GET',
+        url: getURL('/api/getLikes'),
+        withCredentials: true
+    });
+    return res.data;
+}
+
+export async function postPlannerLike(plannerId){
+    const res = await axios({
+        method: 'POST',
+        url: getURL(`/api/postPlanner/like`),
+        data: {
+            plannerId
+        },
+        withCredentials: true,
+    });
+    console.log('plannerLike', res);
+    return res.data;
+}
+
+export async function deletePlannerUnlike(plannerId){
+    const res = await axios({
+        url: getURL("/api/patchPlanner/unlike"),
+        data: { plannerId },
+        withCredentials: true,
+    });
+    console.log("delete",res);
+    return res;
+}

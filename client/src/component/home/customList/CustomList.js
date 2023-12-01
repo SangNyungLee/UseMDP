@@ -1,10 +1,10 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import PlusMap from '../../LoadMap/PlusMap';
+import LoadMap from '../../LoadMap/LoadMap';
 
 export default function CustomList(props) {
 	const data = props.datas;
 	console.log('css', data);
-	const CustomLoadMap = props.loadMap;
 	//이게 4의 배수면 plusmap을 새로운 Row에 넣어야한다.
 	const isMultipleOfFour = data.length % 4 === 0;
 	const lastIdx = data.length - 1;
@@ -18,7 +18,7 @@ export default function CustomList(props) {
 						<Row key={`row-${idx / 4}`} style={{ marginTop: idx !== 0 ? '30px' : 0 }}>
 							{[...Array(4)].map((_, i) => (
 								<Col key={data[idx + i]?.plannerId}>
-									{data[idx + i] && <CustomLoadMap datas={data[idx + i]}></CustomLoadMap>}
+									{data[idx + i] && <LoadMap datas={data[idx + i]}/>}
 								</Col>
 							))}
 						</Row>
