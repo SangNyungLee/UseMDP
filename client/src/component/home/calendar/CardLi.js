@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { calendarActions } from "../../../store/calendar";
 import { plannerListActions } from "../../../store/plannerList";
+import { deleteCardById } from "../../../utils/DataAxios";
 
 const _CardLi = styled.li`
   display: flex;
@@ -64,8 +65,9 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
     dispatch(calendarActions.setHome([plannerId, cardStatus, cardId]));
   };
 
-  const delCard = (e, cardId) => {
+  const delCard = async (e, cardId) => {
     e.stopPropagation();
+    await deleteCardById(cardId);
     dispatch(plannerListActions.delCard(cardId));
     if (home.length > 1) {
       if (cardId === home[2]) {
