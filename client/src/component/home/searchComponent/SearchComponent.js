@@ -241,7 +241,7 @@ export default function SearchComponent() {
                 </SearchContainer>
                 <hr></hr>
                 <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>
-                <CustomList datas={filteredDatas} loadMap={LoadMap}></CustomList>
+                <CustomList datas={filteredDatas}/>
             </div>
         );
     }
