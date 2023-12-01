@@ -10,7 +10,7 @@ export const _SidebarCol = styled(Col)``;
 export const _RenderComponentCol = styled(Col)``;
 
 export const _RenderComponent = styled.div`
-	z-index: 50;
+    z-index: 99;
 `;
 
 export const _Navbar = styled(Navbar)``;

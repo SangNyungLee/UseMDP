@@ -34,16 +34,16 @@ export default function QuoteAppCalendar(props) {
 
     const plannerUpdateCard = async (data) => {
         const { start, end, event } = data;
-        const cardId = event.cardId
-        const startDate = start.toISOString()
-        const endDate = end.toISOString()
-        const card = events.find( e => e.cardId === cardId )
+        const cardId = event.cardId;
+        const startDate = start.toISOString();
+        const endDate = end.toISOString();
+        const card = events.find((e) => e.cardId === cardId);
         const requestData = {
             ...card,
             startDate,
             endDate,
             plannerId,
-        }
+        };
         await patchCard(requestData);
         dispatch(
             plannerListActions.updateCard({
@@ -52,7 +52,7 @@ export default function QuoteAppCalendar(props) {
                 endDate,
             })
         );
-    }
+    };
 
     const onSelectSlot = async (slotInfo) => {
         const newEvent = getOneCard(events.length, cardStatus);
@@ -66,8 +66,8 @@ export default function QuoteAppCalendar(props) {
             ...newEvent,
             plannerId,
             cardStatus,
-            checklists:[{checked:0,title:'done'}]
-        }
+            checklists: [{ checked: 0, title: 'done' }],
+        };
 
         const res = await postCard(requestData);
 
@@ -101,7 +101,7 @@ export default function QuoteAppCalendar(props) {
                 onSelectEvent={onSelectEvent}
                 resizable
                 selectable
-                style={{ height: '80vh', backgroundColor: 'white', flex: 1 }}
+                style={{ height: '100%', backgroundColor: 'white', flex: 2 }}
                 eventPropGetter={eventStyleGetter}
                 // components={{
                 //   toolbar: CustomToolbar,

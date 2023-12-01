@@ -18,7 +18,7 @@ export function getItems(count, offset = 0, separatorStr = 'TODO') {
             cardId: v4(),
             post: ``,
             title: `title ${k + offset}`,
-            coverColor: '#FFD6DA',
+            coverColor: '#390099',
             startDate: new Date(Date.now() + (r1 - 15) * 24 * 60 * 60 * 1000).toISOString(),
             endDate: new Date(Date.now() + (r1 + r2 - 15) * 24 * 60 * 60 * 1000).toISOString(),
             createdAt: currentTime.toISOString(),
@@ -52,9 +52,10 @@ export function getListStyle(isDraggingOver) {
     return {
         background: isDraggingOver ? 'lightblue' : '#f1f3f5',
         padding: grid,
-        width: 250,
+        width: '250px',
+        marginLeft: '5px',
         borderRadius: '10px',
-        marginRight: '10px',
+        // marginRight: '50px',
         minHeight: 'auto', // Set minHeight to 'auto' to adjust the height based on content
     };
 }

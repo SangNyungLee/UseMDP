@@ -1,85 +1,73 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { plannerListActions } from "../../../store/plannerList";
-import PlannerListLi from "./PlannerListLi";
-import useRead from "../../../hook/useRead";
-import {
-  plannerCardStatusDevide,
-  plannerListCardStatusDevide,
-  readSpecifiedPlanner,
-  readUnspecifiedPlanner,
-  readUnspecifiedPlannerList,
-  specifyPlanner,
-} from "../../../utils/DataParsing";
-import {
-  validatePlannerData,
-  validatePlannerListData,
-  validateUnspecifiedPlannerData,
-  validateUnspecifiedPlannerListData,
-} from "../../../utils/DataValidate";
-import { calendarActions } from "../../../store/calendar";
-import { HOME } from "../../../constant/constant";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { plannerListActions } from '../../../store/plannerList';
+import PlannerListLi from './PlannerListLi';
+import useRead from '../../../hook/useRead';
+import { plannerCardStatusDevide, plannerListCardStatusDevide, readSpecifiedPlanner, readUnspecifiedPlanner, readUnspecifiedPlannerList, specifyPlanner } from '../../../utils/DataParsing';
+import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from '../../../utils/DataValidate';
+import { calendarActions } from '../../../store/calendar';
+import { HOME } from '../../../constant/constant';
 
 const _Container = styled.div`
-  border-radius: 5px;
-  background-color: whitesmoke;
-  height: 80vh;
-  width: 240px;
-  white-space: nowrap;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  text-overflow: ellipsis;
-  padding-top: 30px;
-  margin: 0px 30px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    height: 80vh;
+    width: 240px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    padding-top: 30px;
+    margin: 0px 30px;
 
-  @media screen and (max-width: 1300px) {
-    & {
-      display: none;
+    @media screen and (max-width: 1300px) {
+        & {
+            display: none;
+        }
     }
-  }
 `;
 
 const _PlannerListUl = styled.ul`
-  list-style-type: none;
-  padding: 5px;
+    list-style-type: none;
+    padding: 5px;
 `;
 
 const _Flex = styled.div`
-  display: flex;
+    display: flex;
 `;
 
 const _Title = styled.div`
-  display: flex;
-  justify-content: center;
-  font-size: 20px;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
 `;
 
 const _SelectContainer = styled.div`
-  display: none;
+    display: none;
 `;
 
 export default function CalendarSideBar() {
-  const plannerList = useSelector((state) => state.plannerList);
-  const [visible, setVisible] = useState(false);
-  const [title, setTitle] = useState("{planner[0].title}");
-  const readerRegister = useRead(HOME);
+    const plannerList = useSelector((state) => state.plannerList);
+    const [visible, setVisible] = useState(false);
+    const [title, setTitle] = useState('{planner[0].title}');
+    const readerRegister = useRead(HOME);
 
-  const isClickSelect = (e) => {
-    setVisible(!visible);
-  };
+    const isClickSelect = (e) => {
+        setVisible(!visible);
+    };
 
-  return (
-    <>
-      <_Container {...readerRegister}>
-        <_Title>Planner List</_Title>
-        <_PlannerListUl>
-          {plannerList.map((planner) => (
-            <PlannerListLi key={planner.plannerId} planner={planner} />
-          ))}
-        </_PlannerListUl>
-      </_Container>
-    </>
-  );
+    return (
+        <>
+            <_Container {...readerRegister}>
+                <_Title>Planner List</_Title>
+                <_PlannerListUl>
+                    {plannerList.map((planner) => (
+                        <PlannerListLi key={planner.plannerId} planner={planner} />
+                    ))}
+                </_PlannerListUl>
+            </_Container>
+        </>
+    );
 }

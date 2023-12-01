@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { pointActions } from '../store/pointer';
 const _Font = styled.div`
     font-family: 'SUITE-Regular';
-    height: auto;
+    height: 100vh;
 `;
 
 export default function PlannerPage() {
