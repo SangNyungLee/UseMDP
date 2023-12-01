@@ -31,7 +31,8 @@ const _QuoteContainer = styled.div`
 const _Thumbnail = styled.div`
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 80vh;
+    background-color: '#392f31';
     background-image: url(${(props) => props.image});
     background-size: contain;
     background-repeat: no-repeat;

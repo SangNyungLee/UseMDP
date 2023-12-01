@@ -3,6 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
 import Base64UploaderPlugin from './plugin/Plugin';
+// import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
 import '../../../constant/css/index.css';
 import { Button } from 'react-bootstrap';
 const PostContainer = styled.div`
@@ -45,7 +46,6 @@ export default function CardEditor(props) {
     function saveEditArea(e) {
         //객체 로직으로 저장
         e.stopPropagation();
-        console.log('EditArea', EditArea);
         props.editpost[1](EditArea);
         setHide(true);
     }
@@ -58,7 +58,9 @@ export default function CardEditor(props) {
                     config={{
                         // (4)
                         // plugins: [MyAdapter],
+                        // plugins: [CodeBlock],
                         extraPlugins: [Base64UploaderPlugin],
+                        //  toolbar: ['heading', '|', 'bold', 'italic', 'codeBlock', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
                     }}
                     //뭔가 쓰고 싶으면 html 형식으로
                     data={props.post}
