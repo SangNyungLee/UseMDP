@@ -6,10 +6,11 @@ import { plannerListActions } from "../../../store/plannerList";
 import PlannerListLi from "./PlannerListLi";
 import useRead from "../../../hook/useRead";
 import CalendarSelectList from "./CalendarSelectList";
+import { HOME, QUOTE } from "../../../constant/constant";
 
 const _SelectContainer = styled.div`
   background-color: aliceblue;
-  width: 146px;
+  width: 170px;
   height: 40px;
   border-radius: 2px;
   display: flex;
@@ -42,11 +43,17 @@ const _Flex = styled.div`
 `;
 
 const _Container = styled.div`
-  width: 146px;
-  overflow-y: hidden;
-  background-color: white;
+  display: flex;
+  width: 170px;
+  overflow-y: scroll;
+  background-color: aliceblue;
   height: 150px;
   border-radius: 2px;
+  flex-direction: column;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const _Title = styled.div`
@@ -54,26 +61,33 @@ const _Title = styled.div`
   text-overflow: ellipsis;
 `;
 
-export default function CalendarSelect() {
-  const [isClick, setIsClick] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+export default function CalendarSelect({target}) {
+  const [ isClick, setIsClick ] = useState(false);
+  const [ isVisible, setIsVisible ] = useState(false);
   const plannerList = useSelector((state) => state.plannerList);
-  const [isTitle, setIsTitle] = useState("");
+  const { home, quote } = useSelector( state => state.calendar)
+  const [title, setTitle] = useState("");
 
-  const selectClickDrop = () => {
-    setIsClick(true);
-    setIsVisible(true);
-  };
+  useEffect(()=>{
+    if(plannerList.length > 0){
+      let planner;
+      switch(target){
+        case(HOME):
+          planner = plannerList.find( e => e.plannerId === home[0])
+          setTitle(planner.title);
+          break;
+        case(QUOTE):
+          planner = plannerList.find( e => e.plannerId === quote[0])
+          setTitle(planner.title);
+          break;
+      }
+    }
+  },[plannerList,home,quote])
 
-  const selectClick = () => {
-    setIsClick(false);
-    setIsVisible(false);
-  };
-
-  const plannerTitleChange = (title, visible, click) => {
-    setIsTitle(title);
-    setIsVisible(visible);
-    setIsClick(click);
+  const selectClick = (e) => {
+    e.stopPropagation();
+    setIsClick( prev => !prev );
+    setIsVisible( prev => !prev);
   };
 
   // const plannerTitleClick = (value) => {
@@ -83,24 +97,26 @@ export default function CalendarSelect() {
   return (
     <_Flex>
       <_SelectContainer>
-        {isClick ? (
+        { isClick ? (
           <_SelectArrow onClick={(e) => selectClick(e)}>
             <div>{"▼"}</div>
           </_SelectArrow>
         ) : (
-          <_SelectArrow onClick={(e) => selectClickDrop(e)}>
+          <_SelectArrow onClick={(e) => selectClick(e)}>
             <div>{"▶"}</div>
           </_SelectArrow>
         )}
-        <_Title>{isTitle}</_Title>
+        <_Title onClick={ e => selectClick(e)}>{title}</_Title>
       </_SelectContainer>
-      {isVisible ? (
+      { isVisible ? (
         <_Container>
-          {plannerList.map((planner) => (
+          {plannerList.map((planner,id) => (
             <CalendarSelectList
               key={planner.plannerId}
               planner={planner}
-              onTitleChange={plannerTitleChange}
+              setIsVisible={setIsVisible}
+              target={target}
+              index={id}
             />
           ))}
         </_Container>
