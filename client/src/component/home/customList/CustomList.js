@@ -8,6 +8,8 @@ export default function CustomList(props) {
 
 	console.log('data', data);
 
+	const CustomLoadMap = props.loadMap;
+
 	//이게 4의 배수면 plusmap을 새로운 Row에 넣어야한다.
 	const isMultipleOfFour = data.length % 4 === 0;
 	const lastIdx = data.length - 1;
@@ -21,7 +23,7 @@ export default function CustomList(props) {
 				{data.map((planner, idx) => {
 					return (
 						<Col key={idx + 1}>
-							<MyLoadMap datas={planner} />
+							<CustomLoadMap datas={planner} />
 						</Col>
 					);
 				})}

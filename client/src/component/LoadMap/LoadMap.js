@@ -9,6 +9,7 @@ import { plannerListActions } from '../../store/plannerList';
 import { useDispatch } from 'react-redux';
 import LikeButton from './LikeButton';
 import { postPlannerLike } from '../../utils/DataAxios';
+import skyImg from '../../constant/img/sky.jpg';
 
 const _Container = styled.div`
     margin-bottom: 20px;
@@ -77,7 +78,7 @@ export default function LoadMap(props) {
 
     return (
         <_Container onClick={(e) => handleClick(e)}>
-            <_ImageStyle src={thumbnail}></_ImageStyle>
+            <_ImageStyle src={thumbnail ? thumbnail : skyImg}></_ImageStyle>
             <div>
                 <_Felx>
                     <_TitleStyle>{title}</_TitleStyle>

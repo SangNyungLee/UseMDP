@@ -69,7 +69,7 @@ export default function StarComponent() {
         return (
             <div style={{ padding: '15px' }} onClick={handlePoint}>
                 <h2>인기 로드맵</h2>
-                <CustomListHiddable datas={data} points={[point, setPoint]} />
+                <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
                 {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}
 
