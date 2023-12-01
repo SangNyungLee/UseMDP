@@ -4,7 +4,7 @@ import copy from 'fast-copy';
 //2) 같은 칸톤 보드에서 위치 바꿈
 //3) 위에서 아래로 갔으면, 그 사이에 있는 값들의 intOrder를 ++해주고,
 //4)아래서 위로 갔으면 그 사이에 있는 값들의 intOrder를 --해준다.
-export function reorder (list, startIndex, endIndex) {
+export function reorder(list, startIndex, endIndex) {
     //아래에서 위로 갔다면
     const newList = copy(list);
     if (startIndex < endIndex) {
@@ -22,12 +22,12 @@ export function reorder (list, startIndex, endIndex) {
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
     return result;
-};
+}
 
 // idx를 받았을 때, idx4개를 받아 order를 바꿔줘야함.
 //시작지에서는 droppableSource로 접근하고, index초과인 친구들의 intOrder를 -1하면 된다.
 // 도착지에서는 droppableid로 접근하고, index초과인 친구들의 intOrder를 +1하면 된다.
-export function move (source, destination, droppableSource, droppableDestination) {
+export function move(source, destination, droppableSource, droppableDestination) {
     console.log('move : ', source, destination, droppableSource, droppableDestination);
     const sourceClone = copy(source);
     const destClone = copy(destination);
@@ -53,4 +53,4 @@ export function move (source, destination, droppableSource, droppableDestination
     result[droppableDestination.droppableId] = destClone;
 
     return result;
-};
+}
