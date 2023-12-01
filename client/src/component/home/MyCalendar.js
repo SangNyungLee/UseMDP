@@ -124,8 +124,8 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
         </div>
         <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
       </div>
-      <CalendarSelect target={HOME}/>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", position:'relative' }}>
+        <CalendarSelect target={HOME}/>
         <_SwitchButton onClick={(e) => switchToMonthView(e)}>
           Month
         </_SwitchButton>

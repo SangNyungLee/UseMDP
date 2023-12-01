@@ -4,6 +4,7 @@ import { plannerListActions } from "../store/plannerList";
 import { calendarActions } from "../store/calendar";
 import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../utils/DataValidate";
 import { readPlanner, readPlannerList } from "../utils/DataAxiosParsing";
+import { HOME } from "../constant/constant";
 
 export default function useRead(target){
     const [ readData, setReadData ] = useState();
@@ -41,20 +42,24 @@ export default function useRead(target){
         const planner = await readPlanner(data,specified);
         const { plannerId } = planner
         dispatch(plannerListActions.addPlanner(planner))
-        dispatch(calendarActions.setSelect({
-            target,
-            value: [plannerId]
-        }))
+        if(target === HOME){
+            dispatch(calendarActions.setSelect({
+                target,
+                value: [plannerId]
+            }))
+        }
     }
 
     const readPlannerListData = async (data,specified) => {
         const plannerList = await readPlannerList(data,specified);
         const plannerId = plannerList[0].plannerId
         dispatch(plannerListActions.addPlannerList(plannerList))
-        dispatch(calendarActions.setSelect({
-            target,
-            value: [plannerId]
-        }))
+        if(target === HOME){
+            dispatch(calendarActions.setSelect({
+                target,
+                value: [plannerId]
+            }))
+        }
     }
 
     const handleDrop = (e) => {

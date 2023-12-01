@@ -8,6 +8,7 @@ export function eventStyleGetter(event, start, end, isSelected) {
         border: '0px',
         display: 'block',
         textAlign: 'center',
+        marginBottom: '2px',
     };
     return {style};
 };

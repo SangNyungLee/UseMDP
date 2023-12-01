@@ -1,13 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../../store/plannerList';
 import PlannerListLi from './PlannerListLi';
 import useRead from '../../../hook/useRead';
-import { plannerCardStatusDevide, plannerListCardStatusDevide, readSpecifiedPlanner, readUnspecifiedPlanner, readUnspecifiedPlannerList, specifyPlanner } from '../../../utils/DataParsing';
-import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from '../../../utils/DataValidate';
-import { calendarActions } from '../../../store/calendar';
 import { HOME } from '../../../constant/constant';
 
 const _Container = styled.div`
@@ -34,29 +28,15 @@ const _PlannerListUl = styled.ul`
     padding: 5px;
 `;
 
-const _Flex = styled.div`
-    display: flex;
-`;
-
 const _Title = styled.div`
     display: flex;
     justify-content: center;
     font-size: 20px;
 `;
 
-const _SelectContainer = styled.div`
-    display: none;
-`;
-
 export default function CalendarSideBar() {
     const plannerList = useSelector((state) => state.plannerList);
-    const [visible, setVisible] = useState(false);
-    const [title, setTitle] = useState('{planner[0].title}');
     const readerRegister = useRead(HOME);
-
-    const isClickSelect = (e) => {
-        setVisible(!visible);
-    };
 
     return (
         <>

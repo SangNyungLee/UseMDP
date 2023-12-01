@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser } from 'react-icons/fa';
 import '../../constant/css/customHeader2.css';
-function CustomHeader2() {
+function CustomHeader2({handleBlur}) {
     return (
         <div className="nav-main">
             <div className="nav-bar">
