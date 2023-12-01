@@ -8,9 +8,9 @@ import { pointActions } from '../store/pointer';
 import useDefaultCheck from '../hook/useDefaultCheck';
 import { HOME } from '../constant/constant';
 import { useSelector } from 'react-redux';
-const _Font = styled.div`
-	font-family: 'SUITE-Regular';
-`;
+import HomeHeader from '../component/home/HomeHeader';
+
+import { _pageContainer } from '../constant/css/styledComponents/__HomePage';
 
 const _Flex = styled.div`
 	display: flex;
@@ -26,12 +26,18 @@ export default function HomePage() {
 	};
 
 	return (
-		<_Font onClick={(e) => handlePoint(e)}>
-			{/* <Header /> */}
-			<div>HomePage</div>
-			<_Flex>
-				<Outlet />
-			</_Flex>
-		</_Font>
+		<_pageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
+			<HomeHeader />
+			<Outlet />
+		</_pageContainer>
+		// <_Font
+		// 	id='HOMEPAGE'
+		// 	onClick={(e) => handlePoint(e)}
+		// 	style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+		// 	<HomeHeader />
+		// 	<_Flex style={{ flex: 1 }}>
+		// 		<Outlet />
+		// 	</_Flex>
+		// </_Font>
 	);
 }

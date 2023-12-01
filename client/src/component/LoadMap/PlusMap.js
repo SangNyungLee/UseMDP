@@ -4,7 +4,16 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import base64Str from '../../constant/ImageBase64';
-import { _cardContainer, _cardBody, _plusIcon, _plusButton } from '../../constant/css/styledComponents/__PlustMap';
+import {
+	_cardContainer,
+	_cardBody,
+	_plusIcon,
+	_plusButton,
+	_cardImgOverlay,
+	_cardImg,
+} from '../../constant/css/styledComponents/__PlustMap';
+
+import skyImg from '../../constant/img/sky.jpg';
 
 const PlusDiv = styled.div`
 	width: 200px;
@@ -89,7 +98,8 @@ export default function PlusMap(props) {
 	};
 
 	return (
-		<_cardContainer id='PLUS'>
+		<_cardContainer text='white' id='PLUS'>
+			{/* <_cardImg src={skyImg} alt='planner thumbnail' /> */}
 			<_cardBody>
 				<_plusButton onClick={(e) => handleClick(e)} variant='none'>
 					<_plusIcon />

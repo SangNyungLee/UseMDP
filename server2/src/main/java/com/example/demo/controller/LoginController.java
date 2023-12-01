@@ -38,6 +38,7 @@ public class LoginController implements SocialLoginAPI {
     @Override
     @PostMapping("/api/logout")
     public ResponseEntity<APIResponseDTO<ResponseMemberDTO>> logout(@CookieValue(name = "auth", required = false) String token, HttpServletResponse response) {
+        System.out.println("logout TOKEN = " + token);
         if(token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<ResponseMemberDTO>builder()
                     .resultCode("401")
