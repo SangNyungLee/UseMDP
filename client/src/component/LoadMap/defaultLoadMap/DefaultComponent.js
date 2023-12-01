@@ -70,7 +70,7 @@ export default function DefaultComponent() {
         return (
             <div onClick={handlePoint}>
                 <h2>기본로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} like={like}></CustomListHiddable>
+                <CustomListHiddable datas={data} points={[point, setPoint]} like={like}></CustomListHiddable>
 
                 <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
                 <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
