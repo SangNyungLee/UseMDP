@@ -20,15 +20,15 @@ import { getCardAxios, getPlannerBtoA, patchMoveCards, patchPlanner } from '../.
 
 const _QuoteAppContainer = styled.div`
     display: flex;
-    flex: 1;
+    flex: 3;
     background-image: url(${(props) => props.image});
     background-size: cover;
     background-repeat: no-repeat;
 `;
 
 const _QuoteContainer = styled.div`
-    flex: 3;
     display: flex;
+    flex: 3;
     align-items: flex-start;
     justify-content: space-evenly;
     margin-top: 20px;
