@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import Editor from '@ckeditor/ckeditor5-custom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from 'styled-components';
@@ -6,6 +8,7 @@ import Base64UploaderPlugin from './plugin/Plugin';
 // import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
 import '../../../constant/css/index.css';
 import { Button } from 'react-bootstrap';
+
 const PostContainer = styled.div`
     height: 400px;
     font-family: 'SUITE-Regular';
@@ -57,8 +60,6 @@ export default function CardEditor(props) {
                     editor={ClassicEditor}
                     config={{
                         // (4)
-                        // plugins: [MyAdapter],
-                        // plugins: [CodeBlock],
                         extraPlugins: [Base64UploaderPlugin],
                         //  toolbar: ['heading', '|', 'bold', 'italic', 'codeBlock', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
                     }}

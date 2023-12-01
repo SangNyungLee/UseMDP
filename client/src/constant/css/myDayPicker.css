@@ -1,12 +1,15 @@
 .react-datepicker__input-container input {
-  border: none;
-  background-color: #bcbcbc;
-  width: 215px;
-  height: 35px;
-  border-radius: 2px;
-  text-align: center;
+    border: none;
+    background-color: #000814;
+    color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 220px;
+    height: 35px;
+    border-radius: 2px;
+    text-align: center;
 }
 
 input:hover {
-  cursor: pointer;
+    cursor: pointer;
 }

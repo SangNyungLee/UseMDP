@@ -13,29 +13,31 @@ import QuoteHeader from './QuoteHeader';
 import QuoteSpinner from './QuoteSpinner';
 import DroppableComponent from './DroppableComponent';
 import useLocalStorage from 'use-local-storage';
+import sky from '../../constant/img/sky.jpg';
 
 import axios from 'axios';
 import { getCardAxios, getPlannerBtoA, patchMoveCards, patchPlanner } from '../../utils/DataAxios';
 
 const _QuoteAppContainer = styled.div`
-    margin: '20px';
     display: flex;
+    flex: 1;
+    background-image: url(${(props) => props.image});
+    background-size: contain;
+    background-repeat: no-repeat;
 `;
 
 const _QuoteContainer = styled.div`
+    flex: 3;
     display: flex;
-    margin: '20px';
     align-items: flex-start;
+    justify-content: space-evenly;
+    margin-top: 20px;
 `;
 
 const _Thumbnail = styled.div`
     display: flex;
     width: 100%;
-    height: 80vh;
-    background-color: '#392f31';
-    background-image: url(${(props) => props.image});
-    background-size: contain;
-    background-repeat: no-repeat;
+    /* height: 80vh; */
 `;
 
 export default function QuoteApp() {
@@ -223,16 +225,16 @@ export default function QuoteApp() {
 
     // If the window width is greater than or equal to 800px, hide the calendar
     const isCalendarVisible = windowWidth > 1024;
+    console.log('isCalendarVisible', isCalendarVisible);
     console.log('plannerList', plannerList);
 
     if (!planner) {
         return <QuoteSpinner />;
     } else {
         return (
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerId={plannerId} title={plannerTitle} plannerInfo={plannerInfo} />
-                <_QuoteAppContainer>
-                    {/*image={plannerThumbnail}  */}
+                <_QuoteAppContainer image={plannerThumbnail ? sky : plannerThumbnail}>
                     <_Thumbnail ref={thumnnailRef}>
                         <_QuoteContainer>
                             <DragDropContext
@@ -245,7 +247,7 @@ export default function QuoteApp() {
                                 ))}
                             </DragDropContext>
                         </_QuoteContainer>
-                        <QuoteAppCalendar />
+                        {isCalendarVisible ? <QuoteAppCalendar /> : null}
                     </_Thumbnail>
                 </_QuoteAppContainer>
             </div>

@@ -14,7 +14,9 @@ import { patchCard } from '../../utils/DataAxios';
 import description from '../../constant/img/description.svg';
 import list2 from '../../constant/img/list2.svg';
 import list1 from '../../constant/img/list.svg';
+import calendarImg from '../../constant/img/calendar.svg';
 import parse from 'html-react-parser';
+import IsBackGroundDark from '../../utils/IsBackGroundDark';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -26,7 +28,7 @@ const _TitleInput = styled.input`
     outline: none;
     padding: none;
     background-color: ${(props) => props.color};
-
+    color: ${(props) => props.textColor};
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
@@ -67,11 +69,13 @@ const _Title = styled.div`
 `;
 
 const _Span = styled.span`
+    margin-left: 10px;
     font-size: 19px;
     font-weight: bolder;
 `;
 
 const _CheckBox = styled.input`
+    margin-left: 35px;
     width: 15px;
 `;
 
@@ -114,6 +118,34 @@ const DefaultBtn = styled.button`
     border-radius: 3px;
     &:hover {
         background-color: #091e424f;
+    }
+`;
+
+const AcceptButton = styled.button`
+    background-color: #007bff !important;
+    color: white;
+    width: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 3px #091e420f;
+    border-radius: 3px;
+    height: 35px;
+    margin-right: 5px;
+    margin-top: 10px;
+`;
+
+const CancelButton = styled.button`
+    width: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    height: 35px;
+    background-color: #091e420f;
+    border: 3px #091e420f;
+    border-radius: 3px;
+    margin-top: 10px;
+    background-color: '#091E420F';
+    &:hover {
+        background: #ccc;
     }
 `;
 export default function MDPModal({ selectedCard, modalStatus, modalClose, plannerId }) {
@@ -257,7 +289,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
 
-    console.log(checklists);
+    console.log(checklists, IsBackGroundDark(coverColor));
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
@@ -268,7 +300,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                         </_ColorPickerModal>
                     )}
                     <Modal.Title>
-                        <_TitleInput value={title} color={coverColor} onChange={(e) => setTitle(e.target.value)} onClick={(e) => e.stopPropagation()} />
+                        <_TitleInput value={title} color={coverColor} textColor={IsBackGroundDark(coverColor) ? 'white' : 'black'} onChange={(e) => setTitle(e.target.value)} onClick={(e) => e.stopPropagation()} />
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#091E420F' }}>
@@ -336,19 +368,28 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                             : null}
                         <_TodoAddButton onClick={addTodo}>+ add item</_TodoAddButton>
                     </div>
+
+                    <TitleEdit>
+                        <div>
+                            <IconImg src={calendarImg}></IconImg>Planning period
+                        </div>
+                    </TitleEdit>
+
                     <FlexContainer>
-                        <MyDayPicker date={startDate} setDate={setStartDate} />
-                        <_Span>~</_Span>
-                        <MyDayPicker date={endDate} setDate={setEndDate} />
+                        <div>
+                            <_Span>Start Date</_Span>
+                            <MyDayPicker date={startDate} setDate={setStartDate} />
+                        </div>
+                        {/* <_Span>~</_Span> */}
+                        <div>
+                            <_Span>End Date</_Span>
+                            <MyDayPicker date={endDate} setDate={setEndDate} />
+                        </div>
                     </FlexContainer>
                 </Modal.Body>
                 <Modal.Footer style={{ backgroundColor: '#091E420F' }}>
-                    <Button variant="outline-secondary" onClick={handleCloseWithoutSave}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
+                    <CancelButton onClick={handleCloseWithoutSave}>Close</CancelButton>
+                    <AcceptButton onClick={handleClose}>저장</AcceptButton>
                 </Modal.Footer>
             </Modal>
         </>
