@@ -8,6 +8,7 @@ import { HOME } from '../../constant/constant';
 import { useSelector, useDispatch } from 'react-redux';
 // Styled Components
 import { _componentTitle } from '../../constant/css/styledComponents/__HomeComponent';
+import { Container } from 'react-bootstrap';
 
 const statusIndexMap = {
 	TODO: 0,
@@ -57,9 +58,11 @@ export default function HomeComponent() {
 	// }, [setData, dispatch]);
 
 	return (
-		<div>
+		<>
 			<_componentTitle>My Planners</_componentTitle>
-			<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
-		</div>
+			<Container fluid id='MY PLANNERS'>
+				<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
+			</Container>
+		</>
 	);
 }

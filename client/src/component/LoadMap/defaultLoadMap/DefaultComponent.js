@@ -9,20 +9,23 @@ import CustomList from '../../home/customList/CustomList';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../../store/plannerList';
-import { getPlannerByBasic } from '../../../utils/DataAxios';
+import { getLikesAxios, getPlannerByBasic } from '../../../utils/DataAxios';
+import { useSelector } from 'react-redux';
+import { likeActions } from '../../../store/like';
 
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
     const [hide, setHide] = useState(true);
-    const [like, setLike] = useState([]);
+    const like = useSelector( state => state.like)
 
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
             setPoint([-1, -1]);
         }
     };
+    
     useEffect(() => {
         async function getData() {
             try {
@@ -41,11 +44,13 @@ export default function DefaultComponent() {
                 setData([]);
             }
         }
+
         async function getLike() {
-            const likeResponse = await axios.get('http://localhost:8080/api/getLikes', { withCredentials: true });
-            console.log('starComponent의 like' + JSON.stringify(likeResponse.data));
-            setLike(likeResponse.data);
+            const likes = await getLikesAxios();
+            console.log('defaultComponent의 like' + JSON.stringify(likes));
+            dispatch(likeActions.setLikesInit(likes))
         }
+
         getData();
         getLike();
     }, []);
@@ -70,7 +75,7 @@ export default function DefaultComponent() {
         return (
             <div onClick={handlePoint}>
                 <h2>기본로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} like={like}></CustomListHiddable>
+                <CustomListHiddable datas={data} points={[point, setPoint]} />
 
                 <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
                 <CustomList datas={data} loadMap={MyLoadMap}></CustomList>

@@ -4,6 +4,9 @@ import star from "../../constant/img/star.png";
 import yellowStar from "../../constant/img/yellowStar.png";
 import axios from "axios";
 import { useState } from "react";
+import { deletePlannerUnlike, postPlannerLike } from "../../utils/DataAxios";
+import { useDispatch } from "react-redux";
+import { likeActions } from "../../store/like";
 
 const _Star = styled.img`
   width: 23px;
@@ -14,61 +17,31 @@ const _Star = styled.img`
 
 const LikeButton = (props) => {
   const plannerId = props.plannerId;
-  const like = props.like;
+  const isLike = props.isLike;
 
-  const [isClick, setIsClick] = useState(false);
-  const [isLike, setIsLike] = useState(true);
+  const dispatch = useDispatch();
 
-  // if (like === 1) {
-  //   setIsClick(true);
-  // }
+  console.log("like button",isLike)
 
   const isStarCilckLike = async (e) => {
     e.stopPropagation();
-    setIsClick(true);
-    setIsLike(true);
-    const res = await axios.post(
-      "http://localhost:8080/api/postPlanner/like",
-      {
-        plannerId,
-      },
-      { withCredentials: true }
-    );
-    console.log(res);
+    postPlannerLike(plannerId)
+    dispatch(likeActions.addPlannerLike(plannerId))
   };
 
   const isStarCilckUnLike = async (e) => {
     e.stopPropagation();
-    setIsClick(false);
-    setIsLike(false);
-    const res = await axios.delete(
-      "http://localhost:8080/api/patchPlanner/unlike",
-      {
-        data: { plannerId },
-        withCredentials: true,
-      }
-    );
-    console.log(res);
+    deletePlannerUnlike(plannerId);
+    dispatch(likeActions.delPlannerLike(plannerId))
   };
 
   return (
     <>
-      {/* {state && like ? (
-        <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
-      ) : (
-        <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
-      )} */}
-      {like ? (
-        isLike ? (
+      { isLike ? 
           <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
-        ) : (
+          :
           <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
-        )
-      ) : isClick ? (
-        <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star>
-      ) : (
-        <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>
-      )}
+       }
     </>
   );
 };

@@ -13,16 +13,7 @@ import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../../store/site";
 import { logoutModal } from "../etc/SweetModal";
-import styled from "styled-components";
-
-const _Logo = styled.img`
-  width: 75px;
-  height: 45px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import axios from "axios";
 
 export default function HomeHeader() {
   // 모달창 보여주기, 숨기기 상태
@@ -95,26 +86,36 @@ export default function HomeHeader() {
     dispatch(siteActions.setIsLogin(false));
     localStorage.removeItem("isLogin");
     logoutModal();
+    axiosLogout();
     navigate("/");
   };
 
-  const clickLogo = (e) => {
-    navigate("/");
+  //로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
+  const axiosLogout = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/logout",
+        {},
+        { withCredentials: true }
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">
         <Container className="px-3 px-sm-5">
-          {/* <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
+          <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
             <img
               src="https://picsum.photos/40/40"
               className="d-inline-block rounded"
               alt="useMPD logo"
             />
             useMDP
-          </Navbar.Brand> */}
-          <_Logo src="/images/004.png" onClick={(e) => clickLogo(e)} />
+          </Navbar.Brand>
           <Nav>
             {isLoginRedux ? (
               <>

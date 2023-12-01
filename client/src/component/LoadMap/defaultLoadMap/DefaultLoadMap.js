@@ -59,8 +59,7 @@ export default function DefaultLoadMap() {
 
 	return (
 		<>
-			<HomeHeader />
-			<_Container className='mt-5 pt-5 justify-content-end'>
+			<_Container>
 				<_Row className='justify-content-end'>
 					<_SidebarCol
 						xs={12}

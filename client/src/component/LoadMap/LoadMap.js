@@ -8,6 +8,8 @@ import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch } from 'react-redux';
 import LikeButton from './LikeButton';
+import { postPlannerLike } from '../../utils/DataAxios';
+import skyImg from '../../constant/img/sky.jpg';
 
 const _Container = styled.div`
     margin-bottom: 20px;
@@ -49,7 +51,7 @@ export default function LoadMap(props) {
     const dispatch = useDispatch();
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
     // console.log(props);
-    const like = props.like;
+    const isLike = props.isLike;
 
     const handleClick = async (e) => {
         e.stopPropagation();
@@ -73,32 +75,15 @@ export default function LoadMap(props) {
         dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
         navigate(`/plannerNoEdit?id=${btoaId}`);
     };
-    const [starClick, setStarClick] = useState(false);
-
-    const isStarCilck = async (e) => {
-        e.stopPropagation();
-        //Star에 따라서, +를 보내줄지, -를 보내줄지 결정하자.
-        //StarClick= true 이미 좋아요 한 상태의므로
-
-        if (starClick) {
-            //unlike
-            const res = await axios.patch('http://localhost:8080/api/patchPlanner/unlike', { plannerId: plannerId });
-            console.log('StarClick', res);
-        } else {
-            const res = await axios.patch('http://localhost:8080/api/patchPlanner/like', { plannerId: plannerId });
-            console.log('StarClick', res);
-        }
-        setStarClick(!starClick);
-    };
 
     return (
         <_Container onClick={(e) => handleClick(e)}>
-            <_ImageStyle src={thumbnail}></_ImageStyle>
+            <_ImageStyle src={thumbnail ? thumbnail : skyImg}></_ImageStyle>
             <div>
                 <_Felx>
                     <_TitleStyle>{title}</_TitleStyle>
 
-                    <LikeButton plannerId={plannerId} like={like} />
+                    <LikeButton plannerId={plannerId} isLike={isLike} />
                 </_Felx>
                 <_DescriptionStyle>{description}</_DescriptionStyle>
             </div>

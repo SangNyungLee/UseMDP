@@ -1,21 +1,28 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { useState } from "react";
 import RightClicker from "../../post/RightClicker/RightClicker";
+import { useSelector } from "react-redux";
+import LoadMap from "../../LoadMap/LoadMap";
 
 export default function CustomListHiddable(props) {
   const [hide, setHide] = useState(true);
   const [rightClickData, setRightClickData] = useState([]);
-  console.log(props.datas);
+
+  const CustomLoadMap = props.loadMap;
+
+  const like = useSelector( state => state.like)
+
   const data = props.datas;
-  const like = props.like;
-  console.log(props.like);
+  console.log("custom list hiddable data",data);
+
   const [point, setPoint] = props.points;
+
   const handleRightClick = (e, newTitle, newId) => {
     e.preventDefault();
     setRightClickData([newTitle, newId]);
     setPoint([e.clientY, e.clientX]);
   };
-  const CustomLoadMap = props.loadMap;
+
   return (
     <>
       {point[0] !== -1 && point[1] !== -1 ? (
@@ -35,9 +42,9 @@ export default function CustomListHiddable(props) {
                   (_, i) => {
                     const planner = data[i];
                     const isLiked = like.some(
-                      (like) => like.plannerId === planner.plannerId
+                      plannerId =>  plannerId === planner.plannerId
                     );
-
+                    
                     return (
                       <Col key={planner.plannerId}>
                         <div
@@ -51,7 +58,7 @@ export default function CustomListHiddable(props) {
                         >
                           <CustomLoadMap
                             datas={planner}
-                            likes={isLiked ? 1 : 0}
+                            isLike={isLiked ? 1 : 0}
                           />
                         </div>
                       </Col>
@@ -76,8 +83,8 @@ export default function CustomListHiddable(props) {
                     <div onContextMenu={handleRightClick}>
                       <CustomLoadMap
                         datas={data[i]}
-                        like={like}
-                      ></CustomLoadMap>
+                        isLike={like}
+                      />
                     </div>
                   </Col>
                 ))}
