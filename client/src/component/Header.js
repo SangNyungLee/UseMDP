@@ -12,6 +12,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../store/site";
 import { logoutModal, nyanCat } from "./etc/SweetModal";
+import styled from "styled-components";
+
+const _Logo = styled.img`
+  width: 75px;
+  height: 45px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export default function Header() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
   const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
@@ -45,6 +56,10 @@ export default function Header() {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
 
+  const clickLogo = (e) => {
+    navigate("/");
+  };
+
   //로그아웃
   const Logout = (e) => {
     e.stopPropagation();
@@ -73,16 +88,16 @@ export default function Header() {
     <>
       <Navbar bg="light" data-bs-theme="light" fixed="top" className="py-3">
         <Container className="px-4 px-sm-5">
-          <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
-            {/* <img
+          {/* <Navbar.Brand className="text-success fw-bold" as={NavLink} to={"/"}>
+            <img
               src="https://picsum.photos/40/40"
               className="d-inline-block rounded"
               alt="useMPD logo"
-            />{" "} */}
+            />{" "}
             useMDP
-          </Navbar.Brand>
-          <img src="/images/logo.png" width="62px" height="40px" />
-          <img src="/images/logo2.png" width="62px" height="40px" />
+          </Navbar.Brand> */}
+          <_Logo src="/images/004.png" onClick={(e) => clickLogo(e)} />
+          {/* <img src="/images/logo2.png" width="62px" height="40px" /> */}
           <Nav>
             {isLoginRedux ? (
               <>

@@ -1,0 +1,62 @@
+.btn-success.btn-lg {
+  --bs-btn-bg: #202a45;
+  --bs-btn-border-color: #202a45;
+  --bs-btn-hover-bg: #263075;
+  --bs-btn-hover-border-color: #263075;
+  --bs-btn-active-bg: #263075;
+  --bs-btn-active-border-color: #263075;
+  --bs-btn-disabled-bg: #202a45;
+  --bs-btn-disabled-border-color: #202a45;
+}
+
+.btn-success.btn-md {
+  --bs-btn-bg: #202a45;
+  --bs-btn-border-color: #202a45;
+  --bs-btn-hover-bg: #263075;
+  --bs-btn-hover-border-color: #263075;
+  --bs-btn-active-bg: #263075;
+  --bs-btn-active-border-color: #263075;
+  --bs-btn-disabled-bg: #202a45;
+  --bs-btn-disabled-border-color: #202a45;
+}
+
+.btn-outline-success.btn-lg {
+  --bs-btn-color: #202a45;
+  --bs-btn-border-color: #202a45;
+  --bs-btn-hover-bg: #263075;
+  --bs-btn-hover-border-color: #263075;
+  --bs-btn-active-bg: #263075;
+  --bs-btn-active-border-color: #263075;
+  --bs-btn-disabled-color: #263075;
+  --bs-btn-disabled-border-color: #263075;
+}
+
+.text-success.fw-bold.navbar-brand.active {
+  --bs-success-rgb: #202a45;
+}
+
+.text-success.fw-bold.navbar-brand {
+  --bs-success-rgb: #202a45;
+}
+
+.mx-2.btn.btn-outline-success.btn-md {
+  --bs-btn-color: #202a45;
+  --bs-btn-border-color: #202a45;
+  --bs-btn-hover-bg: #263075;
+  --bs-btn-hover-border-color: #263075;
+  --bs-btn-active-bg: #263075;
+  --bs-btn-active-border-color: #263075;
+  --bs-btn-disabled-color: #263075;
+  --bs-btn-disabled-border-color: #263075;
+}
+
+.mx-2.btn.btn-success {
+  --bs-btn-bg: #202a45;
+  --bs-btn-border-color: #202a45;
+  --bs-btn-hover-bg: #263075;
+  --bs-btn-hover-border-color: #263075;
+  --bs-btn-active-bg: #263075;
+  --bs-btn-active-border-color: #263075;
+  --bs-btn-disabled-bg: #202a45;
+  --bs-btn-disabled-border-color: #202a45;
+}
