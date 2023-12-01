@@ -8,44 +8,44 @@ import styled from 'styled-components';
 const _CropContainer = styled.div`
     position: absolute;
     z-index: 10;
-    width: ${ props => props.width };
-    height: ${ props => props.height };
-`
+    width: ${(props) => props.width};
+    height: ${(props) => props.height};
+`;
 
 export default function FileImageInputComponent({ setState }) {
-    const aspectRatio = 9 / 16;
+    const aspectRatio = 3 / 2;
     const fileInputRef = useRef();
     const [src, setSrc] = useState(null);
     const [crop, setCrop] = useState({ aspect: aspectRatio });
     const [completedCrop, setCompletedCrop] = useState(null);
 
     const size = {
-        width: 600,
-        height: 800,
-    }
-    
+        width: 900,
+        height: 600,
+    };
+
     const handleButtonClick = () => {
         fileInputRef.current.click();
     };
 
     const resetFileInput = () => {
         const currentFileInput = fileInputRef.current;
-      
+
         const newFileInput = document.createElement('input');
         newFileInput.type = 'file';
-        newFileInput.style.display = 'none'
-      
+        newFileInput.style.display = 'none';
+
         newFileInput.addEventListener('change', handleFileChange);
-      
+
         if (currentFileInput.parentNode) {
-          currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
+            currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
         }
-      
+
         fileInputRef.current = newFileInput;
     };
 
     const handleFileChange = (event) => {
-        console.log("event",event)
+        console.log('event', event);
         const file = event.target.files[0];
 
         if (!file) {
@@ -60,42 +60,47 @@ export default function FileImageInputComponent({ setState }) {
         resetFileInput();
     };
 
-    
     const makeClientCrop = async (crop) => {
         if (src && crop.width && crop.height) {
             const image = new Image();
             image.src = src;
-            
+
             const canvas = document.createElement('canvas');
-            canvas.width = crop.width;
-            canvas.height = crop.height;
+
+            let newWidth, newHeight;
+
+            // Check if the aspect ratio is taller or wider
+            if (crop.width / crop.height > aspectRatio) {
+                newWidth = crop.width;
+                newHeight = crop.width / aspectRatio;
+            } else {
+                newWidth = crop.height * aspectRatio;
+                newHeight = crop.height;
+            }
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            // canvas.width = crop.width;
+
+            // canvas.height = crop.height;
+
             const context = canvas.getContext('2d');
-            
-            context.drawImage(
-                image,
-                crop.x,
-                crop.y,
-                crop.width,
-                crop.height,
-                0,
-                0,
-                crop.width,
-                crop.height
-            );
-                
-            const croppedBase64 = (canvas.toDataURL('image/webp')).replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
+            context.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, newWidth, newHeight);
+            // context.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+            // .replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
+            const croppedBase64 = canvas.toDataURL('image/webp');
             setState(croppedBase64);
-            setCompletedCrop({}); 
+            setCompletedCrop({});
         }
     };
-        
+
     const handleCropComplete = (crop) => {
         setCompletedCrop(crop);
     };
 
     const handleCropClick = () => {
         makeClientCrop(completedCrop);
-        setCompletedCrop({})
+        setCompletedCrop({});
         setSrc();
         setCrop({});
     };
@@ -116,7 +121,6 @@ export default function FileImageInputComponent({ setState }) {
     //         }
     //     }
     // }
-    
 
     return (
         <>
@@ -134,7 +138,8 @@ export default function FileImageInputComponent({ setState }) {
                         keepSelection={false}
                         style={{
                             maxWidth: '100%',
-                            maxHeight: '100%' }}
+                            maxHeight: '100%',
+                        }}
                     >
                         <img src={src} style={{ maxWidth: '100%', maxHeight: '100%' }} />
                     </ReactCrop>
