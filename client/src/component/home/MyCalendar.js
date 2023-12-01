@@ -300,6 +300,7 @@ export default function MyCalendar() {
           selectedCard={selectedCard}
           modalStatus={visible}
           modalClose={() => setVisible(false)}
+          plannerId={plannerId}
         />
         <DnDCalendar
           defaultDate={moment().toDate()}
