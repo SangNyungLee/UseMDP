@@ -8,6 +8,7 @@ import { siteActions } from '../../store/site';
 import styled from 'styled-components';
 import CardListHeader from './CardListHeader/CardListHeader';
 import { postCard, deleteCardById } from '../../utils/DataAxios';
+import { useMediaQuery } from 'react-responsive';
 const DivButton = styled.div`
     text-align: center;
     background-color: '#f1f3f5';
@@ -18,6 +19,9 @@ const DivButton = styled.div`
 `;
 
 export default function DroppableComponent(props) {
+    const isMobile = useMediaQuery({
+        query: '(max-width: 768px)',
+    });
     const { quote } = useSelector((state) => state.calendar);
     const { cardList, cardStatusIndex, planner, handleClick, plannerId } = props;
 
@@ -84,7 +88,7 @@ export default function DroppableComponent(props) {
     const droppableComponentRegister = (provided, snapshot) => ({
         ...provided.droppableProps,
         ref: provided.innerRef,
-        style: getListStyle(snapshot.isDraggingOver),
+        style: isMobile ? { ...getListStyle(snapshot.isDraggingOver), width: '30%' } : { ...getListStyle(snapshot.isDraggingOver) },
     });
 
     const draggableComponentRegister = (provided, snapshot, id) => ({
@@ -102,7 +106,7 @@ export default function DroppableComponent(props) {
                 return (
                     <>
                         <div {...droppableComponentRegister(provided, snapshot)}>
-                            <CardListHeader index={provided.droppableProps['data-rbd-droppable-id']}></CardListHeader>
+                            <CardListHeader pid={plannerId} index={provided.droppableProps['data-rbd-droppable-id']}></CardListHeader>
                             {cardList.map((card, id) => (
                                 <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
                                     {(provided, snapshot) => (

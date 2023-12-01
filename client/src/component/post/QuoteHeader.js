@@ -78,8 +78,9 @@ export default function QuoteHeader(props) {
     return (
         <>
             <CustomHeader2 />
-            <div>
-                <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
+            <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
+            {/* <div>
+               
                 <button
                     type="button"
                     onClick={(e) => {
@@ -95,7 +96,7 @@ export default function QuoteHeader(props) {
                 </button>
                 <DataReaderModal setState={setReadData} />
                 <FileImageInputComponent setState={setReadThumbnail} />
-            </div>
+            </div> */}
         </>
     );
 }

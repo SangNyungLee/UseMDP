@@ -52,7 +52,7 @@ export function getListStyle(isDraggingOver) {
     return {
         background: isDraggingOver ? 'lightblue' : '#f1f3f5',
         padding: grid,
-        width: '250px',
+        width: '25%',
         marginLeft: '5px',
         borderRadius: '10px',
         // marginRight: '50px',
