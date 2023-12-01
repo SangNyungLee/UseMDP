@@ -13,8 +13,7 @@ import FileImageInputComponent from '../FileImageInputComponent';
 import { patchPlanner } from '../../utils/DataAxios';
 
 export default function QuoteHeader(props) {
-    const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo } = props;
-
+    const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo, setSwitch } = props;
     const [plannerId, setPlannerId] = useState();
     const [plannerTitle, setPlannerTitle] = useState();
     const [readData, setReadData] = useState();
@@ -32,7 +31,13 @@ export default function QuoteHeader(props) {
         DataDownload(plannerTitle, plannerList);
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = async (e) => {
+        const data = {
+            ...plannerInfo,
+            title: plannerTitle,
+        };
+        const res = await patchPlanner(data);
+        console.log('title 수정', res);
         dispatch(
             plannerListActions.updatePlannerTitle({
                 plannerId,
@@ -77,20 +82,20 @@ export default function QuoteHeader(props) {
 
     return (
         <>
-            <CustomHeader2 />
+            <CustomHeader2 setSwitch={setSwitch} plannerInfo={plannerInfo} />
             <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             {/* <div>
-               
-                <button
-                    type="button"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        handleThumbnailDownload();
-                    }}
-                >
+                
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleThumbnailDownload();
+                        }}
+                    >
+                    
                     ThumbnailMaker
                 </button>
-                <input value={plannerTitle} onChange={(e) => setPlannerTitle(e.target.value)} onBlur={handleBlur} />
                 <button type="button" onClick={(e) => saveState(e)}>
                     저장하기
                 </button>

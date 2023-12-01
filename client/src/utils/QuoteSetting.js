@@ -19,7 +19,7 @@ export function getItems(count, offset = 0, separatorStr = 'TODO') {
             post: ``,
             title: `title ${k + offset}`,
             coverColor: '#390099',
-            startDate: new Date(Date.now() + (r1) * 24 * 60 * 60 * 1000).toISOString(),
+            startDate: new Date(Date.now() + r1 * 24 * 60 * 60 * 1000).toISOString(),
             endDate: new Date(Date.now() + (r1 + r2) * 24 * 60 * 60 * 1000).toISOString(),
             createdAt: currentTime.toISOString(),
             updatedAt: currentTime.toISOString(),

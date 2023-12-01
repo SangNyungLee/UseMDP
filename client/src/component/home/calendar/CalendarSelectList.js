@@ -1,12 +1,7 @@
 import { useState } from "react";
-import CardListLi from "./CardListLi";
 import { useDispatch } from "react-redux";
 import { calendarActions } from "../../../store/calendar";
-import { plannerListActions } from "../../../store/plannerList";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { darken } from "polished";
-import { deleteMyPlanner } from "../../../utils/DataAxios";
 import CardStatusSelectList from "./CardStatusSelectList";
 
 const _SelectContainer = styled.div`
