@@ -70,6 +70,7 @@ export default function DroppableComponent(props) {
         console.log('addcard : ', card);
 
         const result = await postCard(card);
+
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],

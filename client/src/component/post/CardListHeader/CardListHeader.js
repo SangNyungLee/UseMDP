@@ -36,7 +36,7 @@ export default function CardListHeader(props) {
         case '0':
             return (
                 <>
-                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker point={pointer}></LeftClicker> : null}
+                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker index={index} point={pointer}></LeftClicker> : null}
                     <FlexContainer>
                         <HeaderDiv>TODO</HeaderDiv>
                         <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
