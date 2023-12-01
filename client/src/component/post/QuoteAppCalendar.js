@@ -171,6 +171,8 @@ export default function QuoteAppCalendar(props) {
             ...newEvent,
             plannerId,
             cardStatus,
+            startDate,
+            endDate,
             checklists: [{ checked: 0, title: 'done' }],
         };
 
