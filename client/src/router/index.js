@@ -1,4 +1,3 @@
-
 import { createBrowserRouter } from "react-router-dom";
 import WelcomePage from "../pages/WelcomePage";
 import HomePage from "../pages/HomePage";
@@ -7,7 +6,6 @@ import PlannerPage from "../pages/PlannerPage";
 import App from "../App";
 import DefaultLoadMap from "../component/LoadMap/defaultLoadMap/DefaultLoadMap";
 import Redirection from "../pages/Redirection";
-import Sidebar from "../component/sidebar/Sidebar";
 
 const Router = createBrowserRouter([
   {
@@ -45,10 +43,6 @@ const Router = createBrowserRouter([
   {
     path: "/github/callback",
     element: <Redirection provider="github" />,
-  },
-  {
-    path: "/test",
-    element: <Sidebar />,
   },
 ]);
 
