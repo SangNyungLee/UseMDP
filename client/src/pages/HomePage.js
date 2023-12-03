@@ -10,6 +10,7 @@ import { HOME } from "../constant/constant";
 import { useSelector } from "react-redux";
 import HomeHeader from "../component/home/HomeHeader";
 
+
 import { _pageContainer } from "../constant/css/styledComponents/__HomePage";
 import RealHeader from "../component/RealHeader";
 
@@ -25,6 +26,7 @@ export default function HomePage() {
     e.stopPropagation();
     dispatch(pointActions.clearPoint());
   };
+
 
   return (
     <_pageContainer id="HOMEPAGE" onClick={(e) => handlePoint(e)}>

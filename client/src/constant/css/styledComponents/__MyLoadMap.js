@@ -3,19 +3,22 @@ import { Button, Card } from 'react-bootstrap';
 import { IoMdLock, IoMdUnlock, IoMdDownload } from 'react-icons/io';
 import { LiaEdit } from 'react-icons/lia';
 
-export const _cardContainer = styled(Card)`
+export const _CardContainer = styled(Card)`
 	border: none;
-	cursor: pointer;
 	margin: 5%;
+	cursor: pointer;
+	width: 240px;
 	height: 120px;
 `;
 
-export const _cardHeader = styled(Card.Header)``;
+export const _CardHeader = styled(Card.Header)``;
 
-export const _cardFooter = styled(Card.Footer)``;
+export const _CardFooter = styled(Card.Footer)``;
 
-export const _cardImg = styled(Card.Img)`
-	filter: blur(0px);
+export const _CardImg = styled(Card.Img)`
+	width: 240px;
+	height: 120px;
+	filter: blur(0 px);
 	-webkit-filter: blur(0px);
 
 	&:hover {
@@ -24,23 +27,25 @@ export const _cardImg = styled(Card.Img)`
 	}
 `;
 
-export const _cardImgOverlay = styled(Card.ImgOverlay)`
+export const _CardImgOverlay = styled(Card.ImgOverlay)`
+	width: 240px;
+	height: 120px;
 	padding: 0;
 `;
 
-export const _cardBody = styled(Card.Body)`
+export const _CardBody = styled(Card.Body)`
 	padding: 4%;
 `;
 
-export const _cardTitle = styled(Card.Title)``;
+export const _CardTitle = styled(Card.Title)``;
 
-export const _cardSubtitle = styled(Card.Subtitle)``;
+export const _CardSubtitle = styled(Card.Subtitle)``;
 
-export const _cardText = styled(Card.Text)``;
+export const _CardText = styled(Card.Text)``;
 
-export const _cardLink = styled(Card.Link)``;
+export const _CardLink = styled(Card.Link)``;
 
-export const _cardDownloadButton = styled(Button)`
+export const _CardDownloadButton = styled(Button)`
 	padding: 0;
 	margin: 0;
 	position: absolute;
@@ -48,7 +53,7 @@ export const _cardDownloadButton = styled(Button)`
 	right: 4%;
 `;
 
-export const _cardEditButton = styled(Button)`
+export const _CardEditButton = styled(Button)`
 	padding: 0;
 	margin: 0;
 	position: absolute;
@@ -56,16 +61,16 @@ export const _cardEditButton = styled(Button)`
 	right: 3%;
 `;
 
-export const _lockedIcon = styled(IoMdLock)`
+export const _LockedIcon = styled(IoMdLock)`
 	font-size: 1.2rem;
 	cursor: text;
 `;
 
-export const _unlockedIcon = styled(IoMdUnlock)`
+export const _UnlockedIcon = styled(IoMdUnlock)`
 	font-size: 1.2rem;
 `;
 
-export const _downloadIcon = styled(IoMdDownload)`
+export const _DownloadIcon = styled(IoMdDownload)`
 	color: white;
 	font-size: 1.2rem;
 
@@ -74,7 +79,7 @@ export const _downloadIcon = styled(IoMdDownload)`
 	}
 `;
 
-export const _editIcon = styled(LiaEdit)`
+export const _EditIcon = styled(LiaEdit)`
 	color: white;
 	font-size: 1.2rem;
 
@@ -83,7 +88,7 @@ export const _editIcon = styled(LiaEdit)`
 	}
 `;
 
-export const _iconContainer = styled.div`
+export const _IconContainer = styled.div`
 	position: absolute;
 	bottom: 4%;
 	left: 4%;
