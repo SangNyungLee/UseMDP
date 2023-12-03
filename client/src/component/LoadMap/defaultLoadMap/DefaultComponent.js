@@ -13,13 +13,17 @@ import { useSelector } from 'react-redux';
 import { likeActions } from '../../../store/like';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
+import { HOME } from '../../../constant/constant';
+import useDefaultCheck from '../../../hook/useDefaultCheck';
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
     const [hide, setHide] = useState(true);
     const like = useSelector((state) => state.like);
-
+    const plannerList = useSelector((state) => state.plannerList);
+    useDefaultCheck(HOME);
+    console.log('플래너', plannerList, data);
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
             setPoint([-1, -1]);
@@ -71,7 +75,7 @@ export default function DefaultComponent() {
             )}
 
             <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
-            {data.length == 0 ? (
+            {plannerList.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
                     <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
                     <div>
@@ -80,7 +84,7 @@ export default function DefaultComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
+                <CustomList datas={plannerList} loadMap={LoadMap}></CustomList>
             )}
         </div>
     );
