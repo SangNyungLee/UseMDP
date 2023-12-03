@@ -7,7 +7,8 @@ import base64Str from '../../../constant/ImageBase64';
 import axios from 'axios';
 import LoadMap from '../../LoadMap/LoadMap';
 import { getPlannerByTrend, getTags } from '../../../utils/DataAxios';
-
+import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
+import noResult from '../../../constant/img/searchFail.svg';
 const SearchContainer = styled.div`
     width: 75vw;
     display: flex;
@@ -147,102 +148,114 @@ export default function SearchComponent() {
         }
     };
 
-    //안에 들어가는 값을 받아야해서 state사용
-    //검색결과가 없습니다로 바꿔야할듯.
-    if (!datas || datas.length === 0) {
-        return (
-            //Spinner
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '100vh',
-                }}
-            >
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </div>
-        );
-    } else {
-        return (
-            <div style={{ padding: '15px' }}>
-                <h2>로드맵 검색</h2>
-                <SearchContainer>
-                    <div>
-                        <Select options={options} onChange={changeOption} defaultValue={options[0]} isSearchable={false} />
-                    </div>
-                    {option.value === 'stack' ? (
-                        <Select
-                            ref={selectInputRef}
-                            styles={{
-                                control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    width: '500px',
-                                    flex: 3,
-                                }),
-                                multiValue: (baseStyles) => ({
-                                    ...baseStyles,
-                                    // backgroundColor: "lightblue", // 선택된 항목의 배경색
-                                }),
-                            }}
-                            options={tags2} //위에서 만든 배열을 select로 넣기
-                            //label custom 해주는거임
-                            formatOptionLabel={(tag) => (
-                                <div className="tag-option">
-                                    <img src={tag.image} alt={tag.label} />
-                                </div>
-                            )}
-                            onChange={setSelectTag} //값이 바뀌면 setState되게
-                            isMulti
-                            // defaultValue={tags[0]}
-                        />
-                    ) : option.value === 'author' ? (
-                        <Select
-                            ref={selectInputRef}
-                            styles={{
-                                control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    width: '500px',
-                                    flex: 3,
-                                }),
-                                multiValue: (baseStyles) => ({
-                                    ...baseStyles,
-                                    backgroundColor: 'lightblue', // 선택된 항목의 배경색
-                                }),
-                            }}
-                            options={author} //위에서 만든 배열을 select로 넣기
-                            onChange={setSelectTag} //값이 바뀌면 setState되게
-                            isMulti
-                            // defaultValue={tags[0]}
-                        />
-                    ) : (
-                        <Select
-                            ref={selectInputRef}
-                            styles={{
-                                control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    width: '500px',
-                                }),
-                                multiValue: (baseStyles) => ({
-                                    ...baseStyles,
-                                    backgroundColor: 'lightblue', // 선택된 항목의 배경색
-                                }),
-                            }}
-                            options={title} //위에서 만든 배열을 select로 넣기
-                            onChange={setSelectTag} //값이 바뀌면 setState되게
-                            isMulti
-                            // defaultValue={tags[0]}
-                        />
-                    )}
+    return (
+        <div style={{ padding: '15px' }}>
+            <_ComponentTitle>로드맵 검색</_ComponentTitle>
+            <SearchContainer>
+                <div>
+                    <Select options={options} onChange={changeOption} defaultValue={options[0]} isSearchable={false} />
+                </div>
+                {option.value === 'stack' ? (
+                    <Select
+                        ref={selectInputRef}
+                        styles={{
+                            control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                width: '500px',
+                                flex: 3,
+                            }),
+                            multiValue: (baseStyles) => ({
+                                ...baseStyles,
+                                // backgroundColor: "lightblue", // 선택된 항목의 배경색
+                            }),
+                        }}
+                        options={tags2} //위에서 만든 배열을 select로 넣기
+                        //label custom 해주는거임
+                        formatOptionLabel={(tag) => (
+                            <div className="tag-option">
+                                <img src={tag.image} alt={tag.label} />
+                            </div>
+                        )}
+                        onChange={setSelectTag} //값이 바뀌면 setState되게
+                        isMulti
+                        // defaultValue={tags[0]}
+                    />
+                ) : option.value === 'author' ? (
+                    <Select
+                        ref={selectInputRef}
+                        styles={{
+                            control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                width: '500px',
+                                flex: 3,
+                            }),
+                            multiValue: (baseStyles) => ({
+                                ...baseStyles,
+                                backgroundColor: 'lightblue', // 선택된 항목의 배경색
+                            }),
+                        }}
+                        options={author} //위에서 만든 배열을 select로 넣기
+                        onChange={setSelectTag} //값이 바뀌면 setState되게
+                        isMulti
+                        // defaultValue={tags[0]}
+                    />
+                ) : (
+                    <Select
+                        ref={selectInputRef}
+                        styles={{
+                            control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                width: '500px',
+                            }),
+                            multiValue: (baseStyles) => ({
+                                ...baseStyles,
+                                backgroundColor: 'lightblue', // 선택된 항목의 배경색
+                            }),
+                        }}
+                        options={title} //위에서 만든 배열을 select로 넣기
+                        onChange={setSelectTag} //값이 바뀌면 setState되게
+                        isMulti
+                        // defaultValue={tags[0]}
+                    />
+                )}
 
-                    <Button onClick={(e) => handleSearch(e)}>검색</Button>
-                </SearchContainer>
-                <hr></hr>
-                <h2 style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</h2>
-                <CustomList datas={filteredDatas} loadMap={LoadMap}/>
-            </div>
-        );
-    }
+                <Button onClick={(e) => handleSearch(e)}>검색</Button>
+            </SearchContainer>
+            <h2 style={{ marginTop: '30px', marginBottom: '10px', fontSize: '30px', fontWeight: '300' }}>검색결과</h2>
+            {/* 데이터 없을 때 처리  */}
+            {filteredDatas.length == 0 ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
+                    <div>
+                        <div style={{ fontSize: '25px' }}> 찾고자 하는 데이터가 없습니다</div>
+                        <div style={{ fontSize: '20px', fontWeight: '300', color: 'gray', marginTop: '10px' }}> 다른 검색어로 검색을 해주세요.</div>
+                    </div>
+                </div>
+            ) : (
+                <CustomList datas={filteredDatas} loadMap={LoadMap} />
+            )}
+        </div>
+    );
+    // }
 }
+
+// //안에 들어가는 값을 받아야해서 state사용
+// //검색결과가 없습니다로 바꿔야할듯.
+// if (!datas || datas.length === 0) {
+//     return (
+//         //Spinner
+//         <div
+//             style={{
+//                 display: 'flex',
+//                 justifyContent: 'center',
+//                 alignItems: 'center',
+//                 minHeight: '60vh',
+//             }}
+//         >
+//             <_componentTitle>검색결과</_componentTitle>
+//             <Spinner animation="border" role="status">
+//                 <span className="visually-hidden">Loading...</span>
+//             </Spinner>
+//         </div>
+//     );
+// } else {

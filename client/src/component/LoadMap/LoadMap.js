@@ -53,26 +53,9 @@ export default function LoadMap(props) {
     // console.log(props);
     const isLike = props.isLike;
 
-    const handleClick = async (e) => {
+    const handleClick = (e) => {
         e.stopPropagation();
-        const fetchData = async (btoaId) => {
-            return await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
-        };
         const btoaId = btoa(plannerId);
-        const result = await fetchData(btoaId);
-        const cardList = result.data.data.cards;
-        const cards = [[], [], []];
-        for (let i = 0; i < cardList.length; i++) {
-            if (cardList[i].cardStatus === 'TODO') {
-                cards[0].push(cardList[i]);
-            } else if (cardList[i].cardStatus === 'DOING') {
-                cards[1].push(cardList[i]);
-            } else if (cardList[i].cardStatus === 'DONE') {
-                cards[2].push(cardList[i]);
-            }
-        }
-        dispatch(calendarActions.setQuote([plannerId]));
-        dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
         navigate(`/plannerNoEdit?id=${btoaId}`);
     };
 
@@ -90,3 +73,24 @@ export default function LoadMap(props) {
         </_Container>
     );
 }
+
+// const handleClick = async (e) => {
+//     e.stopPropagation();
+//     const fetchData = async (btoaId) => {
+//         return await axios(`http://localhost:8080/api/getPlanner/${btoaId}`);
+//     };
+//     const btoaId = btoa(plannerId);
+//     const result = await fetchData(btoaId);
+//     const cardList = result.data.data.cards;
+//     const cards = [[], [], []];
+//     for (let i = 0; i < cardList.length; i++) {
+//         if (cardList[i].cardStatus === 'TODO') {
+//             cards[0].push(cardList[i]);
+//         } else if (cardList[i].cardStatus === 'DOING') {
+//             cards[1].push(cardList[i]);
+//         } else if (cardList[i].cardStatus === 'DONE') {
+//             cards[2].push(cardList[i]);
+//         }
+//     }
+//     navigate(`/plannerNoEdit?id=${btoaId}`);
+// };

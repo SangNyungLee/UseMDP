@@ -10,6 +10,7 @@ import SearchComponent from '../../home/searchComponent/SearchComponent';
 import HomeComponent from '../../home/HomeComponent';
 
 // 서타일
+
 import {
 	_Container,
 	_Row,
@@ -17,6 +18,7 @@ import {
 	_RenderComponentCol,
 	_RenderComponent,
 } from '../../../constant/css/styledComponents/__DefaultLoadMap';
+
 import { PiMapTrifoldFill, PiFireBold, PiCalendarBlankFill } from 'react-icons/pi';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
@@ -106,7 +108,7 @@ export default function DefaultLoadMap() {
 			</aside>
 			<_RenderComponent fluid>{renderComponent()}</_RenderComponent>
 		</>
-	);
+	);					
 }
 
 // export default function DefaultLoadMap() {
