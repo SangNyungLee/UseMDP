@@ -53,9 +53,9 @@ export default function QuoteAppOnlyRead() {
         async function fetchData() {
             const btoaid = searchParams.get('id');
             const data = await getPlannerBtoA(btoaid);
-            const tmp = plannerCardStatusDevide(data.data);
-            tmp.quote = 1;
-            dispatch(noEditPlannerAction.setPlansInit(plannerCardStatusDevide(data.data)));
+            let tmp = plannerCardStatusDevide(data.data);
+            tmp = { ...tmp, quote: 1 };
+            dispatch(noEditPlannerAction.setPlansInit(tmp));
         }
         fetchData();
     }, []);

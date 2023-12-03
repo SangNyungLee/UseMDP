@@ -113,7 +113,6 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
 export default function NoEditQuoteAppCalendar(props) {
     const plannerList = useSelector((state) => state.noEditPlanner);
     const quote = plannerList.quote;
-    const dispatch = useDispatch();
 
     const [events, setEvents] = useState();
     const [selectedCard, setSelectedCard] = useState(getOneCard(0, 'TODO'));
@@ -133,7 +132,7 @@ export default function NoEditQuoteAppCalendar(props) {
         setSelectedCard(event);
         setVisible(true);
     };
-    console.log('event', events);
+    console.log('event', events, cardStatus, plannerList);
     return (
         <>
             <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
