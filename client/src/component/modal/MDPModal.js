@@ -16,6 +16,7 @@ import list1 from '../../constant/img/list.svg';
 import calendarImg from '../../constant/img/calendar.svg';
 import parse from 'html-react-parser';
 import IsBackGroundDark from '../../utils/IsBackGroundDark';
+import { requestFail } from '../etc/SweetModal';
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -185,10 +186,17 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         console.log('MODAL에서 보내는 item', newCardItem);
         try {
             const result = await patchCard(newCardItem);
+            if(result.status !== 200) {
+                requestFail("카드 데이터 저장")
+            }
             console.log('deletedCheckList', deletedCheckList);
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {
-                    await deleteCheckList(id);
+                    const res = await deleteCheckList(id);
+                    if(res.status !== 200){
+                        requestFail("체크리스트 삭제")
+                        continue;
+                    }
                 }
             }
             dispatch(siteActions.setIsData(false));
