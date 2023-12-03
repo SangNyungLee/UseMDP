@@ -47,13 +47,14 @@ export default function SearchComponent() {
     useEffect(() => {
         async function getLike() {
             const likes = await getLikesAxios();
-            console.log('starComponent의 like', likes);
-            dispatch(likeActions.setLikesInit(likes));
+            console.log('starComponent의 like', likes.data);
+            dispatch(likeActions.setLikesInit(likes.data));
         }
         async function fetchData() {
             let data;
             try {
                 const response = await getPlannerByTrend();
+                console.log('res', response);
                 if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
@@ -78,39 +79,7 @@ export default function SearchComponent() {
                 } else {
                     requestFail('태그 불러오기');
                 }
-                const tmp = [
-                    {
-                        plannerId: 1,
-                        creator: '123',
-                        title: '230303',
-                        likePlanner: 1,
-                        thumbnail: base64Str,
-                        createAt: '2023-03-02T15:00:00.000+00:00',
-                        cardList: null,
-                        description: '123',
-                    },
-                    {
-                        plannerId: 2,
-                        creator: '234',
-                        title: '230304',
-                        likePlanner: 2,
-                        thumbnail: base64Str,
-                        createAt: '2023-03-02T15:00:00.000+00:00',
-                        cardList: null,
-                        description: '123',
-                    },
-                    {
-                        plannerId: 3,
-                        creator: '456',
-                        title: '230305',
-                        likePlanner: 3,
-                        thumbnail: base64Str,
-                        createAt: '2023-03-02T15:00:00.000+00:00',
-                        cardList: null,
-                        description: '123',
-                    },
-                ];
-                data = tmp;
+                data = [];
             }
             setDatas(data);
             setFilteredDatas(data);
