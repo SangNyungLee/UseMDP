@@ -32,7 +32,11 @@ export default function HomeComponent() {
 	//이미 저장된 값이 있으면 그 list를 불러온다.
 
 	const plannerList = useSelector((state) => state.plannerList);
+	const calendar = useSelector( state => state.calendar);
 	useDefaultCheck(HOME);
+
+	console.log("hom component calendar",calendar)
+	console.log("home component",plannerList)
 
 	// const [data, setData] = useState();
 

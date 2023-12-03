@@ -43,3 +43,27 @@ export const nyanCat = () => {
         `,
   });
 };
+
+export const loginCheckFail = (request) => {
+  Swal.fire({
+    icon: "error",
+    title: `${request} 요청 실패...`,
+    text: "로그인이 되어있지 않아 요청이 거부되었습니다",
+  });
+}
+
+export const cookieFail = (request) => {
+  Swal.fire({
+    icon: "error",
+    title: `${request} 요청 실패...`,
+    text: "쿠키가 만료되어 요청이 거부되었습니다",
+  });
+};
+
+export const requestFail = (request,text="") => {
+  Swal.fire({
+    icon: "error",
+    title: `${request} 요청 실패...`,
+    text,
+  });
+}

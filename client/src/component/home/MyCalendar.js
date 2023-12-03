@@ -20,9 +20,10 @@ import useDefaultCheck from "../../hook/useDefaultCheck";
 import CalendarSideBar from "./calendar/CalendarSideBar";
 import styled from "styled-components";
 import CalendarSelect from "./calendar/CalendarSelect";
-import { getPlannerId, patchCard, postCard } from '../../utils/DataAxios';
+import { patchCard, postCard, postPlanner } from '../../utils/DataAxios';
 import { calendarActions } from '../../store/calendar';
 import { HOME } from "../../constant/constant";
+import { requestFail } from "../etc/SweetModal";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -140,17 +141,15 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
 };
 
 export default function MyCalendar() {
-    //지금은 상위꺼를 가져오는데, myPlanner만 가져오는 식으로.
-    const plannerList = useSelector((state) => state.plannerList);
-    const { home } = useSelector((state) => state.calendar);
-    const site = useSelector((state) => state.site);
+  //지금은 상위꺼를 가져오는데, myPlanner만 가져오는 식으로.
+  const plannerList = useSelector((state) => state.plannerList);
+  const { home } = useSelector((state) => state.calendar);
+  const site = useSelector((state) => state.site);
 
-    const plannerId = home[0];
-    const cardStatusIndex = home[1] ? home[1] : 0;
-    const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
-
-  useDefaultCheck();
-
+  const plannerId = home[0];
+  const cardStatusIndex = home[1] ? home[1] : 0;
+  const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
+  
   const [events, setEvents] = useState();
   const [selectedCard, setSelectedCard] = useState(getOneCard(0, "TODO"));
   const [visible, setVisible] = useState(false);
@@ -158,127 +157,136 @@ export default function MyCalendar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(plannerList, home);
-    const selectedEvents = getNestedElement(plannerList, home);
-    const parsedEvents = dateParsing(selectedEvents);
-    console.log("parsedEvents",parsedEvents)
-    setEvents(parsedEvents);
+    if(plannerList.length > 0){
+      const selectedEvents = getNestedElement(plannerList, home);
+      if (selectedEvents){
+        const parsedEvents = dateParsing(selectedEvents);
+        console.log("parsedEvents",parsedEvents)
+        setEvents(parsedEvents);
+      } else {
+        const plannerId = plannerList[0].plannerId
+        dispatch(calendarActions.setHome([plannerId]))
+      }
+    }
   }, [plannerList, home]);
 
-    const plannerUpdateCard = async (data) => {
-        const { start, end, event } = data;
+  const plannerUpdateCard = async (data) => {
+    const { start, end, event } = data;
+  
+    const cardId = event.cardId
+    const startDate = start.toISOString()
+    const endDate = end.toISOString()
+    const card = events.find( e => e.cardId === cardId )
 
-        const cardId = event.cardId
-        const startDate = start.toISOString()
-        const endDate = end.toISOString()
-        const card = events.find( e => e.cardId === cardId )
+    const requestData = {
+        ...card,
+        startDate,
+        endDate,
+        plannerId,
+        checklists: [{ title: 'done', checked:0 }]
+    }
 
-        const requestData = {
-            ...card,
+    dispatch(
+      plannerListActions.updateCard({
+            cardId,
             startDate,
             endDate,
-            plannerId,
-            checklists: [{ title: 'done', checked:0 }]
+          })
+          );
+
+    const res = await patchCard(requestData);
+    if(res.status !== 200) {
+      requestFail("카드 데이터 저장")
+    } 
+  };
+    
+  const onSelectSlot = async (slotInfo) => {
+    const newEvent = getOneCard(events.length, cardStatus);
+      
+    delete newEvent.cardId
+    delete newEvent.startDate
+    delete newEvent.endDate
+
+    const startDate = moment(slotInfo.start).toISOString();
+    const endDate = moment(slotInfo.end).toISOString();
+        
+    if (plannerList.length === 0) {
+      const newPlannerData = {
+        creator: 'default creator',
+        title: 'default title',
+        thumbnail: '',
+        plannerAccess: 'PUBLIC',
+      }
+
+      const result = await postPlanner(newPlannerData)
+      
+      if( result.status === 201 ){
+        const newPlannerId = result.data.data
+        
+        const newCardData = {
+          ...newEvent,
+          plannerId: newPlannerId,
+          startDate,
+          endDate,
+          cardStatus,
+          checklists:[{checked:0,title:'done'}]
         }
+          
+        const newCardId = await postCard(newCardData)
 
-        const res = await patchCard(requestData);
-
-        console.log("patch res",res)
+        console.log("newCardId",newCardId)
 
         dispatch(
-            plannerListActions.updateCard({
-                cardId,
-                startDate,
-                endDate,
-            })
+          plannerListActions.addPlanner({
+            ...newPlannerData,
+            plannerId: newPlannerId,
+            cards: [
+              [
+                {
+                  ...newEvent,
+                  cardId: newCardId.data.data,
+                  startDate,
+                  endDate,
+                },
+              ],[],[],
+            ]
+          })
         );
-
-        // setEvents((prevEvents) => prevEvents.map((e) => (e.cardId === event.cardId ? { ...e, startDate: start, endDate: end } : e)));
-    };
-
-    console.log("test",plannerList)
-
-    const onSelectSlot = async (slotInfo) => {
-        const newEvent = getOneCard(events.length, cardStatus);
+          
+        dispatch(
+          calendarActions.setHome([newPlannerId])
+        )
         
-        delete newEvent.cardId
-        delete newEvent.startDate
-        delete newEvent.endDate
+      } else {
+        requestFail("플래너 id 생성")
+        return;
+      }
 
-        const startDate = moment(slotInfo.start).toISOString();
-        const endDate = moment(slotInfo.end).toISOString();
-
-        console.log("slotInfo start",slotInfo.start)
-        console.log("startDate",startDate)
-        console.log("slotInfo end",slotInfo.end)
-        console.log("endDate",endDate);
-        
-        if (plannerList.length === 0) {
-            const newPlannerData = {
-                creator: 'default creator',
-                title: 'default title',
-                thumbnail: '',
-                plannerAccess: 'PUBLIC',
-            }
-            const getPlannerIdData = await getPlannerId(newPlannerData)
-            const newPlannerId = getPlannerIdData.data
-            const newCardData = {
-                ...newEvent,
-                plannerId: newPlannerId,
-                startDate,
-                endDate,
-                cardStatus,
-                checklists:[{checked:0,title:'done'}]
-            }
-            const newCardId = await postCard(newCardData)
-
-            dispatch(
-                plannerListActions.addPlanner({
-                    ...newPlannerData,
-                    plannerId: newPlannerId,
-                    cards: [
-                        [
-                            {
-                                ...newEvent,
-                                cardId: newCardId.data.data,
-                                startDate,
-                                endDate,
-                            },
-                        ],
-                        [],
-                        [],
-                    ],
-                })
-                );
-            dispatch(
-                calendarActions.setHome([newPlannerId])
-            )
-        } else {
-            const requestData = {
-                ...newEvent,
-                plannerId,
-                cardStatus,
-                startDate,
-                endDate,
-                checklists:[{checked:0,title:'done'}]
-            }
+    } else {
+      const requestData = {
+        ...newEvent,
+        plannerId,
+        cardStatus,
+        startDate,
+        endDate,
+        checklists:[{checked:0,title:'done'}]
+      }
     
-            const res = await postCard(requestData);
-            dispatch(
-                plannerListActions.addCard({
-                    plannerId,
-                    cardStatusIndex,
-                    card: {
-                        ...newEvent,
-                        cardId: res.data.data,
-                        startDate,
-                        endDate,
-                    },
-                })
-            );
-        }
-        // setEvents((prev) => [...prev, { ...newEvent, startDate, endDate }]);
-    };
+      const res = await postCard(requestData);
+      dispatch(
+        plannerListActions.addCard({
+          plannerId,
+          cardStatusIndex,
+          card: {
+            ...newEvent,
+            cardId: res.data.data,
+            startDate,
+            endDate,
+          },
+        })
+      );
+    }
+  };
 
   const onSelectEvent = (event, e) => {
     setSelectedCard(event);

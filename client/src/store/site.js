@@ -23,6 +23,10 @@ const siteSlice = createSlice({
       state.isLogin = true;
       // return state;
     },
+    setAllFalse(state){
+      state.isData = false;
+      state.isLogin = false;
+    },
     setMemberId(state,action){
       state.memberId = action.payload;
     }

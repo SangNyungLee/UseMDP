@@ -11,6 +11,7 @@ import CustomHeader from './CustomHeader';
 import FileInputComponent from '../FileInputComponent';
 import FileImageInputComponent from '../FileImageInputComponent';
 import { patchPlanner } from '../../utils/DataAxios';
+import { requestFail } from '../etc/SweetModal';
 
 export default function QuoteHeader(props) {
     const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo, setSwitch } = props;
@@ -37,7 +38,10 @@ export default function QuoteHeader(props) {
             title: plannerTitle,
         };
         const res = await patchPlanner(data);
-        console.log('title 수정', res);
+        if(res.status !== 200){
+            requestFail("플래너 제목 수정")
+            return;
+        }
         dispatch(
             plannerListActions.updatePlannerTitle({
                 plannerId,
@@ -50,7 +54,9 @@ export default function QuoteHeader(props) {
         const data = { ...plannerInfo, thumbnail: thumbnail };
         console.log('patchPlannerAndDispatch', data);
         const res = await patchPlanner(data);
-        console.log(res);
+        if(res.status !== 200){
+            requestFail("플래너 상태 저장")
+        }
         dispatch(
             plannerListActions.updatePlannerThumbnail({
                 plannerId,

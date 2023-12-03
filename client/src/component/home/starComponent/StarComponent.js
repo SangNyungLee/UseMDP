@@ -12,6 +12,7 @@ import { getLikes, getLikesAxios, getPlannerByTrend } from '../../../utils/DataA
 import { likeActions } from '../../../store/like';
 import noResult from '../../../constant/img/searchFail.svg';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
+import { requestFail } from '../../etc/SweetModal';
 export default function StarComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
@@ -26,14 +27,14 @@ export default function StarComponent() {
         async function getData() {
             try {
                 const response = await getPlannerByTrend();
-                console.log('res : ', response.data);
-                if (response.data.data.length == 0) {
-                } else {
+                if( response.status === 200){
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     setData(newData);
+                } else {
+                    requestFail("트랜드 플래너 불러오기")
                 }
             } catch {
                 console.log('error');
@@ -42,7 +43,9 @@ export default function StarComponent() {
         }
 
         async function getLike() {
-            const likes = await getLikesAxios();
+            const result = await getLikesAxios(); // status를 안 보내줘서 예외 처리가 안 됨
+            // if(result.status === 200)
+            const likes = result.data
             console.log('starComponent의 like' + JSON.stringify(likes));
             dispatch(likeActions.setLikesInit(likes));
         }

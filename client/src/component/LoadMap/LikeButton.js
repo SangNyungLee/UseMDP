@@ -7,6 +7,7 @@ import { useState } from "react";
 import { deletePlannerUnlike, postPlannerLike } from "../../utils/DataAxios";
 import { useDispatch } from "react-redux";
 import { likeActions } from "../../store/like";
+import { requestFail } from "../etc/SweetModal";
 
 const _Star = styled.img`
   width: 23px;
@@ -25,14 +26,20 @@ const LikeButton = (props) => {
 
   const isStarCilckLike = async (e) => {
     e.stopPropagation();
-    postPlannerLike(plannerId)
     dispatch(likeActions.addPlannerLike(plannerId))
+    const res = await postPlannerLike(plannerId);
+    if(res.status !== 200){
+      requestFail("플래너 좋아요");
+    }
   };
 
   const isStarCilckUnLike = async (e) => {
     e.stopPropagation();
-    deletePlannerUnlike(plannerId);
     dispatch(likeActions.delPlannerLike(plannerId))
+    const res = await deletePlannerUnlike(plannerId);
+    if(res.status !== 200){
+      requestFail("플래너 좋아요 삭제")
+    }
   };
 
   return (
