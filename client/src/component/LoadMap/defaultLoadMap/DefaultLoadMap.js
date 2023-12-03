@@ -8,6 +8,7 @@ import MyCalendar from "../../home/MyCalendar";
 import styled from "styled-components";
 import SearchComponent from "../../home/searchComponent/SearchComponent";
 import HomeComponent from "../../home/HomeComponent";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // 서타일
 import {
@@ -41,6 +42,7 @@ const iconStyle = {
 };
 
 export default function DefaultLoadMap() {
+  const navigate = useNavigate();
   const [menuNumber, setMenuNumber] = useState(1);
   const [isActive, setIsActive] = useState(false);
   const renderComponent = () => {
@@ -64,14 +66,24 @@ export default function DefaultLoadMap() {
     setMenuNumber(number);
   };
 
+  const clickLogo = (e) => {
+    e.stopPropagation();
+    navigate("/");
+  };
+
   return (
     <>
       <_Container>
         <_Row className="justify-content-end">
           <aside className="sidebar">
             <nav className="menu">
-              <div className="side-logo">
-                <img src="/images/logo.png" className="side-logo-img" />
+              <div
+                className="side-logo"
+                onClick={(e) => {
+                  clickLogo(e);
+                }}
+              >
+                <img src="/images/004.png" className="side-logo-img" />
               </div>
               <a
                 className={`menu__item ${

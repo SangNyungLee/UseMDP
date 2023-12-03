@@ -2,9 +2,13 @@
   margin: 0px;
   background-color: #202a45;
   font: 14px "Helvetica", sans-serif;
+  font-family: "Pretendard-Regular";
   color: #fbedeb;
   overflow: auto;
   height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 button,
@@ -24,10 +28,23 @@ textarea {
   box-shadow: 0 0px 2px 0 #202a45;
   /* height: 18px; */
   padding: 6px 10px 10px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .button-style {
   background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  border-style: none;
+  line-height: 25px;
+  margin: -4px 13px -4px -5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.button-style-2 {
+  background: none;
   border-radius: 3px;
   border-style: none;
   line-height: 25px;
@@ -57,7 +74,7 @@ textarea {
   height: 18px;
   width: auto;
   float: right;
-  margin-top: -25px;
+  margin-top: -6px;
 }
 
 .right-bar > * {
@@ -85,7 +102,6 @@ textarea {
 }
 
 .content-header {
-  margin: 2px 0 5px 0;
   height: 30px;
   width: auto;
 }
@@ -122,7 +138,7 @@ textarea {
   border-radius: 3px;
   border-style: none;
   line-height: 25px;
-  margin-top: -35px;
+  margin-top: -27px;
   margin-right: 10px;
   float: right;
   cursor: pointer;
@@ -162,7 +178,7 @@ textarea {
 }
 
 .save-list-btn {
-  font-family: helvetica;
+  font-family: "Pretendard-Regular";
   font-size: 14px;
   font-weight: bold;
   margin-top: 4px;
@@ -190,7 +206,7 @@ textarea {
   padding: 3px 5px;
   font-size: 14px;
   color: #575757;
-  font-family: helvetica;
+  font-family: "Pretendard-Regular";
   border-radius: 3px;
   border-style: none;
   border: 1px solid #aaaaaa;
@@ -209,7 +225,7 @@ textarea {
 }
 
 .addCardBtn {
-  font-family: helvetica;
+  font-family: "Pretendard-Regular";
   font-size: 14px;
   font-weight: bold;
   margin: 0 auto 10px 10px;
@@ -287,7 +303,8 @@ textarea {
 }
 
 .cardContainer {
-  font-family: helvetica;
+  font-family: "Pretendard-Regular";
+  font-family: "Pretendard-Regular";
   font-size: 14px;
   color: #575757;
   margin: 0 8px 5px 8px;

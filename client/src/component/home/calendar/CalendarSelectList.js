@@ -5,8 +5,8 @@ import styled from "styled-components";
 import CardStatusSelectList from "./CardStatusSelectList";
 
 const _SelectContainer = styled.div`
-  background-color: aliceblue;
-  width: 146px;
+  background-color: white;
+  width: 130px;
   height: 40px;
   border-radius: 2px;
   display: flex;
@@ -16,6 +16,7 @@ const _SelectContainer = styled.div`
 const _SelectArrow = styled.div`
   width: fit-content;
   margin-left: 10px;
+  font-size: 10px;
 
   &:hover {
     cursor: pointer;
@@ -23,7 +24,7 @@ const _SelectArrow = styled.div`
 `;
 
 const _PlannerContainer = styled.div`
-  width: 146px;
+  width: 130px;
   background-color: none;
   border-radius: 2px;
   display: flex;
@@ -60,7 +61,7 @@ const _CardsContainer = styled.div`
   display: flex;
   width: 146px;
   overflow-y: hidden;
-  background-color: aliceblue;
+  background: none;
   border-radius: 2px;
   flex-direction: column;
   margin-left: 15px;
@@ -70,30 +71,34 @@ export default function CalendarSelectList({
   planner,
   setIsVisible,
   target,
-  index
+  index,
 }) {
-  const [ isClick, setIsClick ] = useState(false);
+  const [isClick, setIsClick] = useState(false);
   const dispatch = useDispatch();
 
   const { cards, plannerId, title } = planner;
 
   const handleClick = (e) => {
     e.stopPropagation();
-    dispatch(calendarActions.setSelect({
-      target,
-      value:[plannerId]
-    }));
+    dispatch(
+      calendarActions.setSelect({
+        target,
+        value: [plannerId],
+      })
+    );
     setIsVisible(false);
   };
 
   const selectClick = (e) => {
     e.stopPropagation();
-    dispatch(calendarActions.setSelect({
-      target,
-      value:[plannerId]
-    }));
+    dispatch(
+      calendarActions.setSelect({
+        target,
+        value: [plannerId],
+      })
+    );
     setIsClick((prev) => !prev);
-  }
+  };
 
   return (
     <>
@@ -108,11 +113,11 @@ export default function CalendarSelectList({
               <div>{"▶"}</div>
             </_SelectArrow>
           )}
-          <_PlannerTitle onClick={(e) => handleClick(e)}>{(index + 1) + '. ' + title}</_PlannerTitle>
+          <_PlannerTitle onClick={(e) => handleClick(e)}>{title}</_PlannerTitle>
         </_SelectContainer>
-        { isClick ? (
+        {isClick ? (
           <_CardsContainer>
-            {cards.map((cardStatusArr,id) => (
+            {cards.map((cardStatusArr, id) => (
               <CardStatusSelectList
                 key={id}
                 cardStatusArr={cardStatusArr}

@@ -5,8 +5,8 @@ import { calendarActions } from "../../../store/calendar";
 import CardSelectList from "./CardSelectList";
 
 const _CardsContainer = styled.div`
-  width: 146px;
-  background-color: none;
+  width: 130px;
+  background-color: white;
   border-radius: 2px;
   display: flex;
   flex-direction: column;
@@ -30,8 +30,8 @@ const _CardsContainer = styled.div`
 `;
 
 const _SelectContainer = styled.div`
-  background-color: aliceblue;
-  width: 146px;
+  background-color: white;
+  width: 130px;
   height: 40px;
   border-radius: 2px;
   display: flex;
@@ -41,6 +41,7 @@ const _SelectContainer = styled.div`
 const _SelectArrow = styled.div`
   width: fit-content;
   margin-left: 10px;
+  font-size: 10px;
 
   &:hover {
     cursor: pointer;
@@ -58,75 +59,83 @@ const _CardStatusTitle = styled.div`
 
 const _CardContainer = styled.div`
   display: flex;
-  width: 146px;
-  background-color: aliceblue;
+  width: 130px;
+  background-color: white;
   border-radius: 2px;
   flex-direction: column;
   margin-left: 15px;
 `;
 
+const _Arrow = styled.div`
+  font-size: 10px;
+`;
+
 export default function CardStatusSelectList({
-    cardStatusArr,
-    target,
-    index,
-    plannerId,
-    setIsVisible,
-}){
-    const [ isClick, setIsClick ] = useState(false);
-    const dispatch = useDispatch();
+  cardStatusArr,
+  target,
+  index,
+  plannerId,
+  setIsVisible,
+}) {
+  const [isClick, setIsClick] = useState(false);
+  const dispatch = useDispatch();
 
-    const title = index === 0 ? 'TODO' : ( index === 1 ? "DOING" : "DONE" )
+  const title = index === 0 ? "TODO" : index === 1 ? "DOING" : "DONE";
 
+  const handleClick = (e) => {
+    e.stopPropagation();
+    dispatch(
+      calendarActions.setSelect({
+        target,
+        value: [plannerId, index],
+      })
+    );
+    setIsVisible(false);
+  };
 
-    const handleClick = (e) => {
-        e.stopPropagation();
-        dispatch(calendarActions.setSelect({
-            target,
-            value: [ plannerId, index ]
-        }));
-        setIsVisible(false)
-    };
-    
-      const selectClick = (e) => {
-        e.stopPropagation();
-        dispatch(calendarActions.setSelect({
-          target,
-          value: [ plannerId, index ]
-      }));
-        setIsClick((prev) => !prev);
-    }
-    
+  const selectClick = (e) => {
+    e.stopPropagation();
+    dispatch(
+      calendarActions.setSelect({
+        target,
+        value: [plannerId, index],
+      })
+    );
+    setIsClick((prev) => !prev);
+  };
 
-    return (
+  return (
     <_CardsContainer>
-        <_SelectContainer>
+      <_SelectContainer>
         {isClick ? (
-            <_SelectArrow onClick={(e) => selectClick(e)}>
-            <div>{"▼"}</div>
-            </_SelectArrow>
+          <_SelectArrow onClick={(e) => selectClick(e)}>
+            <_Arrow>▼</_Arrow>
+          </_SelectArrow>
         ) : (
-            <_SelectArrow onClick={(e) => selectClick(e)}>
-            <div>{"▶"}</div>
-            </_SelectArrow>
+          <_SelectArrow onClick={(e) => selectClick(e)}>
+            <_Arrow>▶</_Arrow>
+          </_SelectArrow>
         )}
-        <_CardStatusTitle onClick={(e) => handleClick(e)}>{title}</_CardStatusTitle>
-        </_SelectContainer>
-        { isClick ? (
-          <_CardContainer>
-            {cardStatusArr.map((card) => (
-              <CardSelectList
-                key={card.cardId}
-                card={card}
-                target={target}
-                plannerId={plannerId}
-                index={index}
-                setIsVisible={setIsVisible}
-              />
-            ))}
-          </_CardContainer>
-        ) : (
-          <></>
-        )}
+        <_CardStatusTitle onClick={(e) => handleClick(e)}>
+          {title}
+        </_CardStatusTitle>
+      </_SelectContainer>
+      {isClick ? (
+        <_CardContainer>
+          {cardStatusArr.map((card) => (
+            <CardSelectList
+              key={card.cardId}
+              card={card}
+              target={target}
+              plannerId={plannerId}
+              index={index}
+              setIsVisible={setIsVisible}
+            />
+          ))}
+        </_CardContainer>
+      ) : (
+        <></>
+      )}
     </_CardsContainer>
-  )
+  );
 }

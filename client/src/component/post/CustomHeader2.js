@@ -11,6 +11,7 @@ import {
   FaEllipsisH,
   FaDownload,
   FaUser,
+  FaArrowLeft,
 } from "react-icons/fa";
 import "../../constant/css/customHeader2.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +70,7 @@ function CustomHeader2(props) {
   };
 
   const homeNavigate = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handleDownLoad = async () => {
@@ -81,11 +82,15 @@ function CustomHeader2(props) {
     <div className="nav-main">
       <div className="nav-bar">
         <div className="left-bar">
-          <button onClick={homeNavigate} type="button" className="button-style">
-            <FaTrello
+          <button
+            onClick={homeNavigate}
+            type="button"
+            className="button-style-2"
+          >
+            <FaArrowLeft
               style={{ fontSize: "16px", color: "white", marginBottom: "6px" }}
             />
-            <span className="text-style">로고자리</span>
+            {/* <span className="text-style">로고자리</span> */}
           </button>
 
           {/* <button type="button" className="button-style">

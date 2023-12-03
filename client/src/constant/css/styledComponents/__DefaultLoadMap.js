@@ -14,6 +14,9 @@ export const _Container = styled(Container)`
   margin: 0;
   width: 100vw;
   height: 100%;
+  padding-top: 35px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 `;
 
 export const _Row = styled(Row)`

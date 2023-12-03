@@ -6,7 +6,7 @@ import "../../../constant/css/index.css";
 import styled from "styled-components";
 
 const _Font = styled.div`
-  font-family: "SUITE-Regular";
+  font-family: "Pretendard-Regular";
 `;
 
 const MyDayPicker = ({ date, setDate }) => {
