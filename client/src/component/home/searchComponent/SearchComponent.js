@@ -6,10 +6,11 @@ import CustomList from '../customList/CustomList';
 import base64Str from '../../../constant/ImageBase64';
 import axios from 'axios';
 import LoadMap from '../../LoadMap/LoadMap';
-import { getPlannerByTrend, getTags } from '../../../utils/DataAxios';
+import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
-import MyLoadMap from '../../LoadMap/MyLoadMap';
+import { useDispatch } from 'react-redux';
+import { likeActions } from '../../../store/like';
 const SearchContainer = styled.div`
     width: 75vw;
     display: flex;
@@ -32,6 +33,7 @@ const nullOptions = [
     // Add more options as needed
 ];
 export default function SearchComponent() {
+    const dispatch = useDispatch();
     const selectInputRef = useRef();
     const [author, setAuthor] = useState([]);
     const [title, setTitle] = useState([]);
@@ -42,6 +44,11 @@ export default function SearchComponent() {
     const [tags2, setTags] = useState([]);
 
     useEffect(() => {
+        async function getLike() {
+            const likes = await getLikesAxios();
+            console.log('starComponent의 like', likes);
+            dispatch(likeActions.setLikesInit(likes));
+        }
         async function fetchData() {
             let data;
             try {
@@ -130,6 +137,7 @@ export default function SearchComponent() {
             // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
+        getLike();
     }, []);
 
     const changeOption = (v) => {

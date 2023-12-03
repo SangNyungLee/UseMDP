@@ -172,21 +172,21 @@ export async function deleteCheckList(id) {
     return res.data;
 }
 
-export async function getLikesAxios(){
+export async function getLikesAxios() {
     const res = await axios({
         method: 'GET',
         url: getURL('/api/getLikes'),
-        withCredentials: true
+        withCredentials: true,
     });
     return res.data;
 }
 
-export async function postPlannerLike(plannerId){
+export async function postPlannerLike(plannerId) {
     const res = await axios({
         method: 'POST',
         url: getURL(`/api/postPlanner/like`),
         data: {
-            plannerId
+            plannerId,
         },
         withCredentials: true,
     });
@@ -194,12 +194,13 @@ export async function postPlannerLike(plannerId){
     return res.data;
 }
 
-export async function deletePlannerUnlike(plannerId){
+export async function deletePlannerUnlike(plannerId) {
     const res = await axios({
-        url: getURL("/api/patchPlanner/unlike"),
+        method: 'DELETE',
+        url: getURL('/api/patchPlanner/unlike'),
         data: { plannerId },
         withCredentials: true,
     });
-    console.log("delete",res);
+    console.log('delete', res);
     return res;
 }

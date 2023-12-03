@@ -8,6 +8,7 @@ import { deletePlannerUnlike, postPlannerLike } from '../../utils/DataAxios';
 import { useDispatch } from 'react-redux';
 import { likeActions } from '../../store/like';
 import { FaRegStar } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const _Star = styled.img`
     position: absolute;
@@ -41,12 +42,12 @@ const _FaStar2 = styled(FaRegStar)`
     z-index: 5;
 `;
 const LikeButton = (props) => {
+    const likes = useSelector((state) => state.like);
     const plannerId = props.plannerId;
-    const isLike = props.isLike;
-
+    const isLike = likes.includes(plannerId);
     const dispatch = useDispatch();
 
-    console.log('like button', isLike);
+    console.log('like button', isLike, likes);
 
     const isStarCilckLike = async (e) => {
         e.stopPropagation();
@@ -56,15 +57,15 @@ const LikeButton = (props) => {
 
     const isStarCilckUnLike = async (e) => {
         e.stopPropagation();
-        deletePlannerUnlike(plannerId);
+        await deletePlannerUnlike(plannerId);
         dispatch(likeActions.delPlannerLike(plannerId));
     };
 
-    return <>{isLike ? <_FaStar onClick={(e) => isStarCilckUnLike(e)}></_FaStar> : <_FaStar2 onClick={(e) => isStarCilckLike(e)}></_FaStar2>}</>;
+    return <>{isLike ? <_Star src={yellowStar} onClick={(e) => isStarCilckUnLike(e)}></_Star> : <_Star src={star} onClick={(e) => isStarCilckLike(e)}></_Star>}</>;
 };
 
 export default LikeButton;
 {
-    /*  */
+    /*<>{isLike ? <_FaStar onClick={(e) => isStarCilckUnLike(e)}></_FaStar> : <_FaStar2 onClick={(e) => isStarCilckLike(e)}></_FaStar2>}</>;  */
     // ;
 }
