@@ -7,6 +7,7 @@ import base64Str from '../../constant/ImageBase64';
 import {
 	_CardContainer,
 	_CardBody,
+	_CardText,
 	_PlusIcon,
 	_PlusButton,
 	_CardImgOverlay,
@@ -98,12 +99,9 @@ export default function PlusMap(props) {
 	};
 
 	return (
-		<_CardContainer text='white' id='PLUS'>
-			{/* <_CardImg src={skyImg} alt='planner thumbnail' /> */}
-			<_CardBody>
-				<_PlusButton onClick={(e) => handleClick(e)} variant='none'>
-					<_PlusIcon />
-				</_PlusButton>
+		<_CardContainer text='white' className='text-center'>
+			<_CardBody onClick={(e) => handleClick(e)}>
+				<_CardText>Create new planner</_CardText>
 			</_CardBody>
 		</_CardContainer>
 	);

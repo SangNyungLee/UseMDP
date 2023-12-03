@@ -5,10 +5,10 @@ import { LiaEdit } from 'react-icons/lia';
 
 export const _CardContainer = styled(Card)`
 	border: none;
-	margin: 5%;
 	cursor: pointer;
+	border-radius: 3px;
+	padding: 0;
 	width: 240px;
-	height: 120px;
 `;
 
 export const _CardHeader = styled(Card.Header)``;
@@ -22,8 +22,8 @@ export const _CardImg = styled(Card.Img)`
 	-webkit-filter: blur(0px);
 
 	&:hover {
-		filter: none;
-		-webkit-filter: none;
+		filter: blur(5 px) !important;
+		-webkit-filter: blur(5 px) !important;
 	}
 `;
 
@@ -37,7 +37,9 @@ export const _CardBody = styled(Card.Body)`
 	padding: 4%;
 `;
 
-export const _CardTitle = styled(Card.Title)``;
+export const _CardTitle = styled(Card.Title)`
+	font-size: 1.2rem;
+`;
 
 export const _CardSubtitle = styled(Card.Subtitle)``;
 
@@ -63,7 +65,7 @@ export const _CardEditButton = styled(Button)`
 
 export const _LockedIcon = styled(IoMdLock)`
 	font-size: 1.2rem;
-	cursor: text;
+	opacity: 0.6;
 `;
 
 export const _UnlockedIcon = styled(IoMdUnlock)`
@@ -91,5 +93,5 @@ export const _EditIcon = styled(LiaEdit)`
 export const _IconContainer = styled.div`
 	position: absolute;
 	bottom: 4%;
-	left: 4%;
+	left: 2%;
 `;
