@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 import menuicon from '../../../constant/img/menu.svg';
-import LeftClicker from '../RightClicker/LeftClicker';
-import { pointActions } from '../../../store/pointer';
-import { useDispatch, useSelector } from 'react-redux';
 const HeaderDiv = styled.div`
     text-align: left;
     margin: 10px;
@@ -21,24 +18,16 @@ const FlexContainer = styled.div`
     text-align: center;
 `;
 
-export default function CardListHeader(props) {
-    const { index, pid } = props;
-
-    const dispatch = useDispatch();
-    const pointer = useSelector((state) => state.pointer);
-    const handleLeftClicker = (e) => {
-        e.stopPropagation();
-        dispatch(pointActions.setPoint([e.clientY, e.clientX]));
-    };
+export default function NoEditCardListHeader(props) {
+    const { index } = props;
 
     switch (index) {
         case '0':
             return (
                 <>
-                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker index={index} point={pointer} pid={pid}></LeftClicker> : null}
                     <FlexContainer>
                         <HeaderDiv>TODO</HeaderDiv>
-                        <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
+                        <MenuImg src={menuicon}></MenuImg>
                     </FlexContainer>
                 </>
             );
@@ -46,14 +35,14 @@ export default function CardListHeader(props) {
             return (
                 <FlexContainer>
                     <HeaderDiv>DOING</HeaderDiv>
-                    <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
+                    <MenuImg src={menuicon}></MenuImg>
                 </FlexContainer>
             );
         case '2':
             return (
                 <FlexContainer>
                     <HeaderDiv>DONE</HeaderDiv>
-                    <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
+                    <MenuImg src={menuicon}></MenuImg>
                 </FlexContainer>
             );
         default:

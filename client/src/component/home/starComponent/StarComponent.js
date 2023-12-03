@@ -6,18 +6,21 @@ import CustomList from '../customList/CustomList';
 import CustomListHiddable from '../customList/CustomListHiddable';
 import MyLoadMap from '../../LoadMap/MyLoadMap';
 import LoadMap from '../../LoadMap/LoadMap';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { plannerListActions } from '../../../store/plannerList';
 import { getLikes, getLikesAxios, getPlannerByTrend } from '../../../utils/DataAxios';
 import { likeActions } from '../../../store/like';
 import noResult from '../../../constant/img/searchFail.svg';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import { requestFail } from '../../etc/SweetModal';
+import { HOME } from '../../../constant/constant';
+import useDefaultCheck from '../../../hook/useDefaultCheck';
 export default function StarComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
-
+    const plannerList = useSelector((state) => state.plannerList);
+    useDefaultCheck(HOME);
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
             setPoint([-1, -1]);
@@ -72,7 +75,7 @@ export default function StarComponent() {
                 7,11이 되면 Container를 만들고  */}
 
             <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
-            {data.length == 0 ? (
+            {plannerList.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
                     <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
                     <div>
@@ -81,7 +84,7 @@ export default function StarComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
+                <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
             )}
         </div>
     );

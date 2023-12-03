@@ -7,20 +7,7 @@ import useDefaultCheck from '../../hook/useDefaultCheck';
 import { HOME } from '../../constant/constant';
 import { useSelector, useDispatch } from 'react-redux';
 // Styled Components
-import { _ComponentContainer, _ComponentTitle } from '../../constant/css/styledComponents/__HomeComponent';
-import { Container } from 'react-bootstrap';
-// import {
-// 	Fade,
-// 	Bounce,
-// 	Flip,
-// 	Hinge,
-// 	JackInTheBox,
-// 	Roll,
-// 	Rotate,
-// 	Slide,
-// 	Zoom,
-// 	AttentionSeeker,
-// } from 'react-awesome-reveal';
+import { _ComponentTitle } from '../../constant/css/styledComponents/__HomeComponent';
 
 const statusIndexMap = {
 	TODO: 0,
@@ -74,11 +61,9 @@ export default function HomeComponent() {
 	// }, [setData, dispatch]);
 
 	return (
-		<_ComponentContainer fluid id='MY PLANNERS'>
-			<_ComponentTitle>My Planners</_ComponentTitle>
-			{/* <Fade direction='up' cascade triggerOnce> */}
+		<>
+			<_ComponentTitle>MY PLANNERS</_ComponentTitle>
 			<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
-			{/* </Fade> */}
-		</_ComponentContainer>
+		</>
 	);
 }

@@ -189,6 +189,8 @@ export default function MyLoadMap(props) {
 		}
 	};
 
+	const [isHovering, setIsHovering] = useState(false);
+
 	return (
 		// <_Container onClick={(e) => handleClick(e)}>
 		// 	<_ImageStyle src={thumbnail}></_ImageStyle>
@@ -207,20 +209,30 @@ export default function MyLoadMap(props) {
 		// 	</div>
 		// </_Container>
 
-		<_CardContainer text='white' onClick={(e) => handleClick(e)}>
+		<_CardContainer
+			text='white'
+			onClick={(e) => handleClick(e)}
+			onMouseOver={() => setIsHovering(true)}
+			onMouseLeave={() => setIsHovering(false)}>
 			<_CardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
 			<_CardImgOverlay>
 				<_CardBody>
 					<_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
-					<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
-						<_DownloadIcon />
-					</_CardDownloadButton>
-					<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
-						<_EditIcon />
-					</_CardEditButton>
-					<_IconContainer>
-						{editedPlannerAccess === 'PUBLIC' ? <_UnlockedIcon /> : <_LockedIcon />}
-					</_IconContainer>
+					{isHovering ? (
+						<>
+							<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
+								<_DownloadIcon />
+							</_CardDownloadButton>
+							<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
+								<_EditIcon />
+							</_CardEditButton>
+						</>
+					) : null}
+					{editedPlannerAccess === 'PRIVATE' ? (
+						<_IconContainer>
+							<_LockedIcon />
+						</_IconContainer>
+					) : null}
 				</_CardBody>
 			</_CardImgOverlay>
 		</_CardContainer>
