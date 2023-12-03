@@ -82,7 +82,7 @@ export default function QuoteHeader(props) {
 
     return (
         <>
-            <CustomHeader2 setSwitch={setSwitch} plannerInfo={plannerInfo} />
+            <CustomHeader2 setSwitch={setSwitch} plannerInfo={plannerInfo} plannerList={plannerList} />
             <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             {/* <div>
                 

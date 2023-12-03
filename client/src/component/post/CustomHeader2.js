@@ -61,7 +61,7 @@ function CustomHeader2(props) {
     };
 
     const handleDownLoad = async () => {
-        DataDownload(plannerInfo.title);
+        DataDownload(plannerInfo.title, props.plannerList);
     };
 
     const Addplanner = () => {};

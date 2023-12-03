@@ -1,9 +1,5 @@
-import axios from 'axios';
-import base64Str from '../../../constant/ImageBase64';
-import LoadMap from '../LoadMap';
 import MyLoadMap from '../MyLoadMap';
-import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
-import RightClicker from '../../post/RightClicker/RightClicker';
+
 import { useEffect, useState } from 'react';
 import CustomList from '../../home/customList/CustomList';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
@@ -19,7 +15,6 @@ export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
-    const [hide, setHide] = useState(true);
     const like = useSelector((state) => state.like);
     const plannerList = useSelector((state) => state.plannerList);
     useDefaultCheck(HOME);
