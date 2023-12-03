@@ -14,32 +14,23 @@ import { _PageContainer } from '../constant/css/styledComponents/__HomePage';
 import RealHeader from '../component/RealHeader';
 
 const _Flex = styled.div`
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
 `;
 
 export default function HomePage() {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const handlePoint = (e) => {
-        e.stopPropagation();
-        dispatch(pointActions.clearPoint());
-    };
+	const handlePoint = (e) => {
+		e.stopPropagation();
+		dispatch(pointActions.clearPoint());
+	};
 
-    return (
-        <_PageContainer id="HOMEPAGE" onClick={(e) => handlePoint(e)}>
-            {/* <HomeHeader /> */}
-            <RealHeader />
-            <Outlet />
-        </_PageContainer>
-        // <_Font
-        // 	id='HOMEPAGE'
-        // 	onClick={(e) => handlePoint(e)}
-        // 	style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        // 	<HomeHeader />
-        // 	<_Flex style={{ flex: 1 }}>
-        // 		<Outlet />
-        // 	</_Flex>
-        // </_Font>
-    );
+	return (
+		<_PageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
+			{/* <HomeHeader /> */}
+			<RealHeader />
+			<Outlet />
+		</_PageContainer>
+	);
 }
