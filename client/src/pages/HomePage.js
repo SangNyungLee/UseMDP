@@ -10,7 +10,7 @@ import { HOME } from '../constant/constant';
 import { useSelector } from 'react-redux';
 import HomeHeader from '../component/home/HomeHeader';
 
-import { _pageContainer } from '../constant/css/styledComponents/__HomePage';
+import { _PageContainer } from '../constant/css/styledComponents/__HomePage';
 
 const _Flex = styled.div`
 	display: flex;
@@ -26,10 +26,10 @@ export default function HomePage() {
 	};
 
 	return (
-		<_pageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
+		<_PageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
 			<HomeHeader />
 			<Outlet />
-		</_pageContainer>
+		</_PageContainer>
 		// <_Font
 		// 	id='HOMEPAGE'
 		// 	onClick={(e) => handlePoint(e)}

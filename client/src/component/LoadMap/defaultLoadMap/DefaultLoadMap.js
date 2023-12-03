@@ -59,7 +59,7 @@ export default function DefaultLoadMap() {
 
 	return (
 		<>
-			<_Container>
+			<_Container fluid>
 				<_Row className='justify-content-end'>
 					<_SidebarCol
 						xs={12}
@@ -102,8 +102,8 @@ export default function DefaultLoadMap() {
 							</_Container>
 						</_Navbar>
 					</_SidebarCol>
-					<_RenderComponentCol xs={12} sm={10} className='justify-content-end'>
-						<_RenderComponent>{renderComponent()}</_RenderComponent>
+					<_RenderComponentCol xs={12} sm={10}>
+						{renderComponent()}
 					</_RenderComponentCol>
 				</_Row>
 			</_Container>

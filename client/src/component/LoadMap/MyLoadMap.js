@@ -16,88 +16,25 @@ import Swal from 'sweetalert2';
 
 //Styled Components with React Bootstrap
 import {
-	_cardContainer,
-	_cardHeader,
-	_cardFooter,
-	_cardImg,
-	_cardImgOverlay,
-	_cardBody,
-	_cardTitle,
-	_cardSubtitle,
-	_cardText,
-	_cardLink,
-	_cardDownloadButton,
-	_cardEditButton,
-	_iconContainer,
-	_lockedIcon,
-	_unlockedIcon,
-	_downloadIcon,
-	_editIcon,
+	_CardContainer,
+	_CardHeader,
+	_CardFooter,
+	_CardImg,
+	_CardImgOverlay,
+	_CardBody,
+	_CardTitle,
+	_CardSubtitle,
+	_CardText,
+	_CardLink,
+	_CardDownloadButton,
+	_CardEditButton,
+	_IconContainer,
+	_LockedIcon,
+	_UnlockedIcon,
+	_DownloadIcon,
+	_EditIcon,
 } from '../../constant/css/styledComponents/__MyLoadMap';
 import skyImg from '../../constant/img/sky.jpg';
-
-const _Container = styled.div`
-	margin-bottom: 20px;
-	width: fit-content;
-`;
-
-const _ImageStyle = styled.img`
-	width: 240px;
-	height: 160px;
-	border-radius: 5px;
-`;
-
-const _TitleStyle = styled.div`
-	font-size: 23px;
-	margin-left: 2px;
-`;
-
-const _DescriptionStyle = styled.span`
-	font-size: 17px;
-	color: #8f8f8f;
-	margin-left: 2px;
-`;
-
-const _Felx = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-top: 5px;
-`;
-
-const _Share = styled.div`
-	width: 20px;
-	height: 20px;
-	margin-right: 2px;
-	color: #515151;
-`;
-
-const _isOpen = styled.div`
-	color: #198754;
-	font-weight: bolder;
-	margin-left: 2px;
-`;
-
-const _Button = styled.button`
-	border: none;
-	background-color: #198754;
-	color: white;
-	width: 60px;
-	height: 30px;
-	border-radius: 2px;
-	font-size: 14px;
-	margin-right: 2px;
-`;
-
-const StyledShareIcon = styled.i`
-	&.material-icons {
-		cursor: pointer;
-	}
-
-	&:hover {
-		color: #007bff; /* Change the color on hover as an example */
-	}
-`;
 
 export default function MyLoadMap(props) {
 	const dispatch = useDispatch();
@@ -262,23 +199,23 @@ export default function MyLoadMap(props) {
 		// 	</div>
 		// </_Container>
 
-		<_cardContainer text='white' onClick={(e) => handleClick(e)}>
-			<_cardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
-			<_cardImgOverlay>
-				<_cardBody>
-					<_cardTitle as={'h5'}>{editedTitle}</_cardTitle>
-					<_cardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
-						<_downloadIcon />
-					</_cardDownloadButton>
-					<_cardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
-						<_editIcon />
-					</_cardEditButton>
-					<_iconContainer>
-						{editedPlannerAccess === 'PUBLIC' ? <_unlockedIcon /> : <_lockedIcon />}
-					</_iconContainer>
-				</_cardBody>
-			</_cardImgOverlay>
-		</_cardContainer>
+		<_CardContainer text='white' onClick={(e) => handleClick(e)}>
+			<_CardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
+			<_CardImgOverlay>
+				<_CardBody>
+					<_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
+					<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
+						<_DownloadIcon />
+					</_CardDownloadButton>
+					<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
+						<_EditIcon />
+					</_CardEditButton>
+					<_IconContainer>
+						{editedPlannerAccess === 'PUBLIC' ? <_UnlockedIcon /> : <_LockedIcon />}
+					</_IconContainer>
+				</_CardBody>
+			</_CardImgOverlay>
+		</_CardContainer>
 	);
 }
 

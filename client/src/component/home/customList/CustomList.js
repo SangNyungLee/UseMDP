@@ -1,7 +1,8 @@
-import { Container, Row, Col } from 'react-bootstrap';
 import PlusMap from '../../LoadMap/PlusMap';
 import LoadMap from '../../LoadMap/LoadMap';
 import MyLoadMap from '../../LoadMap/MyLoadMap';
+
+import { _Row, _Col, _Container } from '../../../constant/css/styledComponents/__CustomList';
 
 export default function CustomList(props) {
 	const data = props.datas;
@@ -19,18 +20,18 @@ export default function CustomList(props) {
 
 	return (
 		<>
-			<Row xs={2} md={3} lg={4}>
+			<_Row xs={2} md={3} lg={3} xl={4} xxl={4}>
 				{data.map((planner, idx) => {
 					return (
-						<Col key={idx + 1}>
+						<_Col key={idx + 1}>
 							<CustomLoadMap datas={planner} />
-						</Col>
+						</_Col>
 					);
 				})}
-				<Col>
+				<_Col>
 					<PlusMap />
-				</Col>
-			</Row>
+				</_Col>
+			</_Row>
 
 			{/* <Container>
 				{data.map((item, idx) => {
