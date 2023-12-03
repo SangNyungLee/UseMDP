@@ -7,7 +7,7 @@ import base64Str from '../../../constant/ImageBase64';
 import axios from 'axios';
 import LoadMap from '../../LoadMap/LoadMap';
 import { getPlannerByTrend, getTags } from '../../../utils/DataAxios';
-import { _componentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
+import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
 const SearchContainer = styled.div`
     width: 75vw;
@@ -150,7 +150,7 @@ export default function SearchComponent() {
 
     return (
         <div style={{ padding: '15px' }}>
-            <_componentTitle>로드맵 검색</_componentTitle>
+            <_ComponentTitle>로드맵 검색</_ComponentTitle>
             <SearchContainer>
                 <div>
                     <Select options={options} onChange={changeOption} defaultValue={options[0]} isSearchable={false} />

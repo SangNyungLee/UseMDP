@@ -11,9 +11,8 @@ import { useDispatch } from 'react-redux';
 import { getLikesAxios, getPlannerByBasic } from '../../../utils/DataAxios';
 import { useSelector } from 'react-redux';
 import { likeActions } from '../../../store/like';
-import { _componentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
+import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
-
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
@@ -58,7 +57,7 @@ export default function DefaultComponent() {
 
     return (
         <div onClick={handlePoint}>
-            <h2>기본로드맵</h2>
+            <_ComponentTitle>Default LoadMap</_ComponentTitle>
             {data.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
                     <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
@@ -71,7 +70,7 @@ export default function DefaultComponent() {
                 <CustomListHiddable datas={data} points={[point, setPoint]} />
             )}
 
-            <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
+            <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
             {data.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
                     <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />

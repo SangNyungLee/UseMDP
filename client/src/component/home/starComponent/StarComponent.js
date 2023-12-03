@@ -11,6 +11,7 @@ import { plannerListActions } from '../../../store/plannerList';
 import { getLikes, getLikesAxios, getPlannerByTrend } from '../../../utils/DataAxios';
 import { likeActions } from '../../../store/like';
 import noResult from '../../../constant/img/searchFail.svg';
+import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 export default function StarComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
@@ -52,12 +53,22 @@ export default function StarComponent() {
 
     return (
         <div style={{ padding: '15px' }} onClick={handlePoint}>
-            <h2>인기 로드맵</h2>
-            <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
+            <_ComponentTitle>Star LoadMap</_ComponentTitle>
+
+            {data.length == 0 ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
+                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
+                    <div>
+                        <div style={{ fontSize: '25px' }}> 해당하는 데이터가 없어요..</div>
+                    </div>
+                </div>
+            ) : (
+                <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
+            )}
             {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}
 
-            <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
+            <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
             {data.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
                     <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
