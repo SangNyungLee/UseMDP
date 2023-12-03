@@ -1,5 +1,13 @@
-import styled from 'styled-components';
-import { Row, Col, Stack, Container, Nav, Navbar, Button } from 'react-bootstrap';
+import styled from "styled-components";
+import {
+  Row,
+  Col,
+  Stack,
+  Container,
+  Nav,
+  Navbar,
+  Button,
+} from "react-bootstrap";
 
 export const _Container = styled(Container)`
 	padding: 8% 0 0 0;
@@ -15,7 +23,7 @@ export const _Row = styled(Row)`
 export const _SidebarCol = styled(Col)``;
 
 export const _RenderComponentCol = styled(Col)`
-	height: 100%;
+  height: 100%;
 `;
 
 export const _RenderComponent = styled.div`

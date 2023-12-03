@@ -36,7 +36,7 @@ public class GithubLoginService {
         System.out.println("깃허브 유저 리소스" + userResourceNode);
 
         String socialId = userResourceNode.get("id").asText();
-        String socialNickname = userResourceNode.get("name").asText();
+        String socialNickname = userResourceNode.get("login").asText();
         String socialProfilePicture =  userResourceNode.get("avatar_url").asText();
         System.out.println("socialId" + socialId);
         System.out.println("socialNickname" + socialNickname);

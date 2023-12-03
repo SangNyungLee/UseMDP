@@ -27,11 +27,20 @@ export default function Redirection({ provider }) {
               { withCredentials: true }
             )
             .then((res) => {
+              console.log(res);
+
+              //이름이랑 이미지 사진 로컬 스토리지에 저장
+              localStorage.setItem("userName", res.data.data.socialNickname);
+              localStorage.setItem(
+                "userImage",
+                res.data.data.socialProfilePicture
+              );
               navigate("/");
               dispatch(siteActions.setIsLogin(true));
               loginSuccess("구글");
             })
             .catch((res) => {
+              navigate("/");
               loginFail("구글");
             });
         } else if (provider === "github") {
@@ -45,11 +54,19 @@ export default function Redirection({ provider }) {
             )
             .then((res) => {
               console.log(res);
+
+              //이름이랑 이미지 사진 로컬 스토리지에 저장
+              localStorage.setItem("userName", res.data.data.socialNickname);
+              localStorage.setItem(
+                "userImage",
+                res.data.data.socialProfilePicture
+              );
               dispatch(siteActions.setIsLogin(true));
               navigate("/");
               loginSuccess("깃허브");
             })
             .catch((res) => {
+              navigate("/");
               loginFail("깃허브");
             });
         }
