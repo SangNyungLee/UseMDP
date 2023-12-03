@@ -4,11 +4,12 @@ import { IoMdLock, IoMdUnlock, IoMdDownload } from 'react-icons/io';
 import { LiaEdit } from 'react-icons/lia';
 
 export const _CardContainer = styled(Card)`
-	border: none;
-	cursor: pointer;
-	border-radius: 3px;
-	padding: 0;
-	width: 240px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    width: 240px;
+    margin-right: 30px;
 `;
 
 export const _CardHeader = styled(Card.Header)``;
@@ -16,29 +17,29 @@ export const _CardHeader = styled(Card.Header)``;
 export const _CardFooter = styled(Card.Footer)``;
 
 export const _CardImg = styled(Card.Img)`
-	width: 240px;
-	height: 120px;
-	filter: blur(0 px);
-	-webkit-filter: blur(0px);
+    width: 240px;
+    height: 120px;
+    filter: blur(0 px);
+    -webkit-filter: blur(0px);
 
-	&:hover {
-		filter: blur(5 px) !important;
-		-webkit-filter: blur(5 px) !important;
-	}
+    &:hover {
+        filter: blur(5 px) !important;
+        -webkit-filter: blur(5 px) !important;
+    }
 `;
 
 export const _CardImgOverlay = styled(Card.ImgOverlay)`
-	width: 240px;
-	height: 120px;
-	padding: 0;
+    width: 240px;
+    height: 120px;
+    padding: 0;
 `;
 
 export const _CardBody = styled(Card.Body)`
-	padding: 4%;
+    padding: 4%;
 `;
 
 export const _CardTitle = styled(Card.Title)`
-	font-size: 1.2rem;
+    font-size: 1.2rem;
 `;
 
 export const _CardSubtitle = styled(Card.Subtitle)``;
@@ -48,50 +49,50 @@ export const _CardText = styled(Card.Text)``;
 export const _CardLink = styled(Card.Link)``;
 
 export const _CardDownloadButton = styled(Button)`
-	padding: 0;
-	margin: 0;
-	position: absolute;
-	bottom: 4%;
-	right: 4%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    bottom: 4%;
+    right: 4%;
 `;
 
 export const _CardEditButton = styled(Button)`
-	padding: 0;
-	margin: 0;
-	position: absolute;
-	top: 4%;
-	right: 3%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 4%;
+    right: 3%;
 `;
 
 export const _LockedIcon = styled(IoMdLock)`
-	font-size: 1.2rem;
-	opacity: 0.6;
+    font-size: 1.2rem;
+    opacity: 0.6;
 `;
 
 export const _UnlockedIcon = styled(IoMdUnlock)`
-	font-size: 1.2rem;
+    font-size: 1.2rem;
 `;
 
 export const _DownloadIcon = styled(IoMdDownload)`
-	color: white;
-	font-size: 1.2rem;
+    color: white;
+    font-size: 1.2rem;
 
-	&:hover {
-		scale: 1.1;
-	}
+    &:hover {
+        scale: 1.1;
+    }
 `;
 
 export const _EditIcon = styled(LiaEdit)`
-	color: white;
-	font-size: 1.2rem;
+    color: white;
+    font-size: 1.2rem;
 
-	&:hover {
-		scale: 1.1;
-	}
+    &:hover {
+        scale: 1.1;
+    }
 `;
 
 export const _IconContainer = styled.div`
-	position: absolute;
-	bottom: 4%;
-	left: 2%;
+    position: absolute;
+    bottom: 4%;
+    left: 2%;
 `;

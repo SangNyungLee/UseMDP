@@ -10,7 +10,25 @@ import { useDispatch } from 'react-redux';
 import LikeButton from './LikeButton';
 import { postPlannerLike } from '../../utils/DataAxios';
 import skyImg from '../../constant/img/sky.jpg';
-
+import {
+    _CardContainer,
+    _CardHeader,
+    _CardFooter,
+    _CardImg,
+    _CardImgOverlay,
+    _CardBody,
+    _CardTitle,
+    _CardSubtitle,
+    _CardText,
+    _CardLink,
+    _CardDownloadButton,
+    _CardEditButton,
+    _IconContainer,
+    _LockedIcon,
+    _UnlockedIcon,
+    _DownloadIcon,
+    _EditIcon,
+} from '../../constant/css/styledComponents/__MyLoadMap';
 const _Container = styled.div`
     margin-bottom: 20px;
     width: fit-content;
@@ -48,7 +66,9 @@ const _Star = styled.img`
 
 export default function LoadMap(props) {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+
+    const [isHovering, setIsHovering] = useState(false);
+
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
     // console.log(props);
     const isLike = props.isLike;
@@ -60,17 +80,17 @@ export default function LoadMap(props) {
     };
 
     return (
-        <_Container onClick={(e) => handleClick(e)}>
-            <_ImageStyle src={thumbnail ? thumbnail : skyImg}></_ImageStyle>
-            <div>
-                <_Felx>
-                    <_TitleStyle>{title}</_TitleStyle>
-
-                    <LikeButton plannerId={plannerId} isLike={isLike} />
-                </_Felx>
-                <_DescriptionStyle>{description}</_DescriptionStyle>
-            </div>
-        </_Container>
+        <>
+            <_CardContainer text="white" onClick={(e) => handleClick(e)} onMouseOver={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                <_CardImg src={thumbnail ? thumbnail : skyImg} alt="planner thumbnail" />
+                <_CardImgOverlay>
+                    <_CardBody>
+                        <_CardTitle as={'h5'}>{title}</_CardTitle>
+                    </_CardBody>
+                </_CardImgOverlay>
+                <LikeButton plannerId={plannerId} isLike={isLike} />
+            </_CardContainer>
+        </>
     );
 }
 
@@ -94,3 +114,16 @@ export default function LoadMap(props) {
 //     }
 //     navigate(`/plannerNoEdit?id=${btoaId}`);
 // };
+{
+    /* <_Container onClick={(e) => handleClick(e)}>
+<_ImageStyle src={thumbnail ? thumbnail : skyImg}></_ImageStyle>
+<div>
+    <_Felx>
+        <_TitleStyle>{title}</_TitleStyle>
+
+        <LikeButton plannerId={plannerId} isLike={isLike} />
+    </_Felx>
+    <_DescriptionStyle>{description}</_DescriptionStyle>
+</div>
+</_Container> */
+}

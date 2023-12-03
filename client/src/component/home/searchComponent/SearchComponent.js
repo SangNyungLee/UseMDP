@@ -9,6 +9,7 @@ import LoadMap from '../../LoadMap/LoadMap';
 import { getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
+import MyLoadMap from '../../LoadMap/MyLoadMap';
 const SearchContainer = styled.div`
     width: 75vw;
     display: flex;
@@ -221,7 +222,7 @@ export default function SearchComponent() {
 
                 <Button onClick={(e) => handleSearch(e)}>검색</Button>
             </SearchContainer>
-            <h2 style={{ marginTop: '30px', marginBottom: '10px', fontSize: '30px', fontWeight: '300' }}>검색결과</h2>
+            <_ComponentTitle style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</_ComponentTitle>
             {/* 데이터 없을 때 처리  */}
             {filteredDatas.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
