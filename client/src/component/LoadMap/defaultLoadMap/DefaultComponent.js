@@ -84,7 +84,7 @@ export default function DefaultComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomList datas={plannerList} loadMap={LoadMap}></CustomList>
+                <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
             )}
         </div>
     );
