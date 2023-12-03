@@ -8,8 +8,12 @@ export async function readPlanner(planner,specified){
     } else {
         removedPlanner = removeUnspecifiedIdProperty(planner);
     }
-    const newPlanner = await postPlannerCards(removedPlanner);
-    return plannerCardStatusDevide(newPlanner);    
+    const result = await postPlannerCards(removedPlanner);
+    if( result.status === 201 ){
+        return plannerCardStatusDevide(result.data.data);
+    } else {
+        return null;
+    }
 }
 
 export async function readPlannerList(plannerList,specified){
@@ -21,8 +25,16 @@ export async function readPlannerList(plannerList,specified){
     }
     let newPlannerList = [];
     for (const planner of removedPlannerList){
-        const newPlanner = await postPlannerCards(planner)
-        newPlannerList = [...newPlannerList,newPlanner]
+        const result = await postPlannerCards(planner)
+        if(result.status === 201){
+            newPlannerList = [ ...newPlannerList, result.data.data ]
+        } else {
+            console.log("error",result)
+        }
     }
-    return plannerListCardStatusDevide(newPlannerList);
+    if( newPlannerList.length > 0 ){
+        return plannerListCardStatusDevide(newPlannerList);
+    } else {
+        return null;
+    }
 }

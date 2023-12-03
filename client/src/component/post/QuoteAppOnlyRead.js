@@ -94,8 +94,6 @@ export default function QuoteAppOnlyRead() {
 
     async function cardClick(ind, index) {
         const cardResult = await getCardAxios(planner[ind][index].cardId);
-        console.log('newchecklist', cardResult);
-
         setSelectedCard(cardResult);
         setVisible(true);
     }

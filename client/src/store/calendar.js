@@ -30,6 +30,11 @@ const calendarSlice = createSlice({
                     break;
             }
             return state;
+        },
+        setAll(state,action){
+            state.home = action.payload
+            state.quote = action.payload
+            return state;
         }
     },
 });

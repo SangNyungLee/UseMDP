@@ -6,22 +6,25 @@ import { useDispatch } from 'react-redux';
 import { siteActions } from '../store/site';
 import { plannerListActions } from '../store/plannerList';
 import { plannerListCardStatusDevide } from '../utils/DataParsing';
-import { getMyPlanner } from '../utils/DataAxios';
+import { getMyPlanner, postLogout } from '../utils/DataAxios';
 import { useLocation, useNavigate } from 'react-router';
 import { calendarActions } from '../store/calendar';
+import { cookieFail, loginCheckFail, requestFail } from '../component/etc/SweetModal';
 
-export default function useDefaultCheck(target) {
+export default function useDefaultCheck() {
     const site = useSelector((state) => state.site);
     const navi = useNavigate();
     const location = useLocation();
     const { isLogin, isData } = site;
 
-    const [ cookies ] = useCookies('auth');
+    const [ cookies ] = useCookies();
+
+    const authCookie = cookies.auth;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (Object.keys(cookies).length === 0) {
+        if (!authCookie) {
             if (isLogin) {
                 navi('/', {
                     state: {
@@ -40,28 +43,57 @@ export default function useDefaultCheck(target) {
         }
 
         return () => {
-            if (Object.keys(cookies).length === 0) {
+            if (!authCookie) {
                 navi('/', { state: null });
             }
         };
     }, [site]);
 
     const getMyPlannerAndDispatch = async () => {
-        const plannerList = await getMyPlanner();
-        const newPlannerList = plannerListCardStatusDevide(plannerList);
-        console.log('plannerList', newPlannerList);
-        dispatch(plannerListActions.setPlannersInit(newPlannerList));
-        if (newPlannerList.length > 0) {
-            const plannerId = newPlannerList[0].plannerId;
-            dispatch(
-                calendarActions.setSelect({
-                    target,
-                    value: [plannerId],
-                })
-            );
+        const result = await getMyPlanner();
+        if(result.status === 200){
+            const newPlannerList = plannerListCardStatusDevide(result.data.data);
+            dispatch(plannerListActions.setPlannersInit(newPlannerList));
+            if (newPlannerList.length > 0) {
+                const plannerId = newPlannerList[0].plannerId;
+                dispatch(
+                    calendarActions.setAll([plannerId])    
+                );
+            }
+            dispatch(siteActions.setAllTrue());
+        } else {
+            try {
+                const res = await postLogout();
+                if(res.status !== 200){
+                    requestFail("로그아웃")
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
-        dispatch(siteActions.setAllTrue(true));
     };
 
-    return isLogin;
+    const naviCookieCheck = (e) => {
+        if(!isLogin){
+            e.preventDefault();
+            loginCheckFail("이동")
+        } else if(!authCookie){
+            e.preventDefault();
+            cookieFail("이동")
+        }
+    }
+
+    const cookieCheckCallback = (e,callback) => {
+        if(!authCookie){
+            e.preventDefault();
+            callback();
+        }
+    }
+
+
+    return {
+        isLogin,
+        naviCookieCheck,
+        cookieCheckCallback,
+    }
 }

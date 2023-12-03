@@ -11,14 +11,17 @@ import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeCo
 import noResult from '../../../constant/img/searchFail.svg';
 import { HOME } from '../../../constant/constant';
 import useDefaultCheck from '../../../hook/useDefaultCheck';
+import { requestFail } from '../../etc/SweetModal';
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
     const like = useSelector((state) => state.like);
     const plannerList = useSelector((state) => state.plannerList);
+
     useDefaultCheck(HOME);
     console.log('플래너', plannerList, data);
+
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
             setPoint([-1, -1]);
@@ -29,14 +32,14 @@ export default function DefaultComponent() {
         async function getData() {
             try {
                 const response = await getPlannerByBasic();
-                console.log('res : ', response.data);
-                if (response.data.data.length == 0) {
-                } else {
+                if(response.status === 200){
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     setData(newData);
+                } else {
+                    requestFail("기본 플래너 불러오기")
                 }
             } catch {
                 console.log('error');
@@ -45,7 +48,8 @@ export default function DefaultComponent() {
         }
 
         async function getLike() {
-            const likes = await getLikesAxios();
+            const result = await getLikesAxios();
+            const likes = result.data
             console.log('defaultComponent의 like' + JSON.stringify(likes));
             dispatch(likeActions.setLikesInit(likes));
         }

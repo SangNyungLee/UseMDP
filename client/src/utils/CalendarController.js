@@ -40,16 +40,22 @@ export function getNestedElement(array, indices) {
         return array;
     }
 
-    let result = array.find((item) => item.plannerId === indices[0]).cards;
+    const planner = array.find((item) => item.plannerId === indices[0])
 
-    switch (indices.length) {
-        case 0:
-            return array.map((e) => e.cards.flat());
-        case 1:
-            return result.flat();
-        case 2:
-            return result[indices[1]].flat();
-        case 3:
-            return [result[indices[1]].find((item) => item.cardId === indices[2])];
+    if(planner){
+        let result = planner.cards;
+    
+        switch (indices.length) {
+            case 0:
+                return array.map((e) => e.cards.flat());
+            case 1:
+                return result.flat();
+            case 2:
+                return result[indices[1]].flat();
+            case 3:
+                return [result[indices[1]].find((item) => item.cardId === indices[2])];
+        }
     }
+
+    return null
 }
