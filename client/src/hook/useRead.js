@@ -5,6 +5,7 @@ import { calendarActions } from "../store/calendar";
 import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../utils/DataValidate";
 import { readPlanner, readPlannerList } from "../utils/DataAxiosParsing";
 import { HOME } from "../constant/constant";
+import { requestFail } from "../component/etc/SweetModal";
 
 export default function useRead(target){
     const [ readData, setReadData ] = useState();
@@ -39,26 +40,34 @@ export default function useRead(target){
     },[readData])
 
     const readPlannerData = async (data,specified) => {
-        const planner = await readPlanner(data,specified);
-        const { plannerId } = planner
-        dispatch(plannerListActions.addPlanner(planner))
-        if(target === HOME){
-            dispatch(calendarActions.setSelect({
-                target,
-                value: [plannerId]
-            }))
+        const result = await readPlanner(data,specified);
+        if(result){
+            const { plannerId } = result
+            dispatch(plannerListActions.addPlanner(result))
+            if(target === HOME){
+                dispatch(calendarActions.setSelect({
+                    target,
+                    value: [plannerId]
+                }))
+            }
+        } else {
+            requestFail("데이터")
         }
     }
 
     const readPlannerListData = async (data,specified) => {
         const plannerList = await readPlannerList(data,specified);
-        const plannerId = plannerList[0].plannerId
-        dispatch(plannerListActions.addPlannerList(plannerList))
-        if(target === HOME){
-            dispatch(calendarActions.setSelect({
-                target,
-                value: [plannerId]
-            }))
+        if(plannerList){
+            const plannerId = plannerList[0].plannerId
+            dispatch(plannerListActions.addPlannerList(plannerList))
+            if(target === HOME){
+                dispatch(calendarActions.setSelect({
+                    target,
+                    value: [plannerId]
+                }))
+            }
+        } else {
+            requestFail("데이터")
         }
     }
 

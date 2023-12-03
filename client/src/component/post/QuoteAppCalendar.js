@@ -13,6 +13,7 @@ import { patchCard, postCard } from '../../utils/DataAxios';
 import styled from 'styled-components';
 import CalendarSelect from '../home/calendar/CalendarSelect';
 import { QUOTE } from '../../constant/constant';
+import { requestFail } from '../etc/SweetModal';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -145,14 +146,18 @@ export default function QuoteAppCalendar(props) {
             endDate,
             plannerId,
         };
-        await patchCard(requestData);
         dispatch(
             plannerListActions.updateCard({
                 cardId,
                 startDate,
                 endDate,
             })
-        );
+            );
+            
+        const result = await patchCard(requestData);
+        if(result.status !== 200) {
+            requestFail("카드 데이터 저장")
+        }
     };
 
     const onSelectSlot = async (slotInfo) => {

@@ -17,6 +17,7 @@ import sky from '../../constant/img/sky.jpg';
 
 import axios from 'axios';
 import { getCardAxios, getPlannerBtoA, patchMoveCards, patchPlanner } from '../../utils/DataAxios';
+import { requestFail } from '../etc/SweetModal';
 
 const _QuoteAppContainer = styled.div`
     display: flex;
@@ -103,19 +104,23 @@ export default function QuoteApp() {
     useEffect(() => {
         async function fetchData() {
             const result = await getPlannerBtoA(btoa(plannerId));
-            const cardList = result.data.cards;
-            const cards = [[], [], []];
-            for (let i = 0; i < cardList.length; i++) {
-                if (cardList[i].cardStatus === 'TODO') {
-                    cards[0].push(cardList[i]);
-                } else if (cardList[i].cardStatus === 'DOING') {
-                    cards[1].push(cardList[i]);
-                } else if (cardList[i].cardStatus === 'DONE') {
-                    cards[2].push(cardList[i]);
+            if(result.status === 200){
+                const cardList = result.data.data.cards;
+                const cards = [[], [], []];
+                for (let i = 0; i < cardList.length; i++) {
+                    if (cardList[i].cardStatus === 'TODO') {
+                        cards[0].push(cardList[i]);
+                    } else if (cardList[i].cardStatus === 'DOING') {
+                        cards[1].push(cardList[i]);
+                    } else if (cardList[i].cardStatus === 'DONE') {
+                        cards[2].push(cardList[i]);
+                    }
                 }
+                dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+                dispatch(siteActions.setIsData(true));
+            } else {
+                requestFail("플래너 불러오기")
             }
-            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-            dispatch(siteActions.setIsData(true));
         }
         if (!site.isData) {
             // isData가 false면, 전부 재로딩한다.
@@ -135,11 +140,16 @@ export default function QuoteApp() {
     }, [plannerList]);
 
     async function cardClick(ind, index) {
-        const cardResult = await getCardAxios(planner[ind][index].cardId);
-        console.log('newchecklist', cardResult);
-
-        setSelectedCard(cardResult);
-        setVisible(true);
+        const result = await getCardAxios(planner[ind][index].cardId);
+        if(result.status === 200){
+            const cardResult = result.data.data
+            console.log('cardResult', cardResult);
+    
+            setSelectedCard(cardResult);
+            setVisible(true);
+        } else {
+            requestFail("카드 정보")
+        }
         // setSelectedCard(planner[ind][index]);
     }
 

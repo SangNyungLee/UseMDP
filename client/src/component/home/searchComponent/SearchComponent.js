@@ -11,6 +11,7 @@ import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeCo
 import noResult from '../../../constant/img/searchFail.svg';
 import { useDispatch } from 'react-redux';
 import { likeActions } from '../../../store/like';
+import { requestFail } from '../../etc/SweetModal';
 const SearchContainer = styled.div`
     width: 75vw;
     display: flex;
@@ -53,22 +54,30 @@ export default function SearchComponent() {
             let data;
             try {
                 const response = await getPlannerByTrend();
-                console.log('res : ', response.data);
-                const res = await getTags();
-                console.log('태그 데이터 받아온 결과 : ', res.data);
-                setTags(res.data);
-                if (response.data.data.length == 0) {
-                } else {
+                if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     data = newData;
+                } else {
+                    requestFail('트랜드 플래너 불러오기');
+                }
+                const result = await getTags();
+                if (result.status === 200) {
+                    console.log('태그 데이터 받아온 결과 : ', result.data);
+                    setTags(result.data.data);
+                } else {
+                    requestFail('태그 불러오기');
                 }
             } catch {
-                const res = await getTags();
-                console.log('데이터 받아온 결과 : ', res.data);
-                setTags(res.data);
+                const result = await getTags();
+                if (result.status === 200) {
+                    console.log('태그 데이터 받아온 결과 : ', result.data);
+                    setTags(result.data.data);
+                } else {
+                    requestFail('태그 불러오기');
+                }
                 const tmp = [
                     {
                         plannerId: 1,
