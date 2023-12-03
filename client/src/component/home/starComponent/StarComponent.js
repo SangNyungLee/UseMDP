@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../../store/plannerList';
 import { getLikes, getLikesAxios, getPlannerByTrend } from '../../../utils/DataAxios';
 import { likeActions } from '../../../store/like';
+import noResult from '../../../constant/img/searchFail.svg';
 export default function StarComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
@@ -42,41 +43,32 @@ export default function StarComponent() {
         async function getLike() {
             const likes = await getLikesAxios();
             console.log('starComponent의 like' + JSON.stringify(likes));
-            dispatch(likeActions.setLikesInit(likes))
+            dispatch(likeActions.setLikesInit(likes));
         }
 
         getData();
         getLike();
     }, []);
 
-    if (data.length === 0) {
-        return (
-            //Spinner
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '100vh',
-                }}
-            >
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </div>
-        );
-    } else {
-        return (
-            <div style={{ padding: '15px' }} onClick={handlePoint}>
-                <h2>인기 로드맵</h2>
-                <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
-                {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
+    return (
+        <div style={{ padding: '15px' }} onClick={handlePoint}>
+            <h2>인기 로드맵</h2>
+            <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
+            {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
                 7,11이 되면 Container를 만들고  */}
 
-                <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
-
+            <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
+            {data.length == 0 ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
+                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
+                    <div>
+                        <div style={{ fontSize: '25px' }}> 아직 로드맵을 생성하지 않았어요.</div>
+                        <div style={{ fontSize: '20px', fontWeight: '300', color: 'gray', marginTop: '10px' }}>데이터를 추가하시겠어요?</div>
+                    </div>
+                </div>
+            ) : (
                 <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
-            </div>
-        );
-    }
+            )}
+        </div>
+    );
 }
