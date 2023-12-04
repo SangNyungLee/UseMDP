@@ -12,6 +12,7 @@ import noResult from '../../../constant/img/searchFail.svg';
 import { HOME } from '../../../constant/constant';
 import useDefaultCheck from '../../../hook/useDefaultCheck';
 import { requestFail } from '../../etc/SweetModal';
+import LoadMap from '../LoadMap';
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
@@ -32,14 +33,14 @@ export default function DefaultComponent() {
         async function getData() {
             try {
                 const response = await getPlannerByBasic();
-                if(response.status === 200){
+                if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     setData(newData);
                 } else {
-                    requestFail("기본 플래너 불러오기")
+                    requestFail('기본 플래너 불러오기');
                 }
             } catch {
                 console.log('error');
@@ -72,7 +73,7 @@ export default function DefaultComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomListHiddable datas={data} points={[point, setPoint]} />
+                <CustomListHiddable datas={data} points={[point, setPoint]} loadMap={LoadMap} />
             )}
 
             <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>

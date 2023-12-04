@@ -13,21 +13,21 @@ import { useDispatch } from 'react-redux';
 import { calendarActions } from '../store/calendar';
 import { validatePlannerData, validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import { noEditPlannerAction } from '../store/noEditPlanner';
+import "../constant/css/home.css";
+
 
 export default function WelcomePage() {
+  const isMobile = useMediaQuery({
+    query: "(max-width: 576px)",
+  });
 
-	const isMobile = useMediaQuery({
-		query: '(max-width: 576px)',
-	});
+  const location = useLocation();
+  const [message, setMessage] = useState(location.state?.message || "");
+  console.log("message", message);
 
-	const location = useLocation();
-	const [ message, setMessage ] = useState( location.state?.message || "" );
-	console.log("message",message);
-
-	//이건 확인해봐야 함
-	const [ visible, setIsVisible ] = useState( message? true : false )
-	console.log("visible",visible)
-
+  //이건 확인해봐야 함
+  const [visible, setIsVisible] = useState(message ? true : false);
+  console.log("visible", visible);
 
 	const { naviCookieCheck } = useDefaultCheck();
 	const dispatch = useDispatch();
@@ -76,6 +76,12 @@ export default function WelcomePage() {
 								시작하기
 							</Button>
 							<FileInputComponent setState={setReadFile}/>
+              {/* <Button variant="outline-success" size="lg">
+                <label>
+                  불러오기
+                  <input type="file" style={{ display: "none" }} />
+                </label>
+              </Button> */}
 						</Stack>
 					</Col>
 					<Col>

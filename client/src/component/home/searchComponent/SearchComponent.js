@@ -222,7 +222,7 @@ export default function SearchComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomList datas={filteredDatas} loadMap={LoadMap} />
+                <CustomList datas={filteredDatas} loadMap={LoadMap} noPlus={true} />
             )}
         </div>
     );

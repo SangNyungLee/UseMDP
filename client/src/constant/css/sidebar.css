@@ -34,9 +34,14 @@
 .side-logo {
   display: flex;
   justify-content: center;
-  height: 60px;
   align-items: center;
+  height: 60px;
 }
+
+.side-logo:hover {
+  cursor: pointer;
+}
+
 .side-logo-img {
   width: 60px;
   height: 40px;
@@ -94,11 +99,11 @@ main {
 /* COSMETIC STYLING */
 
 :root {
-  --red: #ed5454;
+  --red: #202a45;
 }
 
 body {
-  font-family: Montserrat;
+  font-family: "Pretendard-Regular";
   font-weight: 100;
   color: #a8b2b9;
 }
@@ -146,6 +151,7 @@ main {
   .sidebar {
     width: 4rem !important;
     z-index: 0;
+    height: 100%;
   }
   .side-logo-img {
     display: none;
@@ -223,12 +229,13 @@ main {
     width: 100%;
     overflow-x: auto;
     justify-content: space-between;
+    padding-right: 20px;
   }
 
   .menu__item {
     border-left: none;
     border-top: 4px solid transparent;
-    /* padding: 10px 16px; */
+    padding: 10px 16px;
     white-space: nowrap;
   }
   .avatar__name {

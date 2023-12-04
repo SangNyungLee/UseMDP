@@ -5,17 +5,19 @@ import CalendarSelectList from "./CalendarSelectList";
 import { HOME, QUOTE } from "../../../constant/constant";
 
 const _SelectContainer = styled.div`
-  background-color: aliceblue;
-  width: 170px;
-  height: 40px;
+  background: none;
+  width: 130px;
+  height: 43px;
   border-radius: 2px;
   display: flex;
   align-items: center;
+  margin-left: -10px;
 `;
 
 const _SelectArrow = styled.div`
   width: fit-content;
   margin-left: 10px;
+  font-size: 10px;
 
   &:hover {
     cursor: pointer;
@@ -41,12 +43,13 @@ const _Flex = styled.div`
 
 const _Container = styled.div`
   display: flex;
-  width: 170px;
+  width: 130px;
   overflow-y: scroll;
-  background-color: aliceblue;
-  height: 150px;
+  background-color: white;
+  height: 200px;
   border-radius: 2px;
   flex-direction: column;
+  margin-left: -10px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -58,33 +61,33 @@ const _Title = styled.div`
   text-overflow: ellipsis;
 `;
 
-export default function CalendarSelect({target}) {
-  const [ isClick, setIsClick ] = useState(false);
-  const [ isVisible, setIsVisible ] = useState(false);
+export default function CalendarSelect({ target }) {
+  const [isClick, setIsClick] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const plannerList = useSelector((state) => state.plannerList);
-  const { home, quote } = useSelector( state => state.calendar)
+  const { home, quote } = useSelector((state) => state.calendar);
   const [title, setTitle] = useState("");
 
-  useEffect(()=>{
-    if(plannerList.length > 0){
+  useEffect(() => {
+    if (plannerList.length > 0) {
       let planner;
-      switch(target){
-        case(HOME):
-          planner = plannerList.find( e => e.plannerId === home[0])
+      switch (target) {
+        case HOME:
+          planner = plannerList.find((e) => e.plannerId === home[0]);
           setTitle(planner.title);
           break;
-        case(QUOTE):
-          planner = plannerList.find( e => e.plannerId === quote[0])
+        case QUOTE:
+          planner = plannerList.find((e) => e.plannerId === quote[0]);
           setTitle(planner.title);
           break;
       }
     }
-  },[plannerList,home,quote])
+  }, [plannerList, home, quote]);
 
   const selectClick = (e) => {
     e.stopPropagation();
-    setIsClick( prev => !prev );
-    setIsVisible( prev => !prev);
+    setIsClick((prev) => !prev);
+    setIsVisible((prev) => !prev);
   };
 
   // const plannerTitleClick = (value) => {
@@ -94,7 +97,7 @@ export default function CalendarSelect({target}) {
   return (
     <_Flex>
       <_SelectContainer>
-        { isClick ? (
+        {isClick ? (
           <_SelectArrow onClick={(e) => selectClick(e)}>
             <div>{"▼"}</div>
           </_SelectArrow>
@@ -103,11 +106,11 @@ export default function CalendarSelect({target}) {
             <div>{"▶"}</div>
           </_SelectArrow>
         )}
-        <_Title onClick={ e => selectClick(e)}>{title}</_Title>
+        <_Title onClick={(e) => selectClick(e)}>{title}</_Title>
       </_SelectContainer>
-      { isVisible ? (
+      {isVisible ? (
         <_Container>
-          {plannerList.map((planner,id) => (
+          {plannerList.map((planner, id) => (
             <CalendarSelectList
               key={planner.plannerId}
               planner={planner}
