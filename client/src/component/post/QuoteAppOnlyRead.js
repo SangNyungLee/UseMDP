@@ -16,7 +16,6 @@ import { plannerCardStatusDevide, plannerListCardStatusDevide } from '../../util
 import { useDispatch } from 'react-redux';
 import { noEditPlannerAction } from '../../store/noEditPlanner';
 import NoEditQuoteHeader from './QuoteAppOnlyReads/NoEditQuoteHeader';
-import { requestFail } from '../etc/SweetModal';
 const _QuoteAppContainer = styled.div`
     display: flex;
     flex: 3;
@@ -82,14 +81,6 @@ export default function QuoteAppOnlyRead() {
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
-    } else if (localdata.length > 0) {
-        console.log('local in if', localdata);
-        const { cards, plannerId: id, title, ...rest } = localdata[0];
-        dispatch(plannerListActions.setPlannersInit(localdata));
-        dispatch(calendarActions.setQuote([id]));
-        planner = cards;
-        plannerId = id;
-        plannerTitle = title;
         plannerThumbnail = thumbnail;
         plannerInfo = {
             plannerId: id,
@@ -101,61 +92,10 @@ export default function QuoteAppOnlyRead() {
         };
     }
 
-    //planner가 바뀔때마다, localStoage에 저장하는 코드.
-
-    // useEffect(() => {
-    //     console.log('HI', localdata);
-    // }, [localdata, localQuote]);
-    useEffect(() => {
-        async function fetchData() {
-            const result = await getPlannerBtoA(btoa(plannerId));
-            if (result.status === 200){
-                const cardList = result.data.data.cards;
-                const cards = [[], [], []];
-                for (let i = 0; i < cardList.length; i++) {
-                    if (cardList[i].cardStatus === 'TODO') {
-                        cards[0].push(cardList[i]);
-                    } else if (cardList[i].cardStatus === 'DOING') {
-                        cards[1].push(cardList[i]);
-                    } else if (cardList[i].cardStatus === 'DONE') {
-                        cards[2].push(cardList[i]);
-                    }
-                }
-                dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-                dispatch(siteActions.setIsData(true));
-            } else {
-                requestFail("플래너 불러오기")
-            }
-        }
-        if (!site.isData) {
-            // isData가 false면, 전부 재로딩한다.
-            fetchData();
-        }
-        console.log('Check site');
-    }, [site.isData]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (plannerList.length > 0) {
-                setLocalData(plannerList);
-                setLocalQuote(quote);
-            }
-        };
-        fetchData();
-    }, [plannerList]);
-
     async function cardClick(ind, index) {
-        const result = await getCardAxios(planner[ind][index].cardId);
-        if( result.status === 200){
-            const cardResult = result.data
-            console.log('newchecklist', cardResult);
-    
-            setSelectedCard(cardResult);
-            setVisible(true);
-        } else {
-            requestFail("카드 정보");
-        }
-        // setSelectedCard(planner[ind][index]);
+        const cardResult = await getCardAxios(planner[ind][index].cardId);
+        setSelectedCard(cardResult);
+        setVisible(true);
     }
 
     //여기서는 상태를 바꿀 생각이 없어서, event를 걸지 않음. state변화 X

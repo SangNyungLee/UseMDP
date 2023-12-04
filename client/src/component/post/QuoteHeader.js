@@ -38,8 +38,8 @@ export default function QuoteHeader(props) {
             title: plannerTitle,
         };
         const res = await patchPlanner(data);
-        if(res.status !== 200){
-            requestFail("플래너 제목 수정")
+        if (res.status !== 200) {
+            requestFail('플래너 제목 수정');
             return;
         }
         dispatch(
@@ -54,8 +54,8 @@ export default function QuoteHeader(props) {
         const data = { ...plannerInfo, thumbnail: thumbnail };
         console.log('patchPlannerAndDispatch', data);
         const res = await patchPlanner(data);
-        if(res.status !== 200){
-            requestFail("플래너 상태 저장")
+        if (res.status !== 200) {
+            requestFail('플래너 상태 저장');
         }
         dispatch(
             plannerListActions.updatePlannerThumbnail({
@@ -88,7 +88,7 @@ export default function QuoteHeader(props) {
 
     return (
         <>
-            <CustomHeader2 setSwitch={setSwitch} plannerInfo={plannerInfo} />
+            <CustomHeader2 setSwitch={setSwitch} plannerInfo={plannerInfo} plannerList={plannerList} />
             <MDPModal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
             {/* <div>
                 

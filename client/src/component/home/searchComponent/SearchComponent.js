@@ -6,9 +6,11 @@ import CustomList from '../customList/CustomList';
 import base64Str from '../../../constant/ImageBase64';
 import axios from 'axios';
 import LoadMap from '../../LoadMap/LoadMap';
-import { getPlannerByTrend, getTags } from '../../../utils/DataAxios';
+import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
+import { useDispatch } from 'react-redux';
+import { likeActions } from '../../../store/like';
 import { requestFail } from '../../etc/SweetModal';
 const SearchContainer = styled.div`
     width: 75vw;
@@ -32,6 +34,7 @@ const nullOptions = [
     // Add more options as needed
 ];
 export default function SearchComponent() {
+    const dispatch = useDispatch();
     const selectInputRef = useRef();
     const [author, setAuthor] = useState([]);
     const [title, setTitle] = useState([]);
@@ -42,67 +45,41 @@ export default function SearchComponent() {
     const [tags2, setTags] = useState([]);
 
     useEffect(() => {
+        async function getLike() {
+            const likes = await getLikesAxios();
+            console.log('starComponent의 like', likes.data);
+            dispatch(likeActions.setLikesInit(likes.data));
+        }
         async function fetchData() {
             let data;
             try {
                 const response = await getPlannerByTrend();
-                if( response.status === 200){
+                console.log('res', response);
+                if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     data = newData;
                 } else {
-                    requestFail("트랜드 플래너 불러오기")
+                    requestFail('트랜드 플래너 불러오기');
                 }
                 const result = await getTags();
-                if(result.status === 200){
+                if (result.status === 200) {
                     console.log('태그 데이터 받아온 결과 : ', result.data);
                     setTags(result.data.data);
                 } else {
-                    requestFail("태그 불러오기")
+                    requestFail('태그 불러오기');
                 }
             } catch {
                 const result = await getTags();
-                if(result.status === 200){
+                if (result.status === 200) {
                     console.log('태그 데이터 받아온 결과 : ', result.data);
                     setTags(result.data.data);
                 } else {
-                    requestFail("태그 불러오기")
+                    requestFail('태그 불러오기');
                 }
-                const tmp = [
-                    {
-                        plannerId: 1,
-                        creator: '123',
-                        title: '230303',
-                        likePlanner: 1,
-                        thumbnail: base64Str,
-                        createAt: '2023-03-02T15:00:00.000+00:00',
-                        cardList: null,
-                        description: '123',
-                    },
-                    {
-                        plannerId: 2,
-                        creator: '234',
-                        title: '230304',
-                        likePlanner: 2,
-                        thumbnail: base64Str,
-                        createAt: '2023-03-02T15:00:00.000+00:00',
-                        cardList: null,
-                        description: '123',
-                    },
-                    {
-                        plannerId: 3,
-                        creator: '456',
-                        title: '230305',
-                        likePlanner: 3,
-                        thumbnail: base64Str,
-                        createAt: '2023-03-02T15:00:00.000+00:00',
-                        cardList: null,
-                        description: '123',
-                    },
-                ];
-                data = tmp;
+                data = [];
             }
             setDatas(data);
             setFilteredDatas(data);
@@ -138,6 +115,7 @@ export default function SearchComponent() {
             // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
+        getLike();
     }, []);
 
     const changeOption = (v) => {
@@ -230,7 +208,7 @@ export default function SearchComponent() {
 
                 <Button onClick={(e) => handleSearch(e)}>검색</Button>
             </SearchContainer>
-            <h2 style={{ marginTop: '30px', marginBottom: '10px', fontSize: '30px', fontWeight: '300' }}>검색결과</h2>
+            <_ComponentTitle style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</_ComponentTitle>
             {/* 데이터 없을 때 처리  */}
             {filteredDatas.length == 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>

@@ -4,7 +4,7 @@ import '../../constant/css/customHeader2.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
-import { patchPlanner } from '../../utils/DataAxios';
+import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 function CustomHeader2(props) {
@@ -19,8 +19,8 @@ function CustomHeader2(props) {
             title: e.target.innerText,
         };
         const res = await patchPlanner(data);
-        if (res.status !== 200){
-            requestFail("플래너 제목 수정")
+        if (res.status !== 200) {
+            requestFail('플래너 제목 수정');
             return;
         }
         dispatch(
@@ -37,8 +37,8 @@ function CustomHeader2(props) {
         };
         console.log('handlepublic', data);
         const res = await patchPlanner(data);
-        if(res.status !== 200){
-            requestFail("플래너 상태 저장")
+        if (res.status !== 200) {
+            requestFail('플래너 상태 저장');
             return;
         }
         dispatch(
@@ -56,8 +56,8 @@ function CustomHeader2(props) {
         };
         console.log('handlepublic', data);
         const res = await patchPlanner(data);
-        if (res.status !== 200){
-            requestFail("플래너 상태 저장")
+        if (res.status !== 200) {
+            requestFail('플래너 상태 저장');
             return;
         }
         dispatch(
@@ -73,9 +73,15 @@ function CustomHeader2(props) {
     };
 
     const handleDownLoad = async () => {
-        DataDownload(plannerInfo.title);
-    };
 
+        const res = await getPlannerBtoA(btoa(plannerInfo.plannerId));
+        if (res.status !== 200) {
+            requestFail('다운로드 실패');
+        }
+        console.log('다운로드', plannerInfo.plannerId, res.data.data);
+        DataDownload(plannerInfo.title, res.data.data);
+    };
+    //useRead를 참고
     const Addplanner = () => {};
     return (
         <div className="nav-main">
