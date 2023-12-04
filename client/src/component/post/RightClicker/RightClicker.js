@@ -3,7 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import DataDownload from '../../../utils/DataDownload';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getCopyPlanners, getPlannerBtoA, postCopyPlanners } from '../../../utils/DataAxios';
+import { getPlannerBtoA, postCopyPlanners } from '../../../utils/DataAxios';
 import { calendarActions } from '../../../store/calendar';
 import { plannerListActions } from '../../../store/plannerList';
 import { requestFail } from '../../etc/SweetModal';

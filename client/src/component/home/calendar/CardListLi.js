@@ -3,7 +3,6 @@ import { calendarActions } from "../../../store/calendar";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { darken } from "polished";
 import CardLi from "./CardLi";
 
 const _PlannerLi = styled.li`
