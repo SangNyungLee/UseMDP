@@ -18,7 +18,7 @@ public class LikeService {
     private LikeRepository likeRepository;
 
 
-    public List<ResponseLikeDTO> getPlanner(String memberId) {
+    public long getPlanner(String memberId) {
         Optional<List<LikeEntity>> optionalLikeEntity = likeRepository.findByMemberId(memberId);
 
         if (optionalLikeEntity.isPresent()) {
@@ -32,9 +32,9 @@ public class LikeService {
                         .build();
                 likeEntityList.add(responseLikeDTO);
             }
-            return likeEntityList;
+            return 1;
         }
-        return null;
+        return 0;
 
     }
 }

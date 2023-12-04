@@ -96,8 +96,6 @@ export default function Header() {
             />{" "} */}
             <img src="/images/004.png" width="62px" height="40px" />
           </Navbar.Brand>
-          {/* <img src="/images/logo.png" width="62px" height="40px" />
-          <img src="/images/logo2.png" width="62px" height="40px" /> */}
           <Nav>
             {isLoginRedux ? (
               <>
