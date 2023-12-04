@@ -61,9 +61,9 @@ function CustomHeader2(props) {
     };
 
     const handleDownLoad = async () => {
-        DataDownload(plannerInfo.title);
+        // DataDownload("jsontitle",plannerList );
     };
-
+    //useRead를 참고
     const Addplanner = () => {};
     return (
         <div className="nav-main">
