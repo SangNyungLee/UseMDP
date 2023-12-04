@@ -36,6 +36,7 @@ const iconStyle = {
 export default function DefaultLoadMap() {
   const [menuNumber, setMenuNumber] = useState(1);
   const [isActive, setIsActive] = useState(false);
+  const navigate = useNavigate();
   const renderComponent = () => {
     switch (menuNumber) {
       case 1:
