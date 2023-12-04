@@ -1,20 +1,21 @@
 import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { Button, Spinner } from 'react-bootstrap';
-import CustomList from '../customList/CustomList';
-import base64Str from '../../../constant/ImageBase64';
-import axios from 'axios';
-import LoadMap from '../../LoadMap/LoadMap';
+import { Button } from 'react-bootstrap';
+
 import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
 import { useDispatch } from 'react-redux';
 import { likeActions } from '../../../store/like';
 import { requestFail } from '../../etc/SweetModal';
+import SearchCustomList from '../customList/SearchCustomList';
+import SearchLoadMap from '../../LoadMap/SearechLoadMap';
+import { useMediaQuery } from 'react-responsive';
 const SearchContainer = styled.div`
-    width: 75vw;
+    width: 100%;
     display: flex;
+    margin: auto;
     justify-content: center;
 `;
 const tags = [
@@ -33,7 +34,13 @@ const nullOptions = [
     { value: 'null', label: '해당하는 결과가 없습니다' },
     // Add more options as needed
 ];
+
+const _MediaSelect = styled(Select)``;
 export default function SearchComponent() {
+    const is880 = useMediaQuery({
+        query: '(max-width: 880px)',
+    });
+
     const dispatch = useDispatch();
     const selectInputRef = useRef();
     const [author, setAuthor] = useState([]);
@@ -47,10 +54,10 @@ export default function SearchComponent() {
     useEffect(() => {
         async function getLike() {
             const result = await getLikesAxios();
-            if(result.status === 200){
+            if (result.status === 200) {
                 dispatch(likeActions.setLikesInit(result.data));
             } else {
-                requestFail("좋아요 불러오기")
+                requestFail('좋아요 불러오기');
             }
         }
         async function fetchData() {
@@ -143,15 +150,30 @@ export default function SearchComponent() {
             <_ComponentTitle>로드맵 검색</_ComponentTitle>
             <SearchContainer>
                 <div>
-                    <Select options={options} onChange={changeOption} defaultValue={options[0]} isSearchable={false} />
+                    <Select
+                        styles={{
+                            control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                width: '100px',
+                            }),
+                            multiValue: (baseStyles) => ({
+                                ...baseStyles,
+                                // backgroundColor: "lightblue", // 선택된 항목의 배경색
+                            }),
+                        }}
+                        options={options}
+                        onChange={changeOption}
+                        defaultValue={options[0]}
+                        isSearchable={false}
+                    />
                 </div>
                 {option.value === 'stack' ? (
-                    <Select
+                    <_MediaSelect
                         ref={selectInputRef}
                         styles={{
                             control: (baseStyles, state) => ({
                                 ...baseStyles,
-                                width: '500px',
+                                width: '50vw',
                                 flex: 3,
                             }),
                             multiValue: (baseStyles) => ({
@@ -171,12 +193,12 @@ export default function SearchComponent() {
                         // defaultValue={tags[0]}
                     />
                 ) : option.value === 'author' ? (
-                    <Select
+                    <_MediaSelect
                         ref={selectInputRef}
                         styles={{
                             control: (baseStyles, state) => ({
                                 ...baseStyles,
-                                width: '500px',
+                                width: '50vw',
                                 flex: 3,
                             }),
                             multiValue: (baseStyles) => ({
@@ -190,12 +212,12 @@ export default function SearchComponent() {
                         // defaultValue={tags[0]}
                     />
                 ) : (
-                    <Select
+                    <_MediaSelect
                         ref={selectInputRef}
                         styles={{
                             control: (baseStyles, state) => ({
                                 ...baseStyles,
-                                width: '500px',
+                                width: '50vw',
                             }),
                             multiValue: (baseStyles) => ({
                                 ...baseStyles,
@@ -209,7 +231,9 @@ export default function SearchComponent() {
                     />
                 )}
 
-                <Button onClick={(e) => handleSearch(e)}>검색</Button>
+                <Button style={{ width: '70px' }} onClick={(e) => handleSearch(e)}>
+                    검색
+                </Button>
             </SearchContainer>
             <_ComponentTitle style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</_ComponentTitle>
             {/* 데이터 없을 때 처리  */}
@@ -222,30 +246,9 @@ export default function SearchComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomList datas={filteredDatas} loadMap={LoadMap} noPlus={true} />
+                <SearchCustomList datas={filteredDatas} loadMap={SearchLoadMap} />
             )}
         </div>
     );
     // }
 }
-
-// //안에 들어가는 값을 받아야해서 state사용
-// //검색결과가 없습니다로 바꿔야할듯.
-// if (!datas || datas.length === 0) {
-//     return (
-//         //Spinner
-//         <div
-//             style={{
-//                 display: 'flex',
-//                 justifyContent: 'center',
-//                 alignItems: 'center',
-//                 minHeight: '60vh',
-//             }}
-//         >
-//             <_componentTitle>검색결과</_componentTitle>
-//             <Spinner animation="border" role="status">
-//                 <span className="visually-hidden">Loading...</span>
-//             </Spinner>
-//         </div>
-//     );
-// } else {
