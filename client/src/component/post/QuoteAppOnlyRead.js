@@ -10,7 +10,7 @@ import QuoteHeader from './QuoteHeader';
 import QuoteSpinner from './QuoteSpinner';
 import NoEditDroppableComponent from './QuoteAppOnlyReads/NoEditDroppableComponent';
 import sky from '../../constant/img/sky.jpg';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { getCardAxios, getPlannerBtoA } from '../../utils/DataAxios';
 import { plannerCardStatusDevide, plannerListCardStatusDevide } from '../../utils/DataParsing';
 import { useDispatch } from 'react-redux';
@@ -48,6 +48,8 @@ export default function QuoteAppOnlyRead() {
     const [visible, setVisible] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
 
+    const location = useLocation();
+    console.log("location data",location.state?.sourceData)
     //데이터 초기화. 새로고침을 하던, 뭘하던 받아서 axios받아서 noEditPlanner 초기화
     useEffect(() => {
         async function fetchData() {
