@@ -45,10 +45,10 @@ export default function SearchComponent() {
     useEffect(() => {
         async function getLike() {
             const result = await getLikesAxios();
-            if(result.status === 200){
+            if (result.status === 200) {
                 dispatch(likeActions.setLikesInit(result.data));
             } else {
-                requestFail("좋아요 불러오기")
+                requestFail('좋아요 불러오기');
             }
         }
         async function fetchData() {
@@ -227,7 +227,7 @@ export default function SearchComponent() {
     // }
 }
 
-// //안에 들어가는 값을 받아야해서 state사용
+// //안에 들어가는 값을 받아야해서 state사용.
 // //검색결과가 없습니다로 바꿔야할듯.
 // if (!datas || datas.length === 0) {
 //     return (
