@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
 import { patchPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
+import { requestFail } from '../etc/SweetModal';
 function CustomHeader2(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -18,7 +19,10 @@ function CustomHeader2(props) {
             title: e.target.innerText,
         };
         const res = await patchPlanner(data);
-        console.log('title 수정', res);
+        if (res.status !== 200){
+            requestFail("플래너 제목 수정")
+            return;
+        }
         dispatch(
             plannerListActions.updatePlannerTitle({
                 plannerId: plannerInfo.plannerId,
@@ -33,6 +37,10 @@ function CustomHeader2(props) {
         };
         console.log('handlepublic', data);
         const res = await patchPlanner(data);
+        if(res.status !== 200){
+            requestFail("플래너 상태 저장")
+            return;
+        }
         dispatch(
             plannerListActions.updatePlannerAccess({
                 plannerId: plannerInfo.plannerId,
@@ -48,6 +56,10 @@ function CustomHeader2(props) {
         };
         console.log('handlepublic', data);
         const res = await patchPlanner(data);
+        if (res.status !== 200){
+            requestFail("플래너 상태 저장")
+            return;
+        }
         dispatch(
             plannerListActions.updatePlannerAccess({
                 plannerId: plannerInfo.plannerId,

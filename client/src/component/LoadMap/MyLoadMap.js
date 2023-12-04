@@ -11,7 +11,7 @@ import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch, useSelector } from 'react-redux';
 import useLocalStorage from 'use-local-storage';
-import { getPlannerBtoA } from '../../utils/DataAxios';
+import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
 
 //Styled Components with React Bootstrap
@@ -35,6 +35,7 @@ import {
 	_EditIcon,
 } from '../../constant/css/styledComponents/__MyLoadMap';
 import skyImg from '../../constant/img/sky.jpg';
+import { requestFail } from '../etc/SweetModal';
 
 export default function MyLoadMap(props) {
 	const dispatch = useDispatch();
@@ -50,22 +51,26 @@ export default function MyLoadMap(props) {
 		if (!showModal) {
 			const btoaId = btoa(plannerId);
 			const result = await getPlannerBtoA(btoaId);
-			console.log('click', result.data);
-			const cardList = result.data.cards;
-			const cards = [[], [], []];
-			for (let i = 0; i < cardList.length; i++) {
-				if (cardList[i].cardStatus === 'TODO') {
-					cards[0].push(cardList[i]);
-				} else if (cardList[i].cardStatus === 'DOING') {
-					cards[1].push(cardList[i]);
-				} else if (cardList[i].cardStatus === 'DONE') {
-					cards[2].push(cardList[i]);
+			if(result.status === 200){
+				console.log('click', result.data);
+				const cardList = result.data.data.cards;
+				const cards = [[], [], []];
+				for (let i = 0; i < cardList.length; i++) {
+					if (cardList[i].cardStatus === 'TODO') {
+						cards[0].push(cardList[i]);
+					} else if (cardList[i].cardStatus === 'DOING') {
+						cards[1].push(cardList[i]);
+					} else if (cardList[i].cardStatus === 'DONE') {
+						cards[2].push(cardList[i]);
+					}
 				}
+				dispatch(calendarActions.setQuote([plannerId]));
+				dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+	
+				navigate(`/planner?id=${btoaId}`);
+			} else {
+				requestFail("플래너 불러오기")
 			}
-			dispatch(calendarActions.setQuote([plannerId]));
-			dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-
-			navigate(`/planner?id=${btoaId}`);
 		}
 	};
 	const [starClick, setStarClick] = useState(false);
@@ -111,21 +116,23 @@ export default function MyLoadMap(props) {
 
 		//업데이트하고, axios보내줘야한다.
 
-		const result = await axios.patch(
-			'http://localhost:8080/api/patchPlanner',
-			{
-				plannerId,
-				creator,
-				title: editedTitle,
-				likePlanner,
-				thumbnail,
-				isDefault,
-				plannerAccess: editedPlannerAccess,
-				taglist: [],
-			},
-			{ withCredentials: true }
-		);
-		setShowModal(false);
+		const plannerData = {
+			plannerId,
+			creator,
+			title: editedTitle,
+			likePlanner,
+			thumbnail,
+			isDefault,
+			plannerAccess: editedPlannerAccess,
+			taglist: [],
+		}
+
+		const result = await patchPlanner(plannerData)
+		if(result.status === 200){
+			setShowModal(false);
+		} else {
+			requestFail("플래너 저장")
+		}
 	};
 	//sweetAlert창
 	const sweetModal = async (e) => {
@@ -153,22 +160,23 @@ export default function MyLoadMap(props) {
 				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
 				console.log('inputValue', inputValue);
 				// axios 요청을 보내고 모달을 닫음
-				const axiosResult = await axios.patch(
-					'http://localhost:8080/api/patchPlanner',
-					{
-						plannerId,
-						creator,
-						title: inputValue,
-						likePlanner,
-						thumbnail,
-						isDefault,
-						plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
-						taglist: [],
-					},
-					{ withCredentials: true }
-				);
-				console.log('?? : ', axiosResult);
-				return { editedTitle: inputValue, editedPlannerAccess: radioValue };
+
+				const plannerData = {
+					plannerId,
+					creator,
+					title: inputValue,
+					likePlanner,
+					thumbnail,
+					isDefault,
+					plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
+					taglist: [],
+				}
+
+				const axiosResult = await patchPlanner(plannerData)
+				if(axiosResult.status !== 200){
+					requestFail("플래너 저장")
+				}
+        return { editedTitle: inputValue, editedPlannerAccess: radioValue };
 			},
 			confirmButtonText: '확인',
 			showCancelButton: true,

@@ -6,6 +6,7 @@ import { plannerListActions } from "../../../store/plannerList";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { deleteMyPlanner } from "../../../utils/DataAxios";
+import { requestFail } from "../../etc/SweetModal";
 
 const _PlannerTitle = styled.div`
   white-space: nowrap;
@@ -87,13 +88,17 @@ export default function PlannerListLi({ planner }) {
 
   const delPlanner = async (e) => {
     e.stopPropagation();
-    await deleteMyPlanner(plannerId);
-    dispatch(plannerListActions.delPlanner(plannerId));
-    if (plannerId === home[0] && plannerList.length > 1) {
-      const otherPlanner = plannerList.find(
-        (planner) => planner.plannerId !== plannerId
-      );
-      dispatch(calendarActions.setHome([otherPlanner.plannerId]));
+    const res = await deleteMyPlanner(plannerId);
+    if(res.status === 200){
+      dispatch(plannerListActions.delPlanner(plannerId));
+      if (plannerId === home[0] && plannerList.length > 1) {
+        const otherPlanner = plannerList.find(
+          (planner) => planner.plannerId !== plannerId
+        );
+        dispatch(calendarActions.setHome([otherPlanner.plannerId]));
+      }
+    } else {
+      requestFail("플래너 삭제")
     }
   };
 

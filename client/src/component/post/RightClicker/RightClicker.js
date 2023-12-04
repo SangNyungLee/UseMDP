@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { getCopyPlanners, getPlannerBtoA, postCopyPlanners } from '../../../utils/DataAxios';
 import { calendarActions } from '../../../store/calendar';
 import { plannerListActions } from '../../../store/plannerList';
+import { requestFail } from '../../etc/SweetModal';
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
 const RightClicker = (props) => {
     //실제 예제에서는 여러 방법으로 Ref를 가져와야함.
@@ -20,34 +21,45 @@ const RightClicker = (props) => {
         const btoaId = btoa(plannerId);
         const result = await getPlannerBtoA(btoaId);
         // const result = await axios(`/plannerTest`);
-        DataDownload(plannerTitle, result.data);
+        if(result.status === 200){
+            DataDownload(plannerTitle, result.data.data);
+        } else {
+            requestFail("데이터 다운로드")
+        }
     };
 
     const toPlannerLink = async (e) => {
         e.stopPropagation()
         const btoaId = btoa(plannerId);
         const result = await getPlannerBtoA(btoaId);
-        const cardList = result.data.cards;
-        const cards = [[], [], []];
-        for (let i = 0; i < cardList.length; i++) {
-            if (cardList[i].cardStatus === 'TODO') {
-                cards[0].push(cardList[i]);
-            } else if (cardList[i].cardStatus === 'DOING') {
-                cards[1].push(cardList[i]);
-            } else if (cardList[i].cardStatus === 'DONE') {
-                cards[2].push(cardList[i]);
+        if(result.status === 200){
+            const cardList = result.data.data.cards;
+            const cards = [[], [], []];
+            for (let i = 0; i < cardList.length; i++) {
+                if (cardList[i].cardStatus === 'TODO') {
+                    cards[0].push(cardList[i]);
+                } else if (cardList[i].cardStatus === 'DOING') {
+                    cards[1].push(cardList[i]);
+                } else if (cardList[i].cardStatus === 'DONE') {
+                    cards[2].push(cardList[i]);
+                }
             }
+            dispatch(calendarActions.setQuote([plannerId]));
+            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+            navigate(`/planner?id=${btoaId}`);
+        } else {
+            requestFail("플래너 불러오기")
         }
-        dispatch(calendarActions.setQuote([plannerId]));
-        dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-        navigate(`/planner?id=${btoaId}`);
     };
 
     const toMyLoadMap = async (e) => {
         e.stopPropagation()
         const btoaId = btoa(plannerId);
         const result = await postCopyPlanners(plannerId);
-        console.log(result.data);
+        if(result.status === 201){
+            console.log(result.data);
+        }
+
         // //이름을 받아서 지운다
         // const removeProperties = (obj, ...propsToRemove) => {
         //     const newObj = { ...obj };
