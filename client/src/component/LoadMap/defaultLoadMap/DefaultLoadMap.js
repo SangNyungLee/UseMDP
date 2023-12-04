@@ -64,6 +64,8 @@ export default function DefaultLoadMap() {
     setMenuNumber(number);
   };
 
+  const navigate = useNavigate();
+
   const clickLogo = (e) => {
     e.stopPropagation();
     navigate("/");
