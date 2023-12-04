@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Pretendard-Regular";
   display: flex;
   flex-direction: column;
   background-color: #0079bf;
@@ -89,7 +89,7 @@ body {
 
 .logo {
   flex: 1;
-  font-family: "Courgette", cursive;
+  font-family: "Pretendard-Regular";
   font-size: 2rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.5);

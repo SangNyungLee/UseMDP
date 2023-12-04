@@ -22,7 +22,7 @@ const _TitleInput = styled.input`
     outline: none;
     padding: none;
     background-color: ${(props) => props.color};
-    color: ${(props) => props.textColor};
+    color: ${(props) => props.textcolor || 'black'};
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
