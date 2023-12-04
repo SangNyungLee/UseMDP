@@ -46,9 +46,12 @@ export default function SearchComponent() {
 
     useEffect(() => {
         async function getLike() {
-            const likes = await getLikesAxios();
-            console.log('starComponent의 like', likes.data);
-            dispatch(likeActions.setLikesInit(likes.data));
+            const result = await getLikesAxios();
+            if(result.status === 200){
+                dispatch(likeActions.setLikesInit(result.data));
+            } else {
+                requestFail("좋아요 불러오기")
+            }
         }
         async function fetchData() {
             let data;

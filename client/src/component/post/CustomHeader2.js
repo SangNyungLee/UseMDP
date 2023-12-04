@@ -7,6 +7,8 @@ import { plannerListActions } from '../../store/plannerList';
 import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
+import { readPlanner } from '../../utils/DataAxiosParsing';
+import { validatePlannerData, validateUnspecifiedPlannerData } from '../../utils/DataValidate';
 function CustomHeader2(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -90,8 +92,65 @@ function CustomHeader2(props) {
         console.log('다운로드', plannerInfo.plannerId, res.data.data);
         DataDownload(plannerInfo.title, res.data.data);
     };
+
+    const [ readFile, setReadFile ] = useState();
+    const fileInputRef = useRef();
     //useRead를 참고
-    const Addplanner = () => {};
+
+    
+    const handleButtonClick = (e) => {
+        e.stopPropagation()
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (event) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const fileContents = e.target.result;
+            setReadFile(fileContents);
+        };
+        reader.readAsText(event.target.files[0]);
+        resetFileInput();
+    };
+
+    useEffect(()=>{
+        if(readFile){
+            const data = JSON.parse(readFile)
+            console.log("data",data);
+            if (validateUnspecifiedPlannerData(data)) {
+                console.log("planner")
+                readPlannerData(data,false);
+            } else {
+                requestFail("파일 읽기","올바르지 않은 형식")
+            }
+        }
+    },[readFile])
+
+    const readPlannerData = async (data,specified) => {
+        const result = await readPlanner(data,specified);
+        console.log("read planner result",result)
+        if(result){
+            dispatch(plannerListActions.addPlanner(result))
+        } else {
+            requestFail("데이터")
+        }
+    }
+
+    const resetFileInput = () => {
+        const currentFileInput = fileInputRef.current;
+
+        const newFileInput = document.createElement('input');
+        newFileInput.type = 'file';
+        newFileInput.style.display = 'none';
+
+        newFileInput.addEventListener('change', handleFileChange);
+
+        if (currentFileInput.parentNode) {
+            currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
+        }
+
+        fileInputRef.current = newFileInput;
+    };
 
     return (
         <div className="nav-main">
@@ -108,8 +167,9 @@ function CustomHeader2(props) {
                 </div>
 
                 <div className="right-bar">
-                    <button onClick={Addplanner} type="button" className="button-style-right">
+                    <button onClick={handleButtonClick} type="button" className="button-style-right">
                         <FaPlus style={{ fontSize: '16px', color: 'white' }} />
+                        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
                     </button>
 
                     <button onClick={handleDownLoad} type="button" className="button-style-right">

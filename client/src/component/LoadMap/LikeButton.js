@@ -52,19 +52,36 @@ const LikeButton = (props) => {
 
     const isStarCilckLike = async (e) => {
         e.stopPropagation();
-        dispatch(likeActions.addPlannerLike(plannerId));
-        const res = await postPlannerLike(plannerId);
-        if (res.status !== 200) {
-            requestFail('플래너 좋아요');
+        const isLiked = likes.some( like => like === plannerId );
+        if(isLiked){
+            requestFail("좋아요 추가","이미 존재하는 좋아요");
+            return;
+        } else {
+            dispatch(likeActions.addPlannerLike(plannerId));
+            const res = await postPlannerLike(plannerId);
+            if (res.status !== 200) {
+                requestFail('플래너 좋아요');
+            }
+            return;
         }
     };
 
     const isStarCilckUnLike = async (e) => {
         e.stopPropagation();
-        dispatch(likeActions.delPlannerLike(plannerId));
-        const res = await deletePlannerUnlike(plannerId);
-        if (res.status !== 200) {
-            requestFail('플래너 좋아요 삭제');
+        const isLiked = likes.some( like => like === plannerId );
+        console.log("likes",likes)
+        console.log("plannerId",plannerId)
+        console.log("isLiked",isLiked)
+        if(isLiked){
+            dispatch(likeActions.delPlannerLike(plannerId));
+            const res = await deletePlannerUnlike(plannerId);
+            if (res.status !== 200) {
+                requestFail('플래너 좋아요 삭제');
+            }
+            return;
+        } else {
+            requestFail("좋아요 취소","좋아요가 되어있지 않아요");
+            return;
         }
     };
 

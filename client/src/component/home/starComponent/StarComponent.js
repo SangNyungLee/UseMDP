@@ -46,11 +46,12 @@ export default function StarComponent() {
         }
 
         async function getLike() {
-            const result = await getLikesAxios(); // status를 안 보내줘서 예외 처리가 안 됨
-            // if(result.status === 200)
-            const likes = result.data
-            console.log('starComponent의 like' + JSON.stringify(likes));
-            dispatch(likeActions.setLikesInit(likes));
+            const result = await getLikesAxios();
+            if(result.status === 200){
+                dispatch(likeActions.setLikesInit(result.data));
+            } else {
+                requestFail("좋아요 불러오기")
+            }
         }
 
         getData();
