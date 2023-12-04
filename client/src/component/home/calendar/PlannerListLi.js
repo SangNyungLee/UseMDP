@@ -111,8 +111,8 @@ export default function PlannerListLi({ planner }) {
             <_PlannerDiv $visible={visible ? 1 : undefined} onClick={(e) => handleClick(e)} $focus={plannerId == home[0] ? 1 : undefined}>
                 <_PlannerTitle>{title}</_PlannerTitle>
                 <_DelButton onClick={(e) => delPlanner(e)}>
-                    <i className="material-icons" style={{ fontSize: '20px', color: '#ccc' }}>
-                        delete
+                    <i className="material-icons" style={{ fontSize: '15px', color: 'white' }}>
+                        remove
                     </i>
                 </_DelButton>
             </_PlannerDiv>
