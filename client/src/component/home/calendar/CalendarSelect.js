@@ -39,6 +39,14 @@ const _Flex = styled.div`
       display: none;
     }
   }
+  /* @media screen and (max-width: 700px) {
+    & {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  } */
 `;
 
 const _Container = styled.div`
@@ -59,6 +67,12 @@ const _Container = styled.div`
 const _Title = styled.div`
   margin-left: 10px;
   text-overflow: ellipsis;
+
+  @media screen and (max-width: 700px) {
+    & {
+      display: none;
+    }
+  }
 `;
 
 export default function CalendarSelect({ target }) {

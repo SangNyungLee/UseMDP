@@ -35,11 +35,11 @@ const _Container = styled.div`
 const _Toolbar = styled.div`
   width: 50vw;
   margin-bottom: 10px;
-  /* @media screen and (max-width: 1300px) {
+  @media screen and (max-width: 1300px) {
     & {
       width: 65vw;
     }
-  } */
+  }
 `;
 
 const _ToGoButton = styled.div`
@@ -66,12 +66,60 @@ const _SwitchButton = styled.button`
   &:hover {
     background-color: #ccc;
   }
+
+  @media screen and (max-width: 700px) {
+    & {
+      margin: 0px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      font-size: 13px;
+
+      width: fit-content;
+    }
+  }
 `;
 
 const _Flex = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 90px;
+  background-color: #eff4f7;
+`;
+
+const _CalendarContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  /* @media screen and (max-width: 700px) {
+    & {
+      flex-direction: column;
+      align-items: center;
+    }
+  } */
+`;
+
+const _CalendarSelectContainer = styled.div`
+  /* @media screen and (max-width: 700px) {
+    & {
+      width: 100%;
+      height: 20px;
+      display: flex;
+      align-items: center;
+    }
+  } */
+`;
+
+const _ToolbarContainer = styled.div`
+  /* @media screen and (min-width: 700px) {
+    & {
+      margin-top: 15px;
+    }
+  } */
 `;
 
 const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
@@ -125,23 +173,23 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
         </div>
         <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          position: "relative",
-        }}
-      >
-        <CalendarSelect target={HOME} />
-        <_SwitchButton onClick={(e) => switchToMonthView(e)}>
-          Month
-        </_SwitchButton>
-        <_SwitchButton onClick={(e) => switchToWeekView(e)}>Week</_SwitchButton>
-        <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
-        <_SwitchButton onClick={(e) => switchToAgendaView(e)}>
-          Agenda
-        </_SwitchButton>
-      </div>
+      <_CalendarContainer>
+        <_CalendarSelectContainer>
+          <CalendarSelect target={HOME} />
+        </_CalendarSelectContainer>
+        <_ToolbarContainer>
+          <_SwitchButton onClick={(e) => switchToMonthView(e)}>
+            Month
+          </_SwitchButton>
+          <_SwitchButton onClick={(e) => switchToWeekView(e)}>
+            Week
+          </_SwitchButton>
+          <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
+          <_SwitchButton onClick={(e) => switchToAgendaView(e)}>
+            Agenda
+          </_SwitchButton>
+        </_ToolbarContainer>
+      </_CalendarContainer>
     </_Toolbar>
   );
 };

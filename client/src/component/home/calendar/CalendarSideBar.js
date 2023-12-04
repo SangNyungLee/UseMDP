@@ -15,7 +15,7 @@ const _Container = styled.div`
   text-overflow: ellipsis;
   padding-top: 30px;
   margin: 0px 30px;
-
+  margin-left: -10px;
   @media screen and (max-width: 1300px) {
     & {
       display: none;
