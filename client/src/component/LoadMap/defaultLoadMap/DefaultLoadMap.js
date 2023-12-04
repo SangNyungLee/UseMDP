@@ -58,6 +58,13 @@ export default function DefaultLoadMap() {
         navigiate('/');
     };
 
+    const navigate = useNavigate();
+
+    const clickLogo = (e) => {
+        e.stopPropagation();
+        navigate('/');
+    };
+
     return (
         <>
             <aside className="sidebar">

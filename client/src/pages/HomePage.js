@@ -18,6 +18,14 @@ const _Flex = styled.div`
     justify-content: center;
 `;
 
+const _pageContainer = styled.div`
+  height: 100vh;
+  width: 100vw;
+  font-family: "Pretendard-Regular";
+  margin: 0;
+  padding: 0;
+`;
+
 export default function HomePage() {
     const dispatch = useDispatch();
 
@@ -26,6 +34,7 @@ export default function HomePage() {
         dispatch(pointActions.clearPoint());
     };
 
+<<<<<<< HEAD
     return (
         <_pageContainer id="HOMEPAGE" onClick={(e) => handlePoint(e)}>
             {/* <HomeHeader /> */}
@@ -33,4 +42,13 @@ export default function HomePage() {
             <Outlet />
         </_pageContainer>
     );
+=======
+	return (
+		<_pageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
+			{/* <HomeHeader /> */}
+			<RealHeader />
+			<Outlet />
+		</_pageContainer>
+	);
+>>>>>>> develop
 }
