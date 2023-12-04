@@ -53,7 +53,8 @@ export default function QuoteAppOnlyRead() {
         async function fetchData() {
             const btoaid = searchParams.get('id');
             const data = await getPlannerBtoA(btoaid);
-            let tmp = plannerCardStatusDevide(data.data);
+            console.log('initData', data.data);
+            let tmp = plannerCardStatusDevide(data.data.data);
             tmp = { ...tmp, quote: 1 };
             dispatch(noEditPlannerAction.setPlansInit(tmp));
         }
@@ -76,8 +77,6 @@ export default function QuoteAppOnlyRead() {
     }
     if (noEditPlanner.length != 0) {
         const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list, ...rest } = noEditPlanner;
-
-        console.log('noEditPlanner', noEditPlanner);
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
@@ -93,8 +92,8 @@ export default function QuoteAppOnlyRead() {
     }
 
     async function cardClick(ind, index) {
-        const cardResult = await getCardAxios(planner[ind][index].cardId);
-        setSelectedCard(cardResult);
+        console.log('cardResult', planner[ind][index]);
+        setSelectedCard(planner[ind][index]);
         setVisible(true);
     }
 
@@ -121,7 +120,6 @@ export default function QuoteAppOnlyRead() {
         };
     }, []);
     const isCalendarVisible = windowWidth > 1024;
-
     if (!planner) {
         return <QuoteSpinner />;
     } else {
