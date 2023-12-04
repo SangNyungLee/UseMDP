@@ -30,14 +30,14 @@ export default function StarComponent() {
         async function getData() {
             try {
                 const response = await getPlannerByTrend();
-                if( response.status === 200){
+                if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     setData(newData);
                 } else {
-                    requestFail("트랜드 플래너 불러오기")
+                    requestFail('트랜드 플래너 불러오기');
                 }
             } catch {
                 console.log('error');
@@ -48,8 +48,8 @@ export default function StarComponent() {
         async function getLike() {
             const result = await getLikesAxios(); // status를 안 보내줘서 예외 처리가 안 됨
             // if(result.status === 200)
-            const likes = result.data
-            console.log('starComponent의 like' + JSON.stringify(likes));
+            const likes = result.data;
+            console.log('starComponent의 like' + likes);
             dispatch(likeActions.setLikesInit(likes));
         }
 
