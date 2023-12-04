@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaTrello,
   FaSearch,
@@ -91,7 +91,7 @@ function CustomHeader2(props) {
   };
 
   const homeNavigate = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handleDownLoad = async () => {
@@ -104,6 +104,7 @@ function CustomHeader2(props) {
   };
   //useRead를 참고
   const Addplanner = () => {};
+
   return (
     <div className="nav-main">
       <div className="nav-bar">
@@ -122,11 +123,13 @@ function CustomHeader2(props) {
 
         <div className="right-bar">
           <button
-            onClick={Addplanner}
+            onClick={homeNavigate}
             type="button"
-            className="button-style-right"
+            className="button-style-2"
           >
-            <FaPlus style={{ fontSize: "16px", color: "white" }} />
+            <FaArrowLeft
+              style={{ fontSize: "16px", color: "white", marginBottom: "6px" }}
+            />
           </button>
 
           <button
@@ -152,9 +155,8 @@ function CustomHeader2(props) {
             onBlur={(e) => {
               handleBlur(e);
             }}
-          >
-            {plannerInfo.title}
-          </span>
+            ref={titleRef}
+          />
         </button>
 
         <button type="button" className="button-style-header">

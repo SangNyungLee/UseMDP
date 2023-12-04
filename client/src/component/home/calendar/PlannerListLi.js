@@ -120,11 +120,16 @@ export default function PlannerListLi({ planner }) {
       >
         <_PlannerTitle>{title}</_PlannerTitle>
         <_DelButton onClick={(e) => delPlanner(e)}>
+<<<<<<< HEAD
           <i
             class="material-icons"
             style={{ fontSize: "15px", color: "white" }}
           >
             remove
+=======
+          <i className="material-icons" style={{ fontSize: "20px", color: "#ccc" }}>
+            delete
+>>>>>>> develop
           </i>
         </_DelButton>
       </_PlannerDiv>

@@ -153,7 +153,7 @@ export async function postCopyPlanners(plannerId) {
 
 export async function patchCard(data) {
     try {
-        const res = axios({
+        const res = await axios({
             method: 'PATCH',
             url: getURL(`/api/patchCard`),
             data,
