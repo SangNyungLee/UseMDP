@@ -104,7 +104,7 @@ export default function QuoteApp() {
     useEffect(() => {
         async function fetchData() {
             const result = await getPlannerBtoA(btoa(plannerId));
-            if(result.status === 200){
+            if (result.status === 200) {
                 const cardList = result.data.data.cards;
                 const cards = [[], [], []];
                 for (let i = 0; i < cardList.length; i++) {
@@ -119,7 +119,7 @@ export default function QuoteApp() {
                 dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
                 dispatch(siteActions.setIsData(true));
             } else {
-                requestFail("플래너 불러오기")
+                requestFail('플래너 불러오기');
             }
         }
         if (!site.isData) {
@@ -141,14 +141,14 @@ export default function QuoteApp() {
 
     async function cardClick(ind, index) {
         const result = await getCardAxios(planner[ind][index].cardId);
-        if(result.status === 200){
-            const cardResult = result.data.data
+        if (result.status === 200) {
+            const cardResult = result.data.data;
             console.log('cardResult', cardResult);
-    
+
             setSelectedCard(cardResult);
             setVisible(true);
         } else {
-            requestFail("카드 정보")
+            requestFail('카드 정보');
         }
         // setSelectedCard(planner[ind][index]);
     }
