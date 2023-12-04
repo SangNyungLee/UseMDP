@@ -87,11 +87,21 @@ export default function RealHeader() {
     });
   };
 
+  const clickLogo = (e) => {
+    e.stopPropagation();
+    navigate("/");
+  };
+
   return (
     <div className="job">
       <div className="realheader">
-        <div className="header-logo">
-          <img src="/images/logo.png" width="62px" height="40px" />
+        <div
+          className="header-logo"
+          onClick={(e) => {
+            clickLogo(e);
+          }}
+        >
+          <img src="/images/004.png" width="60px" height="40px" />
           {/* useMDP */}
         </div>
         <div className="header-menu">
