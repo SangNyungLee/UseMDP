@@ -18,6 +18,10 @@ export function validatePlannerData(data) {
             isDefault: { type: 'integer' },
             createdAt: { type: 'string' },
             updatedAt: { type: 'string' },
+            taglist: {
+                type:'array',
+                items: { type: 'string' },
+            },
             cards: {
                 type: 'array',
                 items: {
@@ -26,25 +30,25 @@ export function validatePlannerData(data) {
                         type: 'object',
                         properties: {
                             cardId: { type: 'string' },
-                            post: { type: 'string' },
                             title: { type: 'string' },
                             coverColor: { type: 'string' },
+                            post: { type: 'string' },
+                            intOrder: { type: 'integer' },
                             startDate: { type: 'string' },
                             endDate: { type: 'string' },
+                            cardStatus: { type: 'string' },
                             createdAt: { type: 'string' },
                             updatedAt: { type: 'string' },
-                            cardStatus: { type: 'string' },
-                            intOrder: { type: 'integer' },
+                            checklists: {
+                                type: 'array',
+                                items: { type: 'object' }
+                            },
                             sourceResource: { type: 'null' },
                         },
                         required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
                     },
                 },
             },
-            taglist: {
-                type:'array',
-                items: { type: 'string' },
-            }
         },
         required: [ 'plannerId', 'creator' ,'title', 'cards'],
     };
@@ -81,30 +85,34 @@ export function validateUnspecifiedPlannerData(data) {
             isDefault: { type: 'integer' },
             createdAt: { type: 'string' },
             updatedAt: { type: 'string' },
+            taglist: {
+                type:'array',
+                items: { type: 'string' },
+            },
             cards: {
                 type: 'array',
                 items: {
                         type: 'object',
                         properties: {
                             cardId: { type: 'string' },
-                            post: { type: 'string' },
                             title: { type: 'string' },
                             coverColor: { type: 'string' },
+                            post: { type: 'string' },
+                            intOrder: { type: 'integer' },
                             startDate: { type: 'string' },
                             endDate: { type: 'string' },
+                            cardStatus: { type: 'string' },
                             createdAt: { type: 'string' },
                             updatedAt: { type: 'string' },
-                            cardStatus: { type: 'string' },
-                            intOrder: { type: 'integer' },
+                            checklists: {
+                                type: 'array',
+                                items: { type: 'object' }
+                            },
                             sourceResource: { type: 'null' },
                         },
                         required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
                 },
             },
-            taglist: {
-                type:'array',
-                items: { type: 'string' },
-            }
         },
         required: [ 'cards' ],
     };
