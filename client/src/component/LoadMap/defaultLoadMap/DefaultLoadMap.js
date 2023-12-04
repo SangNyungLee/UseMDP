@@ -11,13 +11,7 @@ import HomeComponent from '../../home/HomeComponent';
 
 // 서타일
 
-import {
-	_Container,
-	_Row,
-	_SidebarCol,
-	_RenderComponentCol,
-	_RenderComponent,
-} from '../../../constant/css/styledComponents/__DefaultLoadMap';
+import { _RenderComponent } from '../../../constant/css/styledComponents/__DefaultLoadMap';
 
 import { PiMapTrifoldFill, PiFireBold, PiCalendarBlankFill } from 'react-icons/pi';
 import { FaUserCircle } from 'react-icons/fa';
@@ -35,7 +29,7 @@ const iconStyle = {
 };
 
 export default function DefaultLoadMap() {
-	const [menuNumber, setMenuNumber] = useState(3);
+	const [menuNumber, setMenuNumber] = useState(1);
 	const [isActive, setIsActive] = useState(false);
 	const renderComponent = () => {
 		switch (menuNumber) {
@@ -106,9 +100,9 @@ export default function DefaultLoadMap() {
 				</nav>
 				{/* <div className="copyright">copyright &copy; 2018</div> */}
 			</aside>
-			<_RenderComponent fluid>{renderComponent()}</_RenderComponent>
+			<_RenderComponent fluid={'xs'}>{renderComponent()}</_RenderComponent>
 		</>
-	);					
+	);
 }
 
 // export default function DefaultLoadMap() {

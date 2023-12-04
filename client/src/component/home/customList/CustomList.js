@@ -33,7 +33,7 @@ export default function CustomList(props) {
 		<>
 			<_Container fluid>
 				<Fade direction={'up'} duration={500} cascade triggerOnce>
-					<_Row xs={2} sm={2} md={4} lg={4} xl={4} xxl={4}>
+					<_Row xxs={2} xs={2} sm={2} md={2} lg={3} xl={4} xxl={4}>
 						{data.map((planner, idx) => {
 							return (
 								<_Col key={idx + 1}>
