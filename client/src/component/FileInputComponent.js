@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Nav, Navbar, Container, Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 export default function FileInputComponent({ setState }) {
     const fileInputRef = useRef();

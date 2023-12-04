@@ -1,40 +1,20 @@
-// import DefaultLoadMap from '../component/home/DefaultLoadMap';
-import HomeHeader from "../../home/HomeHeader";
 import { useState } from "react";
 import DefaultComponent from "./DefaultComponent";
 import StarComponent from "../../home/starComponent/StarComponent";
 import MyCalendar from "../../home/MyCalendar";
-import styled from "styled-components";
 import SearchComponent from "../../home/searchComponent/SearchComponent";
 import HomeComponent from "../../home/HomeComponent";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // 서타일
 
 import { _RenderComponent } from "../../../constant/css/styledComponents/__DefaultLoadMap";
 
-import {
-  PiMapTrifoldFill,
-  PiFireBold,
-  PiCalendarBlankFill,
-} from "react-icons/pi";
-import { FaUserCircle } from "react-icons/fa";
-import { IoSearch } from "react-icons/io5";
-
-// 아이콘 서타일
-import { HiTable, HiUser, HiViewBoards } from "react-icons/hi";
-import { getMyPlanner } from "../../../utils/DataAxios";
-
 //사이드바 css
 import "../../../constant/css/sidebar.css";
 
-const iconStyle = {
-  fontSize: "2rem",
-};
-
 export default function DefaultLoadMap() {
   const [menuNumber, setMenuNumber] = useState(1);
-  const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
   const renderComponent = () => {
     switch (menuNumber) {

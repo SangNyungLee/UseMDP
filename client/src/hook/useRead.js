@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../store/plannerList";
 import { calendarActions } from "../store/calendar";
-import {  validateUnspecifiedPlannerData } from "../utils/DataValidate";
+import { validateUnspecifiedPlannerData } from "../utils/DataValidate";
 import { readPlanner, readPlannerList } from "../utils/DataAxiosParsing";
 import { HOME } from "../constant/constant";
 import { requestFail } from "../component/etc/SweetModal";

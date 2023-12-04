@@ -1,4 +1,3 @@
-import QuoteApp from '../component/post/QuoteApp';
 import '../constant/css/index.css';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
