@@ -1,25 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  FaTrello,
-  FaSearch,
-  FaPlus,
-  FaInfo,
-  FaBell,
-  FaStar,
-  FaLock,
-  FaLockOpen,
-  FaEllipsisH,
-  FaDownload,
-  FaUser,
-  FaArrowLeft,
-} from "react-icons/fa";
-import "../../constant/css/customHeader2.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { plannerListActions } from "../../store/plannerList";
-import { getPlannerBtoA, patchPlanner } from "../../utils/DataAxios";
-import DataDownload from "../../utils/DataDownload";
-import { requestFail } from "../etc/SweetModal";
+import React, { useEffect, useRef, useState } from 'react';
+import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser,  FaArrowLeft } from 'react-icons/fa';
+import '../../constant/css/customHeader2.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { plannerListActions } from '../../store/plannerList';
+import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
+import DataDownload from '../../utils/DataDownload';
+import { requestFail } from '../etc/SweetModal';
+import { readPlanner } from '../../utils/DataAxiosParsing';
+import { validatePlannerData, validateUnspecifiedPlannerData } from '../../utils/DataValidate';
+
 function CustomHeader2(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -94,16 +84,74 @@ function CustomHeader2(props) {
     navigate(-1);
   };
 
-  const handleDownLoad = async () => {
-    const res = await getPlannerBtoA(btoa(plannerInfo.plannerId));
-    if (res.status !== 200) {
-      requestFail("다운로드 실패");
+    const handleDownLoad = async () => {
+
+        const res = await getPlannerBtoA(btoa(plannerInfo.plannerId));
+        if (res.status !== 200) {
+            requestFail("다운로드 실패");
+        }
+        console.log("다운로드", plannerInfo.plannerId, res.data.data);
+        DataDownload(plannerInfo.title, res.data.data);
+    };
+
+    const [ readFile, setReadFile ] = useState();
+    const fileInputRef = useRef();
+    //useRead를 참고
+
+    
+    const handleButtonClick = (e) => {
+        e.stopPropagation()
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (event) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const fileContents = e.target.result;
+            setReadFile(fileContents);
+        };
+        reader.readAsText(event.target.files[0]);
+        resetFileInput();
+    };
+
+    useEffect(()=>{
+        if(readFile){
+            const data = JSON.parse(readFile)
+            console.log("data",data);
+            if (validateUnspecifiedPlannerData(data)) {
+                console.log("planner")
+                readPlannerData(data,false);
+            } else {
+                requestFail("파일 읽기","올바르지 않은 형식")
+            }
+        }
+    },[readFile])
+
+    const readPlannerData = async (data,specified) => {
+        const result = await readPlanner(data,specified);
+        console.log("read planner result",result)
+        if(result){
+            dispatch(plannerListActions.addPlanner(result))
+        } else {
+            requestFail("데이터")
+        }
     }
-    console.log("다운로드", plannerInfo.plannerId, res.data.data);
-    DataDownload(plannerInfo.title, res.data.data);
-  };
-  //useRead를 참고
-  const Addplanner = () => {};
+
+    const resetFileInput = () => {
+        const currentFileInput = fileInputRef.current;
+
+        const newFileInput = document.createElement('input');
+        newFileInput.type = 'file';
+        newFileInput.style.display = 'none';
+
+        newFileInput.addEventListener('change', handleFileChange);
+
+        if (currentFileInput.parentNode) {
+            currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
+        }
+
+        fileInputRef.current = newFileInput;
+    };
 
   return (
     <div className="nav-main">
@@ -121,16 +169,19 @@ function CustomHeader2(props) {
           </button> */}
         </div>
 
-        <div className="right-bar">
-          <button
-            onClick={homeNavigate}
-            type="button"
-            className="button-style-2"
-          >
-            <FaArrowLeft
-              style={{ fontSize: "16px", color: "white", marginBottom: "6px" }}
-            />
-          </button>
+                <div className="right-bar">
+                    <button
+                      onClick={homeNavigate}
+                      type="button"
+                      className="button-style-2"
+                    >
+                      <FaArrowLeft
+                        style={{ fontSize: "16px", color: "white", marginBottom: "6px" }}
+                      />
+                    </button>
+                    <button onClick={Addplanner} type="button" className="button-style-right">
+                        <FaPlus style={{ fontSize: '16px', color: 'white' }} />
+                    </button>
 
           <button
             onClick={handleDownLoad}
