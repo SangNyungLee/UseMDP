@@ -10,19 +10,12 @@ import { HOME } from '../constant/constant';
 import { useSelector } from 'react-redux';
 import HomeHeader from '../component/home/HomeHeader';
 
+import { _PageContainer } from '../constant/css/styledComponents/__HomePage';
 import RealHeader from '../component/RealHeader';
 
 const _Flex = styled.div`
 	display: flex;
 	justify-content: center;
-`;
-
-const _pageContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
-  font-family: "Pretendard-Regular";
-  margin: 0;
-  padding: 0;
 `;
 
 export default function HomePage() {
@@ -34,10 +27,10 @@ export default function HomePage() {
 	};
 
 	return (
-		<_pageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
+		<_PageContainer id='HOMEPAGE' onClick={(e) => handlePoint(e)}>
 			{/* <HomeHeader /> */}
 			<RealHeader />
 			<Outlet />
-		</_pageContainer>
+		</_PageContainer>
 	);
 }
