@@ -39,7 +39,26 @@ export default function CustomList(props) {
                 </Fade>
             </_Container>
 
-            {/* <Container>
+	return (
+		<>
+			<_Container fluid>
+				<Fade direction={'up'} duration={500} cascade triggerOnce>
+					<_Row xxs={2} xs={2} sm={2} md={2} lg={3} xl={4} xxl={4}>
+						{data.map((planner, idx) => {
+							return (
+								<_Col key={idx + 1}>
+									<CustomLoadMap datas={planner} />
+								</_Col>
+							);
+						})}
+						<_Col>
+							<PlusMap />
+						</_Col>
+					</_Row>
+				</Fade>
+			</_Container>
+
+			{/* <Container>
 				{data.map((item, idx) => {
 					if (idx % 4 === 0) {
 						// Start a new row

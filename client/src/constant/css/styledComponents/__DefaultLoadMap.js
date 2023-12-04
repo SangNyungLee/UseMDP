@@ -43,4 +43,15 @@ export const _RenderComponent = styled(Container)`
   padding: 0;
   width: calc(100% - 9rem);
   background-color: whitesmoke;
+
+	@media screen and (max-width: 850px) {
+		margin: 0 0 0 4rem;
+		width: calc(100% - 4rem);
+	}
+
+	@media screen and (max-width: 575px) {
+		margin: 6% 0 0 0;
+		padding: 0 0 20% 0;
+		width: 100%;
+	}
 `;
