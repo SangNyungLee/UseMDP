@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import WelcomePage from '../pages/WelcomePage';
 import HomePage from '../pages/HomePage';
-import MyPage from '../pages/MyPage';
 import PlannerPage from '../pages/PlannerPage';
 import App from '../App';
 import DefaultLoadMap from '../component/LoadMap/defaultLoadMap/DefaultLoadMap';
@@ -15,10 +14,6 @@ const Router = createBrowserRouter([
             {
                 index: true,
                 element: <WelcomePage />,
-            },
-            {
-                path: 'mypage',
-                element: <MyPage />,
             },
         ],
     },

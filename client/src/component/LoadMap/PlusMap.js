@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import plus from '../../constant/img/plus_icon.png';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import axios from 'axios';
 import base64Str from '../../constant/ImageBase64';
 import {
 	_CardContainer,
@@ -14,18 +12,8 @@ import {
 	_CardImg,
 } from '../../constant/css/styledComponents/__PlusMap';
 
-import skyImg from '../../constant/img/sky.jpg';
 import { postPlanner } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
-
-const PlusDiv = styled.div`
-	width: 200px;
-	height: 200px;
-`;
-const PlusImg = styled.img`
-	width: 150px;
-	height: 150px;
-`;
 
 export default function PlusMap(props) {
 	const [editedCreator, setEditedCreator] = useState('');

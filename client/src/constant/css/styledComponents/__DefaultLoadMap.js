@@ -2,11 +2,7 @@ import styled from "styled-components";
 import {
   Row,
   Col,
-  Stack,
   Container,
-  Nav,
-  Navbar,
-  Button,
 } from "react-bootstrap";
 
 export const _Container = styled(Container)`

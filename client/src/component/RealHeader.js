@@ -1,13 +1,10 @@
-import React from "react";
-import { CiDark, CiUser } from "react-icons/ci";
+
 import "../constant/css/RealHeader.css";
 
 //추가된거
-import { useEffect, useState } from "react";
-import { Nav, Navbar, Container, Button } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import {
@@ -16,9 +13,10 @@ import {
 } from "react-social-login-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../store/site";
-import { logoutModal, nyanCat, requestFail } from "./etc/SweetModal";
+import { logoutModal, requestFail } from "./etc/SweetModal";
 import { postLogout } from "../utils/DataAxios";
 import { FaFileUpload } from "react-icons/fa";
+
 
 export default function RealHeader() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
@@ -92,6 +90,7 @@ export default function RealHeader() {
     navigate("/");
   };
 
+
   return (
     <div className="job">
       <div className="realheader">
@@ -112,7 +111,7 @@ export default function RealHeader() {
         {isLoginRedux ? (
           <>
             <div className="user-settings">
-              <div className="uploadIcon user-menu ">
+              <div className="uploadIcon user-menu" >
                 <FaFileUpload />
               </div>
               <div className="dark-light">{/* <CiDark /> */}</div>

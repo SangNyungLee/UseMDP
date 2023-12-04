@@ -1,7 +1,4 @@
-import MyLoadMap from '../MyLoadMap';
-
 import { useEffect, useState } from 'react';
-import CustomList from '../../home/customList/CustomList';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
 import { useDispatch } from 'react-redux';
 import { getLikesAxios, getPlannerByBasic } from '../../../utils/DataAxios';
