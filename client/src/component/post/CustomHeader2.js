@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser } from 'react-icons/fa';
 import '../../constant/css/customHeader2.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,15 @@ function CustomHeader2(props) {
     const dispatch = useDispatch();
     const plannerInfo = props.plannerInfo;
     console.log('프롭스', props.plannerInfo);
+    
+    const titleRef = useRef();
+
+    useEffect(()=>{
+        if(plannerInfo){
+            const {title} = plannerInfo
+            titleRef.current.innerText = title
+        }
+    },[plannerInfo])
 
     const handleBlur = async (e) => {
         const data = {
@@ -83,6 +92,7 @@ function CustomHeader2(props) {
     };
     //useRead를 참고
     const Addplanner = () => {};
+
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -121,9 +131,8 @@ function CustomHeader2(props) {
                         onBlur={(e) => {
                             handleBlur(e);
                         }}
-                    >
-                        {plannerInfo.title}
-                    </span>
+                        ref={titleRef}
+                    />
                 </button>
 
                 <button type="button" className="button-style-header">

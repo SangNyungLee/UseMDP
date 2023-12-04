@@ -22,7 +22,7 @@ const _TitleInput = styled.input`
     outline: none;
     padding: none;
     background-color: ${(props) => props.color};
-    color: ${(props) => props.textColor};
+    color: ${(props) => props.textcolor || "black"};
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
@@ -182,7 +182,7 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
             <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
                 <Modal.Header style={{ backgroundColor: coverColor }} closeButton>
                     <Modal.Title>
-                        <_TitleInput value={title} color={coverColor} textColor={IsBackGroundDark(coverColor) ? 'white' : 'black'} readonly />
+                        <_TitleInput value={title} color={coverColor} textcolor={IsBackGroundDark(coverColor) ? 'white' : 'black'} readonly />
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#091E420F' }}>

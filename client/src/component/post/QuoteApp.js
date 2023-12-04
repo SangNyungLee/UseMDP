@@ -22,7 +22,7 @@ import { requestFail } from '../etc/SweetModal';
 const _QuoteAppContainer = styled.div`
     display: flex;
     flex: 3;
-    background-image: url(${(props) => props.image});
+    background-image: url(${(props) => props.$image});
     background-size: cover;
     background-repeat: no-repeat;
 `;
@@ -245,7 +245,7 @@ export default function QuoteApp() {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerInfo={plannerInfo} setSwitch={setSwitchContext} />
-                <_QuoteAppContainer image={plannerThumbnail ? sky : plannerThumbnail}>
+                <_QuoteAppContainer $image={plannerThumbnail ? plannerThumbnail : sky}>
                     <_Thumbnail ref={thumnnailRef}>
                         {/* 1024보다 클때 -> 모두 출력 */}
                         {isCalendarVisible ? (

@@ -28,7 +28,7 @@ const _TitleInput = styled.input`
     outline: none;
     padding: none;
     background-color: ${(props) => props.color};
-    color: ${(props) => props.textColor};
+    color: ${(props) => props.textcolor || "black"};
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
@@ -316,7 +316,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                         </_ColorPickerModal>
                     )}
                     <Modal.Title>
-                        <_TitleInput value={title} color={coverColor} textColor={IsBackGroundDark(coverColor) ? 'white' : 'black'} onChange={(e) => setTitle(e.target.value)} onClick={(e) => e.stopPropagation()} />
+                        <_TitleInput value={title} color={coverColor} textcolor={IsBackGroundDark(coverColor) ? 'white' : 'black'} onChange={(e) => setTitle(e.target.value)} onClick={(e) => e.stopPropagation()} />
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#091E420F' }}>

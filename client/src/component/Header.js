@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { GoogleLoginButton, GithubLoginButton } from 'react-social-login-buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { siteActions } from '../store/site';
-import { axiosFail, logoutModal, nyanCat } from './etc/SweetModal';
+import { logoutModal, nyanCat } from './etc/SweetModal';
 import { postLogout } from '../utils/DataAxios';
 export default function Header() {
 	const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
@@ -46,23 +46,25 @@ export default function Header() {
 	//로그아웃
 	const Logout = async (e) => {
 		e.stopPropagation();
-		const res = await axiosLogout();
-		console.log("logout res",res)
+		const res = await postLogout();
+		if (res.status !== 200){
+			requestFail("로그아웃")
+		  }
 		dispatch(siteActions.setAllFalse());
 		localStorage.removeItem('isLogin');
 		logoutModal();
 		navigate('/');
 	};
 
-	//로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
-	const axiosLogout = async () => {
-		try {
-			const res = await postLogout();
-			return res;
-		} catch (error) {
-			console.log(error)
-		}
-	};
+	// //로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
+	// const axiosLogout = async () => {
+	// 	try {
+	// 		const res = await postLogout();
+	// 		return res;
+	// 	} catch (error) {
+	// 		console.log(error)
+	// 	}
+	// };
 
 	const showLoginModal = (e) => {
 		e.stopPropagation();
