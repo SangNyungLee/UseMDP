@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import '../../../constant/css/myDayPicker.css';
-import '../../../constant/css/index.css';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../../../constant/css/myDayPicker.css";
+import "../../../constant/css/index.css";
+import styled from "styled-components";
 
 const _Font = styled.div`
-    font-family: 'SUITE-Regular';
+  font-family: "Pretendard-Regular";
 `;
 
 const MyDayPicker = ({ date, setDate }) => {
-    return (
-        <_Font>
-            <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="yyyy-MM-dd" />
-        </_Font>
-    );
+  return (
+    <_Font>
+      <DatePicker
+        selected={date}
+        onChange={(date) => setDate(date)}
+        dateFormat="yyyy-MM-dd"
+      />
+    </_Font>
+  );
 };
 
 export default MyDayPicker;
