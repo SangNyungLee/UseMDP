@@ -1,31 +1,37 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 // import Header from "../Header";
-import HomeHeader from '../../home/HomeHeader';
-import { useState } from 'react';
-import DefaultComponent from './DefaultComponent';
-import StarComponent from '../../home/starComponent/StarComponent';
-import MyCalendar from '../../home/MyCalendar';
-import styled from 'styled-components';
-import SearchComponent from '../../home/searchComponent/SearchComponent';
-import HomeComponent from '../../home/HomeComponent';
+import HomeHeader from "../../home/HomeHeader";
+import { useState } from "react";
+import DefaultComponent from "./DefaultComponent";
+import StarComponent from "../../home/starComponent/StarComponent";
+import MyCalendar from "../../home/MyCalendar";
+import styled from "styled-components";
+import SearchComponent from "../../home/searchComponent/SearchComponent";
+import HomeComponent from "../../home/HomeComponent";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // 서타일
 
+
 import { _RenderComponent } from '../../../constant/css/styledComponents/__DefaultLoadMap';
 
-import { PiMapTrifoldFill, PiFireBold, PiCalendarBlankFill } from 'react-icons/pi';
-import { FaUserCircle } from 'react-icons/fa';
-import { IoSearch } from 'react-icons/io5';
+import {
+  PiMapTrifoldFill,
+  PiFireBold,
+  PiCalendarBlankFill,
+} from "react-icons/pi";
+import { FaUserCircle } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
 
 // 아이콘 서타일
-import { HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
-import { getMyPlanner } from '../../../utils/DataAxios';
+import { HiTable, HiUser, HiViewBoards } from "react-icons/hi";
+import { getMyPlanner } from "../../../utils/DataAxios";
 
 //사이드바 css
-import '../../../constant/css/sidebar.css';
+import "../../../constant/css/sidebar.css";
 
 const iconStyle = {
-	fontSize: '2rem',
+  fontSize: "2rem",
 };
 
 export default function DefaultLoadMap() {
@@ -105,24 +111,4 @@ export default function DefaultLoadMap() {
 	);
 }
 
-// export default function DefaultLoadMap() {
-//   const [menuNumber, setMenuNumber] = useState();
-//   const renderComponent = () => {
-//       switch (menuNumber) {
-//           case 1:
-//               return <HomeComponent />;
-//           case 2:
-//               return <DefaultComponent />;
-//           case 3:
-//               return <StarComponent />;
-//           case 4:
-//               return <MyCalendar />;
-//           case 5:
-//               return <SearchComponent />;
-//           default:
-//               return <HomeComponent />;
-//       }
-//   };
-//   const handleNumber = (number) => {
-//       setMenuNumber(number);
-//   };
+

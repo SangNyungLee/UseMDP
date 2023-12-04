@@ -15,6 +15,8 @@ import {
 } from '../../constant/css/styledComponents/__PlusMap';
 
 import skyImg from '../../constant/img/sky.jpg';
+import { postPlanner } from '../../utils/DataAxios';
+import { requestFail } from '../etc/SweetModal';
 
 const PlusDiv = styled.div`
 	width: 200px;
@@ -43,7 +45,10 @@ export default function PlusMap(props) {
 
 		try {
 			console.log('myData', data);
-			const result = await axios.post('http://localhost:8080/api/postPlanner', data, { withCredentials: true });
+			const result = await postPlanner(data)
+			if(result.status !== 201){
+				requestFail("플래너 생성")
+			}
 
 			// SweetAlert을 이용하여 성공 메시지를 보여줌
 			Swal.fire({

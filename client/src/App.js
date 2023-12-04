@@ -6,7 +6,7 @@ import styled from "styled-components";
 import RealHeader from "./component/RealHeader";
 import "./constant/css/font.css";
 const _Font = styled.div`
-  font-family: "SUITE-Regular";
+  font-family: "Pretendard-Regular";
 `;
 
 function App() {

@@ -13,6 +13,7 @@ import { requestFail } from '../../etc/SweetModal';
 import { _ComponentContainer, _ComponentTitle } from '../../../constant/css/styledComponents/__DefaultComponent';
 import LoadMap from '../LoadMap';
 import NoContent from '../../NoContent';
+
 export default function DefaultComponent() {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
@@ -47,7 +48,6 @@ export default function DefaultComponent() {
 				setData([]);
 			}
 		}
-
 		async function getLike() {
 			const result = await getLikesAxios();
 			const likes = result.data;
@@ -58,6 +58,7 @@ export default function DefaultComponent() {
 		getData();
 		getLike();
 	}, []);
+
 
 	return (
 		<>
@@ -76,7 +77,6 @@ export default function DefaultComponent() {
 				) : (
 					<CustomListHiddable datas={data} points={[point, setPoint]} loadMap={LoadMap} />
 				)}
-
 				<_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
 				{plannerList.length == 0 ? (
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
@@ -197,43 +197,5 @@ export default function DefaultComponent() {
 //     </div>
 // )}
 
-/*                 {data.map((_, idx) => {
-                    // 컨테이너를 만든다.
-                    if (idx == 0) {
-                        return (
-                            <Container key={idx} style={{ marginTop: '30px' }}>
-                                <Row>
-                                    {Array.from({ length: Math.min(4, data.length) }).map((_, i) => (
-                                        <Col key={data[i].plannerId}>
-                                            <div onContextMenu={(e) => handleRightClick(e, data[i].title, data[i].plannerId)}>
-                                                <MyLoadMap datas={data[i]}></MyLoadMap>
-                                            </div>
-                                        </Col>
-                                    ))}
-                                </Row>
-                            </Container>
-                        );
-                    } else if (idx % 4 == 0) {
-                        const endIdx = Math.min(idx + 3, data.length - 1);
-                        return (
-                            <Container style={{ marginTop: '30px' }}>
-                                <Row>
-                                    {Array.from({ length: endIdx - idx + 1 }).map((_, i) => (
-                                        <Col key={data[idx + i].plannerId}>
-                                            <div onContextMenu={handleRightClick}>
-                                                <MyLoadMap datas={data[idx + i]}></MyLoadMap>
-                                            </div>
-                                        </Col>
-                                    ))}
-                                    {/* 4개를 채워서 칸을 채우는것
-                                    // 그냥 Grid쓸껄 ㅇㅁㄻㄴㅇㄹㄴㅁㅇㄹ */
-// {Array.from({ length: 4 - (endIdx - idx + 1) }).map((_, i) => (
-//     <Col key={`empty-${i}`}></Col>
-//                     ))}
-//                 </Row>
-//             </Container>
-//         );
-//     } else {
-//         return null;
-//     }
-// })}
+
+
