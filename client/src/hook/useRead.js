@@ -2,38 +2,54 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../store/plannerList";
 import { calendarActions } from "../store/calendar";
-import { validatePlannerData, validatePlannerListData, validateUnspecifiedPlannerData, validateUnspecifiedPlannerListData } from "../utils/DataValidate";
+import {  validateUnspecifiedPlannerData } from "../utils/DataValidate";
 import { readPlanner, readPlannerList } from "../utils/DataAxiosParsing";
 import { HOME } from "../constant/constant";
 import { requestFail } from "../component/etc/SweetModal";
+import { useSelector } from "react-redux";
 
 export default function useRead(target){
+    const plannerList = useSelector( state => state.plannerList);
+
     const [ readData, setReadData ] = useState();
 
     const dispatch = useDispatch();
+
+    // useEffect(()=>{
+    //     if(readData){
+    //         const data = JSON.parse(readData)
+    //         console.log("data",data);
+    //         if (validatePlannerData(data)) {
+    //             // cards = [ [] , [] , [] ] 형태
+    //             console.log("planner")
+    //             readPlannerData(data,true);
+    //         } else if (validateUnspecifiedPlannerData(data)) {
+    //             // cards = [] 형태
+    //             console.log("planner2")
+    //             readPlannerData(data,false);
+    //         } else if (validatePlannerListData(data)) {
+    //             // cards = [ [] , [] , [] ] 형태
+    //             console.log("plannerList")
+    //             readPlannerListData(data,true);
+    //         } else if (validateUnspecifiedPlannerListData(data)) {
+    //             // cards = [] 형태
+    //             console.log("unspecified plannerList")
+    //             readPlannerListData(data,false);
+    //         } else {
+    //             console.log("error")
+    //         }
+    //         setReadData();
+    //     }
+    // },[readData])
 
     useEffect(()=>{
         if(readData){
             const data = JSON.parse(readData)
             console.log("data",data);
-            if (validatePlannerData(data)) {
-                // cards = [ [] , [] , [] ] 형태
-                console.log("planner")
-                readPlannerData(data,true);
-            } else if (validateUnspecifiedPlannerData(data)) {
-                // cards = [] 형태
-                console.log("planner2")
+            if (validateUnspecifiedPlannerData(data)) {
                 readPlannerData(data,false);
-            } else if (validatePlannerListData(data)) {
-                // cards = [ [] , [] , [] ] 형태
-                console.log("plannerList")
-                readPlannerListData(data,true);
-            } else if (validateUnspecifiedPlannerListData(data)) {
-                // cards = [] 형태
-                console.log("unspecified plannerList")
-                readPlannerListData(data,false);
             } else {
-                console.log("error")
+                requestFail("플래너 데이터 읽기", "올바르지 않은 형식")
             }
             setReadData();
         }
@@ -44,11 +60,8 @@ export default function useRead(target){
         if(result){
             const { plannerId } = result
             dispatch(plannerListActions.addPlanner(result))
-            if(target === HOME){
-                dispatch(calendarActions.setSelect({
-                    target,
-                    value: [plannerId]
-                }))
+            if(plannerList.length === 0){
+                dispatch(calendarActions.setAll([plannerId]))
             }
         } else {
             requestFail("데이터")

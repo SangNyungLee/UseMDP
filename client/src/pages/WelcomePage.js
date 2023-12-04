@@ -1,18 +1,12 @@
 import Footer from '../component/Footer';
-import Header from '../component/Header';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Container, Image, Row, Col, Card, Button, Stack } from 'react-bootstrap';
+import { Container, Image, Row, Col, Button, Stack } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import { useEffect, useState } from 'react';
 import useDefaultCheck from '../hook/useDefaultCheck';
 import FileInputComponent from '../component/FileInputComponent';
 import { requestFail } from '../component/etc/SweetModal';
-import { readPlanner } from '../utils/DataAxiosParsing';
-import { plannerListActions } from '../store/plannerList';
-import { useDispatch } from 'react-redux';
-import { calendarActions } from '../store/calendar';
-import { validatePlannerData, validateUnspecifiedPlannerData } from '../utils/DataValidate';
-import { noEditPlannerAction } from '../store/noEditPlanner';
+import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import "../constant/css/home.css";
 
 
@@ -30,7 +24,6 @@ export default function WelcomePage() {
   console.log("visible", visible);
 
 	const { naviCookieCheck } = useDefaultCheck();
-	const dispatch = useDispatch();
 
 	const [ readFile, setReadFile ] = useState();
 	const navi = useNavigate();
@@ -39,7 +32,6 @@ export default function WelcomePage() {
 		if(readFile){
 			const data = JSON.parse(readFile)
             if (validateUnspecifiedPlannerData(data)) {
-				dispatch(noEditPlannerAction.setPlansInit(data))
 				navi('/plannerNoEdit',{
 					state:{
 						sourceData: data,

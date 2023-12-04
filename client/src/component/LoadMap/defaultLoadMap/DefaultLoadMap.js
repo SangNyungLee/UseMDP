@@ -1,5 +1,4 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
-// import Header from "../Header";
 import HomeHeader from "../../home/HomeHeader";
 import { useState } from "react";
 import DefaultComponent from "./DefaultComponent";
