@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../store/site";
 import { logoutModal, nyanCat, requestFail } from "./etc/SweetModal";
 import { postLogout } from "../utils/DataAxios";
+import { FaFileUpload } from "react-icons/fa";
 
 export default function RealHeader() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
@@ -59,7 +60,6 @@ export default function RealHeader() {
     logoutModal();
     navigate("/");
   };
-
   // //로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
   // const axiosLogout = async () => {
   //   try {
@@ -104,14 +104,17 @@ export default function RealHeader() {
           <img src="/images/004.png" width="60px" height="40px" />
           {/* useMDP */}
         </div>
-        <div className="header-menu">
+        {/* <div className="header-menu">
           <a className="active">메뉴 1번</a>
           <a>메뉴 2번</a>
           <a>메뉴 3번</a>
-        </div>
+        </div> */}
         {isLoginRedux ? (
           <>
             <div className="user-settings">
+              <div className="uploadIcon user-menu ">
+                <FaFileUpload />
+              </div>
               <div className="dark-light">{/* <CiDark /> */}</div>
               <div className="user-menu" onClick={(e) => Logout(e)}>
                 로그아웃
