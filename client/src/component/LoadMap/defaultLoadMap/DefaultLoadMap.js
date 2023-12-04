@@ -12,13 +12,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 // 서타일
 
-import {
-  _Container,
-  _Row,
-  _SidebarCol,
-  _RenderComponentCol,
-  _RenderComponent,
-} from "../../../constant/css/styledComponents/__DefaultLoadMap";
+import { _RenderComponent } from "../../../constant/css/styledComponents/__DefaultLoadMap";
 
 import {
   PiMapTrifoldFill,
@@ -40,8 +34,7 @@ const iconStyle = {
 };
 
 export default function DefaultLoadMap() {
-  const navigate = useNavigate();
-  const [menuNumber, setMenuNumber] = useState(3);
+  const [menuNumber, setMenuNumber] = useState(1);
   const [isActive, setIsActive] = useState(false);
   const renderComponent = () => {
     switch (menuNumber) {
@@ -137,29 +130,7 @@ export default function DefaultLoadMap() {
         </nav>
         {/* <div className="copyright">copyright &copy; 2018</div> */}
       </aside>
-      <_RenderComponent fluid>{renderComponent()}</_RenderComponent>
+      <_RenderComponent fluid={"xs"}>{renderComponent()}</_RenderComponent>
     </>
   );
 }
-
-// export default function DefaultLoadMap() {
-//   const [menuNumber, setMenuNumber] = useState();
-//   const renderComponent = () => {
-//       switch (menuNumber) {
-//           case 1:
-//               return <HomeComponent />;
-//           case 2:
-//               return <DefaultComponent />;
-//           case 3:
-//               return <StarComponent />;
-//           case 4:
-//               return <MyCalendar />;
-//           case 5:
-//               return <SearchComponent />;
-//           default:
-//               return <HomeComponent />;
-//       }
-//   };
-//   const handleNumber = (number) => {
-//       setMenuNumber(number);
-//   };

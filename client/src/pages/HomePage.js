@@ -9,7 +9,7 @@ import useDefaultCheck from "../hook/useDefaultCheck";
 import { HOME } from "../constant/constant";
 import { useSelector } from "react-redux";
 import HomeHeader from "../component/home/HomeHeader";
-
+import ThemeProvider from "react-bootstrap/ThemeProvider";
 import { _PageContainer } from "../constant/css/styledComponents/__HomePage";
 import RealHeader from "../component/RealHeader";
 
@@ -27,10 +27,15 @@ export default function HomePage() {
   };
 
   return (
-    <_PageContainer id="HOMEPAGE" onClick={(e) => handlePoint(e)}>
-      {/* <HomeHeader /> */}
-      <RealHeader />
-      <Outlet />
-    </_PageContainer>
+    <ThemeProvider
+      breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
+      minBreakpoint="xxs"
+    >
+      <_PageContainer id="HOMEPAGE" onClick={(e) => handlePoint(e)}>
+        {/* <HomeHeader /> */}
+        <RealHeader />
+        <Outlet />
+      </_PageContainer>
+    </ThemeProvider>
   );
 }
