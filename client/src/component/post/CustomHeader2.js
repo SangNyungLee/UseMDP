@@ -179,8 +179,9 @@ function CustomHeader2(props) {
                         style={{ fontSize: "16px", color: "white", marginBottom: "6px" }}
                       />
                     </button>
-                    <button onClick={Addplanner} type="button" className="button-style-right">
+                    <button onClick={handleButtonClick} type="button" className="button-style-right">
                         <FaPlus style={{ fontSize: '16px', color: 'white' }} />
+                        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
                     </button>
 
           <button
