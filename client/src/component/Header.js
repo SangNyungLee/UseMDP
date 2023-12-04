@@ -91,11 +91,8 @@ export default function Header() {
               className="d-inline-block rounded"
               alt="useMPD logo"
             />{" "} */}
-<<<<<<< HEAD
                         <img src="/images/004.png" width="62px" height="40px" />
                     </Navbar.Brand>
-                    {/* <img src="/images/logo.png" width="62px" height="40px" />
-          <img src="/images/logo2.png" width="62px" height="40px" /> */}
                     <Nav>
                         {isLoginRedux ? (
                             <>
@@ -121,54 +118,4 @@ export default function Header() {
             </Navbar>
         </>
     );
-=======
-            <img src="/images/004.png" width="62px" height="40px" />
-          </Navbar.Brand>
-          <Nav>
-            {isLoginRedux ? (
-              <>
-                <Button
-                  as={NavLink}
-                  to={"/roadmap"}
-                  className="mx-2"
-                  variant="success"
-                  size={isMobile ? "sm" : "md"}
-                >
-                  My Roadmap
-                </Button>
-                <Button
-                  onClick={(e) => Logout(e)}
-                  className="mx-2"
-                  variant="success"
-                  size={isMobile ? "sm" : "md"}
-                >
-                  Logout
-                </Button>
-                <Button
-                  onClick={nyanCat}
-                  className="mx-2"
-                  variant="success"
-                  size={isMobile ? "sm" : "md"}
-                >
-                  눌러보세요
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  onClick={(e) => showLoginModal(e)}
-                  className="mx-2"
-                  variant="outline-success"
-                  size={isMobile ? "sm" : "md"}
-                >
-                  Log In
-                </Button>
-              </>
-            )}
-          </Nav>
-        </Container>
-      </Navbar>
-    </>
-  );
->>>>>>> develop
 }
