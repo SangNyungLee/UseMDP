@@ -11,93 +11,31 @@ import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch, useSelector } from 'react-redux';
 import useLocalStorage from 'use-local-storage';
-import { getPlannerBtoA } from '../../utils/DataAxios';
+import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
 
 //Styled Components with React Bootstrap
 import {
-	_cardContainer,
-	_cardHeader,
-	_cardFooter,
-	_cardImg,
-	_cardImgOverlay,
-	_cardBody,
-	_cardTitle,
-	_cardSubtitle,
-	_cardText,
-	_cardLink,
-	_cardDownloadButton,
-	_cardEditButton,
-	_iconContainer,
-	_lockedIcon,
-	_unlockedIcon,
-	_downloadIcon,
-	_editIcon,
+	_CardContainer,
+	_CardHeader,
+	_CardFooter,
+	_CardImg,
+	_CardImgOverlay,
+	_CardBody,
+	_CardTitle,
+	_CardSubtitle,
+	_CardText,
+	_CardLink,
+	_CardDownloadButton,
+	_CardEditButton,
+	_IconContainer,
+	_LockedIcon,
+	_UnlockedIcon,
+	_DownloadIcon,
+	_EditIcon,
 } from '../../constant/css/styledComponents/__MyLoadMap';
 import skyImg from '../../constant/img/sky.jpg';
-
-const _Container = styled.div`
-	margin-bottom: 20px;
-	width: fit-content;
-`;
-
-const _ImageStyle = styled.img`
-	width: 240px;
-	height: 160px;
-	border-radius: 5px;
-`;
-
-const _TitleStyle = styled.div`
-	font-size: 23px;
-	margin-left: 2px;
-`;
-
-const _DescriptionStyle = styled.span`
-	font-size: 17px;
-	color: #8f8f8f;
-	margin-left: 2px;
-`;
-
-const _Felx = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-top: 5px;
-`;
-
-const _Share = styled.div`
-	width: 20px;
-	height: 20px;
-	margin-right: 2px;
-	color: #515151;
-`;
-
-const _isOpen = styled.div`
-	color: #198754;
-	font-weight: bolder;
-	margin-left: 2px;
-`;
-
-const _Button = styled.button`
-	border: none;
-	background-color: #198754;
-	color: white;
-	width: 60px;
-	height: 30px;
-	border-radius: 2px;
-	font-size: 14px;
-	margin-right: 2px;
-`;
-
-const StyledShareIcon = styled.i`
-	&.material-icons {
-		cursor: pointer;
-	}
-
-	&:hover {
-		color: #007bff; /* Change the color on hover as an example */
-	}
-`;
+import { requestFail } from '../etc/SweetModal';
 
 export default function MyLoadMap(props) {
 	const dispatch = useDispatch();
@@ -113,22 +51,26 @@ export default function MyLoadMap(props) {
 		if (!showModal) {
 			const btoaId = btoa(plannerId);
 			const result = await getPlannerBtoA(btoaId);
-			console.log('click', result.data);
-			const cardList = result.data.cards;
-			const cards = [[], [], []];
-			for (let i = 0; i < cardList.length; i++) {
-				if (cardList[i].cardStatus === 'TODO') {
-					cards[0].push(cardList[i]);
-				} else if (cardList[i].cardStatus === 'DOING') {
-					cards[1].push(cardList[i]);
-				} else if (cardList[i].cardStatus === 'DONE') {
-					cards[2].push(cardList[i]);
+			if(result.status === 200){
+				console.log('click', result.data);
+				const cardList = result.data.data.cards;
+				const cards = [[], [], []];
+				for (let i = 0; i < cardList.length; i++) {
+					if (cardList[i].cardStatus === 'TODO') {
+						cards[0].push(cardList[i]);
+					} else if (cardList[i].cardStatus === 'DOING') {
+						cards[1].push(cardList[i]);
+					} else if (cardList[i].cardStatus === 'DONE') {
+						cards[2].push(cardList[i]);
+					}
 				}
+				dispatch(calendarActions.setQuote([plannerId]));
+				dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+	
+				navigate(`/planner?id=${btoaId}`);
+			} else {
+				requestFail("플래너 불러오기")
 			}
-			dispatch(calendarActions.setQuote([plannerId]));
-			dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-
-			navigate(`/planner?id=${btoaId}`);
 		}
 	};
 	const [starClick, setStarClick] = useState(false);
@@ -174,21 +116,23 @@ export default function MyLoadMap(props) {
 
 		//업데이트하고, axios보내줘야한다.
 
-		const result = await axios.patch(
-			'http://localhost:8080/api/patchPlanner',
-			{
-				plannerId,
-				creator,
-				title: editedTitle,
-				likePlanner,
-				thumbnail,
-				isDefault,
-				plannerAccess: editedPlannerAccess,
-				taglist: [],
-			},
-			{ withCredentials: true }
-		);
-		setShowModal(false);
+		const plannerData = {
+			plannerId,
+			creator,
+			title: editedTitle,
+			likePlanner,
+			thumbnail,
+			isDefault,
+			plannerAccess: editedPlannerAccess,
+			taglist: [],
+		}
+
+		const result = await patchPlanner(plannerData)
+		if(result.status === 200){
+			setShowModal(false);
+		} else {
+			requestFail("플래너 저장")
+		}
 	};
 	//sweetAlert창
 	const sweetModal = async (e) => {
@@ -214,23 +158,25 @@ export default function MyLoadMap(props) {
 				// 확인을 눌렀을 때의 로직
 				const inputValue = document.getElementById('swal-input1').value;
 				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
-				console.log(inputValue);
+				console.log('inputValue', inputValue);
 				// axios 요청을 보내고 모달을 닫음
-				const axiosResult = await axios.patch(
-					'http://localhost:8080/api/patchPlanner',
-					{
-						plannerId,
-						creator,
-						title: inputValue,
-						likePlanner,
-						thumbnail,
-						isDefault,
-						plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
-						taglist: [],
-					},
-					{ withCredentials: true }
-				);
-				console.log('?? : ', axiosResult);
+
+				const plannerData = {
+					plannerId,
+					creator,
+					title: inputValue,
+					likePlanner,
+					thumbnail,
+					isDefault,
+					plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
+					taglist: [],
+				}
+
+				const axiosResult = await patchPlanner(plannerData)
+				if(axiosResult.status !== 200){
+					requestFail("플래너 저장")
+				}
+        return { editedTitle: inputValue, editedPlannerAccess: radioValue };
 			},
 			confirmButtonText: '확인',
 			showCancelButton: true,
@@ -239,10 +185,13 @@ export default function MyLoadMap(props) {
 		if (result.isConfirmed) {
 			// 값이 없을 경우 빈 문자열로 설정
 			console.log('result', result);
-			setEditedTitle(result.value[0] || '');
-			setEditedPlannerAccess(result.value[1] || '');
+			const { editedTitle, editedPlannerAccess } = result.value;
+			setEditedTitle(editedTitle || '');
+			setEditedPlannerAccess(editedPlannerAccess || '');
 		}
 	};
+
+	const [isHovering, setIsHovering] = useState(false);
 
 	return (
 		// <_Container onClick={(e) => handleClick(e)}>
@@ -262,23 +211,32 @@ export default function MyLoadMap(props) {
 		// 	</div>
 		// </_Container>
 
-		<_cardContainer text='white' onClick={(e) => handleClick(e)}>
-			<_cardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
-			<_cardImgOverlay>
-				<_cardBody>
-					<_cardTitle as={'h5'}>{editedTitle}</_cardTitle>
-					<_cardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
-						<_downloadIcon />
-					</_cardDownloadButton>
-					<_cardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
-						<_editIcon />
-					</_cardEditButton>
-					<_iconContainer>
-						{editedPlannerAccess === 'PUBLIC' ? <_unlockedIcon /> : <_lockedIcon />}
-					</_iconContainer>
-				</_cardBody>
-			</_cardImgOverlay>
-		</_cardContainer>
+		<_CardContainer
+			onClick={(e) => handleClick(e)}
+			onMouseOver={() => setIsHovering(true)}
+			onMouseLeave={() => setIsHovering(false)}>
+			<_CardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
+			<_CardImgOverlay>
+				<_CardBody>
+					<_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
+					{isHovering ? (
+						<>
+							<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
+								<_DownloadIcon />
+							</_CardDownloadButton>
+							<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
+								<_EditIcon />
+							</_CardEditButton>
+						</>
+					) : null}
+					{editedPlannerAccess === 'PRIVATE' ? (
+						<_IconContainer>
+							<_LockedIcon />
+						</_IconContainer>
+					) : null}
+				</_CardBody>
+			</_CardImgOverlay>
+		</_CardContainer>
 	);
 }
 

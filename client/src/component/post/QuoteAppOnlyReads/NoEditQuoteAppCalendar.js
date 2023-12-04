@@ -2,18 +2,13 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import { plannerListActions } from '../../store/plannerList';
-import MDPModal from '../modal/MDPModal';
+import NoEditMDPmodal from './NoEditMDPmodal';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { eventStyleGetter, getNestedElement } from '../../utils/CalendarController';
-import { getOneCard } from '../../utils/QuoteSetting';
-import { dateParsing } from '../../utils/DataParsing';
-import { patchCard, postCard } from '../../utils/DataAxios';
+import { eventStyleGetter, getNestedElement } from '../../../utils/CalendarController';
+import { getOneCard } from '../../../utils/QuoteSetting';
+import { dateParsing } from '../../../utils/DataParsing';
 import styled from 'styled-components';
-import CalendarSelect from '../home/calendar/CalendarSelect';
-import { QUOTE } from '../../constant/constant';
-import { requestFail } from '../etc/SweetModal';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -106,7 +101,6 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
                 <_ToGoButton onClick={(e) => goToNext(e)}>{'>'}</_ToGoButton>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-                <CalendarSelect target={QUOTE} />
                 <_SwitchButton onClick={(e) => switchToMonthView(e)}>Month</_SwitchButton>
                 <_SwitchButton onClick={(e) => switchToWeekView(e)}>Week</_SwitchButton>
                 <_SwitchButton onClick={(e) => switchToDayView(e)}>Day</_SwitchButton>
@@ -116,86 +110,32 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
     );
 };
 
-export default function QuoteAppCalendar(props) {
-    const plannerList = useSelector((state) => state.plannerList);
-    const { quote } = useSelector((state) => state.calendar);
-    const dispatch = useDispatch();
+export default function NoEditQuoteAppCalendar(props) {
+    const plannerList = useSelector((state) => state.noEditPlanner);
+    const quote = plannerList.quote;
 
     const [events, setEvents] = useState();
     const [selectedCard, setSelectedCard] = useState(getOneCard(0, 'TODO'));
     const [visible, setVisible] = useState(false);
 
-    const plannerId = quote[0];
-    const cardStatusIndex = quote[1] ? quote[1] : 0;
-    const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
+    //plannerId를 안쓰니까, 단축하겠음.
+    //QUOTE 하나만 쓰고, 여러개를 보여줄 생각이 없다.
+    const cardStatusIndex = quote ? quote : 0;
+    const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'ALL';
 
     useEffect(() => {
-        const selectedEvents = getNestedElement(plannerList, quote);
+        const selectedEvents = cardStatus === 'ALL' ? plannerList.cards.map((e) => e.flat()) : plannerList.cards[cardStatusIndex];
         setEvents(dateParsing(selectedEvents));
-    }, [plannerList, quote]);
-
-    const plannerUpdateCard = async (data) => {
-        const { start, end, event } = data;
-        const cardId = event.cardId;
-        const startDate = start.toISOString();
-        const endDate = end.toISOString();
-        const card = events.find((e) => e.cardId === cardId);
-        const requestData = {
-            ...card,
-            startDate,
-            endDate,
-            plannerId,
-        };
-        dispatch(
-            plannerListActions.updateCard({
-                cardId,
-                startDate,
-                endDate,
-            })
-            );
-            
-        const result = await patchCard(requestData);
-        if(result.status !== 200) {
-            requestFail("카드 데이터 저장")
-        }
-    };
-
-    const onSelectSlot = async (slotInfo) => {
-        const newEvent = getOneCard(events.length, cardStatus);
-
-        delete newEvent.cardId;
-
-        const startDate = moment(slotInfo.start).toDate().toISOString();
-        const endDate = moment(slotInfo.end).toDate().toISOString();
-
-        const requestData = {
-            ...newEvent,
-            plannerId,
-            cardStatus,
-            startDate,
-            endDate,
-            checklists: [{ checked: 0, title: 'done' }],
-        };
-
-        const res = await postCard(requestData);
-
-        dispatch(
-            plannerListActions.addCard({
-                plannerId,
-                cardStatusIndex,
-                card: { ...newEvent, cardId: res.data.data, startDate, endDate },
-            })
-        );
-    };
+    }, [plannerList]);
 
     const onSelectEvent = (event, e) => {
         setSelectedCard(event);
         setVisible(true);
     };
-
+    console.log('event', events, cardStatus, plannerList);
     return (
         <>
-            <MDPModal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
+            <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
             <DnDCalendar
                 defaultDate={moment().toDate()}
                 defaultView="month"
@@ -203,9 +143,6 @@ export default function QuoteAppCalendar(props) {
                 endAccessor="endDate"
                 events={events}
                 localizer={localizer}
-                onEventDrop={plannerUpdateCard}
-                onEventResize={plannerUpdateCard}
-                onSelectSlot={onSelectSlot}
                 onSelectEvent={onSelectEvent}
                 resizable
                 selectable

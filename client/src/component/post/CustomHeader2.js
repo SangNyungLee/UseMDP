@@ -17,13 +17,23 @@ import "../../constant/css/customHeader2.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { plannerListActions } from "../../store/plannerList";
-import { patchPlanner } from "../../utils/DataAxios";
+import { getPlannerBtoA, patchPlanner } from "../../utils/DataAxios";
 import DataDownload from "../../utils/DataDownload";
+import { requestFail } from "../etc/SweetModal";
 function CustomHeader2(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const plannerInfo = props.plannerInfo;
   console.log("프롭스", props.plannerInfo);
+
+  const titleRef = useRef();
+
+  useEffect(() => {
+    if (plannerInfo) {
+      const { title } = plannerInfo;
+      titleRef.current.innerText = title;
+    }
+  }, [plannerInfo]);
 
   const handleBlur = async (e) => {
     const data = {
@@ -31,7 +41,10 @@ function CustomHeader2(props) {
       title: e.target.innerText,
     };
     const res = await patchPlanner(data);
-    console.log("title 수정", res);
+    if (res.status !== 200) {
+      requestFail("플래너 제목 수정");
+      return;
+    }
     dispatch(
       plannerListActions.updatePlannerTitle({
         plannerId: plannerInfo.plannerId,
@@ -46,6 +59,10 @@ function CustomHeader2(props) {
     };
     console.log("handlepublic", data);
     const res = await patchPlanner(data);
+    if (res.status !== 200) {
+      requestFail("플래너 상태 저장");
+      return;
+    }
     dispatch(
       plannerListActions.updatePlannerAccess({
         plannerId: plannerInfo.plannerId,
@@ -61,6 +78,10 @@ function CustomHeader2(props) {
     };
     console.log("handlepublic", data);
     const res = await patchPlanner(data);
+    if (res.status !== 200) {
+      requestFail("플래너 상태 저장");
+      return;
+    }
     dispatch(
       plannerListActions.updatePlannerAccess({
         plannerId: plannerInfo.plannerId,
@@ -70,24 +91,25 @@ function CustomHeader2(props) {
   };
 
   const homeNavigate = () => {
-    navigate(-1);
+    navigate("/");
   };
 
   const handleDownLoad = async () => {
-    DataDownload(plannerInfo.title);
+    const res = await getPlannerBtoA(btoa(plannerInfo.plannerId));
+    if (res.status !== 200) {
+      requestFail("다운로드 실패");
+    }
+    console.log("다운로드", plannerInfo.plannerId, res.data.data);
+    DataDownload(plannerInfo.title, res.data.data);
   };
-
+  //useRead를 참고
   const Addplanner = () => {};
   return (
     <div className="nav-main">
       <div className="nav-bar">
         <div className="left-bar">
-          <button
-            onClick={homeNavigate}
-            type="button"
-            className="button-style-2"
-          >
-            <FaArrowLeft
+          <button onClick={homeNavigate} type="button" className="button-style">
+            <FaTrello
               style={{ fontSize: "16px", color: "white", marginBottom: "6px" }}
             />
             {/* <span className="text-style">로고자리</span> */}

@@ -1,43 +1,45 @@
-import axios from 'axios';
-import base64Str from '../../../constant/ImageBase64';
-import LoadMap from '../LoadMap';
 import MyLoadMap from '../MyLoadMap';
-import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
-import RightClicker from '../../post/RightClicker/RightClicker';
+
 import { useEffect, useState } from 'react';
 import CustomList from '../../home/customList/CustomList';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
 import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../../store/plannerList';
 import { getLikesAxios, getPlannerByBasic } from '../../../utils/DataAxios';
 import { useSelector } from 'react-redux';
 import { likeActions } from '../../../store/like';
-
+import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
+import noResult from '../../../constant/img/searchFail.svg';
+import { HOME } from '../../../constant/constant';
+import useDefaultCheck from '../../../hook/useDefaultCheck';
+import { requestFail } from '../../etc/SweetModal';
 export default function DefaultComponent() {
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
-    const [hide, setHide] = useState(true);
-    const like = useSelector( state => state.like)
+    const like = useSelector((state) => state.like);
+    const plannerList = useSelector((state) => state.plannerList);
+
+    useDefaultCheck(HOME);
+    console.log('플래너', plannerList, data);
 
     const handlePoint = () => {
         if (point[0] !== -1 && point[1] !== -1) {
             setPoint([-1, -1]);
         }
     };
-    
+
     useEffect(() => {
         async function getData() {
             try {
                 const response = await getPlannerByBasic();
-                console.log('res : ', response.data);
-                if (response.data.data.length == 0) {
-                } else {
+                if(response.status === 200){
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
                         return newItem;
                     });
                     setData(newData);
+                } else {
+                    requestFail("기본 플래너 불러오기")
                 }
             } catch {
                 console.log('error');
@@ -46,43 +48,78 @@ export default function DefaultComponent() {
         }
 
         async function getLike() {
-            const likes = await getLikesAxios();
+            const result = await getLikesAxios();
+            const likes = result.data
             console.log('defaultComponent의 like' + JSON.stringify(likes));
-            dispatch(likeActions.setLikesInit(likes))
+            dispatch(likeActions.setLikesInit(likes));
         }
 
         getData();
         getLike();
     }, []);
 
-    if (data.length == 0) {
-        return (
-            //Spinner
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '100vh',
-                }}
-            >
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </div>
-        );
-    } else {
-        return (
-            <div onClick={handlePoint}>
-                <h2>기본로드맵</h2>
+    return (
+        <div onClick={handlePoint}>
+            <_ComponentTitle>Default LoadMap</_ComponentTitle>
+            {data.length == 0 ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
+                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
+                    <div>
+                        <div style={{ fontSize: '25px' }}> 찾고자 하는 데이터가 없습니다</div>
+                        <div style={{ fontSize: '20px', fontWeight: '300', color: 'gray', marginTop: '10px' }}></div>
+                    </div>
+                </div>
+            ) : (
                 <CustomListHiddable datas={data} points={[point, setPoint]} />
+            )}
 
-                <h2 style={{ marginTop: '50px' }}>내 로드맵</h2>
-                <CustomList datas={data} loadMap={MyLoadMap}></CustomList>
-            </div>
-        );
-    }
+            <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
+            {plannerList.length == 0 ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '20vh' }}>
+                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
+                    <div>
+                        <div style={{ fontSize: '25px' }}> 아직 로드맵을 생성하지 않았어요.</div>
+                        <div style={{ fontSize: '20px', fontWeight: '300', color: 'gray', marginTop: '10px' }}>데이터를 추가하시겠어요?</div>
+                    </div>
+                </div>
+            ) : (
+                <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
+            )}
+        </div>
+    );
 }
+
+{
+    /* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+<img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
+<div>
+    <div style={{ fontSize: '25px' }}> 찾고자 하는 데이터가 없습니다</div>
+    <div style={{ fontSize: '20px', fontWeight: '300', color: 'gray', marginTop: '10px' }}> 다른 검색어로 검색을 해주세요.</div>
+</div>
+</div> */
+}
+
+// if (data.length == 0) {
+//     return (
+//         //Spinner
+
+//         <div>
+//             <_componentTitle>찾은 데이터가 없습니다!</_componentTitle>
+//             <div
+//                 style={{
+//                     display: 'flex',
+//                     justifyContent: 'center',
+//                     alignItems: 'center',
+//                     minHeight: '60vh',
+//                 }}
+//             >
+//                 <Spinner animation="border" role="status">
+//                     <span className="visually-hidden">Loading...</span>
+//                 </Spinner>
+//             </div>
+//         </div>
+//     );
+// } else {
 
 // {/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
 // 7,11이 되면 Container를 만들고  */}

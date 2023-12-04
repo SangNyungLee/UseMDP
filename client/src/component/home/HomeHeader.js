@@ -12,8 +12,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../../store/site";
-import { logoutModal } from "../etc/SweetModal";
+import { logoutModal, requestFail } from "../etc/SweetModal";
 import axios from "axios";
+import { postLogout } from "../../utils/DataAxios";
 
 export default function HomeHeader() {
   // 모달창 보여주기, 숨기기 상태
@@ -93,12 +94,10 @@ export default function HomeHeader() {
   //로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
   const axiosLogout = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/logout",
-        {},
-        { withCredentials: true }
-      );
-      console.log(res);
+      const res = await postLogout();
+      if (res.status !== 200) {
+        requestFail("로그아웃");
+      }
     } catch (error) {
       console.log(error);
     }

@@ -11,7 +11,8 @@ import {
   Stack,
 } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useDefaultCheck from "../hook/useDefaultCheck";
 import "../constant/css/home.css";
 
 export default function WelcomePage() {

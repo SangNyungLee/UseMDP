@@ -7,8 +7,7 @@ import useDefaultCheck from '../../hook/useDefaultCheck';
 import { HOME } from '../../constant/constant';
 import { useSelector, useDispatch } from 'react-redux';
 // Styled Components
-import { _componentTitle } from '../../constant/css/styledComponents/__HomeComponent';
-import { Container } from 'react-bootstrap';
+import { _ComponentTitle } from '../../constant/css/styledComponents/__HomeComponent';
 
 const statusIndexMap = {
 	TODO: 0,
@@ -20,7 +19,11 @@ export default function HomeComponent() {
 	//이미 저장된 값이 있으면 그 list를 불러온다.
 
 	const plannerList = useSelector((state) => state.plannerList);
+	const calendar = useSelector( state => state.calendar);
 	useDefaultCheck(HOME);
+
+	console.log("hom component calendar",calendar)
+	console.log("home component",plannerList)
 
 	// const [data, setData] = useState();
 
@@ -59,10 +62,8 @@ export default function HomeComponent() {
 
 	return (
 		<>
-			<_componentTitle>My Planners</_componentTitle>
-			<Container fluid id='MY PLANNERS'>
-				<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
-			</Container>
+			<_ComponentTitle>MY PLANNERS</_ComponentTitle>
+			<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
 		</>
 	);
 }
