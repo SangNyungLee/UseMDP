@@ -4,7 +4,17 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import base64Str from '../../constant/ImageBase64';
-import { _cardContainer, _cardBody, _plusIcon, _plusButton } from '../../constant/css/styledComponents/__PlustMap';
+import {
+	_CardContainer,
+	_CardBody,
+	_CardText,
+	_PlusIcon,
+	_PlusButton,
+	_CardImgOverlay,
+	_CardImg,
+} from '../../constant/css/styledComponents/__PlusMap';
+
+import skyImg from '../../constant/img/sky.jpg';
 
 const PlusDiv = styled.div`
 	width: 200px;
@@ -89,12 +99,10 @@ export default function PlusMap(props) {
 	};
 
 	return (
-		<_cardContainer id='PLUS'>
-			<_cardBody>
-				<_plusButton onClick={(e) => handleClick(e)} variant='none'>
-					<_plusIcon />
-				</_plusButton>
-			</_cardBody>
-		</_cardContainer>
+		<_CardContainer text='white' className='text-center'>
+			<_CardBody onClick={(e) => handleClick(e)}>
+				<_CardText>Create new planner</_CardText>
+			</_CardBody>
+		</_CardContainer>
 	);
 }

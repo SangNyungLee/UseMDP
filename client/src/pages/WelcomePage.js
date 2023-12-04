@@ -3,9 +3,11 @@ import Header from '../component/Header';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Container, Image, Row, Col, Card, Button, Stack } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import useDefaultCheck from '../hook/useDefaultCheck';
 
 export default function WelcomePage() {
+
 	const isMobile = useMediaQuery({
 		query: '(max-width: 576px)',
 	});
@@ -19,6 +21,8 @@ export default function WelcomePage() {
 	console.log("visible",visible)
 
 
+	const { naviCookieCheck } = useDefaultCheck();
+
 	return (
 		<>
 			<Container className='px-5' style={{ height: '600px', paddingTop: '180px' }}>
@@ -29,7 +33,7 @@ export default function WelcomePage() {
 							<p>Bring your storage to our online tool, or save locally with the desktop app.</p>
 						</Stack>
 						<Stack direction={isMobile ? 'vertical' : 'horizontal'} id='target' gap={5} className='mt-5'>
-							<Button as={NavLink} to={'/home'} variant='success' size='lg'>
+							<Button as={NavLink} to={'/home'} onClick={ e => naviCookieCheck(e) } variant='success' size='lg'>
 								시작하기
 							</Button>
 							<Button variant='outline-success' size='lg'>
