@@ -51,16 +51,16 @@ export default function WelcomePage() {
 		}
 	},[readFile])
 
-	const readPlannerData = async (data,specified) => {
-        const result = await readPlanner(data,specified);
-        if(result){
-            const { plannerId } = result
-            dispatch(plannerListActions.addPlanner(result))
-            dispatch(calendarActions.setAll([plannerId]))
-        } else {
-            requestFail("데이터")
-        }
-    }
+	// const readPlannerData = async (data,specified) => {
+    //     const result = await readPlanner(data,specified);
+    //     if(result){
+    //         const { plannerId } = result
+    //         dispatch(plannerListActions.addPlanner(result))
+    //         dispatch(calendarActions.setAll([plannerId]))
+    //     } else {
+    //         requestFail("데이터")
+    //     }
+    // }
 
 	return (
 		<>
@@ -76,12 +76,6 @@ export default function WelcomePage() {
 								시작하기
 							</Button>
 							<FileInputComponent setState={setReadFile}/>
-              {/* <Button variant="outline-success" size="lg">
-                <label>
-                  불러오기
-                  <input type="file" style={{ display: "none" }} />
-                </label>
-              </Button> */}
 						</Stack>
 					</Col>
 					<Col>

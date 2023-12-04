@@ -52,9 +52,10 @@ export default function useDefaultCheck() {
     const getMyPlannerAndDispatch = async () => {
         const result = await getMyPlanner();
         if(result.status === 200){
-            const newPlannerList = plannerListCardStatusDevide(result.data.data);
-            dispatch(plannerListActions.setPlannersInit(newPlannerList));
-            if (newPlannerList.length > 0) {
+            const plannerList = result.data.data
+            if(plannerList.length > 0){
+                const newPlannerList = plannerListCardStatusDevide(plannerList);
+                dispatch(plannerListActions.setPlannersInit(newPlannerList));
                 const plannerId = newPlannerList[0].plannerId;
                 dispatch(
                     calendarActions.setAll([plannerId])    

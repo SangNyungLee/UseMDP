@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
   --body-font: "Pretendard-Regular", sans-serif !important;
@@ -20,28 +20,28 @@
 }
 
 body {
-  background-color: var(--body-bg-color) !important;
-  font-family: var(--body-font) !important;
-  font-size: 15px !important;
-  color: var(--body-color) !important;
+	background-color: var(--body-bg-color) !important;
+	font-family: var(--body-font) !important;
+	font-size: 15px !important;
+	color: var(--body-color) !important;
 }
 
 .job {
-  display: flex;
-  flex-direction: column;
-  /* max-width: 1400px; */
-  /* height: 100vh; */
-  margin: 0 auto;
-  overflow: hidden;
-  background-color: var(--theme-bg-color);
+	display: flex;
+	flex-direction: column;
+	/* max-width: 1400px; */
+	/* height: 100vh; */
+	margin: 0 auto;
+	overflow: hidden;
+	background-color: var(--theme-bg-color);
 }
 
 .header-logo {
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 18px;
-  cursor: pointer;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+	font-size: 18px;
+	cursor: pointer;
 }
 
 .header-logo:hover {
@@ -49,103 +49,104 @@ body {
 }
 
 .header-logo svg {
-  width: 24px;
-  margin-right: 12px;
+	width: 24px;
+	margin-right: 12px;
 }
 
 .realheader {
-  display: flex;
-  align-items: center;
-  transition: box-shadow 0.3s;
-  flex-shrink: 0;
-  padding: 0 40px;
-  white-space: nowrap;
-  background-color: var(--header-bg-color);
-  height: 60px;
-  width: 100%;
-  font-size: 16px;
-  justify-content: space-between;
-  z-index: 1;
+	display: flex;
+	align-items: center;
+	transition: box-shadow 0.3s;
+	flex-shrink: 0;
+	padding: 0 40px;
+	white-space: nowrap;
+	background-color: var(--header-bg-color);
+	height: 5%;
+	width: 100%;
+	font-size: 16px;
+	justify-content: space-between;
+	position: fixed;
+	z-index: 1;
 }
 .header-menu a {
-  text-decoration: none;
-  color: var(--body-color);
-  font-weight: 500;
+	text-decoration: none;
+	color: var(--body-color);
+	font-weight: 500;
 }
 .header-menu a:hover {
-  color: var(--active-color);
+	color: var(--active-color);
 }
 .header-menu a:not(:first-child) {
-  margin-left: 30px;
+	margin-left: 30px;
 }
 .header-menu a.active {
-  color: var(--active-color);
+	color: var(--active-color);
 }
 
 .user-settings {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: black;
+	display: flex;
+	align-items: center;
+	font-weight: 500;
+	color: black;
 }
 .user-settings svg {
-  width: 20px;
-  color: #94949f;
+	width: 20px;
+	color: #94949f;
 }
 .user-name {
-  color: black;
+	color: black;
 }
 .user-menu {
-  position: relative;
-  margin-right: 8px;
-  padding-right: 8px;
-  border-right: 2px solid #d6d6db;
-  color: black;
-  cursor: pointer;
+	position: relative;
+	margin-right: 8px;
+	padding-right: 8px;
+	border-right: 2px solid #d6d6db;
+	color: black;
+	cursor: pointer;
 }
 
 .user-profile {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  -o-object-fit: cover;
-  object-fit: cover;
-  margin-right: 10px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	-o-object-fit: cover;
+	object-fit: cover;
+	margin-right: 10px;
 }
 
 @-webkit-keyframes slideY {
-  0% {
-    opacity: 0;
-    transform: translateY(200px);
-  }
+	0% {
+		opacity: 0;
+		transform: translateY(200px);
+	}
 }
 
 @keyframes slideY {
-  0% {
-    opacity: 0;
-    transform: translateY(200px);
-  }
+	0% {
+		opacity: 0;
+		transform: translateY(200px);
+	}
 }
 
 @media screen and (max-width: 620px) {
-  .header-menu a:not(:first-child) {
-    margin-left: 10px;
-  }
+	.header-menu a:not(:first-child) {
+		margin-left: 10px;
+	}
 }
 
 @media screen and (max-width: 590px) {
-  .header-menu {
-    display: none;
-  }
+	.header-menu {
+		display: none;
+	}
 }
 
 .header {
-  padding: 0 20px;
+	padding: 0 20px;
 }
 
 .user-login {
-  color: black;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 17px;
+	color: black;
+	font-weight: 700;
+	cursor: pointer;
+	font-size: 17px;
 }
