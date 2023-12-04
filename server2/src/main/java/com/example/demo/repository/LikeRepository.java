@@ -13,8 +13,12 @@ public interface LikeRepository extends JpaRepository<LikeEntity ,Long> {
     @Query(nativeQuery = true, value = "select * from likes l where l.planner_id = :plannerId and l.member_id = :memberId")
     LikeEntity getLikeEntity(@Param("plannerId")long plannerId, @Param("memberId")String memberId);
 
+    @Query(nativeQuery = true, value = "select * from likes l where l.planner_id = :plannerId and l.member_id = :memberId")
+    Optional<LikeEntity> getLike(@Param("plannerId")long plannerId, @Param("memberId")String memberId);
 
     @Query(nativeQuery = true, value = "select * from likes l where l.member_id = :memberId")
     Optional<List<LikeEntity>> findByMemberId(@Param("memberId")String memberId);
+
+
 
 }

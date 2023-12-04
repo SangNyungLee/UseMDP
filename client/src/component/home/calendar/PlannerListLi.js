@@ -98,7 +98,7 @@ export default function PlannerListLi({ planner }) {
   const delPlanner = async (e) => {
     e.stopPropagation();
     const res = await deleteMyPlanner(plannerId);
-    if(res.status === 200){
+    if (res.status === 200) {
       dispatch(plannerListActions.delPlanner(plannerId));
       if (plannerId === home[0] && plannerList.length > 1) {
         const otherPlanner = plannerList.find(
@@ -107,7 +107,7 @@ export default function PlannerListLi({ planner }) {
         dispatch(calendarActions.setHome([otherPlanner.plannerId]));
       }
     } else {
-      requestFail("플래너 삭제")
+      requestFail("플래너 삭제");
     }
   };
 
@@ -120,16 +120,11 @@ export default function PlannerListLi({ planner }) {
       >
         <_PlannerTitle>{title}</_PlannerTitle>
         <_DelButton onClick={(e) => delPlanner(e)}>
-<<<<<<< HEAD
           <i
             class="material-icons"
             style={{ fontSize: "15px", color: "white" }}
           >
             remove
-=======
-          <i className="material-icons" style={{ fontSize: "20px", color: "#ccc" }}>
-            delete
->>>>>>> develop
           </i>
         </_DelButton>
       </_PlannerDiv>

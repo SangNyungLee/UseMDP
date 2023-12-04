@@ -478,30 +478,37 @@ public class PlannerService {
 
     //성공 -> 1, 실패 -> 0
     public long likePlanner(long plannerId, String memberId) {
+        //좋아요 하기 전 이미 좋아요를 한 상태인지 검사
+        Optional<LikeEntity> optionalLikeEntity = likeRepository.getLike(plannerId,memberId);
 
-        LikeEntity likeEntity = LikeEntity.builder()
-                .plannerEntity(PlannerEntity.builder().plannerId(plannerId).build())
-                .memberEntity(MemberEntity.builder().memberId(memberId).build())
-                .build();
-        likeRepository.save(likeEntity);
-
-        Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerId);
-        if(optionalPlannerEntity.isPresent()){
-            PlannerEntity planner = optionalPlannerEntity.get();
-            PlannerEntity updatePlanner = PlannerEntity.builder()
-                    .plannerId(planner.getPlannerId())
-                    .creator(planner.getCreator())
-                    .title(planner.getTitle())
-                    .thumbnail(planner.getThumbnail())
-                    .plannerAccess(planner.getPlannerAccess())
-                    .likePlanner(planner.getLikePlanner()+1)
-                    .isDefault(planner.getIsDefault())
-                    .memberEntity(planner.getMemberEntity())
+        //isPresent()가 참이면 이미 좋아요를 한 상태 -> 또 db에 추가하면 안됨(return 0)
+        if(optionalLikeEntity.isPresent()){
+            return 0;
+        }else{
+            LikeEntity likeEntity = LikeEntity.builder()
+                    .plannerEntity(PlannerEntity.builder().plannerId(plannerId).build())
+                    .memberEntity(MemberEntity.builder().memberId(memberId).build())
                     .build();
-            plannerRepository.save(updatePlanner);
-        }
+            likeRepository.save(likeEntity);
 
-        return 1;
+            Optional<PlannerEntity> optionalPlannerEntity = plannerRepository.getPlanner(plannerId);
+            if(optionalPlannerEntity.isPresent()){
+                PlannerEntity planner = optionalPlannerEntity.get();
+                PlannerEntity updatePlanner = PlannerEntity.builder()
+                        .plannerId(planner.getPlannerId())
+                        .creator(planner.getCreator())
+                        .title(planner.getTitle())
+                        .thumbnail(planner.getThumbnail())
+                        .plannerAccess(planner.getPlannerAccess())
+                        .likePlanner(planner.getLikePlanner()+1)
+                        .isDefault(planner.getIsDefault())
+                        .memberEntity(planner.getMemberEntity())
+                        .build();
+                plannerRepository.save(updatePlanner);
+            }
+
+            return 1;
+        }
 
     }
 

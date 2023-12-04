@@ -11,7 +11,7 @@ import {
 } from "react-social-login-buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../store/site";
-import { logoutModal, nyanCat } from "./etc/SweetModal";
+import { logoutModal, nyanCat, requestFail } from "./etc/SweetModal";
 import { postLogout } from "../utils/DataAxios";
 export default function Header() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
@@ -96,8 +96,6 @@ export default function Header() {
             />{" "} */}
             <img src="/images/004.png" width="62px" height="40px" />
           </Navbar.Brand>
-          {/* <img src="/images/logo.png" width="62px" height="40px" />
-          <img src="/images/logo2.png" width="62px" height="40px" /> */}
           <Nav>
             {isLoginRedux ? (
               <>

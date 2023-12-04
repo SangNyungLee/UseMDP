@@ -40,6 +40,7 @@ const iconStyle = {
 };
 
 export default function DefaultLoadMap() {
+  const navigate = useNavigate();
   const [menuNumber, setMenuNumber] = useState(3);
   const [isActive, setIsActive] = useState(false);
   const renderComponent = () => {
@@ -61,6 +62,11 @@ export default function DefaultLoadMap() {
   const handleNumber = (e, number) => {
     e.stopPropagation();
     setMenuNumber(number);
+  };
+
+  const clickLogo = (e) => {
+    e.stopPropagation();
+    navigate("/");
   };
 
   return (
