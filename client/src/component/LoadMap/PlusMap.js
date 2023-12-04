@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import plus from '../../constant/img/plus_icon.png';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import axios from 'axios';
 import base64Str from '../../constant/ImageBase64';
 import {
 	_CardContainer,
@@ -14,16 +12,8 @@ import {
 	_CardImg,
 } from '../../constant/css/styledComponents/__PlusMap';
 
-import skyImg from '../../constant/img/sky.jpg';
-
-const PlusDiv = styled.div`
-	width: 200px;
-	height: 200px;
-`;
-const PlusImg = styled.img`
-	width: 150px;
-	height: 150px;
-`;
+import { postPlanner } from '../../utils/DataAxios';
+import { requestFail } from '../etc/SweetModal';
 
 export default function PlusMap(props) {
 	const [editedCreator, setEditedCreator] = useState('');
@@ -43,7 +33,10 @@ export default function PlusMap(props) {
 
 		try {
 			console.log('myData', data);
-			const result = await axios.post('http://localhost:8080/api/postPlanner', data, { withCredentials: true });
+			const result = await postPlanner(data)
+			if(result.status !== 201){
+				requestFail("플래너 생성")
+			}
 
 			// SweetAlert을 이용하여 성공 메시지를 보여줌
 			Swal.fire({

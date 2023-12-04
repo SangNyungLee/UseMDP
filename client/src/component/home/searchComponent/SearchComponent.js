@@ -1,10 +1,8 @@
 import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import CustomList from '../customList/CustomList';
-import base64Str from '../../../constant/ImageBase64';
-import axios from 'axios';
 import LoadMap from '../../LoadMap/LoadMap';
 import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
@@ -46,9 +44,12 @@ export default function SearchComponent() {
 
     useEffect(() => {
         async function getLike() {
-            const likes = await getLikesAxios();
-            console.log('starComponent의 like', likes.data);
-            dispatch(likeActions.setLikesInit(likes.data));
+            const result = await getLikesAxios();
+            if(result.status === 200){
+                dispatch(likeActions.setLikesInit(result.data));
+            } else {
+                requestFail("좋아요 불러오기")
+            }
         }
         async function fetchData() {
             let data;
@@ -219,7 +220,7 @@ export default function SearchComponent() {
                     </div>
                 </div>
             ) : (
-                <CustomList datas={filteredDatas} loadMap={LoadMap} />
+                <CustomList datas={filteredDatas} loadMap={LoadMap} noPlus={true} />
             )}
         </div>
     );

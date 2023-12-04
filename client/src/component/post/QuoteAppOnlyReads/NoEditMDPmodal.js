@@ -22,7 +22,7 @@ const _TitleInput = styled.input`
     outline: none;
     padding: none;
     background-color: ${(props) => props.color};
-    color: ${(props) => props.textColor};
+    color: ${(props) => props.textcolor || 'black'};
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
@@ -164,6 +164,7 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
 
     useEffect(() => {
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
+        console.log(selectedCard);
         setTitle(title);
         setPost(post);
         setStartDate(new Date(startDate));
@@ -172,80 +173,83 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
         setCardStatus(cardStatus);
         setChecklists(checklists);
         setShow(modalStatus);
-        // const checklist = getCheckListAxios();
     }, [modalStatus]);
 
     console.log(checklists, IsBackGroundDark(coverColor));
     let progress = checklists ? handleProgessBar() : 0;
-    return (
-        <>
-            <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
-                <Modal.Header style={{ backgroundColor: coverColor }} closeButton>
-                    <Modal.Title>
-                        <_TitleInput value={title} color={coverColor} textColor={IsBackGroundDark(coverColor) ? 'white' : 'black'} readonly />
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{ backgroundColor: '#091E420F' }}>
-                    <TitleEdit>
-                        <div>
-                            <IconImg src={description}></IconImg>Content
-                        </div>
-                    </TitleEdit>
-                    <ParseContainer>{parse(post)}</ParseContainer>
-
-                    <TitleEdit>
-                        <div>
-                            <IconImg src={list1}></IconImg>Progress
-                        </div>
-                    </TitleEdit>
-                    <ProgressBar now={progress}></ProgressBar>
-
-                    <TitleEdit>
-                        <div>
-                            <IconImg src={list2}></IconImg>Check List
-                        </div>
-                    </TitleEdit>
-                    {/* <_Title>Check List</_Title> */}
-                    <div>
-                        {checklists
-                            ? checklists.map((item, index) => {
-                                  return (
-                                      <_ChecklistContainer key={index}>
-                                          <_CheckBox type="checkbox" checked={item.checked == 1} readOnly />
-
-                                          <div style={{ marginLeft: '5px', width: '87%' }}>{item.checked == 1 ? <strike>{item.title}</strike> : item.title}</div>
-                                      </_ChecklistContainer>
-                                  );
-                              })
-                            : null}
-                    </div>
-
-                    <TitleEdit>
-                        <div>
-                            <IconImg src={calendarImg}></IconImg>Planning period
-                        </div>
-                    </TitleEdit>
-
-                    <FlexContainer>
-                        <div>
-                            <IconImg src={calendarImg}></IconImg>
-                            <_Span>Start Date</_Span>
+    if (Object.keys(selectedCard).includes('status')) {
+        return <></>;
+    } else {
+        return (
+            <>
+                <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
+                    <Modal.Header style={{ backgroundColor: coverColor }} closeButton>
+                        <Modal.Title>
+                            <_TitleInput value={title} color={coverColor} textColor={IsBackGroundDark(coverColor) ? 'white' : 'black'} readonly />
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ backgroundColor: '#091E420F' }}>
+                        <TitleEdit>
                             <div>
-                                <DatePicker selected={startDate} dateFormat="yyyy-MM-dd" />
+                                <IconImg src={description}></IconImg>Content
                             </div>
-                        </div>
-                        <div>
-                            <IconImg src={calendarImg}></IconImg> <_Span>End Date</_Span>
+                        </TitleEdit>
+                        {post ? <ParseContainer>{parse(post)}</ParseContainer> : null}
+
+                        <TitleEdit>
                             <div>
-                                <DatePicker selected={startDate} dateFormat="yyyy-MM-dd" />
+                                <IconImg src={list1}></IconImg>Progress
                             </div>
+                        </TitleEdit>
+                        <ProgressBar now={progress}></ProgressBar>
+
+                        <TitleEdit>
+                            <div>
+                                <IconImg src={list2}></IconImg>Check List
+                            </div>
+                        </TitleEdit>
+                        {/* <_Title>Check List</_Title> */}
+                        <div>
+                            {checklists
+                                ? checklists.map((item, index) => {
+                                      return (
+                                          <_ChecklistContainer key={index}>
+                                              <_CheckBox type="checkbox" checked={item.checked == 1} readOnly />
+
+                                              <div style={{ marginLeft: '5px', width: '87%' }}>{item.checked == 1 ? <strike>{item.title}</strike> : item.title}</div>
+                                          </_ChecklistContainer>
+                                      );
+                                  })
+                                : null}
                         </div>
-                    </FlexContainer>
-                </Modal.Body>
-                <Modal.Footer style={{ backgroundColor: '#091E420F' }}>
-                    <AcceptButton onClick={handleCloseWithoutSave}>종료</AcceptButton>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
+
+                        <TitleEdit>
+                            <div>
+                                <IconImg src={calendarImg}></IconImg>Planning period
+                            </div>
+                        </TitleEdit>
+
+                        <FlexContainer>
+                            <div>
+                                <IconImg src={calendarImg}></IconImg>
+                                <_Span>Start Date</_Span>
+                                <div>
+                                    <DatePicker selected={startDate} dateFormat="yyyy-MM-dd" />
+                                </div>
+                            </div>
+                            <div>
+                                <IconImg src={calendarImg}></IconImg> <_Span>End Date</_Span>
+                                <div>
+                                    <DatePicker selected={startDate} dateFormat="yyyy-MM-dd" />
+                                </div>
+                            </div>
+                        </FlexContainer>
+                    </Modal.Body>
+                    <Modal.Footer style={{ backgroundColor: '#091E420F' }}>
+                        <AcceptButton onClick={handleCloseWithoutSave}>종료</AcceptButton>
+                    </Modal.Footer>
+                </Modal>
+            </>
+        );
+    }
 }

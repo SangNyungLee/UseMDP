@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Nav, Navbar, Container, Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 export default function FileInputComponent({ setState }) {
     const fileInputRef = useRef();
@@ -20,8 +20,8 @@ export default function FileInputComponent({ setState }) {
 
     return (
         <>
-            <Button onClick={e =>handleButtonClick(e)} className="mx-2" variant="success">
-                File
+            <Button onClick={e =>handleButtonClick(e)} variant="outline-success" size="lg" className="mx-2">
+                불러오기
             </Button>
             <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
         </>

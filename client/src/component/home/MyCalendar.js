@@ -9,19 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { plannerListActions } from "../../store/plannerList";
 import MDPModal from "../modal/MDPModal";
 
-import axios from "axios";
 import {
   eventStyleGetter,
   getNestedElement,
 } from "../../utils/CalendarController";
 import { getOneCard } from "../../utils/QuoteSetting";
 import { dateParsing } from "../../utils/DataParsing";
-import useDefaultCheck from "../../hook/useDefaultCheck";
 import CalendarSideBar from "./calendar/CalendarSideBar";
 import styled from "styled-components";
 import CalendarSelect from "./calendar/CalendarSelect";
-import { patchCard, postCard, postPlanner } from '../../utils/DataAxios';
-import { calendarActions } from '../../store/calendar';
+import { patchCard, postCard, postPlanner } from "../../utils/DataAxios";
+import { calendarActions } from "../../store/calendar";
 import { HOME } from "../../constant/constant";
 import { requestFail } from "../etc/SweetModal";
 
@@ -33,13 +31,13 @@ const _Container = styled.div`
 `;
 
 const _Toolbar = styled.div`
-  width: 55vw;
+  width: 50vw;
   margin-bottom: 10px;
-  @media screen and (max-width: 1300px) {
+  /* @media screen and (max-width: 1300px) {
     & {
       width: 65vw;
     }
-  }
+  } */
 `;
 
 const _ToGoButton = styled.div`
@@ -125,8 +123,14 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
         </div>
         <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", position:'relative' }}>
-        <CalendarSelect target={HOME}/>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          position: "relative",
+        }}
+      >
+        <CalendarSelect target={HOME} />
         <_SwitchButton onClick={(e) => switchToMonthView(e)}>
           Month
         </_SwitchButton>
@@ -148,8 +152,14 @@ export default function MyCalendar() {
 
   const plannerId = home[0];
   const cardStatusIndex = home[1] ? home[1] : 0;
-  const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'TODO';
-  
+  const cardStatus = cardStatusIndex
+    ? cardStatusIndex === 0
+      ? "TODO"
+      : cardStatusIndex === 1
+      ? "DOING"
+      : "DONE"
+    : "TODO";
+
   const [events, setEvents] = useState();
   const [selectedCard, setSelectedCard] = useState(getOneCard(0, "TODO"));
   const [visible, setVisible] = useState(false);
@@ -157,84 +167,84 @@ export default function MyCalendar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(plannerList.length > 0){
+    if (plannerList.length > 0) {
       const selectedEvents = getNestedElement(plannerList, home);
-      if (selectedEvents){
+      if (selectedEvents) {
         const parsedEvents = dateParsing(selectedEvents);
-        console.log("parsedEvents",parsedEvents)
+        console.log("parsedEvents", parsedEvents);
         setEvents(parsedEvents);
       } else {
-        const plannerId = plannerList[0].plannerId
-        dispatch(calendarActions.setHome([plannerId]))
+        const plannerId = plannerList[0].plannerId;
+        dispatch(calendarActions.setHome([plannerId]));
       }
     }
   }, [plannerList, home]);
 
   const plannerUpdateCard = async (data) => {
     const { start, end, event } = data;
-  
-    const cardId = event.cardId
-    const startDate = start.toISOString()
-    const endDate = end.toISOString()
-    const card = events.find( e => e.cardId === cardId )
+
+    const cardId = event.cardId;
+    const startDate = start.toISOString();
+    const endDate = end.toISOString();
+    const card = events.find((e) => e.cardId === cardId);
 
     const requestData = {
-        ...card,
-        startDate,
-        endDate,
-        plannerId,
-        checklists: [{ title: 'done', checked:0 }]
-    }
+      ...card,
+      startDate,
+      endDate,
+      plannerId,
+      checklists: [{ title: "done", checked: 0 }],
+    };
 
     dispatch(
       plannerListActions.updateCard({
-            cardId,
-            startDate,
-            endDate,
-          })
-          );
+        cardId,
+        startDate,
+        endDate,
+      })
+    );
 
     const res = await patchCard(requestData);
-    if(res.status !== 200) {
-      requestFail("카드 데이터 저장")
-    } 
+    if (res.status !== 200) {
+      requestFail("카드 데이터 저장");
+    }
   };
-    
+
   const onSelectSlot = async (slotInfo) => {
     const newEvent = getOneCard(events.length, cardStatus);
-      
-    delete newEvent.cardId
-    delete newEvent.startDate
-    delete newEvent.endDate
+
+    delete newEvent.cardId;
+    delete newEvent.startDate;
+    delete newEvent.endDate;
 
     const startDate = moment(slotInfo.start).toISOString();
     const endDate = moment(slotInfo.end).toISOString();
-        
+
     if (plannerList.length === 0) {
       const newPlannerData = {
-        creator: 'default creator',
-        title: 'default title',
-        thumbnail: '',
-        plannerAccess: 'PUBLIC',
-      }
+        creator: "default creator",
+        title: "default title",
+        thumbnail: "",
+        plannerAccess: "PUBLIC",
+      };
 
-      const result = await postPlanner(newPlannerData)
-      
-      if( result.status === 201 ){
-        const newPlannerId = result.data.data
-        
+      const result = await postPlanner(newPlannerData);
+
+      if (result.status === 201) {
+        const newPlannerId = result.data.data;
+
         const newCardData = {
           ...newEvent,
           plannerId: newPlannerId,
           startDate,
           endDate,
           cardStatus,
-          checklists:[{checked:0,title:'done'}]
-        }
-          
-        const newCardId = await postCard(newCardData)
+          checklists: [{ checked: 0, title: "done" }],
+        };
 
-        console.log("newCardId",newCardId)
+        const newCardId = await postCard(newCardData);
+
+        console.log("newCardId", newCardId);
 
         dispatch(
           plannerListActions.addPlanner({
@@ -248,20 +258,18 @@ export default function MyCalendar() {
                   startDate,
                   endDate,
                 },
-              ],[],[],
-            ]
+              ],
+              [],
+              [],
+            ],
           })
         );
-          
-        dispatch(
-          calendarActions.setHome([newPlannerId])
-        )
-        
+
+        dispatch(calendarActions.setHome([newPlannerId]));
       } else {
-        requestFail("플래너 id 생성")
+        requestFail("플래너 id 생성");
         return;
       }
-
     } else {
       const requestData = {
         ...newEvent,
@@ -269,9 +277,9 @@ export default function MyCalendar() {
         cardStatus,
         startDate,
         endDate,
-        checklists:[{checked:0,title:'done'}]
-      }
-    
+        checklists: [{ checked: 0, title: "done" }],
+      };
+
       const res = await postCard(requestData);
       dispatch(
         plannerListActions.addCard({
@@ -293,7 +301,7 @@ export default function MyCalendar() {
     setVisible(true);
   };
 
-  console.log("events",events)
+  console.log("events", events);
 
   return (
     <_Flex>

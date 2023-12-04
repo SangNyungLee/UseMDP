@@ -1,16 +1,9 @@
-import styled from 'styled-components';
-// import star from '../../constant/img/star.png';
-// import yellowStar from '../../constant/img/yellowStar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import DataDownload from '../../utils/DataDownload';
 import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch, useSelector } from 'react-redux';
-import useLocalStorage from 'use-local-storage';
 import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
 
@@ -158,7 +151,7 @@ export default function MyLoadMap(props) {
 				// 확인을 눌렀을 때의 로직
 				const inputValue = document.getElementById('swal-input1').value;
 				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
-				console.log(inputValue);
+				console.log('inputValue', inputValue);
 				// axios 요청을 보내고 모달을 닫음
 
 				const plannerData = {
@@ -176,6 +169,7 @@ export default function MyLoadMap(props) {
 				if(axiosResult.status !== 200){
 					requestFail("플래너 저장")
 				}
+        return { editedTitle: inputValue, editedPlannerAccess: radioValue };
 			},
 			confirmButtonText: '확인',
 			showCancelButton: true,
@@ -184,8 +178,9 @@ export default function MyLoadMap(props) {
 		if (result.isConfirmed) {
 			// 값이 없을 경우 빈 문자열로 설정
 			console.log('result', result);
-			setEditedTitle(result.value[0] || '');
-			setEditedPlannerAccess(result.value[1] || '');
+			const { editedTitle, editedPlannerAccess } = result.value;
+			setEditedTitle(editedTitle || '');
+			setEditedPlannerAccess(editedPlannerAccess || '');
 		}
 	};
 
@@ -210,7 +205,6 @@ export default function MyLoadMap(props) {
 		// </_Container>
 
 		<_CardContainer
-			text='white'
 			onClick={(e) => handleClick(e)}
 			onMouseOver={() => setIsHovering(true)}
 			onMouseLeave={() => setIsHovering(false)}>

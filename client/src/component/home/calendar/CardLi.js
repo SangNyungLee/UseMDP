@@ -1,4 +1,3 @@
-import { darken } from "polished";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -9,12 +8,10 @@ import { deleteCardById } from "../../../utils/DataAxios";
 const _CardLi = styled.li`
   display: flex;
   border-radius: 5px;
-  background-color: ${(props) =>
-    props.$focus ? darken(0.1, props.color) : props.color};
   padding: 10px;
   margin: 5px;
   align-items: center;
-  box-shadow: 1px 1px 1px 1px lightgrey;
+  background: none;
 
   @keyframes dropdown {
     0% {
@@ -28,23 +25,32 @@ const _CardLi = styled.li`
   animation: dropdown 0.5s ease;
 
   &:hover {
-    background-color: ${(props) => darken(0.1, props.color)};
+    cursor: pointer;
   }
 
-  &::before {
+  /* &::before {
     content: ">";
     margin-right: 8px;
     display: inline-block;
     transform-origin: center;
-  }
+  } */
 `;
 
 const _DelButton = styled.button`
   margin-left: 5px;
   border: none;
-  background: none;
+  background: #202a45;
+  border-radius: 50%;
   display: flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
   align-items: center;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #263075;
+  }
 `;
 
 const _CardTitle = styled.span`
@@ -52,6 +58,8 @@ const _CardTitle = styled.span`
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  margin-left: 7px;
+  color: white;
 `;
 
 export default function CardLi({ plannerId, cardId, cardStatus, title }) {
@@ -86,8 +94,11 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
       >
         <_CardTitle>{title}</_CardTitle>
         <_DelButton onClick={(e) => delCard(e, cardId)}>
-          <i class="material-icons" style={{ fontSize: "20px", color: "#ccc" }}>
-            delete
+          <i
+            class="material-icons"
+            style={{ fontSize: "15px", color: "white" }}
+          >
+            remove
           </i>
         </_DelButton>
       </_CardLi>

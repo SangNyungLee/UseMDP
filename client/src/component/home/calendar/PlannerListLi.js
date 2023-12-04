@@ -25,7 +25,7 @@ const _PlannerDiv = styled.div`
   border-radius: 5px;
   padding: 10px;
   margin: 5px;
-  box-shadow: 1px 1px 1px 1px lightgrey;
+  /* box-shadow: 1px 1px 1px 1px lightgrey; */
   align-items: center;
   background-color: white;
 
@@ -55,8 +55,17 @@ const _PlannerListUl = styled.ul`
 const _DelButton = styled.button`
   margin-left: 5px;
   border: none;
-  background: none;
+  background: #202a45;
+  border-radius: 50%;
   display: flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: #263075;
+  }
 `;
 
 export default function PlannerListLi({ planner }) {
@@ -89,7 +98,7 @@ export default function PlannerListLi({ planner }) {
   const delPlanner = async (e) => {
     e.stopPropagation();
     const res = await deleteMyPlanner(plannerId);
-    if(res.status === 200){
+    if (res.status === 200) {
       dispatch(plannerListActions.delPlanner(plannerId));
       if (plannerId === home[0] && plannerList.length > 1) {
         const otherPlanner = plannerList.find(
@@ -98,7 +107,7 @@ export default function PlannerListLi({ planner }) {
         dispatch(calendarActions.setHome([otherPlanner.plannerId]));
       }
     } else {
-      requestFail("플래너 삭제")
+      requestFail("플래너 삭제");
     }
   };
 
@@ -111,8 +120,11 @@ export default function PlannerListLi({ planner }) {
       >
         <_PlannerTitle>{title}</_PlannerTitle>
         <_DelButton onClick={(e) => delPlanner(e)}>
-          <i class="material-icons" style={{ fontSize: "20px", color: "#ccc" }}>
-            delete
+          <i
+            className="material-icons"
+            style={{ fontSize: "15px", color: "white" }}
+          >
+            remove
           </i>
         </_DelButton>
       </_PlannerDiv>

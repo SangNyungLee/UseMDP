@@ -1,5 +1,4 @@
-import axios, { AxiosError } from 'axios';
-import { axiosFail } from '../component/etc/SweetModal';
+import axios from 'axios';
 
 const LOCAL = 'local';
 const PROD = 'prod';
@@ -153,7 +152,7 @@ export async function postCopyPlanners(plannerId) {
 
 export async function patchCard(data) {
     try {
-        const res = axios({
+        const res = await axios({
             method: 'PATCH',
             url: getURL(`/api/patchCard`),
             data,

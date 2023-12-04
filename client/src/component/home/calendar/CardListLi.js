@@ -3,19 +3,16 @@ import { calendarActions } from "../../../store/calendar";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { darken } from "polished";
 import CardLi from "./CardLi";
 
 const _PlannerLi = styled.li`
   display: flex;
-  border-radius: 5px;
   color: white;
-  background-color: ${(props) =>
-    props.$focus ? darken(0.1, props.color) : props.color};
+  background: none;
   padding: 10px;
   margin: 5px;
-  box-shadow: 1px 1px 1px 1px lightgrey;
-
+  border-bottom: 2px solid #202a45;
+  border-bottom-color: ${({ $focus }) => ($focus ? "lightgray" : "#202a45")};
   @keyframes dropdown {
     0% {
       transform: translateY(-30%);
@@ -29,26 +26,27 @@ const _PlannerLi = styled.li`
 
   &:hover {
     cursor: pointer;
-    background-color: ${(props) =>
-      props.$focus ? darken(0.1, props.color) : props.color};
+    border-bottom: 2px solid lightgray;
   }
 
-  &::before {
+  /* &::before {
     content: ">";
     margin: 0px 8px;
     display: inline-block;
-    transform: ${({ $visible }) =>
-      $visible
-        ? "rotate(90deg)"
-        : "none"}; /* visible이 true일 때 회전, 그 외에는 회전하지 않음 */
+    transform: ${({ $visible }) => ($visible ? "rotate(90deg)" : "none")}; 
     transform-origin: center;
-  }
+  } */
 `;
 
 const _PlannerListUl = styled.ul`
   list-style-type: none;
   padding: 5px;
   margin-left: 10px;
+`;
+
+const _CardStatus = styled.div`
+  color: white;
+  margin-left: 7px;
 `;
 
 export default function CardListLi({ cardList, plannerId, cardStatus }) {
@@ -74,14 +72,14 @@ export default function CardListLi({ cardList, plannerId, cardStatus }) {
   return (
     <>
       <_PlannerLi
-        color={"#198754"}
+        color={"#ffffff"}
         $visible={visible ? 1 : undefined}
         onClick={(e) => cardListHandleClick(e)}
         $focus={cardListFocus ? 1 : undefined}
       >
-        <div>
+        <_CardStatus>
           {cardStatus === 0 ? "todo" : cardStatus === 1 ? "doing" : "done"}
-        </div>
+        </_CardStatus>
       </_PlannerLi>
       {visible && (
         <_PlannerListUl>

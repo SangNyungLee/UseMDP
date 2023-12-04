@@ -1,14 +1,7 @@
 import styled from 'styled-components';
-import star from '../../constant/img/star.png';
-import yellowStar from '../../constant/img/yellowStar.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
-import { calendarActions } from '../../store/calendar';
-import { plannerListActions } from '../../store/plannerList';
-import { useDispatch } from 'react-redux';
 import LikeButton from './LikeButton';
-import { postPlannerLike } from '../../utils/DataAxios';
 import skyImg from '../../constant/img/sky.jpg';
 import {
     _CardContainer,
@@ -29,47 +22,13 @@ import {
     _DownloadIcon,
     _EditIcon,
 } from '../../constant/css/styledComponents/__MyLoadMap';
-const _Container = styled.div`
-    margin-bottom: 20px;
-    width: fit-content;
-`;
-
-const _ImageStyle = styled.img`
-    width: 230px;
-    height: 150px;
-    border-radius: 5px;
-`;
-
-const _TitleStyle = styled.div`
-    font-size: 23px;
-    margin-left: 2px;
-`;
-
-const _DescriptionStyle = styled.span`
-    font-size: 17px;
-    color: #8f8f8f;
-    margin-left: 2px;
-`;
-
-const _Felx = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
-`;
-
-const _Star = styled.img`
-    width: 23px;
-    height: 23px;
-    margin-right: 2px;
-`;
 
 export default function LoadMap(props) {
     const navigate = useNavigate();
 
     const [isHovering, setIsHovering] = useState(false);
 
-    const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
+    const { plannerId, title, thumbnail} = props.datas;
     // console.log(props);
     const isLike = props.isLike;
 
