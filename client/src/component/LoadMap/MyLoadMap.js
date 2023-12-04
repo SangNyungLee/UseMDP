@@ -151,7 +151,7 @@ export default function MyLoadMap(props) {
 				// 확인을 눌렀을 때의 로직
 				const inputValue = document.getElementById('swal-input1').value;
 				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
-				console.log(inputValue);
+				console.log('inputValue', inputValue);
 				// axios 요청을 보내고 모달을 닫음
 				const axiosResult = await axios.patch(
 					'http://localhost:8080/api/patchPlanner',
@@ -168,6 +168,7 @@ export default function MyLoadMap(props) {
 					{ withCredentials: true }
 				);
 				console.log('?? : ', axiosResult);
+				return { editedTitle: inputValue, editedPlannerAccess: radioValue };
 			},
 			confirmButtonText: '확인',
 			showCancelButton: true,
@@ -176,8 +177,9 @@ export default function MyLoadMap(props) {
 		if (result.isConfirmed) {
 			// 값이 없을 경우 빈 문자열로 설정
 			console.log('result', result);
-			setEditedTitle(result.value[0] || '');
-			setEditedPlannerAccess(result.value[1] || '');
+			const { editedTitle, editedPlannerAccess } = result.value;
+			setEditedTitle(editedTitle || '');
+			setEditedPlannerAccess(editedPlannerAccess || '');
 		}
 	};
 
@@ -202,7 +204,6 @@ export default function MyLoadMap(props) {
 		// </_Container>
 
 		<_CardContainer
-			text='white'
 			onClick={(e) => handleClick(e)}
 			onMouseOver={() => setIsHovering(true)}
 			onMouseLeave={() => setIsHovering(false)}>
