@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../store/site";
 import { logoutModal, nyanCat, requestFail } from "./etc/SweetModal";
 import { postLogout } from "../utils/DataAxios";
+import { FaFileUpload } from "react-icons/fa";
 
 export default function RealHeader() {
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
@@ -61,8 +62,8 @@ export default function RealHeader() {
   const axiosLogout = async () => {
     try {
       const res = await postLogout();
-      if (res.status !== 200){
-        requestFail("로그아웃")
+      if (res.status !== 200) {
+        requestFail("로그아웃");
       }
     } catch (error) {
       console.log(error);
@@ -91,14 +92,17 @@ export default function RealHeader() {
           <img src="/images/logo.png" width="62px" height="40px" />
           {/* useMDP */}
         </div>
-        <div className="header-menu">
+        {/* <div className="header-menu">
           <a className="active">메뉴 1번</a>
           <a>메뉴 2번</a>
           <a>메뉴 3번</a>
-        </div>
+        </div> */}
         {isLoginRedux ? (
           <>
             <div className="user-settings">
+              <div className="uploadIcon user-menu ">
+                <FaFileUpload />
+              </div>
               <div className="dark-light">{/* <CiDark /> */}</div>
               <div className="user-menu" onClick={(e) => Logout(e)}>
                 로그아웃
