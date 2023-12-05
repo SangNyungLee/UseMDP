@@ -8,8 +8,9 @@ export const _CardContainer = styled(Card)`
     cursor: pointer;
     border-radius: 3px;
     padding: 0;
-    min-width: 240px;
-    min-height: 120px;
+    width: 100%;
+    min-width: 180px;
+    min-height: 90px;
     aspect-ratio: 2 / 1;
 `;
 
@@ -18,17 +19,13 @@ export const _CardHeader = styled(Card.Header)``;
 export const _CardFooter = styled(Card.Footer)``;
 
 export const _CardImg = styled(Card.Img)`
-    border-radius: 3px;
-    border: none;
-    width: 240px;
-    height: 120px;
+    min-width: 180px;
+    min-height: 90px;
 `;
 
 export const _CardImgOverlay = styled(Card.ImgOverlay)`
-    border-radius: 3px;
-    border: none;
-    width: 240px;
-    height: 120px;
+    min-width: 180px;
+    min-height: 90px;
     padding: 0;
 
     &:hover {
@@ -37,8 +34,6 @@ export const _CardImgOverlay = styled(Card.ImgOverlay)`
 `;
 
 export const _CardBody = styled(Card.Body)`
-    border-radius: 3px;
-    border: none;
     padding: 4% 0 0 5%;
 `;
 

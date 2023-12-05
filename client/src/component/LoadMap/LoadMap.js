@@ -28,7 +28,7 @@ export default function LoadMap(props) {
 
     const [isHovering, setIsHovering] = useState(false);
 
-    const { plannerId, title, thumbnail} = props.datas;
+    const { plannerId, title, thumbnail } = props.datas;
     // console.log(props);
     const isLike = props.isLike;
 
@@ -41,7 +41,7 @@ export default function LoadMap(props) {
     return (
         <>
             <_CardContainer text="white" onClick={(e) => handleClick(e)} onMouseOver={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <_CardImg src={thumbnail ? thumbnail : skyImg} alt="planner thumbnail" />
+                <_CardImg src={skyImg} alt="planner thumbnail" />
                 <_CardImgOverlay>
                     <_CardBody>
                         <_CardTitle as={'h5'}>{title}</_CardTitle>
