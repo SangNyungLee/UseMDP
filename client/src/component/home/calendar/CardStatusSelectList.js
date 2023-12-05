@@ -42,8 +42,7 @@ const _SelectArrow = styled.div`
   width: fit-content;
   margin-left: 10px;
   font-size: 10px;
-
-  &:hover {
+  color:black &:hover {
     cursor: pointer;
   }
 `;
@@ -55,6 +54,7 @@ const _CardStatusTitle = styled.div`
   width: 100%;
   margin-left: 10px;
   padding: 5px;
+  color: black;
 `;
 
 const _CardContainer = styled.div`

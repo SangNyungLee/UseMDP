@@ -22,12 +22,14 @@ import { patchCard, postCard, postPlanner } from "../../utils/DataAxios";
 import { calendarActions } from "../../store/calendar";
 import { HOME } from "../../constant/constant";
 import { requestFail } from "../etc/SweetModal";
+import "../../constant/css/calendar.css";
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const _Container = styled.div`
   display: flex;
+  margin-top: 90px;
 `;
 
 const _Toolbar = styled.div`
@@ -44,6 +46,7 @@ const _ToGoButton = styled.div`
   border: none;
   background: none;
   font-size: 20px;
+  color: white;
 
   &:hover {
     cursor: pointer;
@@ -53,6 +56,7 @@ const _ToGoButton = styled.div`
 const _Label = styled.span`
   font-size: 25px;
   font-weight: bolder;
+  color: white;
 `;
 
 const _SwitchButton = styled.button`
@@ -60,9 +64,11 @@ const _SwitchButton = styled.button`
   border: none;
   margin: 0px 5px;
   width: 70px;
+  color: white;
+  border-radius: 2px;
 
   &:hover {
-    background-color: #ccc;
+    background-color: #393e46;
   }
 
   @media screen and (max-width: 700px) {
@@ -84,8 +90,6 @@ const _Flex = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 90px;
-  background-color: #eff4f7;
 `;
 
 const _CalendarContainer = styled.div`
@@ -355,11 +359,6 @@ export default function MyCalendar() {
     <_Flex>
       <_Container>
         <CalendarSideBar />
-        {/* <div>
-        <button onClick={testLogin}>테스트 로그인</button>
-        <button onClick={createPlanner}>플래너 생성</button>
-        <button onClick={defaultPlanner}>기본 플래너 조회</button>
-      </div> */}
         <MDPModal
           selectedCard={selectedCard}
           modalStatus={visible}
