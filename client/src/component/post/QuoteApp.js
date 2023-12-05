@@ -6,7 +6,7 @@ import QuoteAppCalendar from './QuoteAppCalendar';
 import { plannerListActions } from '../../store/plannerList';
 import { calendarActions } from '../../store/calendar';
 import { siteActions } from '../../store/site';
-import { getOneCard, getOneDefaultPlanner } from '../../utils/QuoteSetting';
+import { getOneCard } from '../../utils/QuoteSetting';
 import { reorder, move } from '../../utils/QuoteController';
 import styled from 'styled-components';
 import QuoteHeader from './QuoteHeader';
@@ -14,9 +14,7 @@ import QuoteSpinner from './QuoteSpinner';
 import DroppableComponent from './DroppableComponent';
 import useLocalStorage from 'use-local-storage';
 import sky from '../../constant/img/sky.jpg';
-
-import axios from 'axios';
-import { getCardAxios, getPlannerBtoA, patchMoveCards, patchPlanner } from '../../utils/DataAxios';
+import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
 
 const _QuoteAppContainer = styled.div`

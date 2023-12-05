@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import star from '../../constant/img/star.png';
 import yellowStar from '../../constant/img/yellowStar.png';
-import axios from 'axios';
-import { useState } from 'react';
 import { deletePlannerUnlike, postPlannerLike } from '../../utils/DataAxios';
 import { useDispatch } from 'react-redux';
 import { likeActions } from '../../store/like';

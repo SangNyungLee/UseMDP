@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser,  FaArrowLeft } from 'react-icons/fa';
+import { FaTrello, FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser,  FaArrowLeft } from 'react-icons/fa';
 import '../../constant/css/customHeader2.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
 import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
-import { validatePlannerData, validateUnspecifiedPlannerData } from '../../utils/DataValidate';
+import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
 
 function CustomHeader2(props) {
   const navigate = useNavigate();

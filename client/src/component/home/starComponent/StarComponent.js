@@ -1,18 +1,10 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import base64Str from "../../../constant/ImageBase64";
-import { Spinner } from "react-bootstrap";
 import CustomList from "../customList/CustomList";
 import CustomListHiddable from "../customList/CustomListHiddable";
 import MyLoadMap from "../../LoadMap/MyLoadMap";
 import LoadMap from "../../LoadMap/LoadMap";
 import { useSelector, useDispatch } from "react-redux";
-import { plannerListActions } from "../../../store/plannerList";
-import {
-  getLikes,
-  getLikesAxios,
-  getPlannerByTrend,
-} from "../../../utils/DataAxios";
+import { getLikesAxios, getPlannerByTrend } from "../../../utils/DataAxios";
 import { likeActions } from "../../../store/like";
 import noResult from "../../../constant/img/searchFail.svg";
 import { _ComponentTitle } from "../../../constant/css/styledComponents/__HomeComponent";

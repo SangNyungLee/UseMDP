@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
 import DataDownload from '../../utils/DataDownload';
 import MDPModal from '../modal/MDPModal';
-import DataReaderModal from '../reader/DataReaderModal';
 import ThumbnailMaker from './RightClicker/ThumbnailMaker';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
 
 import CustomHeader2 from './CustomHeader2';
-import CustomHeader from './CustomHeader';
-import FileInputComponent from '../FileInputComponent';
-import FileImageInputComponent from '../FileImageInputComponent';
 import { patchPlanner } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
 
