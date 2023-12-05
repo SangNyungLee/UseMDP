@@ -177,11 +177,6 @@ export default function QuoteAppCalendar(props) {
         endDate,
       })
     );
-
-    const result = await patchCard(requestData);
-    if (result.status !== 200) {
-      requestFail("카드 데이터 저장");
-    }
   };
 
   const onSelectSlot = async (slotInfo) => {
@@ -189,8 +184,8 @@ export default function QuoteAppCalendar(props) {
 
     delete newEvent.cardId;
 
-    const startDate = moment(slotInfo.start).toDate().toISOString();
-    const endDate = moment(slotInfo.end).toDate().toISOString();
+    const startDate = new Date(slotInfo.start).toISOString();
+    const endDate = new Date(slotInfo.end).toISOString();
 
     const requestData = {
       ...newEvent,

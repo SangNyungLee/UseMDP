@@ -24,6 +24,7 @@ import { HOME } from "../../constant/constant";
 import { requestFail } from "../etc/SweetModal";
 import "../../constant/css/calendar.css";
 
+moment.locale('ko-KR');
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
@@ -272,8 +273,8 @@ export default function MyCalendar() {
     delete newEvent.startDate;
     delete newEvent.endDate;
 
-    const startDate = moment(slotInfo.start).toISOString();
-    const endDate = moment(slotInfo.end).toISOString();
+    const startDate = new Date(slotInfo.start).toISOString();
+    const endDate = new Date(slotInfo.end).toISOString();
 
     if (plannerList.length === 0) {
       const newPlannerData = {
