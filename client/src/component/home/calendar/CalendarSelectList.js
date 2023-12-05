@@ -17,6 +17,7 @@ const _SelectArrow = styled.div`
   width: fit-content;
   margin-left: 10px;
   font-size: 10px;
+  color: black;
 
   &:hover {
     cursor: pointer;
@@ -55,6 +56,7 @@ const _PlannerTitle = styled.div`
   width: 100%;
   margin-left: 10px;
   padding: 5px;
+  color: black;
 `;
 
 const _CardsContainer = styled.div`
