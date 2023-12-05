@@ -17,6 +17,7 @@ const _CardBody = styled.div`
 const DelDiv = styled.div`
     &:hover {
         cursor: pointer;
+        background-color: #ccc;
     }
 `;
 
@@ -26,8 +27,8 @@ export default function QuoteCard({ card, deleteCard, cardIndex }) {
             <_CardHeader color={card.coverColor} />
             <_CardBody>
                 {card.title}
-                <DelDiv>
-                    <img style={{ margin: '3px' }} onClick={(e) => deleteCard(e, cardIndex, card)} src={trash} alt="trashicon" />
+                <DelDiv onClick={(e) => deleteCard(e, cardIndex, card)}>
+                    <img style={{ margin: '3px' }} src={trash} alt="trashicon" />
                 </DelDiv>
             </_CardBody>
         </>

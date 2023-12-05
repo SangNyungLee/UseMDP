@@ -18,6 +18,14 @@ const DivButton = styled.div`
     }
 `;
 
+const _CardListContainer = styled.div`
+    max-height: 70vh;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`
+
 export default function DroppableComponent(props) {
     const isMobile = useMediaQuery({
         query: '(max-width: 768px)',
@@ -107,16 +115,18 @@ export default function DroppableComponent(props) {
                     <>
                         <div {...droppableComponentRegister(provided, snapshot)}>
                             <CardListHeader pid={plannerId} index={provided.droppableProps['data-rbd-droppable-id']}></CardListHeader>
-                            {cardList.map((card, id) => (
-                                <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
-                                    {(provided, snapshot) => (
-                                        <div {...draggableComponentRegister(provided, snapshot, id)}>
-                                            <QuoteCard card={card} deleteCard={deleteCard} cardIndex={id} />
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
+                            <_CardListContainer>
+                                {cardList.map((card, id) => (
+                                    <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
+                                        {(provided, snapshot) => (
+                                            <div {...draggableComponentRegister(provided, snapshot, id)}>
+                                                <QuoteCard card={card} deleteCard={deleteCard} cardIndex={id} />
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </_CardListContainer>
                             <DivButton onClick={addCard}>+ Add new item</DivButton>
                         </div>
                     </>
