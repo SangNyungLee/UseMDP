@@ -503,6 +503,7 @@ public class PlannerService {
                         .likePlanner(planner.getLikePlanner()+1)
                         .isDefault(planner.getIsDefault())
                         .memberEntity(planner.getMemberEntity())
+                        .createdAt(planner.getCreatedAt())
                         .build();
                 plannerRepository.save(updatePlanner);
             }
@@ -529,6 +530,7 @@ public class PlannerService {
                     .likePlanner(planner.getLikePlanner()-1)
                     .isDefault(planner.getIsDefault())
                     .memberEntity(planner.getMemberEntity())
+                    .createdAt(planner.getCreatedAt())
                     .build();
             plannerRepository.save(updatePlanner);
         }
