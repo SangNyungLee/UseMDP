@@ -9,11 +9,12 @@ import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
 import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
+import Swal from 'sweetalert2';
 function CustomHeader2(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plannerInfo = props.plannerInfo;
-
+    const [tags2, setTags] = useState([]);
     const titleRef = useRef();
 
     useEffect(() => {
@@ -123,15 +124,26 @@ function CustomHeader2(props) {
         }
     }, [readFile]);
 
-    const readPlannerData = async (data, specified) => {
-        const result = await readPlanner(data, specified);
-        console.log('read planner result', result);
-        if (result) {
-            dispatch(plannerListActions.addPlanner(result));
-        } else {
-            requestFail('데이터');
-        }
-    };
+    // useEffect(() => {
+    //     async function getTag() {
+    //         const result = await getTags();
+    //         if (result.status === 200) {
+    //             console.log('태그 데이터 받아온 결과 : ', result.data);
+    //             setTags(result.data.data);
+    //         } else {
+    //             requestFail('태그 불러오기');
+    //         }
+    //     }
+    // }, []);
+    // const readPlannerData = async (data, specified) => {
+    //     const result = await readPlanner(data, specified);
+    //     console.log('read planner result', result);
+    //     if (result) {
+    //         dispatch(plannerListActions.addPlanner(result));
+    //     } else {
+    //         requestFail('데이터');
+    //     }
+    // };
 
     const resetFileInput = () => {
         const currentFileInput = fileInputRef.current;
@@ -147,6 +159,41 @@ function CustomHeader2(props) {
         }
 
         fileInputRef.current = newFileInput;
+    };
+
+    const setTagSelector = async (e) => {
+        // SweetAlert을 이용하여 입력 폼을 보여줌
+        e.stopPropagation();
+        const result = await Swal.fire({
+            title: '플래너 생성',
+            html: '<input id="swal-input1" class="swal2-input" placeholder="제목">' + '<input id="swal-input2" class="swal2-input" placeholder="작성자">',
+            input: 'radio',
+            inputOptions: {
+                PUBLIC: 'Public',
+                PRIVATE: 'Private',
+            },
+            inputValidator: (value) => {
+                if (!value) {
+                    return '공개범위를 선택하세요.';
+                }
+            },
+            confirmButtonText: '확인',
+            showCancelButton: true,
+        });
+
+        if (result.isConfirmed) {
+            // 입력값을 가져와서 상태 업데이트
+            const titleInput = Swal.getPopup().querySelector('#swal-input1').value;
+            const creatorInput = Swal.getPopup().querySelector('#swal-input2').value;
+            const plannerAccessInput = result.value;
+            console.log('title', titleInput, creatorInput, plannerAccessInput);
+            setEditedTitle(titleInput);
+            setEditedCreator(creatorInput);
+            setEditedPlannerAccess(plannerAccessInput);
+
+            // 확인 버튼 클릭 시 플래너 생성 함수 호출
+            handleSaveChanges(titleInput, creatorInput, plannerAccessInput);
+        }
     };
 
     return (

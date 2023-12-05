@@ -2,8 +2,6 @@ import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import CustomList from '../customList/CustomList';
-import LoadMap from '../../LoadMap/LoadMap';
 import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
