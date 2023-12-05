@@ -7,11 +7,13 @@ export const _CardContainer = styled(Card)`
     border: none;
     cursor: pointer;
     border-radius: 3px;
-    padding: 0;
-    width: 100%;
-    min-width: 180px;
-    min-height: 90px;
-    aspect-ratio: 2 / 1;
+    width: 240px;
+    height: 120px;
+    background-color: grey;
+    margin: 5%;
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 export const _CardHeader = styled(Card.Header)``;
@@ -19,13 +21,13 @@ export const _CardHeader = styled(Card.Header)``;
 export const _CardFooter = styled(Card.Footer)``;
 
 export const _CardImg = styled(Card.Img)`
-    min-width: 180px;
-    min-height: 90px;
+    width: 240px;
+    height: 120px;
 `;
 
 export const _CardImgOverlay = styled(Card.ImgOverlay)`
-    min-width: 180px;
-    min-height: 90px;
+    width: 240px;
+    height: 120px;
     padding: 0;
 
     &:hover {

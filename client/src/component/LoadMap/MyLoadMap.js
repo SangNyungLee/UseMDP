@@ -32,7 +32,6 @@ import { requestFail } from '../etc/SweetModal';
 
 export default function MyLoadMap(props) {
     const dispatch = useDispatch();
-    console.log('MyLoadMap props.datas', props.datas);
     const state = useSelector((state) => state.plannerList);
     const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
     // console.log(props);

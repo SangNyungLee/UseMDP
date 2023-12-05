@@ -2,9 +2,7 @@ import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import CustomList from '../customList/CustomList';
-import LoadMap from '../../LoadMap/LoadMap';
-import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
+import { getLikesAxios, getPlannerByTrend, getPlanners, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
 import { useDispatch } from 'react-redux';
@@ -64,7 +62,7 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await getPlannerByTrend();
+                const response = await getPlanners();
                 console.log('res', response);
                 if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
@@ -121,9 +119,6 @@ export default function SearchComponent() {
                 setTitle(Title);
                 console.log('uniqueTitles : ', Author);
             }
-
-            // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
-            // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
         getLike();
@@ -138,7 +133,8 @@ export default function SearchComponent() {
         // 버튼 클릭 시, option에 따라 데이터 필터링
         e.stopPropagation();
         if (option.value === 'stack') {
-            setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.title.includes(tag.value))));
+            console.log('clicked', datas);
+            setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.taglist.includes(tag.value))));
         } else if (option.value === 'author') {
             setFilteredDatas(datas.filter((item) => selectTag.some((author) => item.creator.includes(author.value))));
         } else if (option.value === 'title') {
