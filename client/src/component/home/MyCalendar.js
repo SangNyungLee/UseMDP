@@ -320,6 +320,11 @@ export default function MyCalendar() {
               [],
               [],
             ],
+            taglist: [{
+              title: "DEFAULT",
+              valuer: "DEFAULT",
+              thumbnail: "/svg/css.svg"
+            }]
           })
         );
 
