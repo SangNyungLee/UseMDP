@@ -46,12 +46,33 @@ export default function FileInputComponent({ children, setState }) {
     };
 
     const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
         const reader = new FileReader();
         reader.onload = (e) => {
             const fileContents = e.target.result;
             setState ? setState(fileContents) : setReadData(fileContents);
         };
-        reader.readAsText(event.target.files[0]);
+        reader.readAsText(file);
+        resetFileInput();
+    };
+
+    const resetFileInput = () => {
+        const currentFileInput = fileInputRef.current;
+
+        const newFileInput = document.createElement('input');
+        newFileInput.type = 'file';
+        newFileInput.style.display = 'none';
+
+        newFileInput.addEventListener('change', handleFileChange);
+
+        if (currentFileInput.parentNode) {
+            currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
+        }
+
+        fileInputRef.current = newFileInput;
     };
 
     return (
