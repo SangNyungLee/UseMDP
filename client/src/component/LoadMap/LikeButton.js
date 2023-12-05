@@ -46,13 +46,11 @@ const LikeButton = (props) => {
     const isLike = likes.includes(plannerId);
     const dispatch = useDispatch();
 
-    console.log('like button', isLike, likes);
-
     const isStarCilckLike = async (e) => {
         e.stopPropagation();
-        const isLiked = likes.some( like => like === plannerId );
-        if(isLiked){
-            requestFail("좋아요 추가","이미 존재하는 좋아요");
+        const isLiked = likes.some((like) => like === plannerId);
+        if (isLiked) {
+            requestFail('좋아요 추가', '이미 존재하는 좋아요');
             return;
         } else {
             dispatch(likeActions.addPlannerLike(plannerId));
@@ -66,11 +64,11 @@ const LikeButton = (props) => {
 
     const isStarCilckUnLike = async (e) => {
         e.stopPropagation();
-        const isLiked = likes.some( like => like === plannerId );
-        console.log("likes",likes)
-        console.log("plannerId",plannerId)
-        console.log("isLiked",isLiked)
-        if(isLiked){
+        const isLiked = likes.some((like) => like === plannerId);
+        console.log('likes', likes);
+        console.log('plannerId', plannerId);
+        console.log('isLiked', isLiked);
+        if (isLiked) {
             dispatch(likeActions.delPlannerLike(plannerId));
             const res = await deletePlannerUnlike(plannerId);
             if (res.status !== 200) {
@@ -78,7 +76,7 @@ const LikeButton = (props) => {
             }
             return;
         } else {
-            requestFail("좋아요 취소","좋아요가 되어있지 않아요");
+            requestFail('좋아요 취소', '좋아요가 되어있지 않아요');
             return;
         }
     };

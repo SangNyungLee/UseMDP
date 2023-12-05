@@ -8,7 +8,7 @@ import { requestFail } from './etc/SweetModal';
 import { useSelector } from 'react-redux';
 import { calendarActions } from '../store/calendar';
 
-export default function FileInputComponent({ children }) {
+export default function FileInputComponent({ children, setState }) {
     const fileInputRef = useRef();
     const plannerList = useSelector( state => state.plannerList)
     const [ readData, setReadData ] = useState();
@@ -49,7 +49,7 @@ export default function FileInputComponent({ children }) {
         const reader = new FileReader();
         reader.onload = (e) => {
             const fileContents = e.target.result;
-            setReadData(fileContents);
+            setState ? setState(fileContents) : setReadData(fileContents);
         };
         reader.readAsText(event.target.files[0]);
     };
