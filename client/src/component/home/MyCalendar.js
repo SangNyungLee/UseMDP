@@ -29,7 +29,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 const _Container = styled.div`
   display: flex;
-  margin-top: 90px;
+  margin-top: 40px;
 `;
 
 const _Toolbar = styled.div`
@@ -53,7 +53,6 @@ const _ToGoButton = styled.div`
 
   &:hover {
     cursor: pointer;
-    background-color: #ccc;
   }
 `;
 
