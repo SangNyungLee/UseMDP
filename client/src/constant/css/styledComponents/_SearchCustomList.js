@@ -17,4 +17,5 @@ export const _Row = styled(Row)`
 export const _Col = styled(Col)`
     display: flex;
     justify-content: center;
+    margin-bottom: 25px;
 `;
