@@ -1,40 +1,36 @@
 // import DefaultLoadMap from '../component/home/DefaultLoadMap';
 // import Header from "../Header";
-import HomeHeader from "../../home/HomeHeader";
-import { useState } from "react";
-import DefaultComponent from "./DefaultComponent";
-import StarComponent from "../../home/starComponent/StarComponent";
-import MyCalendar from "../../home/MyCalendar";
-import styled from "styled-components";
-import SearchComponent from "../../home/searchComponent/SearchComponent";
-import HomeComponent from "../../home/HomeComponent";
-import { NavLink, useNavigate } from "react-router-dom";
+import HomeHeader from '../../home/HomeHeader';
+import { useState } from 'react';
+import DefaultComponent from './DefaultComponent';
+import StarComponent from '../../home/starComponent/StarComponent';
+import MyCalendar from '../../home/MyCalendar';
+import styled from 'styled-components';
+import SearchComponent from '../../home/searchComponent/SearchComponent';
+import HomeComponent from '../../home/HomeComponent';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 // 서타일
 
-
 import { _RenderComponent } from '../../../constant/css/styledComponents/__DefaultLoadMap';
 
-import {
-  PiMapTrifoldFill,
-  PiFireBold,
-  PiCalendarBlankFill,
-} from "react-icons/pi";
-import { FaUserCircle } from "react-icons/fa";
-import { IoSearch } from "react-icons/io5";
+import { PiMapTrifoldFill, PiFireBold, PiCalendarBlankFill } from 'react-icons/pi';
+import { FaUserCircle } from 'react-icons/fa';
+import { IoSearch } from 'react-icons/io5';
 
 // 아이콘 서타일
-import { HiTable, HiUser, HiViewBoards } from "react-icons/hi";
-import { getMyPlanner } from "../../../utils/DataAxios";
+import { HiTable, HiUser, HiViewBoards } from 'react-icons/hi';
+import { getMyPlanner } from '../../../utils/DataAxios';
 
 //사이드바 css
-import "../../../constant/css/sidebar.css";
+import '../../../constant/css/sidebar.css';
 
 const iconStyle = {
-  fontSize: "2rem",
+	fontSize: '2rem',
 };
 
 export default function DefaultLoadMap() {
+	const navigate = useNavigate();
 	const [menuNumber, setMenuNumber] = useState(1);
 	const [isActive, setIsActive] = useState(false);
 	const renderComponent = () => {
@@ -58,12 +54,17 @@ export default function DefaultLoadMap() {
 		setMenuNumber(number);
 	};
 
+	const clickLogo = (e) => {
+		e.stopPropagation();
+		navigate('/');
+	};
+
 	return (
 		<>
 			<aside className='sidebar'>
 				<nav className='menu'>
-					<div className='side-logo'>
-						<img src='/images/logo.png' className='side-logo-img' />
+					<div className='side-logo' onClick={(e) => clickLogo(e)}>
+						<img src='/images/004.png' className='side-logo-img' />
 					</div>
 					<a
 						className={`menu__item ${menuNumber === 1 ? 'menu__item--active' : ''}`}
@@ -110,5 +111,3 @@ export default function DefaultLoadMap() {
 		</>
 	);
 }
-
-

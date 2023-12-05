@@ -8,46 +8,42 @@ import DefaultLoadMap from '../component/LoadMap/defaultLoadMap/DefaultLoadMap';
 import Redirection from '../pages/Redirection';
 import PlannerNoEditPage from '../pages/PlannerNoEdit';
 const Router = createBrowserRouter([
-    {
-        path: '/',
-        element: <App />,
-        children: [
-            {
-                index: true,
-                element: <WelcomePage />,
-            },
-            {
-                path: 'mypage',
-                element: <MyPage />,
-            },
-        ],
-    },
-    {
-        path: '/planner',
-        element: <PlannerPage />,
-    },
-    {
-        path: '/plannerNoEdit',
-        element: <PlannerNoEditPage />,
-    },
-    {
-        path: 'home',
-        element: <HomePage />,
-        children: [
-            {
-                index: true,
-                element: <DefaultLoadMap />,
-            },
-        ],
-    },
-    {
-        path: '/google/callback',
-        element: <Redirection provider="google" />,
-    },
-    {
-        path: '/github/callback',
-        element: <Redirection provider="github" />,
-    },
+	{
+		path: '/',
+		element: <App />,
+		children: [
+			{
+				index: true,
+				element: <WelcomePage />,
+			},
+		],
+	},
+	{
+		path: '/planner',
+		element: <PlannerPage />,
+	},
+	{
+		path: '/plannerNoEdit',
+		element: <PlannerNoEditPage />,
+	},
+	{
+		path: 'home',
+		element: <HomePage />,
+		children: [
+			{
+				index: true,
+				element: <DefaultLoadMap />,
+			},
+		],
+	},
+	{
+		path: '/google/callback',
+		element: <Redirection provider='google' />,
+	},
+	{
+		path: '/github/callback',
+		element: <Redirection provider='github' />,
+	},
 ]);
 
 export default Router;
