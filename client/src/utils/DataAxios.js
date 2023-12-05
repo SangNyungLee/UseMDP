@@ -231,14 +231,14 @@ export async function deleteMyPlanner(plannerId) {
 }
 
 export async function patchPlanner(plannerData) {
-    const { taglist } = plannerData
+    const { taglist } = plannerData;
     try {
         const res = await axios({
             method: 'PATCH',
             url: getURL(`/api/patchPlanner`),
             data: {
                 ...plannerData,
-                taglist: taglist ? taglist : []
+                taglist: taglist ? taglist : [],
             },
             withCredentials: true,
         });
@@ -338,6 +338,21 @@ export async function postPlanner(data) {
             withCredentials: true,
         });
         console.log('post planner', res);
+        return res;
+    } catch (error) {
+        console.log('error', error);
+        return error;
+    }
+}
+
+export async function deleteTagList(data) {
+    try {
+        const res = await axios({
+            method: 'delete',
+            url: getURL(`/api/deleteTaglist/${data}`),
+            withCredentials: true,
+        });
+        console.log('del planner', res);
         return res;
     } catch (error) {
         console.log('error', error);

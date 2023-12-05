@@ -4,7 +4,7 @@ import DataDownload from '../../utils/DataDownload';
 import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
+import { deleteCardById, getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
 
 //Styled Components with React Bootstrap
@@ -181,6 +181,14 @@ export default function MyLoadMap(props) {
     };
 
     const [isHovering, setIsHovering] = useState(false);
+
+    const deleteThisPlanner = async () => {
+        const result = await deleteCardById(plannerId);
+        if (result.status === 200) {
+            dispatch(plannerListActions.delPlanner(plannerId));
+            requestFail('플래너 삭제');
+        }
+    };
 
     return (
         <>
