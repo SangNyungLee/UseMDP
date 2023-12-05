@@ -36,6 +36,7 @@ const _ToGoButton = styled.div`
   background: none;
   font-size: 20px;
   width: 30px;
+  height: 30px;
   text-align: center;
   border-radius: 50%;
 

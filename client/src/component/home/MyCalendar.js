@@ -24,7 +24,7 @@ import { HOME } from "../../constant/constant";
 import { requestFail } from "../etc/SweetModal";
 import "../../constant/css/calendar.css";
 
-moment.locale('ko-KR');
+moment.locale("ko-KR");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
@@ -48,12 +48,14 @@ const _ToGoButton = styled.div`
   background: none;
   font-size: 20px;
   width: 30px;
+  height: 30px;
   text-align: center;
   border-radius: 50%;
   color: white;
 
   &:hover {
     cursor: pointer;
+    background-color: #393e46;
   }
 `;
 
