@@ -106,8 +106,6 @@ export default function MyLoadMap(props) {
     const handleSaveChanges = async (e) => {
         e.stopPropagation();
 
-        //업데이트하고, axios보내줘야한다.
-
         const plannerData = {
             plannerId,
             creator,
@@ -186,71 +184,32 @@ export default function MyLoadMap(props) {
     const [isHovering, setIsHovering] = useState(false);
 
     return (
-        // <_Container onClick={(e) => handleClick(e)}>
-        // 	<_ImageStyle src={thumbnail}></_ImageStyle>
-        // 	<div>
-        // 		<_Felx>
-        // 			<_TitleStyle>{editedTitle}</_TitleStyle>
-        // 			<_Share onClick={(e) => handleShareIcon(e)}>
-        // 				<StyledShareIcon className='material-icons'>share</StyledShareIcon>
-        // 			</_Share>
-        // 		</_Felx>
-        // 		<_Felx>
-        // 			<_isOpen>{editedPlannerAccess}</_isOpen>
-        // 			{/* <_Button onClick={(e) => changeDataByButton(e)}>수정</_Button> */}
-        // 			<_Button onClick={(e) => sweetModal(e)}>Test</_Button>
-        // 		</_Felx>
-        // 	</div>
-        // </_Container>
-
-        <_CardContainer onClick={(e) => handleClick(e)} onMouseOver={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <_CardImg src={thumbnail || thumbnail != 'string' ? thumbnail : skyImg} alt="planner thumbnail" />
-            <_CardImgOverlay>
-                <_CardBody>
-                    <_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
-                    {isHovering ? (
-                        <>
-                            <_CardDownloadButton onClick={(e) => handleShareIcon(e)} size="sm" variant="none">
-                                <_DownloadIcon />
-                            </_CardDownloadButton>
-                            <_CardEditButton onClick={(e) => sweetModal(e)} size="sm" variant="none">
-                                <_EditIcon />
-                            </_CardEditButton>
-                        </>
-                    ) : null}
-                    {editedPlannerAccess === 'PRIVATE' ? (
-                        <_IconContainer>
-                            <_LockedIcon />
-                        </_IconContainer>
-                    ) : null}
-                </_CardBody>
-            </_CardImgOverlay>
-        </_CardContainer>
+        <>
+            {props.datas ? (
+                <_CardContainer onClick={(e) => handleClick(e)} onMouseOver={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                    <_CardImg src={thumbnail ? thumbnail : skyImg} alt="planner thumbnail" />
+                    <_CardImgOverlay>
+                        <_CardBody>
+                            <_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
+                            {isHovering ? (
+                                <>
+                                    <_CardDownloadButton onClick={(e) => handleShareIcon(e)} size="sm" variant="none">
+                                        <_DownloadIcon />
+                                    </_CardDownloadButton>
+                                    <_CardEditButton onClick={(e) => sweetModal(e)} size="sm" variant="none">
+                                        <_EditIcon />
+                                    </_CardEditButton>
+                                </>
+                            ) : null}
+                            {editedPlannerAccess === 'PRIVATE' ? (
+                                <_IconContainer>
+                                    <_LockedIcon />
+                                </_IconContainer>
+                            ) : null}
+                        </_CardBody>
+                    </_CardImgOverlay>
+                </_CardContainer>
+            ) : null}
+        </>
     );
 }
-
-{
-    /* <Modal show={showModal} onHide={handleCloseModal}>
-<Modal.Header>
-    <Modal.Title>Edit Planner</Modal.Title>
-</Modal.Header>
-<Modal.Body>
-    <label>Title:</label>
-    <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-    <br></br>
-    <label>Planner Access:</label>
-
-    <input type="text" value={editedPlannerAccess} onChange={(e) => setEditedPlannerAccess(e.target.value)} />
-    {/* <label>Description:</label>
-    <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)}></textarea> */
-}
-// </Modal.Body>
-// <Modal.Footer>
-//     <Button variant="secondary" onClick={(e) => handleCloseModal(e)}>
-//         Close
-//     </Button>
-//     <Button variant="primary" onClick={(e) => handleSaveChanges(e)}>
-//         Save Changes
-//     </Button>
-// </Modal.Footer>
-// </Modal> */}
