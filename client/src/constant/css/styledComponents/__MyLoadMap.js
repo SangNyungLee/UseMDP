@@ -17,11 +17,15 @@ export const _CardHeader = styled(Card.Header)``;
 export const _CardFooter = styled(Card.Footer)``;
 
 export const _CardImg = styled(Card.Img)`
+	border-radius: 3px;
+	border: none;
 	width: 240px;
 	height: 120px;
 `;
 
 export const _CardImgOverlay = styled(Card.ImgOverlay)`
+	border-radius: 3px;
+	border: none;
 	width: 240px;
 	height: 120px;
 	padding: 0;
@@ -32,6 +36,8 @@ export const _CardImgOverlay = styled(Card.ImgOverlay)`
 `;
 
 export const _CardBody = styled(Card.Body)`
+	border-radius: 3px;
+	border: none;
 	padding: 4% 0 0 5%;
 `;
 

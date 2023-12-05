@@ -5,8 +5,6 @@ export const _Container = styled(Container)`
 	padding: 0;
 	margin: 0;
 	width: 100%;
-	display: flex;
-	justify-content: center;
 `;
 export const _Row = styled(Row)`
 	width: 100%;

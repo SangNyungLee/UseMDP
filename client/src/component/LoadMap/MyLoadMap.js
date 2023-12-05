@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DataDownload from '../../utils/DataDownload';
@@ -44,7 +45,7 @@ export default function MyLoadMap(props) {
 		if (!showModal) {
 			const btoaId = btoa(plannerId);
 			const result = await getPlannerBtoA(btoaId);
-			if(result.status === 200){
+			if (result.status === 200) {
 				console.log('click', result.data);
 				const cardList = result.data.data.cards;
 				const cards = [[], [], []];
@@ -59,10 +60,10 @@ export default function MyLoadMap(props) {
 				}
 				dispatch(calendarActions.setQuote([plannerId]));
 				dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-	
+
 				navigate(`/planner?id=${btoaId}`);
 			} else {
-				requestFail("플래너 불러오기")
+				requestFail('플래너 불러오기');
 			}
 		}
 	};
@@ -118,13 +119,13 @@ export default function MyLoadMap(props) {
 			isDefault,
 			plannerAccess: editedPlannerAccess,
 			taglist: [],
-		}
+		};
 
-		const result = await patchPlanner(plannerData)
-		if(result.status === 200){
+		const result = await patchPlanner(plannerData);
+		if (result.status === 200) {
 			setShowModal(false);
 		} else {
-			requestFail("플래너 저장")
+			requestFail('플래너 저장');
 		}
 	};
 	//sweetAlert창
@@ -163,13 +164,13 @@ export default function MyLoadMap(props) {
 					isDefault,
 					plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
 					taglist: [],
-				}
+				};
 
-				const axiosResult = await patchPlanner(plannerData)
-				if(axiosResult.status !== 200){
-					requestFail("플래너 저장")
+				const axiosResult = await patchPlanner(plannerData);
+				if (axiosResult.status !== 200) {
+					requestFail('플래너 저장');
 				}
-        return { editedTitle: inputValue, editedPlannerAccess: radioValue };
+				return { editedTitle: inputValue, editedPlannerAccess: radioValue };
 			},
 			confirmButtonText: '확인',
 			showCancelButton: true,
@@ -187,74 +188,35 @@ export default function MyLoadMap(props) {
 	const [isHovering, setIsHovering] = useState(false);
 
 	return (
-		// <_Container onClick={(e) => handleClick(e)}>
-		// 	<_ImageStyle src={thumbnail}></_ImageStyle>
-		// 	<div>
-		// 		<_Felx>
-		// 			<_TitleStyle>{editedTitle}</_TitleStyle>
-		// 			<_Share onClick={(e) => handleShareIcon(e)}>
-		// 				<StyledShareIcon className='material-icons'>share</StyledShareIcon>
-		// 			</_Share>
-		// 		</_Felx>
-		// 		<_Felx>
-		// 			<_isOpen>{editedPlannerAccess}</_isOpen>
-		// 			{/* <_Button onClick={(e) => changeDataByButton(e)}>수정</_Button> */}
-		// 			<_Button onClick={(e) => sweetModal(e)}>Test</_Button>
-		// 		</_Felx>
-		// 	</div>
-		// </_Container>
-
-		<_CardContainer
-			onClick={(e) => handleClick(e)}
-			onMouseOver={() => setIsHovering(true)}
-			onMouseLeave={() => setIsHovering(false)}>
-			<_CardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
-			<_CardImgOverlay>
-				<_CardBody>
-					<_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
-					{isHovering ? (
-						<>
-							<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
-								<_DownloadIcon />
-							</_CardDownloadButton>
-							<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
-								<_EditIcon />
-							</_CardEditButton>
-						</>
-					) : null}
-					{editedPlannerAccess === 'PRIVATE' ? (
-						<_IconContainer>
-							<_LockedIcon />
-						</_IconContainer>
-					) : null}
-				</_CardBody>
-			</_CardImgOverlay>
-		</_CardContainer>
+		<>
+			{props.datas ? (
+				<_CardContainer
+					onClick={(e) => handleClick(e)}
+					onMouseOver={() => setIsHovering(true)}
+					onMouseLeave={() => setIsHovering(false)}>
+					<_CardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
+					<_CardImgOverlay>
+						<_CardBody>
+							<_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
+							{isHovering ? (
+								<>
+									<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
+										<_DownloadIcon />
+									</_CardDownloadButton>
+									<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
+										<_EditIcon />
+									</_CardEditButton>
+								</>
+							) : null}
+							{editedPlannerAccess === 'PRIVATE' ? (
+								<_IconContainer>
+									<_LockedIcon />
+								</_IconContainer>
+							) : null}
+						</_CardBody>
+					</_CardImgOverlay>
+				</_CardContainer>
+			) : null}
+		</>
 	);
 }
-
-{
-	/* <Modal show={showModal} onHide={handleCloseModal}>
-<Modal.Header>
-    <Modal.Title>Edit Planner</Modal.Title>
-</Modal.Header>
-<Modal.Body>
-    <label>Title:</label>
-    <input type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
-    <br></br>
-    <label>Planner Access:</label>
-
-    <input type="text" value={editedPlannerAccess} onChange={(e) => setEditedPlannerAccess(e.target.value)} />
-    {/* <label>Description:</label>
-    <textarea value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)}></textarea> */
-}
-// </Modal.Body>
-// <Modal.Footer>
-//     <Button variant="secondary" onClick={(e) => handleCloseModal(e)}>
-//         Close
-//     </Button>
-//     <Button variant="primary" onClick={(e) => handleSaveChanges(e)}>
-//         Save Changes
-//     </Button>
-// </Modal.Footer>
-// </Modal> */}

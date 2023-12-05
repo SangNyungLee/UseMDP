@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import DefaultComponent from "./DefaultComponent";
 import StarComponent from "../../home/starComponent/StarComponent";
@@ -10,8 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 import { _RenderComponent } from "../../../constant/css/styledComponents/__DefaultLoadMap";
 
+
 //사이드바 css
-import "../../../constant/css/sidebar.css";
+import '../../../constant/css/sidebar.css';
 
 export default function DefaultLoadMap() {
   const [menuNumber, setMenuNumber] = useState(1);

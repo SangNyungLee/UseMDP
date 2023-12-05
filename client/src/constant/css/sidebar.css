@@ -27,20 +27,19 @@
 	top: 0;
 	left: 0;
 	height: 100vh;
-	background-color: white;
+	background-color: #393e46;
 	box-shadow: 0px 20px 0px 0px rgba(0, 0, 0, 0.2);
 	padding: 0px;
 }
 .side-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 60px;
 }
 
 .side-logo:hover {
-  cursor: pointer;
-
+	cursor: pointer;
 }
 
 .side-logo-img {
@@ -100,13 +99,13 @@ main {
 /* COSMETIC STYLING */
 
 :root {
-  --red: #202a45;
+	--red: #00adb5;
 }
 
 body {
-  font-family: "Pretendard-Regular";
-  font-weight: 100;
-  color: #a8b2b9;
+	font-family: 'Pretendard-Regular';
+	font-weight: 100;
+	color: #eeeeee;
 }
 
 main {
@@ -133,7 +132,7 @@ main {
 	color: var(--red);
 }
 .menu__item--active .menu__text {
-	color: black;
+	color: #eeeeee;
 }
 
 .menu__item--active {
@@ -141,10 +140,11 @@ main {
 	box-shadow: inset 10px 0px 17px -13px var(--red);
 }
 .menu__item:hover {
-	color: black;
+	color: #eeeeee;
 }
 
 .menu__icon {
+	color: #eeeeee;
 	font-size: 1.3rem;
 }
 
@@ -181,6 +181,7 @@ main {
 		justify-content: flex-start;
 	}
 	.menu__text {
+		color: #eeeeee;
 		display: inline-block;
 	}
 	.avatar {
