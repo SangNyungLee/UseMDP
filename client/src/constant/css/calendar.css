@@ -1,4 +1,4 @@
-.rbc-calendar {
+.my-calendar {
   /* box-sizing: border-box;
   height: 100%;
   display: flex;
@@ -9,10 +9,10 @@
   color: white;
 }
 
-.rbc-today {
+.my-calendar .rbc-today {
   background-color: #00adb5;
 }
 
-.rbc-off-range-bg {
+.my-calendar .rbc-off-range-bg {
   background: #393e46;
 }

@@ -366,6 +366,7 @@ export default function MyCalendar() {
           plannerId={plannerId}
         />
         <DnDCalendar
+          className="my-calendar"
           defaultDate={moment().toDate()}
           defaultView="month"
           startAccessor="startDate"
