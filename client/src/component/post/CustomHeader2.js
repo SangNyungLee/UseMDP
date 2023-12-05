@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaTrello, FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft } from 'react-icons/fa';
+import { FaTrello, FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft, FaTags } from 'react-icons/fa';
 import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -9,12 +9,10 @@ import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
 import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
-
 function CustomHeader2(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plannerInfo = props.plannerInfo;
-    console.log('프롭스', props.plannerInfo);
 
     const titleRef = useRef();
 
@@ -134,7 +132,6 @@ function CustomHeader2(props) {
             requestFail('데이터');
         }
     };
-    const Addplanner = () => {};
 
     const resetFileInput = () => {
         const currentFileInput = fileInputRef.current;
@@ -167,9 +164,14 @@ function CustomHeader2(props) {
                 </div>
 
                 <div className="right-bar">
-                    <button onClick={homeNavigate} type="button" className="button-style-2">
-                        <FaArrowLeft style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
+                    <button onClick={homeNavigate} type="button" className="button-style-right">
+                        <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
+
+                    <button onClick={showTagSelector} type="button" className="button-style-right">
+                        <FaTags style={{ fontSize: '16px', color: 'white' }} />
+                    </button>
+
                     <button onClick={handleButtonClick} type="button" className="button-style-right">
                         <FaPlus style={{ fontSize: '16px', color: 'white' }} />
                         <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />

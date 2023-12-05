@@ -5,8 +5,6 @@ export const _Container = styled(Container)`
     padding: 0;
     margin: 0;
     width: 100%;
-    display: flex;
-    justify-content: center;
 `;
 export const _Row = styled(Row)`
     width: 100%;
@@ -17,5 +15,6 @@ export const _Row = styled(Row)`
 export const _Col = styled(Col)`
     display: flex;
     justify-content: center;
-    margin-bottom: 25px;
+    padding: 0;
+    margin: 0 0 4% 0;
 `;

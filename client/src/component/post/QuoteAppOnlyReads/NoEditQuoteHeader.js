@@ -5,17 +5,13 @@ import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../../store/plannerList';
 import NoEditMDPmodal from './NoEditMDPmodal';
 import { useNavigate } from 'react-router-dom';
-import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser } from 'react-icons/fa';
+import { FaTrello, FaArrowLeft, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser } from 'react-icons/fa';
 import { patchPlanner } from '../../../utils/DataAxios';
 
 export default function NoEditQuoteHeader(props) {
     const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo } = props;
-    const [plannerId, setPlannerId] = useState();
-    const [plannerTitle, setPlannerTitle] = useState();
-    const [readData, setReadData] = useState();
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     function handleThumbnailDownload() {
         console.log('download', thumnnailRef.current);
@@ -23,7 +19,7 @@ export default function NoEditQuoteHeader(props) {
     }
     const Addplanner = () => {};
     const handleDownLoad = () => {
-        DataDownload(plannerTitle, plannerList);
+        DataDownload(plannerInfo.title, plannerList);
     };
 
     const homeNavigate = () => {
@@ -36,7 +32,6 @@ export default function NoEditQuoteHeader(props) {
                     <div className="left-bar">
                         <button onClick={homeNavigate} type="button" className="button-style">
                             <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
-                            <span className="text-style">로고자리</span>
                         </button>
 
                         {/* <button type="button" className="button-style">
@@ -66,10 +61,12 @@ export default function NoEditQuoteHeader(props) {
                         </span>
                     </button>
 
-                    <button type="button" className="button-style-header">
+                    {/* <button type="button" className="button-style-header">
                         <FaStar style={{ fontSize: '12px', color: 'white' }} />
+                    </button> */}
+                    <button onClick={homeNavigate} type="button" className="button-style-2">
+                        <FaArrowLeft style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
                     </button>
-
                     <button type="button" className="button-style-header">
                         <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                         <span className="private-text">Private</span>
@@ -88,7 +85,7 @@ export default function NoEditQuoteHeader(props) {
                     </button>
                 </div>
             </div>
-            <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
+            <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
         </>
     );
 }
