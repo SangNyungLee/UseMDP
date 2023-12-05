@@ -6,7 +6,7 @@ import { HOME } from "../../../constant/constant";
 
 const _Container = styled.div`
   border-radius: 5px;
-  background-color: #202a45;
+  background-color: #393e46;
   height: 80vh;
   width: 240px;
   white-space: nowrap;
@@ -15,7 +15,7 @@ const _Container = styled.div`
   text-overflow: ellipsis;
   padding-top: 30px;
   margin: 0px 30px;
-
+  margin-left: -10px;
   @media screen and (max-width: 1300px) {
     & {
       display: none;
