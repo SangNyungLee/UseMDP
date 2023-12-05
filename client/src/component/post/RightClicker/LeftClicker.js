@@ -29,9 +29,9 @@ const LeftClicker = (props) => {
             <ListGroup.Item className="bg-dark" onClick={(e) => toPlannerLink(e)} style={{ color: 'white' }}>
                 Show Plans
             </ListGroup.Item>
-            <ListGroup.Item className="bg-dark" onClick={(e) => saveState(e)} style={{ color: 'white' }}>
+            {/* <ListGroup.Item className="bg-dark" onClick={(e) => saveState(e)} style={{ color: 'white' }}>
                 Delete All
-            </ListGroup.Item>
+            </ListGroup.Item> */}
         </ListGroup>
     );
 };
