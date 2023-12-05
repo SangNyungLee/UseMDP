@@ -1,6 +1,6 @@
 .nav-main {
   margin: 0px;
-  background-color: #202a45;
+  background-color: #222831;
   font: 14px "Helvetica", sans-serif;
   font-family: "Pretendard-Regular";
   color: #fbedeb;
@@ -20,12 +20,12 @@ textarea {
 }
 
 .nav-bar {
-  background-color: #202a45;
+  background-color: #222831;
   /* background: url(https://d2k1ftgv7pobq7.cloudfront.net/meta/p/res/images/trello-header-logos/af7af6ed478d3460709d715d9b3f74a4/trello-logo-white.svg); */
   background-size: 80px;
   background-repeat: no-repeat;
   background-position: center;
-  box-shadow: 0 0px 2px 0 #202a45;
+  box-shadow: 0 0px 2px 0 #222831;
   /* height: 18px; */
   padding: 6px 10px 10px 10px;
   display: flex;
@@ -115,7 +115,7 @@ textarea {
 }
 
 .button-style-header {
-  background: #202a45;
+  background: #222831;
   border-radius: 3px;
   border-style: none;
   line-height: 25px;
@@ -134,7 +134,7 @@ textarea {
 }
 
 .button-style-header-right {
-  background: #202a45;
+  background: #222831;
   border-radius: 3px;
   border-style: none;
   line-height: 25px;
