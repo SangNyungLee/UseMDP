@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
@@ -49,27 +48,31 @@ export default function useDefaultCheck() {
 		};
 	}, [site]);
 
-	const getMyPlannerAndDispatch = async () => {
-		const result = await getMyPlanner();
-		if (result.status === 200) {
-			const newPlannerList = plannerListCardStatusDevide(result.data.data);
-			dispatch(plannerListActions.setPlannersInit(newPlannerList));
-			if (newPlannerList.length > 0) {
-				const plannerId = newPlannerList[0].plannerId;
-				dispatch(calendarActions.setAll([plannerId]));
-			}
-			dispatch(siteActions.setAllTrue());
-		} else {
-			try {
-				const res = await postLogout();
-				if (res.status !== 200) {
-					requestFail('로그아웃');
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
+    const getMyPlannerAndDispatch = async () => {
+        const result = await getMyPlanner();
+        if(result.status === 200){
+            const plannerList = result.data.data
+            if(plannerList.length > 0){
+                const newPlannerList = plannerListCardStatusDevide(plannerList);
+                dispatch(plannerListActions.setPlannersInit(newPlannerList));
+                const plannerId = newPlannerList[0].plannerId;
+                dispatch(
+                    calendarActions.setAll([plannerId])    
+                );
+            }
+            dispatch(siteActions.setAllTrue());
+        } else {
+            try {
+                const res = await postLogout();
+                if(res.status !== 200){
+                    requestFail("로그아웃")
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    };
+
 
 	const naviCookieCheck = (e) => {
 		if (!isLogin) {

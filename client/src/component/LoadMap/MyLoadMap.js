@@ -1,16 +1,10 @@
-import styled from 'styled-components';
-// import star from '../../constant/img/star.png';
-// import yellowStar from '../../constant/img/yellowStar.png';
-import { useEffect, useState } from 'react';
+
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import DataDownload from '../../utils/DataDownload';
 import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
 import { useDispatch, useSelector } from 'react-redux';
-import useLocalStorage from 'use-local-storage';
 import { getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
 

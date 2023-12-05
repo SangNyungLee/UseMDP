@@ -1,5 +1,4 @@
 import Footer from '../component/Footer';
-import Header from '../component/Header';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useEffect, useState } from 'react';
@@ -10,9 +9,8 @@ import { readPlanner } from '../utils/DataAxiosParsing';
 import { plannerListActions } from '../store/plannerList';
 import { useDispatch } from 'react-redux';
 import { calendarActions } from '../store/calendar';
-import { validatePlannerData, validateUnspecifiedPlannerData } from '../utils/DataValidate';
+import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import { noEditPlannerAction } from '../store/noEditPlanner';
-// import '../constant/css/home.css';
 import {
 	_PageWrapper,
 	_PageContainer,
@@ -41,18 +39,16 @@ export default function WelcomePage() {
 	console.log('visible', visible);
 
 	const { naviCookieCheck } = useDefaultCheck();
-	const dispatch = useDispatch();
 
 	const [readFile, setReadFile] = useState();
 	const navi = useNavigate();
 
-	useEffect(() => {
-		if (readFile) {
-			const data = JSON.parse(readFile);
-			if (validateUnspecifiedPlannerData(data)) {
-				dispatch(noEditPlannerAction.setPlansInit(data));
-				navi('/plannerNoEdit', {
-					state: {
+	useEffect(()=>{
+		if(readFile){
+			const data = JSON.parse(readFile)
+            if (validateUnspecifiedPlannerData(data)) {
+				navi('/plannerNoEdit',{
+					state:{
 						sourceData: data,
 					},
 				});
@@ -73,11 +69,13 @@ export default function WelcomePage() {
 		}
 	};
 
+
 	const handleNavigation = (e) => {
 		if (naviCookieCheck(e)) {
 			navi('/home');
 		}
 	};
+
 
 	return (
 		<_PageWrapper fluid>

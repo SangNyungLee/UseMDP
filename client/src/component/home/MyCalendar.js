@@ -9,14 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { plannerListActions } from "../../store/plannerList";
 import MDPModal from "../modal/MDPModal";
 
-import axios from "axios";
 import {
   eventStyleGetter,
   getNestedElement,
 } from "../../utils/CalendarController";
 import { getOneCard } from "../../utils/QuoteSetting";
 import { dateParsing } from "../../utils/DataParsing";
-import useDefaultCheck from "../../hook/useDefaultCheck";
 import CalendarSideBar from "./calendar/CalendarSideBar";
 import styled from "styled-components";
 import CalendarSelect from "./calendar/CalendarSelect";

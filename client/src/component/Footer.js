@@ -1,5 +1,4 @@
-import { Nav, Navbar, Container, Button } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Navbar, Container } from 'react-bootstrap';
 
 export default function Footer() {
 	return (

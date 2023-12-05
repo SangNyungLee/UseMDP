@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Nav, Navbar, Container, Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';

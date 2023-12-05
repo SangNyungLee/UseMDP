@@ -1,21 +1,23 @@
-import React from 'react';
-import { CiDark, CiUser } from 'react-icons/ci';
-import '../constant/css/RealHeader.css';
+
+import "../constant/css/RealHeader.css";
 
 //추가된거
-import { useEffect, useState } from 'react';
-import { Nav, Navbar, Container, Button } from 'react-bootstrap';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { GoogleLoginButton, GithubLoginButton } from 'react-social-login-buttons';
-import { useDispatch, useSelector } from 'react-redux';
-import { siteActions } from '../store/site';
-import { logoutModal, nyanCat, requestFail } from './etc/SweetModal';
-import { postLogout } from '../utils/DataAxios';
-import { FaFileUpload } from 'react-icons/fa';
+
+import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import {
+  GoogleLoginButton,
+  GithubLoginButton,
+} from "react-social-login-buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { siteActions } from "../store/site";
+import { logoutModal, requestFail } from "./etc/SweetModal";
+import { postLogout } from "../utils/DataAxios";
+import { FaFileUpload } from "react-icons/fa";
+
+
 
 export default function RealHeader() {
 	const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
@@ -89,38 +91,51 @@ export default function RealHeader() {
 		navigate('/');
 	};
 
-	return (
-		<div className='realheader'>
-			<div
-				className='header-logo'
-				onClick={(e) => {
-					clickLogo(e);
-				}}>
-				<img src='/images/004.png' width='60px' height='40px' />
-			</div>
-			{isLoginRedux ? (
-				<>
-					<div className='user-settings'>
-						<div className='uploadIcon user-menu '>
-							<FaFileUpload />
-						</div>
-						<div className='dark-light'>{/* <CiDark /> */}</div>
-						<div className='user-menu' onClick={(e) => Logout(e)}>
-							로그아웃
-						</div>
-						<img className='user-profile' src={HeaderUserImage} alt='userImage' />
-						<div className='user-name'>{HeaderUserName}</div>
-					</div>
-				</>
-			) : (
-				<>
-					<div className='user-settings'>
-						<span className='user-login' onClick={(e) => showLoginModal(e)}>
-							로그인
-						</span>
-					</div>
-				</>
-			)}
-		</div>
-	);
+  return (
+    <div className="job">
+      <div className="realheader">
+        <div
+          className="header-logo"
+          onClick={(e) => {
+            clickLogo(e);
+          }}
+        >
+          <img src="/images/004.png" width="60px" height="40px" />
+          {/* useMDP */}
+        </div>
+        {/* <div className="header-menu">
+          <a className="active">메뉴 1번</a>
+          <a>메뉴 2번</a>
+          <a>메뉴 3번</a>
+        </div> */}
+        {isLoginRedux ? (
+          <>
+            <div className="user-settings">
+              <div className="uploadIcon user-menu" >
+                <FaFileUpload />
+              </div>
+              <div className="dark-light">{/* <CiDark /> */}</div>
+              <div className="user-menu" onClick={(e) => Logout(e)}>
+                로그아웃
+              </div>
+              <img
+                className="user-profile"
+                src={HeaderUserImage}
+                alt="userImage"
+              />
+              <div className="user-name">{HeaderUserName}</div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="user-settings">
+              <span className="user-login" onClick={(e) => showLoginModal(e)}>
+                로그인
+              </span>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }

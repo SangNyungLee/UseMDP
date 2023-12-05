@@ -1,5 +1,7 @@
 import { useRef } from 'react';
+
 import { _Button } from '../constant/css/styledComponents/__WelcomePage';
+
 
 export default function FileInputComponent({ setState }) {
 	const fileInputRef = useRef();
@@ -8,6 +10,7 @@ export default function FileInputComponent({ setState }) {
 		e.stopPropagation();
 		fileInputRef.current.click();
 	};
+
 
 	const handleFileChange = (event) => {
 		const reader = new FileReader();

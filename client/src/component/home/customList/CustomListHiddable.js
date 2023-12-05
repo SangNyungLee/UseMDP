@@ -2,21 +2,8 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import RightClicker from '../../post/RightClicker/RightClicker';
 import { useSelector } from 'react-redux';
-
-import LoadMap from '../../LoadMap/LoadMap';
 import { _Container, _Row, _Col } from '../../../constant/css/styledComponents/__CustomListHiddable';
-import {
-	Fade,
-	Bounce,
-	Flip,
-	Hinge,
-	JackInTheBox,
-	Roll,
-	Rotate,
-	Slide,
-	Zoom,
-	AttentionSeeker,
-} from 'react-awesome-reveal';
+import { Fade } from 'react-awesome-reveal';
 
 export default function CustomListHiddable(props) {
 	const [hide, setHide] = useState(true);
