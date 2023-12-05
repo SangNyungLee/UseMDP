@@ -4,7 +4,7 @@ import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
-import { deleteTagList, getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
+import { getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
@@ -151,14 +151,8 @@ function CustomHeader2(props) {
                 })
             );
         } else {
-            const result = await deleteTagList(plannerInfo.plannerId);
+            console.log('정보 없음');
             setShowModal(false);
-            dispatch(
-                plannerListActions.updateTags({
-                    plannerId: plannerInfo.plannerId,
-                    taglist: [],
-                })
-            );
         }
     };
     const handleCloseModalWithoutSave = () => {
@@ -251,16 +245,15 @@ function CustomHeader2(props) {
         <div className="nav-main">
             <div className="nav-bar">
                 <div className="left-bar">
-                    <button onClick={homeNavigate} type="button" className="button-style">
+                    {/* <button onClick={homeNavigate} type="button" className="button-style">
                         <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
+                    </button> */}
+                    <button onClick={homeNavigate} type="button" className="button-style-right">
+                        <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
                 </div>
 
                 <div className="right-bar">
-                    <button onClick={homeNavigate} type="button" className="button-style-right">
-                        <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
-                    </button>
-
                     <button onClick={handleTagModal} type="button" className="button-style-right">
                         <FaTags style={{ fontSize: '16px', color: 'white' }} />
                     </button>

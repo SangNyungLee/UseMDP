@@ -14,6 +14,14 @@ const DivButton = styled.div`
     }
 `;
 
+const _CardListContainer = styled.div`
+    max-height: 70vh;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`
+
 export default function NoEditDroppableComponent(props) {
     const isMobile = useMediaQuery({
         query: '(max-width: 768px)',
@@ -41,6 +49,7 @@ export default function NoEditDroppableComponent(props) {
                     <>
                         <div {...droppableComponentRegister(provided, snapshot)}>
                             <NoEditCardListHeader pid={plannerId} index={provided.droppableProps['data-rbd-droppable-id']}></NoEditCardListHeader>
+                            <_CardListContainer>
                             {cardList.map((card, id) => (
                                 <Draggable key={card.cardId} draggableId={card.cardId} index={id}>
                                     {(provided, snapshot) => (
@@ -51,6 +60,7 @@ export default function NoEditDroppableComponent(props) {
                                 </Draggable>
                             ))}
                             {provided.placeholder}
+                            </_CardListContainer>
                         </div>
                     </>
                 );
