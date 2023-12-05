@@ -46,10 +46,14 @@ const _ToGoButton = styled.div`
   border: none;
   background: none;
   font-size: 20px;
+  width: 30px;
+  text-align: center;
+  border-radius: 50%;
   color: white;
 
   &:hover {
     cursor: pointer;
+    background-color: #ccc;
   }
 `;
 

@@ -5,6 +5,7 @@ import { HOME } from '../../constant/constant';
 import { useSelector, useDispatch } from 'react-redux';
 // Styled Components
 import { _ComponentContainer, _ComponentTitle } from '../../constant/css/styledComponents/__HomeComponent';
+import { useEffect, useState } from 'react';
 
 const statusIndexMap = {
 	TODO: 0,
@@ -57,10 +58,23 @@ export default function HomeComponent() {
 	//     fetchData();
 	// }, [setData, dispatch]);
 
+	const [sortOption, setSortOption] = useState('title');
+
+	const handleSortChange = (event) => {
+		setSortOption(event.target.value);
+	};
+
 	return (
 		<_ComponentContainer fluid>
-			<_ComponentTitle>MY PLANNERS</_ComponentTitle>
-			<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
+			<_ComponentTitle>
+				MY PLANNERS
+				<select id="sort" value={sortOption} onChange={handleSortChange}>
+					<option value="title">이름</option>
+					<option value="createdAt">생성</option>
+					<option value="updatedAt">수정</option>
+				</select>
+			</_ComponentTitle>
+			<CustomList datas={plannerList} loadMap={MyLoadMap} sortOption={sortOption}></CustomList>
 		</_ComponentContainer>
 	);
 }

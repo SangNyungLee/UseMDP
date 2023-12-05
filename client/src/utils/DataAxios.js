@@ -14,21 +14,6 @@ const getURL = (url) => {
     return MDP + url;
 };
 
-export async function getPlannerId(data) {
-    try {
-        const res = await axios({
-            method: 'POST',
-            url: getURL('/api/postPlanner'),
-            data,
-            withCredentials: true,
-        });
-        return res;
-    } catch (error) {
-        console.log('error', error);
-        return error;
-    }
-}
-
 export async function postPlannerCards(unspecifiedplanner) {
     try {
         const res = await axios({
@@ -246,11 +231,15 @@ export async function deleteMyPlanner(plannerId) {
 }
 
 export async function patchPlanner(plannerData) {
+    const { taglist } = plannerData
     try {
         const res = await axios({
             method: 'PATCH',
             url: getURL(`/api/patchPlanner`),
-            data: plannerData,
+            data: {
+                ...plannerData,
+                taglist: taglist ? taglist : []
+            },
             withCredentials: true,
         });
         console.log('patch planner', res);

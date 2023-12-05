@@ -9,16 +9,22 @@ import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
 import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
+import FileImageInputComponent from '../FileImageInputComponent';
 import Select from 'react-select'; //라이브러리 import
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
+
 function CustomHeader2(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plannerInfo = props.plannerInfo;
+
+    const [readThumbnail, setReadThumbnail] = useState();
+  
     const [tags2, setTags] = useState([]);
     const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
+  
     const titleRef = useRef();
+  
     const [showModal, setShowModal] = useState(false);
     const selectInputRef = useRef();
 
@@ -58,6 +64,13 @@ function CustomHeader2(props) {
             setSelectTag(initialTags);
         }
     }, [plannerInfo, tags2]);
+
+    useEffect(() => {
+        if (readThumbnail) {
+            patchPlannerAndDispatch(readThumbnail);
+            setReadThumbnail();
+        }
+    }, [readThumbnail]);
 
     const handleBlur = async (e) => {
         const data = {
@@ -212,7 +225,22 @@ function CustomHeader2(props) {
 
         fileInputRef.current = newFileInput;
     };
-    console.log('plINof', plannerInfo);
+
+    const patchPlannerAndDispatch = async (thumbnail) => {
+        const data = { ...plannerInfo, thumbnail: thumbnail };
+        console.log('patchPlannerAndDispatch', data);
+        const res = await patchPlanner(data);
+        if (res.status !== 200) {
+            requestFail('플래너 상태 저장');
+        }
+        dispatch(
+            plannerListActions.updatePlannerThumbnail({
+                plannerId: plannerInfo.plannerId,
+                thumbnail,
+            })
+        );
+    };
+
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -272,6 +300,8 @@ function CustomHeader2(props) {
                     <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                     <span className="private-text">Public</span>
                 </button>
+                
+                <FileImageInputComponent setState={setReadThumbnail}/>
             </div>
 
             <div className="content-header-right">

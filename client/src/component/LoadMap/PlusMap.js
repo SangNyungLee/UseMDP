@@ -46,7 +46,8 @@ export default function PlusMap(props) {
 			dispatch(plannerListActions.addPlanner({
 				...data,
 				plannerId: newPlannerId,
-				cards: [[],[],[]]
+				cards: [[],[],[]],
+				taglist:[]
 			}))
 
 			// SweetAlert을 이용하여 성공 메시지를 보여줌
