@@ -1,7 +1,7 @@
-
-import "../constant/css/RealHeader.css";
+import '../constant/css/RealHeader.css';
 
 //추가된거
+
 
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
@@ -17,6 +17,7 @@ import { logoutModal, requestFail } from "./etc/SweetModal";
 import { postLogout } from "../utils/DataAxios";
 import { FaFileUpload } from "react-icons/fa";
 import FileInputComponent from "./FileInputComponent";
+
 
 
 
@@ -92,23 +93,22 @@ export default function RealHeader() {
 		navigate('/');
 	};
 
-  return (
-    <div className="job">
-      <div className="realheader">
-        <div
-          className="header-logo"
-          onClick={(e) => {
-            clickLogo(e);
-          }}
-        >
-          <img src="/images/004.png" width="60px" height="40px" />
-          {/* useMDP */}
-        </div>
-        {/* <div className="header-menu">
+	return (
+		<div className='realheader' id='RealHeader'>
+			<div
+				className='header-logo'
+				onClick={(e) => {
+					clickLogo(e);
+				}}>
+				<img src='/images/004.png' width='60px' height='40px' />
+				{/* useMDP */}
+			</div>
+			{/* <div className="header-menu">
           <a className="active">메뉴 1번</a>
           <a>메뉴 2번</a>
           <a>메뉴 3번</a>
         </div> */}
+
         {isLoginRedux ? (
           <>
             <div className="user-settings">
@@ -141,4 +141,5 @@ export default function RealHeader() {
       </div>
     </div>
   );
+
 }

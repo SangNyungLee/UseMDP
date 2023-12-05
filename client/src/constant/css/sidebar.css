@@ -82,11 +82,9 @@
 	grid-area: logo;
 }
 .menu__text {
-	display: flex;
-	/* display: none; */
-	/* width: 100%; */
-	text-align: center;
-	justify-content: center;
+	line-height: 1;
+	vertical-align: baseline;
+	color: #eeeeee;
 }
 
 /* MAIN */
@@ -144,8 +142,8 @@ main {
 }
 
 .menu__icon {
-	color: #eeeeee;
 	font-size: 1.3rem;
+	color: #eeeeee;
 }
 
 @media screen and (max-width: 850px) {
@@ -161,6 +159,10 @@ main {
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
+	}
+
+	.menu__icon {
+		margin-bottom: 5px;
 	}
 }
 
@@ -181,7 +183,6 @@ main {
 		justify-content: flex-start;
 	}
 	.menu__text {
-		color: #eeeeee;
 		display: inline-block;
 	}
 	.avatar {
@@ -197,7 +198,7 @@ main {
 
 @media screen and (min-width: 850px) {
 	.menu__icon {
-		font-size: 0.9rem;
+		font-size: 2.2rem;
 		padding-right: 16px;
 	}
 	.menu__item--active {

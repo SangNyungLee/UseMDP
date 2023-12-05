@@ -23,6 +23,7 @@ export default function HomeComponent() {
 	console.log('hom component calendar', calendar);
 	console.log('home component', plannerList);
 
+
 	// const [data, setData] = useState();
 
 	// const dispatch = useDispatch();
@@ -75,6 +76,7 @@ export default function HomeComponent() {
 				</select>
 			</_ComponentTitle>
 			<CustomList datas={plannerList} loadMap={MyLoadMap} sortOption={sortOption}></CustomList>
+
 		</_ComponentContainer>
 	);
 }
