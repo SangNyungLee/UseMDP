@@ -82,7 +82,7 @@ export default function QuoteApp() {
             title,
             thumbnail,
             plannerAccess: access,
-            taglist: list,
+            taglist: list ? list : [],
         };
     } else if (localdata.length > 0) {
         console.log('local in if', localdata);

@@ -9,12 +9,15 @@ import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
 import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
+import FileImageInputComponent from '../FileImageInputComponent';
 
 function CustomHeader2(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plannerInfo = props.plannerInfo;
     console.log('프롭스', props.plannerInfo);
+
+    const [readThumbnail, setReadThumbnail] = useState();
 
     const titleRef = useRef();
 
@@ -24,6 +27,13 @@ function CustomHeader2(props) {
             titleRef.current.innerText = title;
         }
     }, [plannerInfo]);
+
+    useEffect(() => {
+        if (readThumbnail) {
+            patchPlannerAndDispatch(readThumbnail);
+            setReadThumbnail();
+        }
+    }, [readThumbnail]);
 
     const handleBlur = async (e) => {
         const data = {
@@ -134,7 +144,6 @@ function CustomHeader2(props) {
             requestFail('데이터');
         }
     };
-    const Addplanner = () => {};
 
     const resetFileInput = () => {
         const currentFileInput = fileInputRef.current;
@@ -150,6 +159,21 @@ function CustomHeader2(props) {
         }
 
         fileInputRef.current = newFileInput;
+    };
+
+    const patchPlannerAndDispatch = async (thumbnail) => {
+        const data = { ...plannerInfo, thumbnail: thumbnail };
+        console.log('patchPlannerAndDispatch', data);
+        const res = await patchPlanner(data);
+        if (res.status !== 200) {
+            requestFail('플래너 상태 저장');
+        }
+        dispatch(
+            plannerListActions.updatePlannerThumbnail({
+                plannerId: plannerInfo.plannerId,
+                thumbnail,
+            })
+        );
     };
 
     return (
@@ -211,6 +235,8 @@ function CustomHeader2(props) {
                     <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                     <span className="private-text">Public</span>
                 </button>
+                
+                <FileImageInputComponent setState={setReadThumbnail}/>
             </div>
 
             <div className="content-header-right">

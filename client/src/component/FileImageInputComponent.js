@@ -1,15 +1,39 @@
 import { useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { FaImage } from 'react-icons/fa';
 
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import styled from 'styled-components';
 
+const _CropBackground = styled.div`
+    position: fixed;
+    width:100vw;
+    height: 90vh;
+    z-index: 90;
+    background-color: rgba(0, 0, 0, 0.7);
+`
+
 const _CropContainer = styled.div`
     position: absolute;
-    z-index: 10;
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
+    background-color: white;
+    border-radius: 15px;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: ${(props) => props.width};
+    max-height: ${(props) => props.height};
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-use-select: none;
+    user-select: none;
+`;
+
+const _ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
 `;
 
 export default function FileImageInputComponent({ setState }) {
@@ -105,6 +129,12 @@ export default function FileImageInputComponent({ setState }) {
         setCrop({});
     };
 
+    const cancelCrop = () => {
+        setCompletedCrop({});
+        setSrc();
+        setCrop({});
+    }
+
     // const handleCropRatio = () => {
     //     const currentRatio = crop.width / crop.height;
     //     if (currentRatio < aspectRatio) {
@@ -124,28 +154,37 @@ export default function FileImageInputComponent({ setState }) {
 
     return (
         <>
-            <Button onClick={handleButtonClick} className="mx-2" variant="success">
-                File
-            </Button>
+            <button onClick={handleButtonClick} type="button" className="button-style-header">
+                <FaImage style={{ fontSize: '12px', color: 'white', marginRight: '5px' }}/>
+                <span className="private-text">Thumbnail</span>
+            </button>
+
             <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
 
             {src && (
-                <_CropContainer width={size.width} height={size.height}>
-                    <ReactCrop
-                        crop={crop}
-                        onChange={(newCrop) => setCrop(newCrop)}
-                        onComplete={handleCropComplete}
-                        keepSelection={false}
-                        style={{
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                        }}
-                    >
-                        <img src={src} style={{ maxWidth: '100%', maxHeight: '100%' }} />
-                    </ReactCrop>
-                    <button onClick={handleCropClick}>Crop</button>
-                    {/* <button onClick={() => handleCropRatio()}>비율 조정</button> */}
-                </_CropContainer>
+                <_CropBackground>
+                    <_CropContainer width={size.width} height={size.height}>
+                        <ReactCrop
+                            crop={crop}
+                            onChange={(newCrop) => setCrop(newCrop)}
+                            onComplete={handleCropComplete}
+                            keepSelection={false}
+                            style={{
+                                // maxWidth: '100%',
+                                // maxHeight: '100%',
+                            }}
+                        >
+                            <img src={src} style={{
+                                maxWidth: "600px",
+                                maxHeight: "600px",
+                             }} />
+                        </ReactCrop>
+                        <_ButtonContainer>
+                            <button onClick={handleCropClick}>결정</button>
+                            <button onClick={cancelCrop}>취소</button>
+                        </_ButtonContainer>
+                    </_CropContainer>
+                </_CropBackground>
             )}
         </>
     );
