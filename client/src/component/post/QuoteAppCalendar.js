@@ -169,8 +169,8 @@ export default function QuoteAppCalendar(props) {
 
         delete newEvent.cardId;
 
-        const startDate = moment(slotInfo.start).toDate().toISOString();
-        const endDate = moment(slotInfo.end).toDate().toISOString();
+        const startDate = new Date(slotInfo.start).toISOString();
+        const endDate = new Date(slotInfo.end).toISOString();
 
         const requestData = {
             ...newEvent,

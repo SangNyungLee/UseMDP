@@ -37,12 +37,10 @@ public class CardEntity {
     @Column(nullable = false)
     private int intOrder;
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Column(columnDefinition = "TIMESTAMP")
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Column(columnDefinition = "TIMESTAMP")
     private Date endDate;
 
     @Column(columnDefinition = "ENUM('TODO','DOING','DONE') DEFAULT 'TODO'")

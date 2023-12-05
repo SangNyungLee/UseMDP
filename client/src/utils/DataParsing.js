@@ -2,8 +2,8 @@ import moment from "moment";
 
 export function dateParsing(planner){
     return planner.flat().map( e => ({ ...e,
-        startDate: moment(e.startDate),
-        endDate: moment(e.endDate)}));
+        startDate: new Date(e.startDate),
+        endDate: new Date(e.endDate)}));
 }
 
 export function plannerCardStatusDevide(planner){
