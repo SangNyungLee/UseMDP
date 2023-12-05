@@ -104,7 +104,6 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
           display: "flex",
           justifyContent: "space-around",
           marginBottom: "10px",
-          marginTop: "10px",
         }}
       >
         <_ToGoButton onClick={(e) => goToPrev(e)}>{"<"}</_ToGoButton>
@@ -120,7 +119,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
           position: "relative",
         }}
       >
-        {/* <CalendarSelect target={QUOTE} /> */}
+        <CalendarSelect target={QUOTE} />
         <_SwitchButton onClick={(e) => switchToMonthView(e)}>
           Month
         </_SwitchButton>
@@ -177,6 +176,11 @@ export default function QuoteAppCalendar(props) {
         endDate,
       })
     );
+
+    const result = await patchCard(requestData);
+    if (result.status !== 200) {
+      requestFail("카드 데이터 저장");
+    }
   };
 
   const onSelectSlot = async (slotInfo) => {
