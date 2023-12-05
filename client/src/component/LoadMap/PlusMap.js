@@ -14,11 +14,15 @@ import {
 
 import { postPlanner } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
+import { useDispatch } from 'react-redux';
+import { plannerListActions } from '../../store/plannerList';
 
 export default function PlusMap(props) {
 	const [editedCreator, setEditedCreator] = useState('');
 	const [editedTitle, setEditedTitle] = useState('');
 	const [editedPlannerAccess, setEditedPlannerAccess] = useState('PUBLIC');
+	
+	const dispatch = useDispatch();
 
 	const handleSaveChanges = async (titleInput, creatorInput, plannerAccessInput) => {
 		console.log(editedCreator, editedTitle, editedPlannerAccess);
@@ -37,6 +41,13 @@ export default function PlusMap(props) {
 			if(result.status !== 201){
 				requestFail("플래너 생성")
 			}
+
+			const newPlannerId = result.data.data;
+			dispatch(plannerListActions.addPlanner({
+				...data,
+				plannerId: newPlannerId,
+				cards: [[],[],[]]
+			}))
 
 			// SweetAlert을 이용하여 성공 메시지를 보여줌
 			Swal.fire({
