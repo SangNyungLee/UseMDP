@@ -7,12 +7,10 @@ import CardLi from "./CardLi";
 
 const _PlannerLi = styled.li`
   display: flex;
-  color: white;
   background: none;
   padding: 10px;
   margin: 5px;
-  border-bottom: 2px solid #202a45;
-  border-bottom-color: ${({ $focus }) => ($focus ? "lightgray" : "#202a45")};
+  border-bottom: 2px solid #393e46;
   @keyframes dropdown {
     0% {
       transform: translateY(-30%);
@@ -28,14 +26,6 @@ const _PlannerLi = styled.li`
     cursor: pointer;
     border-bottom: 2px solid lightgray;
   }
-
-  /* &::before {
-    content: ">";
-    margin: 0px 8px;
-    display: inline-block;
-    transform: ${({ $visible }) => ($visible ? "rotate(90deg)" : "none")}; 
-    transform-origin: center;
-  } */
 `;
 
 const _PlannerListUl = styled.ul`
@@ -45,7 +35,7 @@ const _PlannerListUl = styled.ul`
 `;
 
 const _CardStatus = styled.div`
-  color: white;
+  color: #00adb5;
   margin-left: 7px;
 `;
 
