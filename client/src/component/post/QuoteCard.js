@@ -14,14 +14,6 @@ const _CardBody = styled.div`
     justify-content: space-around;
 `;
 
-const CardParagraph = styled.p`
-    margin: 0;
-
-    &:not(:last-child) {
-        margin-bottom: 1.5em;
-    }
-`;
-
 const DelDiv = styled.div`
     &:hover {
         cursor: pointer;
@@ -35,7 +27,7 @@ export default function QuoteCard({ card, deleteCard, cardIndex }) {
             <_CardBody>
                 {card.title}
                 <DelDiv>
-                    <img onClick={(e) => deleteCard(e, cardIndex, card)} src={trash} alt="trashicon" />
+                    <img style={{ margin: '3px' }} onClick={(e) => deleteCard(e, cardIndex, card)} src={trash} alt="trashicon" />
                 </DelDiv>
             </_CardBody>
         </>

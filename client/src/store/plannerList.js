@@ -85,6 +85,10 @@ const plannerListSlice = createSlice({
             const { plannerId, thumbnail } = action.payload;
             return state.map((e) => (e.plannerId === plannerId ? { ...e, thumbnail } : e));
         },
+        updateTags(state, action) {
+            const { plannerId, taglist } = action.payload;
+            return state.map((e) => (e.plannerId === plannerId ? { ...e, taglist } : e));
+        },
         updatePlanner(state, action) {
             const { plannerId, planner } = action.payload;
             state = state.map((prevPlanner) => (prevPlanner.plannerId === plannerId ? { ...prevPlanner, cards: planner } : prevPlanner));

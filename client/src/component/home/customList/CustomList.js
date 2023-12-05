@@ -1,13 +1,39 @@
 import PlusMap from '../../LoadMap/PlusMap';
 import { Fade } from 'react-awesome-reveal';
 import { _Row, _Col, _Container } from '../../../constant/css/styledComponents/__CustomList';
+import { useEffect, useState } from 'react';
 
 export default function CustomList(props) {
-	const data = props.datas;
-	const noPlus = props.noPlus;
-	console.log('data', data);
+
+    const data = props.datas;
+    const [ sortedData, setSortedData ] = useState([]);
+    const sortOption = props.sortOption
+
+    useEffect(()=>{
+        if(data){
+            setSortedData(sortedItems(data,sortOption));
+        }
+    },[data,sortOption])
+
+    const sortedItems = (data,option) => {
+        switch(option){
+            case 'title':
+                return data.slice().sort((a, b) => a.title.localeCompare(b.title));
+            case 'createdAt':
+                return data.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            case 'updatedAt':
+                return data.slice().sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+            default:
+                return data.slice();
+        }
+    };
+
+    const noPlus = props.noPlus;
+    console.log('custom data', data);
+
 
 	const CustomLoadMap = props.loadMap;
+
 
 	return (
 		<_Container fluid id={'CustomList'}>

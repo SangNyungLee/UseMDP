@@ -48,16 +48,6 @@ export default function WelcomePage() {
         }
     }, [readFile]);
 
-    const readPlannerData = async (data, specified) => {
-        const result = await readPlanner(data, specified);
-        if (result) {
-            const { plannerId } = result;
-            dispatch(plannerListActions.addPlanner(result));
-            dispatch(calendarActions.setAll([plannerId]));
-        } else {
-            requestFail('데이터');
-        }
-    };
 
     const handleNavigation = (e) => {
         if (naviCookieCheck(e)) {
@@ -78,7 +68,11 @@ export default function WelcomePage() {
                             <_Button onClick={(e) => handleNavigation(e)} variant="dark" size="lg">
                                 시작하기
                             </_Button>
-                            <FileInputComponent setState={setReadFile} />
+							<FileInputComponent setState={setReadFile}>
+								<_Button className='mx-2' variant='dark' size="lg">
+									불러오기
+								</_Button>
+							</FileInputComponent>
                         </_ButtonStack>
                     </_LeftCol>
                     <_RightCol>

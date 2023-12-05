@@ -101,7 +101,7 @@ export default function QuoteAppOnlyRead() {
             title,
             thumbnail,
             plannerAccess: access,
-            taglist: list,
+            taglist: list ? list : [],
         };
     }
 

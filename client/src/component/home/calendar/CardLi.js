@@ -39,7 +39,7 @@ const _CardLi = styled.li`
 const _DelButton = styled.button`
   margin-left: 5px;
   border: none;
-  background: #202a45;
+  background: none;
   border-radius: 50%;
   display: flex;
   width: 20px;
@@ -48,8 +48,7 @@ const _DelButton = styled.button`
   align-items: center;
 
   &:hover {
-    cursor: pointer;
-    background-color: #263075;
+    background-color: #00adb5;
   }
 `;
 
