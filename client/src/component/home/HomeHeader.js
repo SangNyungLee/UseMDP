@@ -21,7 +21,6 @@ export default function HomeHeader() {
   //   const [isLogin, setIsLogin] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [readData, setReadData] = useState();
 
   //sweetAlert라이브러리
   const MySwal = withReactContent(Swal);
@@ -34,11 +33,6 @@ export default function HomeHeader() {
   const isLoginRedux = useSelector((state) => state.site.isLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (readData) {
-      console.log(readData);
-    }
-  }, [readData]);
 
   // 로컬스토리지에 저장된 isLogin을 가져와서 변수에 저장해놓음
   // useEffect(() => {
@@ -128,7 +122,11 @@ export default function HomeHeader() {
                 >
                   Log Out
                 </Button>
-                <FileInputComponent setState={setReadData} />
+                <FileInputComponent>
+                  <Button variant="outline-success" size="lg" className="mx-2">
+                    불러오기
+                  </Button>
+                </FileInputComponent>
               </>
             ) : (
               <>

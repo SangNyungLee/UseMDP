@@ -108,6 +108,6 @@ export default function useRead(target){
         onDrop: handleDrop,
         onDragOver: handleDragOver,
     }
-
+    
     return readerRegister
 }
