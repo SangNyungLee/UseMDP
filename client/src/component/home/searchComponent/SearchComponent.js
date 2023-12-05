@@ -2,7 +2,9 @@ import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import { getLikesAxios, getPlannerByTrend, getPlanners, getTags } from '../../../utils/DataAxios';
+import CustomList from '../customList/CustomList';
+import LoadMap from '../../LoadMap/LoadMap';
+import { getLikesAxios, getPlannerByTrend, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import noResult from '../../../constant/img/searchFail.svg';
 import { useDispatch } from 'react-redux';
@@ -11,6 +13,7 @@ import { requestFail } from '../../etc/SweetModal';
 import SearchCustomList from '../customList/SearchCustomList';
 import SearchLoadMap from '../../LoadMap/SearechLoadMap';
 import { useMediaQuery } from 'react-responsive';
+import NoContent from '../../NoContent';
 const SearchContainer = styled.div`
     width: 100%;
     display: flex;
@@ -62,7 +65,7 @@ export default function SearchComponent() {
         async function fetchData() {
             let data;
             try {
-                const response = await getPlanners();
+                const response = await getPlannerByTrend();
                 console.log('res', response);
                 if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
@@ -119,6 +122,9 @@ export default function SearchComponent() {
                 setTitle(Title);
                 console.log('uniqueTitles : ', Author);
             }
+
+            // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
+            // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
         getLike();
@@ -133,8 +139,7 @@ export default function SearchComponent() {
         // 버튼 클릭 시, option에 따라 데이터 필터링
         e.stopPropagation();
         if (option.value === 'stack') {
-            console.log('clicked', datas);
-            setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.taglist.includes(tag.value))));
+            setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.title.includes(tag.value))));
         } else if (option.value === 'author') {
             setFilteredDatas(datas.filter((item) => selectTag.some((author) => item.creator.includes(author.value))));
         } else if (option.value === 'title') {
@@ -233,18 +238,7 @@ export default function SearchComponent() {
                 </Button>
             </SearchContainer>
             <_ComponentTitle style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</_ComponentTitle>
-            {/* 데이터 없을 때 처리  */}
-            {filteredDatas.length == 0 ? (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
-                    <div>
-                        <div style={{ fontSize: '25px' }}> 찾고자 하는 데이터가 없습니다</div>
-                        <div style={{ fontSize: '20px', fontWeight: '300', color: 'gray', marginTop: '10px' }}> 다른 검색어로 검색을 해주세요.</div>
-                    </div>
-                </div>
-            ) : (
-                <SearchCustomList datas={filteredDatas} loadMap={SearchLoadMap} />
-            )}
+            {filteredDatas.length == 0 ? <NoContent /> : <SearchCustomList datas={filteredDatas} loadMap={SearchLoadMap} />}
         </div>
     );
     // }

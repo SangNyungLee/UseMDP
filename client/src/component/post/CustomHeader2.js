@@ -4,7 +4,7 @@ import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
-import { getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
+import { deleteTagList, getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import { readPlanner } from '../../utils/DataAxiosParsing';
@@ -19,12 +19,12 @@ function CustomHeader2(props) {
     const plannerInfo = props.plannerInfo;
 
     const [readThumbnail, setReadThumbnail] = useState();
-  
+
     const [tags2, setTags] = useState([]);
     const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
-  
+
     const titleRef = useRef();
-  
+
     const [showModal, setShowModal] = useState(false);
     const selectInputRef = useRef();
 
@@ -151,8 +151,14 @@ function CustomHeader2(props) {
                 })
             );
         } else {
-            console.log('정보 없음');
+            const result = await deleteTagList(plannerInfo.plannerId);
             setShowModal(false);
+            dispatch(
+                plannerListActions.updateTags({
+                    plannerId: plannerInfo.plannerId,
+                    taglist: [],
+                })
+            );
         }
     };
     const handleCloseModalWithoutSave = () => {
@@ -300,8 +306,8 @@ function CustomHeader2(props) {
                     <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                     <span className="private-text">Public</span>
                 </button>
-                
-                <FileImageInputComponent setState={setReadThumbnail}/>
+
+                <FileImageInputComponent setState={setReadThumbnail} />
             </div>
 
             <div className="content-header-right">

@@ -72,3 +72,11 @@ export const setTagRequest = (request) => {
         text: '로그인이 되어있지 않아 요청이 거부되었습니다',
     });
 };
+
+export const requestDeleteSucess = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '성공!',
+        text: `플래너 삭제 완료`,
+    });
+};
