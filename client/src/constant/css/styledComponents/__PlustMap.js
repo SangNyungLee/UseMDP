@@ -1,11 +1,5 @@
 import styled from "styled-components";
 import {
-  Row,
-  Col,
-  Stack,
-  Container,
-  Nav,
-  Navbar,
   Button,
   Card,
 } from "react-bootstrap";

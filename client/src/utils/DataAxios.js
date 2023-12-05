@@ -1,5 +1,4 @@
-import axios, { AxiosError } from 'axios';
-import { axiosFail } from '../component/etc/SweetModal';
+import axios from 'axios';
 
 const LOCAL = 'local';
 const PROD = 'prod';

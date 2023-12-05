@@ -1,15 +1,10 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function usePlannerListSetting(){
     const site = useSelector( state => state.site );
 
-    const plannerAxios = async () => {
-        const result = await axios({
-
-        })
-    }
+    const plannerAxios = async () => {}
 
     useEffect(()=>{
         if(site){

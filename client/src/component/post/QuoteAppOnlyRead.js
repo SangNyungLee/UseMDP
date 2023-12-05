@@ -3,23 +3,21 @@ import { useRef } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import NoEditQuoteAppCalendar from './QuoteAppOnlyReads/NoEditQuoteAppCalendar';
-import { getOneCard, getOneDefaultPlanner } from '../../utils/QuoteSetting';
-import { reorder, move } from '../../utils/QuoteController';
+import { getOneCard } from '../../utils/QuoteSetting';
 import styled from 'styled-components';
-import QuoteHeader from './QuoteHeader';
 import QuoteSpinner from './QuoteSpinner';
 import NoEditDroppableComponent from './QuoteAppOnlyReads/NoEditDroppableComponent';
 import sky from '../../constant/img/sky.jpg';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { getCardAxios, getPlannerBtoA } from '../../utils/DataAxios';
-import { plannerCardStatusDevide, plannerListCardStatusDevide } from '../../utils/DataParsing';
+import {  getPlannerBtoA } from '../../utils/DataAxios';
+import { plannerCardStatusDevide } from '../../utils/DataParsing';
 import { useDispatch } from 'react-redux';
 import { noEditPlannerAction } from '../../store/noEditPlanner';
 import NoEditQuoteHeader from './QuoteAppOnlyReads/NoEditQuoteHeader';
 const _QuoteAppContainer = styled.div`
     display: flex;
     flex: 3;
-    background-image: url(${(props) => props.image});
+    background-image: url(${(props) => props.$image});
     background-size: cover;
     background-repeat: no-repeat;
 `;
@@ -51,18 +49,30 @@ export default function QuoteAppOnlyRead() {
     const location = useLocation();
     console.log("location data",location.state?.sourceData)
     //데이터 초기화. 새로고침을 하던, 뭘하던 받아서 axios받아서 noEditPlanner 초기화
+
     useEffect(() => {
         async function fetchData() {
             const btoaid = searchParams.get('id');
-            const data = await getPlannerBtoA(btoaid);
-            console.log('initData', data.data);
-            let tmp = plannerCardStatusDevide(data.data.data);
-            tmp = { ...tmp, quote: 1 };
-            dispatch(noEditPlannerAction.setPlansInit(tmp));
+            if(btoaid){
+                const data = await getPlannerBtoA(btoaid);
+                console.log('initData', data.data);
+                let tmp = plannerCardStatusDevide(data.data.data);
+                tmp = { ...tmp, quote: 1 };
+                dispatch(noEditPlannerAction.setPlansInit(tmp));
+            } else {
+                const data = location.state?.sourceData
+                if(data){
+                    let tmp = plannerCardStatusDevide(data);
+                    tmp = { ...tmp, quote: 1 };
+                    dispatch(noEditPlannerAction.setPlansInit(tmp));
+                }
+            }
         }
         fetchData();
-    }, []);
+    }, [location]);
+
     console.log('noEditPlanner', noEditPlanner);
+
     let planner;
     let plannerId;
     let plannerTitle;
@@ -77,8 +87,10 @@ export default function QuoteAppOnlyRead() {
         }
         return tmp;
     }
-    if (noEditPlanner.length != 0) {
+
+    if (noEditPlanner["cards"]) {
         const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list, ...rest } = noEditPlanner;
+        console.log("noEditPlanner cards",cards)
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
@@ -128,7 +140,7 @@ export default function QuoteAppOnlyRead() {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <NoEditQuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={noEditPlanner} plannerInfo={plannerInfo} setSwitch={setSwitchContext} />
-                <_QuoteAppContainer image={plannerThumbnail ? sky : plannerThumbnail}>
+                <_QuoteAppContainer $image={plannerThumbnail ? plannerThumbnail : sky}>
                     <_Thumbnail ref={thumnnailRef}>
                         {isCalendarVisible ? (
                             <>

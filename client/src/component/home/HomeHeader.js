@@ -13,7 +13,6 @@ import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { siteActions } from "../../store/site";
 import { logoutModal, requestFail } from "../etc/SweetModal";
-import axios from "axios";
 import { postLogout } from "../../utils/DataAxios";
 
 export default function HomeHeader() {

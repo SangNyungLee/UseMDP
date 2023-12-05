@@ -1,5 +1,3 @@
-import LZUTF8 from "lzutf8";
-
 export default function DataDownload(title,content){
     const jsonContent = JSON.stringify(content,null,2)
     // null 자리는 특정 키를 제외할 경우 추가
@@ -26,16 +24,16 @@ export default function DataDownload(title,content){
 //     return compressedString;
 // }
 
-export function lzutf8Compress(originArr){
-    // 객체 배열 압축 참고용
-    const jsonString = JSON.stringify(originArr);
-    const compressedString = LZUTF8.compress(jsonString,{outputEncoding: "Base64"});
-    return compressedString;
-}
+// export function lzutf8Compress(originArr){
+//     // 객체 배열 압축 참고용
+//     const jsonString = JSON.stringify(originArr);
+//     const compressedString = LZUTF8.compress(jsonString,{outputEncoding: "Base64"});
+//     return compressedString;
+// }
 
-export function lzutf8Decompress(compressedString){
-    // 객체 배열 압축 해제 참고용
-    const decompressedString = LZUTF8.decompress(compressedString,{inputEncoding:"Base64"});
-    const originArr = JSON.parse(decompressedString)
-    return originArr;
-}
+// export function lzutf8Decompress(compressedString){
+//     // 객체 배열 압축 해제 참고용
+//     const decompressedString = LZUTF8.decompress(compressedString,{inputEncoding:"Base64"});
+//     const originArr = JSON.parse(decompressedString)
+//     return originArr;
+// }

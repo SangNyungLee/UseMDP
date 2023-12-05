@@ -1,7 +1,5 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { useRef } from 'react';
-import ThumbnailMaker from './ThumbnailMaker';
 
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
 const RightClickerForPlanner = (props) => {
