@@ -67,7 +67,11 @@ export default function WelcomePage() {
 							<Button as={NavLink} to={'/home'} onClick={ e => naviCookieCheck(e) } variant='success' size='lg'>
 								시작하기
 							</Button>
-							<FileInputComponent setState={setReadFile}/>
+							<FileInputComponent>
+								<Button variant="outline-success" size="lg" className="mx-2">
+									불러오기
+								</Button>
+							</FileInputComponent>
 						</Stack>
 					</Col>
 					<Col>
