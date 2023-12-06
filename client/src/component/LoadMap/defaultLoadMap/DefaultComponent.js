@@ -17,7 +17,6 @@ export default function DefaultComponent() {
 	const [point, setPoint] = useState([-1, -1]);
 	const plannerList = useSelector((state) => state.plannerList);
 	useDefaultCheck(HOME);
-	console.log('플래너', plannerList, data);
 
 	const handlePoint = () => {
 		if (point[0] !== -1 && point[1] !== -1) {
@@ -40,7 +39,6 @@ export default function DefaultComponent() {
 					requestFail('기본 플래너 불러오기');
 				}
 			} catch {
-				console.log('error');
 				setData([]);
 			}
 		}

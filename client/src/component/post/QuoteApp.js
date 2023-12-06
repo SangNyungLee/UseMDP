@@ -67,7 +67,6 @@ export default function QuoteApp() {
             tmp[i] = data[i].slice().sort((a, b) => a.intOrder - b.intOrder);
         }
         // 새로운 배열 반환
-        console.log('sort: ', tmp);
         return tmp;
     }
     if (plannerList.length > 0 && plannerList[0]) {
@@ -85,7 +84,6 @@ export default function QuoteApp() {
             taglist: list ? list : [],
         };
     } else if (localdata.length > 0) {
-        console.log('local in if', localdata);
         const { cards, plannerId: id, title, ...rest } = localdata[0];
         dispatch(plannerListActions.setPlannersInit(localdata));
         dispatch(calendarActions.setQuote([id]));
@@ -94,11 +92,6 @@ export default function QuoteApp() {
         plannerTitle = title;
     }
 
-    //planner가 바뀔때마다, localStoage에 저장하는 코드.
-
-    // useEffect(() => {
-    //     console.log('HI', localdata);
-    // }, [localdata, localQuote]);
     useEffect(() => {
         async function fetchData() {
             const result = await getPlannerBtoA(btoa(plannerId));
@@ -124,7 +117,6 @@ export default function QuoteApp() {
             // isData가 false면, 전부 재로딩한다.
             fetchData();
         }
-        console.log('Check site');
     }, [site.isData]);
 
     useEffect(() => {
@@ -141,7 +133,6 @@ export default function QuoteApp() {
         const result = await getCardAxios(planner[ind][index].cardId);
         if (result.status === 200) {
             const cardResult = result.data.data;
-            console.log('cardResult', cardResult);
 
             setSelectedCard(cardResult);
             setVisible(true);
@@ -153,7 +144,6 @@ export default function QuoteApp() {
 
     //dnd에서는, dragend와 onclick이 구분되게 됨.
     function onDragEnd(result, provided) {
-        console.log(result, provided);
         const { source, destination } = result;
 
         // dropped outside the list
@@ -234,8 +224,6 @@ export default function QuoteApp() {
 
     // If the window width is greater than or equal to 800px, hide the calendar
     const isCalendarVisible = windowWidth > 1024;
-    console.log('isCalendarVisible', isCalendarVisible);
-    console.log('plannerList', plannerList);
 
     if (!planner) {
         return <QuoteSpinner />;

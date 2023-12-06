@@ -36,7 +36,6 @@ export default function MyLoadMap(props) {
 	const state = useSelector((state) => state.plannerList);
 	const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } =
 		props.datas;
-	// console.log(props);
 	const navigate = useNavigate();
 	const handleClick = async (e) => {
 		e.stopPropagation();
@@ -45,7 +44,6 @@ export default function MyLoadMap(props) {
 			const btoaId = btoa(plannerId);
 			const result = await getPlannerBtoA(btoaId);
 			if (result.status === 200) {
-				console.log('click', result.data);
 				const cardList = result.data.data.cards;
 				const cards = [[], [], []];
 				for (let i = 0; i < cardList.length; i++) {
@@ -149,7 +147,6 @@ export default function MyLoadMap(props) {
 				// 확인을 눌렀을 때의 로직
 				const inputValue = document.getElementById('swal-input1').value;
 				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
-				console.log('inputValue', inputValue);
 				// axios 요청을 보내고 모달을 닫음
 
 				const plannerData = {
@@ -174,8 +171,6 @@ export default function MyLoadMap(props) {
 		});
 
 		if (result.isConfirmed) {
-			// 값이 없을 경우 빈 문자열로 설정
-			console.log('result', result);
 			const { editedTitle, editedPlannerAccess } = result.value;
 			setEditedTitle(editedTitle || '');
 			setEditedPlannerAccess(editedPlannerAccess || '');

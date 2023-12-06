@@ -164,7 +164,6 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
 
     useEffect(() => {
         const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
-        console.log(selectedCard);
         setTitle(title);
         setPost(post);
         setStartDate(new Date(startDate));
@@ -175,7 +174,6 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
         setShow(modalStatus);
     }, [modalStatus]);
 
-    console.log(checklists, IsBackGroundDark(coverColor));
     let progress = checklists ? handleProgessBar() : 0;
     if (Object.keys(selectedCard).includes('status')) {
         return <></>;

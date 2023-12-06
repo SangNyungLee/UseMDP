@@ -36,14 +36,9 @@ export default function DroppableComponent(props) {
     const dispatch = useDispatch();
 
     const deleteCard = (e, id, card) => {
-        console.log('del', e, id, card.cardId);
         e.stopPropagation();
         //
         const result = deleteCardById(card.cardId);
-        // const result = axios.delete(
-        //   `http://localhost:8080/api/deleteCard/${card.cardId}`,
-        //   { withCredentials: true }
-        // );
 
         const newState = copy(planner);
         //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
@@ -53,8 +48,6 @@ export default function DroppableComponent(props) {
 
         //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
         newState[cardStatusIndex].splice(id, 1);
-
-        console.log('New state', newState);
 
         dispatch(
             plannerListActions.updatePlanner({
@@ -67,19 +60,8 @@ export default function DroppableComponent(props) {
     const addCard = async () => {
         const cardStatus = cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE';
         const card = getItems(1, planner[cardStatusIndex].length, cardStatus)[0];
-        // card.checklists = card.checklists.map((checklist) => {
-        //     console.log(checklist);
-        //     const { checklistId, ...newCheckList } = checklist;
-        //     return newCheckList;
-        // });
-
-        // for (let i = 0; i < card.checklists.length; i++) {
-        //     const { checklistId, ...newCheckList } = card.checklists[i];
-        //     card.checklists[i] = newCheckList;
-        // }
         card.plannerId = plannerId;
         card.checklists = [{ checked: 0, title: 'done' }];
-        console.log('addcard : ', card);
 
         const result = await postCard(card);
 

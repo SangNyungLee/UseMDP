@@ -56,16 +56,6 @@ export default function Header() {
         navigate('/');
     };
 
-    // //로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
-    // const axiosLogout = async () => {
-    // 	try {
-    // 		const res = await postLogout();
-    // 		return res;
-    // 	} catch (error) {
-    // 		console.log(error)
-    // 	}
-    // };
-
     const showLoginModal = (e) => {
         e.stopPropagation();
         MySwal.fire({

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import { readPlanner } from '../utils/DataAxiosParsing';
@@ -17,7 +16,6 @@ export default function FileInputComponent({ children, setState }) {
     useEffect(()=>{
         if(readData){
             const data = JSON.parse(readData)
-            console.log("data",data);
             if (validateUnspecifiedPlannerData(data)) {
                 readPlannerData(data,false);
             } else {

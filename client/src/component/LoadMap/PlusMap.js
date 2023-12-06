@@ -25,9 +25,7 @@ export default function PlusMap(props) {
 	const dispatch = useDispatch();
 
 	const handleSaveChanges = async (titleInput, creatorInput, plannerAccessInput) => {
-		console.log(editedCreator, editedTitle, editedPlannerAccess);
 
-		// axios로 planner를 생성하자.
 		const data = {
 			creator: creatorInput,
 			title: titleInput,
@@ -36,7 +34,6 @@ export default function PlusMap(props) {
 		};
 
 		try {
-			console.log('myData', data);
 			const result = await postPlanner(data)
 			if(result.status !== 201){
 				requestFail("플래너 생성")

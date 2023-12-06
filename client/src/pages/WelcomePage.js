@@ -1,16 +1,11 @@
-import Footer from '../component/Footer';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useEffect, useState } from 'react';
 import useDefaultCheck from '../hook/useDefaultCheck';
 import FileInputComponent from '../component/FileInputComponent';
 import { requestFail } from '../component/etc/SweetModal';
-import { readPlanner } from '../utils/DataAxiosParsing';
-import { plannerListActions } from '../store/plannerList';
 import { useDispatch } from 'react-redux';
-import { calendarActions } from '../store/calendar';
 import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
-import { noEditPlannerAction } from '../store/noEditPlanner';
 import {
 	_PageWrapper,
 	_PageContainer,
@@ -31,14 +26,6 @@ export default function WelcomePage() {
 	const isMobile = useMediaQuery({
 		query: '(max-width: 576px)',
 	});
-
-	const location = useLocation();
-	const [message, setMessage] = useState(location.state?.message || '');
-	console.log('message', message);
-
-	//이건 확인해봐야 함
-	const [visible, setIsVisible] = useState(message ? true : false);
-	console.log('visible', visible);
 
 	const { naviCookieCheck } = useDefaultCheck();
 

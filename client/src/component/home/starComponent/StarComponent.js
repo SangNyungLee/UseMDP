@@ -6,7 +6,6 @@ import LoadMap from '../../LoadMap/LoadMap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLikesAxios, getPlannerByTrend } from '../../../utils/DataAxios';
 import { likeActions } from '../../../store/like';
-import noResult from '../../../constant/img/searchFail.svg';
 import { _ComponentContainer, _ComponentTitle } from '../../../constant/css/styledComponents/__StarComponent';
 import { requestFail } from '../../etc/SweetModal';
 import { HOME } from '../../../constant/constant';
@@ -36,7 +35,6 @@ export default function StarComponent() {
                     requestFail('트랜드 플래너 불러오기');
                 }
             } catch {
-                console.log('error');
                 setData([]);
             }
         }
