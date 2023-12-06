@@ -11,10 +11,10 @@ import com.example.demo.utils.DTOConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -394,45 +394,59 @@ public class PlannerService {
 
 
                     //시작 날짜 계산 -> 복사할 카드의 날짜 변환
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//
+//                    String DateString = dateFormat.format(responsePlannerDTO.getCreatedAt());
+//
+//
+//
+//                    int Year = Integer.parseInt(DateString.substring(0,4));
+//                    int Month =  Integer.parseInt(DateString.substring(5,7));
+//                    int Day =  Integer.parseInt(DateString.substring(8,10));
+//
+//
+//
+//                    //플래너의 createdAt - 현재 날짜
+//                    LocalDate date1 = LocalDate.of(Year, Month, Day);
+//
+//
+//                    //날짜 차이 구하기
+//                    Period periodStart = Period.between(date1, LocalDate.now());
+//
+//
+//                    //Period.of(년,월,일) -> 년,월,일 별로 더할 차이값 선언
+//                    Period periodAdd = Period.of(periodStart.getYears(), periodStart.getMonths(), periodStart.getDays());
+//
+//
+//                    //localdate 타입을 date타입으로 변환(차이값을 더해주기 위함)
+//                    LocalDate startLocalDate = new java.sql.Date(responseCardDTO.getStartDate().getTime()).toLocalDate();
+//                    LocalDate endLocalDate = new java.sql.Date(responseCardDTO.getEndDate().getTime()).toLocalDate();
+//
+//                    //cardDTO의 startDate, endDate에 차이값을 더해줌
+//                    LocalDate startDate = startLocalDate.plus(periodAdd);
+//                    LocalDate endDate = endLocalDate.plus(periodAdd);
+//
+//                    //localDate인 startDate와 endDate 사용을 위해 타입을 Date 타입으로 변환
+//                    Date startDateValue = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+//
+//                    Date endDateValue = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
+                    //현재 시간을 timestamp 타입으로 설정
+                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-                    String DateString = dateFormat.format(responsePlannerDTO.getCreatedAt());
+                    //현재 시간 - 복사할 플래너가 생성된 시간 (밀리초 값으로 변환 후 계산)
+                    long currentTime = timestamp.getTime();
+                    long plannerTime = responsePlannerDTO.getCreatedAt().getTime();
 
+                    long calTime = currentTime - plannerTime;
 
+                    //위에서 구한 차이를 이용하여 카드의 startDate와 endDate를 구한 후 반영한다
+                    long startDate = responseCardDTO.getStartDate().getTime();
+                    long endDate = responseCardDTO.getEndDate().getTime();
 
-                    int Year = Integer.parseInt(DateString.substring(0,4));
-                    int Month =  Integer.parseInt(DateString.substring(5,7));
-                    int Day =  Integer.parseInt(DateString.substring(8,10));
-
-
-
-                    //플래너의 createdAt - 현재 날짜
-                    LocalDate date1 = LocalDate.of(Year, Month, Day);
-
-
-                    //날짜 차이 구하기
-                    Period periodStart = Period.between(date1, LocalDate.now());
-
-
-                    //Period.of(년,월,일) -> 년,월,일 별로 더할 차이값 선언
-                    Period periodAdd = Period.of(periodStart.getYears(), periodStart.getMonths(), periodStart.getDays());
-
-
-                    //localdate 타입을 date타입으로 변환(차이값을 더해주기 위함)
-                    LocalDate startLocalDate = new java.sql.Date(responseCardDTO.getStartDate().getTime()).toLocalDate();
-                    LocalDate endLocalDate = new java.sql.Date(responseCardDTO.getEndDate().getTime()).toLocalDate();
-
-                    //cardDTO의 startDate, endDate에 차이값을 더해줌
-                    LocalDate startDate = startLocalDate.plus(periodAdd);
-                    LocalDate endDate = endLocalDate.plus(periodAdd);
-
-                    //localDate인 startDate와 endDate 사용을 위해 타입을 Date 타입으로 변환
-                    Date startDateValue = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-                    Date endDateValue = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-
+                    Date resultStartDate = addDateAndTimestamp(startDate, calTime);
+                    Date resultEndDate = addDateAndTimestamp(endDate, calTime);
 
                     //card 복사하여 레포지토리에 저장
                     CardEntity copyCard = CardEntity.builder()
@@ -441,8 +455,8 @@ public class PlannerService {
                             .coverColor(responseCardDTO.getCoverColor())
                             .post(responseCardDTO.getPost())
                             .intOrder(responseCardDTO.getIntOrder())
-                            .startDate(startDateValue)
-                            .endDate(endDateValue)
+                            .startDate(resultStartDate)
+                            .endDate(resultEndDate)
                             .plannerEntity(copyPlannerEntity)
                             .build();
 
@@ -474,6 +488,12 @@ public class PlannerService {
         }else {
             return -1;
         }
+    }
+
+    //날짜 더하기
+    private static Date addDateAndTimestamp(long resultDate, long calTime) {
+        // 두 값을 더하고 새로운 Date 객체 생성
+        return new Date(resultDate + calTime);
     }
 
     //성공 -> 1, 실패 -> 0
