@@ -6,6 +6,7 @@ export const _PageWrapper = styled(Container)`
 	margin: 0;
 	padding: 0;
 	background-color: #eeeeee;
+	max-width: none;
 `;
 
 export const _PageContainer = styled(Container)`
@@ -14,6 +15,7 @@ export const _PageContainer = styled(Container)`
 	background-color: #eeeeee;
 	font-family: 'Roboto', sans-serif;
 	height: 100vh;
+	max-width: none;
 `;
 
 export const _Row = styled(Row)``;
@@ -43,4 +45,6 @@ export const _Subtitle = styled.p`
 
 export const _Button = styled(Button)``;
 
-export const _Image = styled(Image)``;
+export const _Image = styled(Image)`
+    max-width: 100%;
+`;

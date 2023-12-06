@@ -10,7 +10,7 @@ export default function SearchCustomList(props) {
     const CustomLoadMap = props.loadMap;
     return (
         <>
-            <_Container fluid>
+            <_Container $fluid>
                 <Fade direction={'up'} duration={500} cascade triggerOnce>
                     <_Row xxs={1} xs={2} sm={2} md={2} lg={3} xl={4} xxl={4}>
                         {data.map((planner, idx) => {

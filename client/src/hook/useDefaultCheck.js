@@ -22,23 +22,32 @@ export default function useDefaultCheck() {
 
 	const dispatch = useDispatch();
 
+	// location.pathname.startsWith('/home')
+
+	const pathCheckArr = [
+		"/home",
+		"/planner",
+	]
+
 	useEffect(() => {
-		if (!authCookie) {
-			if (isLogin) {
-				navi('/', {
-					state: {
-						message: '쿠키가 만료되어 재로그인이 필요합니다',
-					},
-				});
-			} else if (location.pathname !== '/') {
-				navi('/', {
-					state: {
-						message: '로그인 되지 않은 사용자 입니다',
-					},
-				});
+		if (pathCheckArr.some( path => location.pathname.startsWith(path) )){
+			if (!authCookie) {
+				if (isLogin) {
+					navi('/', {
+						state: {
+							message: '쿠키가 만료되어 재로그인이 필요합니다',
+						},
+					});
+				} else if (location.pathname !== '/') {
+					navi('/', {
+						state: {
+							message: '로그인 되지 않은 사용자 입니다',
+						},
+					});
+				}
+			} else if (!isLogin || !isData) {
+				getMyPlannerAndDispatch();
 			}
-		} else if (!isLogin || !isData) {
-			getMyPlannerAndDispatch();
 		}
 
 		return () => {
@@ -47,6 +56,10 @@ export default function useDefaultCheck() {
 			}
 		};
 	}, [site]);
+
+	const pathCheck = () => {
+		pathCheckArr.some( path => location.pathname.startsWith(path) )
+	}
 
     const getMyPlannerAndDispatch = async () => {
         const result = await getMyPlanner();

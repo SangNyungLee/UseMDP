@@ -47,9 +47,11 @@ export default function DefaultComponent() {
 		}
 		async function getLike() {
 			const result = await getLikesAxios();
-			const likes = result.data;
-			console.log('defaultComponent의 like' + JSON.stringify(likes));
-			dispatch(likeActions.setLikesInit(likes));
+            if (result.status === 200) {
+                dispatch(likeActions.setLikesInit(result.data));
+            } else {
+                requestFail('좋아요 불러오기');
+            }
 		}
 
 		getData();
@@ -58,7 +60,7 @@ export default function DefaultComponent() {
 
 	return (
 		<>
-			<_ComponentContainer onClick={handlePoint} fluid>
+			<_ComponentContainer onClick={handlePoint} $fluid>
 				<_ComponentTitle>Templates</_ComponentTitle>
 				{data.length == 0 ? (
 					<NoContent />

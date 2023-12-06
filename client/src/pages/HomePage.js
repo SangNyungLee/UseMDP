@@ -17,7 +17,7 @@ export default function HomePage() {
 
 	return (
 		<ThemeProvider breakpoints={['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs']} minBreakpoint='xxs'>
-			<_PageContainer id='_PageContainer' onClick={(e) => handlePoint(e)} fluid>
+			<_PageContainer id='_PageContainer' onClick={(e) => handlePoint(e)} $fluid>
 				<RealHeader />
 				<Outlet />
 			</_PageContainer>

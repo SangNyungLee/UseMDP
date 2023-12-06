@@ -66,7 +66,7 @@ export default function HomeComponent() {
 	};
 
 	return (
-		<_ComponentContainer fluid>
+		<_ComponentContainer $fluid>
 			<_ComponentTitle>
 				MY PLANNERS
 				<select id="sort" value={sortOption} onChange={handleSortChange}>

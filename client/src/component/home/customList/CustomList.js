@@ -36,7 +36,7 @@ export default function CustomList(props) {
 
 
 	return (
-		<_Container fluid id={'CustomList'}>
+		<_Container $fluid id={'CustomList'}>
 			<Fade direction={'up'} duration={500} cascade triggerOnce>
 				<_Row xs={'auto'} xl={4}>
 					{data.map((planner, idx) => {
