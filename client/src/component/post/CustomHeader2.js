@@ -20,7 +20,7 @@ import { getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import FileImageInputComponent from '../FileImageInputComponent';
-import Select from 'react-select'; //라이브러리 import
+import Select from 'react-select';
 import { Modal, Button } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import FileInputComponent from '../FileInputComponent';
@@ -55,16 +55,14 @@ function CustomHeader2(props) {
         }
         getTag();
     }, []);
+
     useEffect(() => {
         if (plannerInfo) {
             const { title, taglist } = plannerInfo;
             titleRef.current.innerText = title;
 
             const initialTags = taglist.map((tagValue) => {
-                // tags 배열에서 해당하는 태그 정보 찾기
                 const foundTag = tags2.find((tag) => tag.value === tagValue);
-
-                // 찾은 태그 정보가 있으면 이미지를 포함하여 반환
                 if (foundTag) {
                     return {
                         value: foundTag.value,
@@ -72,8 +70,6 @@ function CustomHeader2(props) {
                         image: foundTag.image,
                     };
                 }
-
-                // 찾은 태그 정보가 없으면 tagValue를 그대로 반환
                 return { image: tagValue, label: tagValue, image: tagValue };
             });
             setSelectTag(initialTags);
@@ -195,9 +191,6 @@ function CustomHeader2(props) {
         <div className="nav-main">
             <div className="nav-bar">
                 <div className="left-bar">
-                    {/* <button onClick={homeNavigate} type="button" className="button-style">
-                        <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
-                    </button> */}
                     <button onClick={homeNavigate} type="button" className="button-style-right">
                         <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
@@ -307,15 +300,14 @@ function CustomHeader2(props) {
                                     display: 'none',
                                 }),
                             }}
-                            options={tags2} //위에서 만든 배열을 select로 넣기
-                            //label custom 해주는거임
+                            options={tags2}
                             formatOptionLabel={(tag) => (
                                 <div className="tag-option">
                                     <img src={tag.image} alt={tag.label} />
                                 </div>
                             )}
                             value={selectTag}
-                            onChange={setSelectTag} //값이 바뀌면 setState되게
+                            onChange={setSelectTag}
                             isMulti
                         />
                     </div>

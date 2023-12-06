@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export function dateParsing(planner){
     return planner.flat().map( e => ({ ...e,
         startDate: new Date(e.startDate),
@@ -36,24 +34,4 @@ export function removeUnspecifiedIdProperty(planner){
     })}
     delete newPlanner.plannerId;
     return newPlanner
-}
-
-export function removeSpecifiedListIdProperty(plannerList){
-    const newPlannerList = plannerList.map( planner => {
-        delete planner.plannerId;
-        return { ...planner,
-            cards: planner.cards.flat().map( card => { delete card.cardId; return card; })
-        }
-    })
-    return newPlannerList
-}
-
-export function removeUnspecifiedListIdProperty(plannerList){
-    const newPlannerList = plannerList.map( planner => {
-        delete planner.plannerId;
-        return { ...planner,
-            cards: planner.cards.map( card => { delete card.cardId; return card; })
-        }
-    })
-    return newPlannerList
 }

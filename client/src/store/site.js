@@ -12,16 +12,13 @@ const siteSlice = createSlice({
   reducers: {
     setIsLogin(state, action) {
       state.isLogin = action.payload;
-      // return state;
     },
     setIsData(state, action) {
       state.isData = action.payload;
-      // return state;
     },
     setAllTrue(state) {
       state.isData = true;
       state.isLogin = true;
-      // return state;
     },
     setAllFalse(state){
       state.isData = false;

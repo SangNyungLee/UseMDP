@@ -22,7 +22,7 @@ body {
 }
 
 .masthead {
-  flex-basis: auto; /* Auto-adjust height based on content */
+  flex-basis: auto;
   display: flex;
   align-items: center;
   padding: 0.5rem 0.8rem;
@@ -130,7 +130,6 @@ body {
   align-items: center;
   justify-content: space-between;
   background-color: #3aaef1;
-  /* margin: 0.8rem 0; */
   padding: 0 1rem;
   color: #f6f6f6;
 }

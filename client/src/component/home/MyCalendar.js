@@ -102,68 +102,46 @@ const _CalendarContainer = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
-
-  /* @media screen and (max-width: 700px) {
-    & {
-      flex-direction: column;
-      align-items: center;
-    }
-  } */
 `;
 
-const _CalendarSelectContainer = styled.div`
-  /* @media screen and (max-width: 700px) {
-    & {
-      width: 100%;
-      height: 20px;
-      display: flex;
-      align-items: center;
-    }
-  } */
-`;
+const _CalendarSelectContainer = styled.div``;
 
-const _ToolbarContainer = styled.div`
-  /* @media screen and (min-width: 700px) {
-    & {
-      margin-top: 15px;
-    }
-  } */
-`;
+const _ToolbarContainer = styled.div``;
 
-const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
+const CustomToolbar = ({ label, onNavigate, onView }) => {
   const goToToday = (e) => {
     e.stopPropagation();
-    onNavigate("TODAY"); // 오늘 날짜로 이동
+    onNavigate("TODAY");
   };
 
   const goToNext = (e) => {
     e.stopPropagation();
-    onNavigate("NEXT"); // 다음 달로 이동
+    onNavigate("NEXT");
   };
 
   const goToPrev = (e) => {
     e.stopPropagation();
-    onNavigate("PREV"); // 이전 달로 이동
+    onNavigate("PREV");
   };
 
   const switchToMonthView = (e) => {
     e.stopPropagation();
-    onView("month"); // 주 단위(view)로 전환
+    onView("month");
   };
 
   const switchToWeekView = (e) => {
     e.stopPropagation();
-    onView("week"); // 주 단위(view)로 전환
+    onView("week");
   };
 
   const switchToDayView = (e) => {
     e.stopPropagation();
-    onView("day"); // 날짜 단위(view)로 전환
+    onView("day");
   };
 
   const switchToAgendaView = (e) => {
     e.stopPropagation();
-    onView("agenda"); // 날짜 단위(view)로 전환
+    onView("agenda");
   };
 
   return (
@@ -203,10 +181,8 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
 };
 
 export default function MyCalendar() {
-  //지금은 상위꺼를 가져오는데, myPlanner만 가져오는 식으로.
   const plannerList = useSelector((state) => state.plannerList);
   const { home } = useSelector((state) => state.calendar);
-  const site = useSelector((state) => state.site);
 
   const plannerId = home[0];
   const cardStatusIndex = home[1] ? home[1] : 0;

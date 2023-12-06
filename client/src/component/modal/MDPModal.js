@@ -76,7 +76,6 @@ const _TextInput = styled.input`
     border: 1px solid #091e420f;
     border-radius: 3px;
     outline: none;
-    /* border-bottom: 1px solid #ccc; */
     &:focus {
         border: 2px solid #007bff;
     }
@@ -144,7 +143,6 @@ const CancelButton = styled.button`
     }
 `;
 export default function MDPModal({ selectedCard, modalStatus, modalClose, plannerId }) {
-    //구조 분해할당
     const [show, setShow] = useState(false);
 
     const [title, setTitle] = useState('');
@@ -155,7 +153,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const [coverColor, setCoverColor] = useState('');
     const [cardStatus, setCardStatus] = useState('');
     const [editorHide, setEditorHide] = useState(false);
-    //내부에서 쓰는 로직 밖으로 내보내지 않음.
     const Edits = [post, setPost];
     const [editingIndex, setEditingIndex] = useState('');
     const [progress, setProgress] = useState(0);
@@ -357,7 +354,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                             <IconImg src={list2}></IconImg>Check List
                         </div>
                     </TitleEdit>
-                    {/* <_Title>Check List</_Title> */}
                     <div>
                         {checklists
                             ? checklists.map((item, index) => {

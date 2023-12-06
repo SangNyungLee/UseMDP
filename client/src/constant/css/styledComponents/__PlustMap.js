@@ -10,7 +10,6 @@ export const _cardContainer = styled(Card)`
   border: 2px solid #202a45;
   border-radius: 5px;
   cursor: pointer;
-  /* background-color: #202a45; */
   background: none;
   margin: 5%;
   height: 120px;

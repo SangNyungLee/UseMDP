@@ -1,4 +1,4 @@
-import Select from 'react-select'; //라이브러리 import
+import Select from 'react-select';
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
@@ -9,7 +9,6 @@ import { likeActions } from '../../../store/like';
 import { requestFail } from '../../etc/SweetModal';
 import SearchCustomList from '../customList/SearchCustomList';
 import SearchLoadMap from '../../LoadMap/SearechLoadMap';
-import { useMediaQuery } from 'react-responsive';
 import NoContent from '../../NoContent';
 import { _ComponentContainer } from '../../../constant/css/styledComponents/__StarComponent';
 const SearchContainer = styled.div`
@@ -23,24 +22,18 @@ const tags = [
     { value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' },
     { value: 'CSS', label: 'CSS', image: '/svg/css.svg' },
     { value: 'JS', label: 'JS', image: '/svg/JS.svg' },
-]; //원래는 select 태그 안에 들어가는 애들을 배열로 만들어준다.
+];
 const options = [
     { value: 'stack', label: '스택' },
     { value: 'author', label: '작성자' },
     { value: 'title', label: '제목' },
-    // Add more options as needed
 ];
 const nullOptions = [
     { value: 'null', label: '해당하는 결과가 없습니다' },
-    // Add more options as needed
 ];
 
 const _MediaSelect = styled(Select)``;
 export default function SearchComponent() {
-    const is880 = useMediaQuery({
-        query: '(max-width: 880px)',
-    });
-
     const dispatch = useDispatch();
     const selectInputRef = useRef();
     const [author, setAuthor] = useState([]);
@@ -91,11 +84,9 @@ export default function SearchComponent() {
             setDatas(data);
             setFilteredDatas([]);
 
-            //셋을 만들어서, 중복을 방지한다.
             const uniqueTitles = new Set();
             const uniqueAuthors = new Set();
             const Title = [];
-            // uniqueTitles에도 값을 넣어서, 값을 체크하는 메커니즘.
             const Author = [];
             if (!data || data.length === 0) {
                 setAuthor(nullOptions);
@@ -115,9 +106,6 @@ export default function SearchComponent() {
                 setAuthor(Author);
                 setTitle(Title);
             }
-
-            // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
-            // setAuthor(data.map((item) => ({ value: item.creator, label: item.creator })));
         }
         fetchData();
         getLike();
@@ -131,7 +119,6 @@ export default function SearchComponent() {
         setSelectTag(v);
     };
     const handleSearch = (e) => {
-        // 버튼 클릭 시, option에 따라 데이터 필터링
         e.stopPropagation();
         if (option.value === 'stack') {
             setFilteredDatas(datas.filter((item) => selectTag.some((tag) => item.taglist.includes(tag.value))));
@@ -154,7 +141,6 @@ export default function SearchComponent() {
                             }),
                             multiValue: (baseStyles) => ({
                                 ...baseStyles,
-                                // backgroundColor: "lightblue", // 선택된 항목의 배경색
                             }),
                         }}
                         options={options}
@@ -182,8 +168,7 @@ export default function SearchComponent() {
                                 display: 'none',
                             }),
                         }}
-                        options={tags2} //위에서 만든 배열을 select로 넣기
-                        //label custom 해주는거임
+                        options={tags2}
                         formatOptionLabel={(tag) => (
                             <div className="tag-option">
                                 <img style={{ height: '23px' }} src={tag.image} alt={tag.label} />
@@ -191,11 +176,10 @@ export default function SearchComponent() {
                         )}
                         onChange={(v) => {
                             handleSelectTag(v);
-                        }} //값이 바뀌면 setState되게
+                        }}
                         isMulti
                         menuPlacement="auto"
                         maxMenuHeight={'250px'}
-                        // defaultValue={tags[0]}
                     />
                 ) : option.value === 'author' ? (
                     <_MediaSelect
@@ -208,17 +192,16 @@ export default function SearchComponent() {
                             }),
                             multiValue: (baseStyles) => ({
                                 ...baseStyles,
-                                backgroundColor: 'lightblue', // 선택된 항목의 배경색
+                                backgroundColor: 'lightblue',
                             }),
                         }}
-                        options={author} //위에서 만든 배열을 select로 넣기
+                        options={author}
                         onChange={(e, v) => {
                             handleSelectTag(e, v);
-                        }} //값이 바뀌면 setState되게
+                        }}
                         isMulti
                         menuPlacement="auto"
                         maxMenuHeight={'250px'}
-                        // defaultValue={tags[0]}
                     />
                 ) : (
                     <_MediaSelect
@@ -230,15 +213,14 @@ export default function SearchComponent() {
                             }),
                             multiValue: (baseStyles) => ({
                                 ...baseStyles,
-                                backgroundColor: 'lightblue', // 선택된 항목의 배경색
+                                backgroundColor: 'lightblue',
                             }),
                         }}
-                        options={title} //위에서 만든 배열을 select로 넣기
-                        onChange={setSelectTag} //값이 바뀌면 setState되게
+                        options={title}
+                        onChange={setSelectTag}
                         isMulti
                         menuPlacement="auto"
                         maxMenuHeight={'250px'}
-                        // defaultValue={tags[0]}
                     />
                 )}
 

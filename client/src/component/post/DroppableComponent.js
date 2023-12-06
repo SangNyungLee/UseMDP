@@ -37,24 +37,22 @@ export default function DroppableComponent(props) {
 
     const deleteCard = (e, id, card) => {
         e.stopPropagation();
-        //
-        const result = deleteCardById(card.cardId);
-
+        
         const newState = copy(planner);
-        //idx를 받고, state에서 idx에 해당하는 카드를 지우고, idx보다 높은 곳은 intOrder--를 해준다.
+        
         for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {
             newState[cardStatusIndex][i].intOrder--;
         }
-
-        //redux로 받아온것은 readonly이기 떄문에, 우리가 쓸떄는 새롭게 만들어야한다.
+        
         newState[cardStatusIndex].splice(id, 1);
-
+        
         dispatch(
             plannerListActions.updatePlanner({
                 plannerId: quote[0],
                 planner: newState,
             })
         );
+        const result = deleteCardById(card.cardId);
     };
 
     const addCard = async () => {
@@ -63,8 +61,7 @@ export default function DroppableComponent(props) {
         card.plannerId = plannerId;
         card.checklists = [{ checked: 0, title: 'done' }];
 
-        const result = await postCard(card);
-
+        
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],
@@ -73,6 +70,7 @@ export default function DroppableComponent(props) {
             })
         );
         dispatch(siteActions.setIsData(false));
+        const result = await postCard(card);
     };
 
     const droppableComponentRegister = (provided, snapshot) => ({
@@ -92,7 +90,6 @@ export default function DroppableComponent(props) {
     return (
         <Droppable key={cardStatusIndex} droppableId={`${cardStatusIndex}`}>
             {(provided, snapshot) => {
-                //Droppable에서 제공하는 무언가 같음. 환경 설정이 들어가 있음.
                 return (
                     <>
                         <div {...droppableComponentRegister(provided, snapshot)}>

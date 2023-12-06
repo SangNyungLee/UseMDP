@@ -33,7 +33,6 @@ const _QuoteContainer = styled.div`
 const _Thumbnail = styled.div`
     display: flex;
     width: 100%;
-    /* height: 80vh; */
 `;
 
 export default function QuoteAppOnlyRead() {
@@ -76,7 +75,6 @@ export default function QuoteAppOnlyRead() {
     let plannerInfo;
 
     function sortByIntOrder(data) {
-        // intOrder를 기준으로 오름차순 정렬
         const tmp = [[], [], []];
         for (let i = 0; i < 3; i++) {
             tmp[i] = data[i].slice().sort((a, b) => a.intOrder - b.intOrder);
@@ -105,7 +103,6 @@ export default function QuoteAppOnlyRead() {
         setVisible(true);
     }
 
-    //여기서는 상태를 바꿀 생각이 없어서, event를 걸지 않음. state변화 X
     function onDragEnd(result, provided) {
         const { source, destination } = result;
 
@@ -113,16 +110,14 @@ export default function QuoteAppOnlyRead() {
             return;
         }
     }
-    // ...state, getItems(1)
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
 
-        // Attach the event listener on component mount
         window.addEventListener('resize', handleResize);
 
-        // Clean up the event listener on component unmount
         return () => {
             window.removeEventListener('resize', handleResize);
         };

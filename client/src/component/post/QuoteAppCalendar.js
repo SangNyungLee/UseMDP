@@ -22,13 +22,7 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const _Toolbar = styled.div`
-  /* width: 55vw; */
   margin-bottom: 10px;
-  @media screen and (max-width: 1300px) {
-    & {
-      /* width: 65vw; */
-    }
-  }
 `;
 
 const _ToGoButton = styled.div`
@@ -62,40 +56,40 @@ const _SwitchButton = styled.button`
   }
 `;
 
-const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
+const CustomToolbar = ({ label, onNavigate, onView }) => {
   const goToToday = (e) => {
     e.stopPropagation();
-    onNavigate("TODAY"); // 오늘 날짜로 이동
+    onNavigate("TODAY");
   };
 
   const goToNext = (e) => {
     e.stopPropagation();
-    onNavigate("NEXT"); // 다음 달로 이동
+    onNavigate("NEXT");
   };
 
   const goToPrev = (e) => {
     e.stopPropagation();
-    onNavigate("PREV"); // 이전 달로 이동
+    onNavigate("PREV");
   };
 
   const switchToMonthView = (e) => {
     e.stopPropagation();
-    onView("month"); // 주 단위(view)로 전환
+    onView("month");
   };
 
   const switchToWeekView = (e) => {
     e.stopPropagation();
-    onView("week"); // 주 단위(view)로 전환
+    onView("week");
   };
 
   const switchToDayView = (e) => {
     e.stopPropagation();
-    onView("day"); // 날짜 단위(view)로 전환
+    onView("day");
   };
 
   const switchToAgendaView = (e) => {
     e.stopPropagation();
-    onView("agenda"); // 날짜 단위(view)로 전환
+    onView("agenda");
   };
 
   return (

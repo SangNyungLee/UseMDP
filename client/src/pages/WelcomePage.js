@@ -1,10 +1,9 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useEffect, useState } from 'react';
 import useDefaultCheck from '../hook/useDefaultCheck';
 import FileInputComponent from '../component/FileInputComponent';
 import { requestFail } from '../component/etc/SweetModal';
-import { useDispatch } from 'react-redux';
 import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import {
 	_PageWrapper,
@@ -21,7 +20,6 @@ import {
 } from '../constant/css/styledComponents/__WelcomePage';
 
 export default function WelcomePage() {
-	const dispatch = useDispatch();
 
 	const isMobile = useMediaQuery({
 		query: '(max-width: 576px)',
@@ -89,5 +87,3 @@ export default function WelcomePage() {
 		</_PageWrapper>
 	);
 }
-
-// direction={isMobile ? 'vertical' : 'horizontal'}

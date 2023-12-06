@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-//todo     doing    done
 
 const initialState = [];
 

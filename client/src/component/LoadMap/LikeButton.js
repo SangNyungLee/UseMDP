@@ -5,7 +5,6 @@ import yellowStar from "../../constant/img/yellowStar.png";
 import { deletePlannerUnlike, postPlannerLike } from "../../utils/DataAxios";
 import { useDispatch } from "react-redux";
 import { likeActions } from "../../store/like";
-import { FaRegStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { requestFail } from "../etc/SweetModal";
 
@@ -19,27 +18,7 @@ const _Star = styled.img`
   margin-right: 2px;
   z-index: 5;
 `;
-const _FaStar = styled(FaRegStar)`
-  position: absolute;
-  color: #fcd703;
-  right: 0px;
-  bottom: 10px;
-  width: 23px;
-  height: 23px;
-  margin-right: 2px;
-  z-index: 5;
-`;
 
-const _FaStar2 = styled(FaRegStar)`
-  position: absolute;
-  color: #d3d3d3;
-  right: 0px;
-  bottom: 10px;
-  width: 23px;
-  height: 23px;
-  margin-right: 2px;
-  z-index: 5;
-`;
 const LikeButton = (props) => {
   const likes = useSelector((state) => state.like);
   const plannerId = props.plannerId;
@@ -90,7 +69,3 @@ const LikeButton = (props) => {
 };
 
 export default LikeButton;
-{
-  /*<>{isLike ? <_FaStar onClick={(e) => isStarCilckUnLike(e)}></_FaStar> : <_FaStar2 onClick={(e) => isStarCilckLike(e)}></_FaStar2>}</>;  */
-  // ;
-}

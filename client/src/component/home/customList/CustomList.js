@@ -38,7 +38,7 @@ export default function CustomList(props) {
                 <_Row xs={'auto'} xl={4} id={'ROW'}>
                     {sortedData.map((planner, idx) => {
                         return (
-                            <_Col id="_Col" key={planner.title}>
+                            <_Col id="_Col" key={`${planner.title}+${idx}`}>
                                 <CustomLoadMap datas={planner} />
                             </_Col>
                         );
