@@ -5,6 +5,7 @@ export const _Container = styled(Container)`
     padding: 0;
     margin: 0;
     width: 100%;
+    overflow-y: hidden;
 `;
 export const _Row = styled(Row)`
     width: 100%;
