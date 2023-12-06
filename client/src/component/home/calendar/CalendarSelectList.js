@@ -74,6 +74,7 @@ export default function CalendarSelectList({
   setIsVisible,
   target,
   index,
+  setIsClickPlanner,
 }) {
   const [isClick, setIsClick] = useState(false);
   const dispatch = useDispatch();
@@ -127,6 +128,7 @@ export default function CalendarSelectList({
                 index={id}
                 plannerId={plannerId}
                 setIsVisible={setIsVisible}
+                setIsClickPlanner={setIsClickPlanner}
               />
             ))}
           </_CardsContainer>

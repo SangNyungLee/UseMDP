@@ -76,6 +76,7 @@ export default function CardStatusSelectList({
   index,
   plannerId,
   setIsVisible,
+  setIsClickPlanner,
 }) {
   const [isClick, setIsClick] = useState(false);
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ export default function CardStatusSelectList({
       })
     );
     setIsVisible(false);
+    setIsClickPlanner(false);
   };
 
   const selectClick = (e) => {
