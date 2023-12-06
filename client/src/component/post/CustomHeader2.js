@@ -13,6 +13,7 @@ import FileImageInputComponent from '../FileImageInputComponent';
 import Select from 'react-select'; //라이브러리 import
 import { Modal, Button } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
+import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
     const isMobile = useMediaQuery({
@@ -172,64 +173,6 @@ function CustomHeader2(props) {
         DataDownload(plannerInfo.title, res.data.data);
     };
 
-    const [readFile, setReadFile] = useState();
-    const fileInputRef = useRef();
-    //useRead를 참고
-
-    const handleButtonClick = (e) => {
-        e.stopPropagation();
-        fileInputRef.current.click();
-    };
-
-    const handleFileChange = (event) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const fileContents = e.target.result;
-            setReadFile(fileContents);
-        };
-        reader.readAsText(event.target.files[0]);
-        resetFileInput();
-    };
-
-    useEffect(() => {
-        if (readFile) {
-            const data = JSON.parse(readFile);
-            console.log('data', data);
-            if (validateUnspecifiedPlannerData(data)) {
-                console.log('planner');
-                readPlannerData(data, false);
-            } else {
-                requestFail('파일 읽기', '올바르지 않은 형식');
-            }
-        }
-    }, [readFile]);
-
-    const readPlannerData = async (data, specified) => {
-        const result = await readPlanner(data, specified);
-        console.log('read planner result', result);
-        if (result) {
-            dispatch(plannerListActions.addPlanner(result));
-        } else {
-            requestFail('데이터');
-        }
-    };
-
-    const resetFileInput = () => {
-        const currentFileInput = fileInputRef.current;
-
-        const newFileInput = document.createElement('input');
-        newFileInput.type = 'file';
-        newFileInput.style.display = 'none';
-
-        newFileInput.addEventListener('change', handleFileChange);
-
-        if (currentFileInput.parentNode) {
-            currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
-        }
-
-        fileInputRef.current = newFileInput;
-    };
-
     const patchPlannerAndDispatch = async (thumbnail) => {
         const data = { ...plannerInfo, thumbnail: thumbnail };
         console.log('patchPlannerAndDispatch', data);
@@ -252,7 +195,7 @@ function CustomHeader2(props) {
                     {/* <button onClick={homeNavigate} type="button" className="button-style">
                         <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
                     </button> */}
-                    <button onClick={homeNavigate} type="button" className="button-style-right">
+                    <button type="button" className="button-style-right">
                         <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
                 </div>
@@ -262,10 +205,11 @@ function CustomHeader2(props) {
                         <FaTags style={{ fontSize: '16px', color: 'white' }} />
                     </button>
 
-                    <button onClick={handleButtonClick} type="button" className="button-style-right">
-                        <FaPlus style={{ fontSize: '16px', color: 'white' }} />
-                        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
-                    </button>
+                    <FileInputComponent>
+                        <button type="button" className="button-style-right">
+                            <FaPlus style={{ fontSize: '16px', color: 'white' }} />
+                        </button>
+                    </FileInputComponent>
 
                     <button onClick={handleDownLoad} type="button" className="button-style-right">
                         <FaDownload style={{ fontSize: '16px', color: 'white' }} />
