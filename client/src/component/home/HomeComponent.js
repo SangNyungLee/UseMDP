@@ -41,7 +41,11 @@ export default function HomeComponent() {
 					<_ComponentTitle id='_ComponentTitle'>MY PLANNERS</_ComponentTitle>
 				</div>
 				<div>
-					<_FilterSelect id='sort' value={sortOption} onChange={handleSortChange}>
+					<_FilterSelect
+						id='sort'
+						value={sortOption}
+						onChange={handleSortChange}
+						className='form-select form-select-sm'>
 						<option value='title'>이름</option>
 						<option value='createdAt'>생성</option>
 						<option value='updatedAt'>수정</option>
