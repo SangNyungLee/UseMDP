@@ -28,7 +28,7 @@ export default function SearchLoadMap(props) {
     const [isHovering, setIsHovering] = useState(false);
 
     const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
-    // console.log(props);
+
     const isLike = props.isLike;
 
     const handleClick = (e) => {

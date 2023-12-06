@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { FaImage } from 'react-icons/fa';
 
 import ReactCrop from 'react-image-crop';
@@ -69,7 +68,6 @@ export default function FileImageInputComponent({ setState }) {
     };
 
     const handleFileChange = (event) => {
-        console.log('event', event);
         const file = event.target.files[0];
 
         if (!file) {
@@ -175,8 +173,8 @@ export default function FileImageInputComponent({ setState }) {
                             }}
                         >
                             <img src={src} style={{
-                                maxWidth: "600px",
-                                maxHeight: "600px",
+                                maxWidth: "400px",
+                                maxHeight: "400px",
                              }} />
                         </ReactCrop>
                         <_ButtonContainer>

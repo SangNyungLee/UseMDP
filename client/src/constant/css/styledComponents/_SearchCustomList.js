@@ -4,14 +4,8 @@ import { Row, Col, Container } from 'react-bootstrap';
 export const _Container = styled(Container)`
     padding: 0;
     margin: 0;
-<<<<<<< HEAD
-    &::-webkit-scrollbar {
-        display: none;
-    }
-=======
     width: 100%;
     overflow-y: hidden;
->>>>>>> aa8cef2ae7e5c32eb9bb245f0aa5d7d17f4bba05
 `;
 
 export const _Row = styled(Row)`

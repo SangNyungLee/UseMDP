@@ -15,37 +15,9 @@ export default function useRead(target){
 
     const dispatch = useDispatch();
 
-    // useEffect(()=>{
-    //     if(readData){
-    //         const data = JSON.parse(readData)
-    //         console.log("data",data);
-    //         if (validatePlannerData(data)) {
-    //             // cards = [ [] , [] , [] ] 형태
-    //             console.log("planner")
-    //             readPlannerData(data,true);
-    //         } else if (validateUnspecifiedPlannerData(data)) {
-    //             // cards = [] 형태
-    //             console.log("planner2")
-    //             readPlannerData(data,false);
-    //         } else if (validatePlannerListData(data)) {
-    //             // cards = [ [] , [] , [] ] 형태
-    //             console.log("plannerList")
-    //             readPlannerListData(data,true);
-    //         } else if (validateUnspecifiedPlannerListData(data)) {
-    //             // cards = [] 형태
-    //             console.log("unspecified plannerList")
-    //             readPlannerListData(data,false);
-    //         } else {
-    //             console.log("error")
-    //         }
-    //         setReadData();
-    //     }
-    // },[readData])
-
     useEffect(()=>{
         if(readData){
             const data = JSON.parse(readData)
-            console.log("data",data);
             if (validateUnspecifiedPlannerData(data)) {
                 readPlannerData(data,false);
             } else {

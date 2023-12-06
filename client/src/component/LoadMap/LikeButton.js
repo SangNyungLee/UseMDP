@@ -43,7 +43,6 @@ const _FaStar2 = styled(FaRegStar)`
 const LikeButton = (props) => {
     const likes = useSelector((state) => state.like);
     const plannerId = props.plannerId;
-    console.log("LikeButton likes",likes)
     const isLike = likes.includes(plannerId);
     const dispatch = useDispatch();
 
@@ -66,9 +65,6 @@ const LikeButton = (props) => {
     const isStarCilckUnLike = async (e) => {
         e.stopPropagation();
         const isLiked = likes.some((like) => like === plannerId);
-        console.log('likes', likes);
-        console.log('plannerId', plannerId);
-        console.log('isLiked', isLiked);
         if (isLiked) {
             dispatch(likeActions.delPlannerLike(plannerId));
             const res = await deletePlannerUnlike(plannerId);

@@ -19,7 +19,6 @@ export default function RightClickMenu() {
     //지금은 썸네일을 다운로드하는 로직을 만들어둘것임. 필요할 듯함.
     function handleThumbnailDownload(e) {
         e.stopPropagation()
-        console.log('download', thumnnailRef.current);
         ThumbnailMaker(thumnnailRef);
     }
     return (
