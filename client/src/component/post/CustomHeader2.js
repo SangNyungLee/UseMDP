@@ -275,9 +275,14 @@ function CustomHeader2(props) {
                                     ...baseStyles,
                                     width: '35vw',
                                 }),
+                                valueContainer: (base) => ({
+                                    ...base,
+                                    height: '37px',
+                                    overflowX: 'hidden',
+                                }),
                                 multiValue: (baseStyles) => ({
                                     ...baseStyles,
-                                    // backgroundColor: "lightblue", // 선택된 항목의 배경색
+                                    display: 'none',
                                 }),
                             }}
                             options={tags2} //위에서 만든 배열을 select로 넣기

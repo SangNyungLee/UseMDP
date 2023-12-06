@@ -26,7 +26,7 @@ const LeftClicker = (props) => {
 
     return (
         <ListGroup style={{ position: 'fixed', zIndex: 99, top: props.point[0], left: props.point[1] }}>
-            <ListGroup.Item className="bg-dark" onClick={(e) => toPlannerLink(e)} style={{ color: 'white' }}>
+            <ListGroup.Item onClick={(e) => toPlannerLink(e)} style={{ backgroundColor: '#EEEEEE', color: '#222831' }}>
                 Show Plans
             </ListGroup.Item>
             {/* <ListGroup.Item className="bg-dark" onClick={(e) => saveState(e)} style={{ color: 'white' }}>

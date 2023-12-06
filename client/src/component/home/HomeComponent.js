@@ -4,7 +4,12 @@ import useDefaultCheck from '../../hook/useDefaultCheck';
 import { HOME } from '../../constant/constant';
 import { useSelector, useDispatch } from 'react-redux';
 // Styled Components
-import { _ComponentContainer, _ComponentTitle } from '../../constant/css/styledComponents/__HomeComponent';
+import {
+	_ComponentContainer,
+	_ComponentTitle,
+	_TitleContainer,
+	_FilterSelect,
+} from '../../constant/css/styledComponents/__HomeComponent';
 import { useEffect, useState } from 'react';
 
 const statusIndexMap = {
@@ -31,14 +36,18 @@ export default function HomeComponent() {
 
 	return (
 		<_ComponentContainer $fluid id='_ComponentContainerHOME'>
-			<_ComponentTitle id='_ComponentTitle'>
-				MY PLANNERS
-				<select id='sort' value={sortOption} onChange={handleSortChange}>
-					<option value='title'>이름</option>
-					<option value='createdAt'>생성</option>
-					<option value='updatedAt'>수정</option>
-				</select>
-			</_ComponentTitle>
+			<_TitleContainer>
+				<div>
+					<_ComponentTitle id='_ComponentTitle'>MY PLANNERS</_ComponentTitle>
+				</div>
+				<div>
+					<_FilterSelect id='sort' value={sortOption} onChange={handleSortChange}>
+						<option value='title'>이름</option>
+						<option value='createdAt'>생성</option>
+						<option value='updatedAt'>수정</option>
+					</_FilterSelect>
+				</div>
+			</_TitleContainer>
 			<CustomList datas={plannerList} loadMap={MyLoadMap} sortOption={sortOption}></CustomList>
 		</_ComponentContainer>
 	);

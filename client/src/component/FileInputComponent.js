@@ -9,10 +9,10 @@ import { useSelector } from 'react-redux';
 import { calendarActions } from '../store/calendar';
 
 export default function FileInputComponent({ children, setState }) {
-    const fileInputRef = useRef();
-    const plannerList = useSelector( state => state.plannerList)
-    const [ readData, setReadData ] = useState();
-    const dispatch = useDispatch();
+	const fileInputRef = useRef();
+	const plannerList = useSelector((state) => state.plannerList);
+	const [readData, setReadData] = useState();
+	const dispatch = useDispatch();
 
     useEffect(()=>{
         if(readData){
@@ -43,47 +43,60 @@ export default function FileInputComponent({ children, setState }) {
         }
     }
 
-    const handleButtonClick = (e) => {
-        e.stopPropagation()
-        fileInputRef.current.click();
-    };
+	const readPlannerData = async (data, specified) => {
+		const result = await readPlanner(data, specified);
+		if (result) {
+			const { plannerId } = result;
+			dispatch(plannerListActions.addPlanner(result));
+			if (plannerList.length === 0) {
+				dispatch(calendarActions.setAll([plannerId]));
+			}
+		} else {
+			requestFail('데이터');
+		}
+	};
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (!file) {
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const fileContents = e.target.result;
-            setState ? setState(fileContents) : setReadData(fileContents);
-        };
-        reader.readAsText(file);
-        resetFileInput();
-    };
+	const handleButtonClick = (e) => {
+		e.stopPropagation();
+		fileInputRef.current.click();
+	};
 
-    const resetFileInput = () => {
-        const currentFileInput = fileInputRef.current;
+	const handleFileChange = (event) => {
+		const file = event.target.files[0];
+		if (!file) {
+			return;
+		}
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const fileContents = e.target.result;
+			setState ? setState(fileContents) : setReadData(fileContents);
+		};
+		reader.readAsText(file);
+		resetFileInput();
+	};
 
-        const newFileInput = document.createElement('input');
-        newFileInput.type = 'file';
-        newFileInput.style.display = 'none';
+	const resetFileInput = () => {
+		const currentFileInput = fileInputRef.current;
 
-        newFileInput.addEventListener('change', handleFileChange);
+		const newFileInput = document.createElement('input');
+		newFileInput.type = 'file';
+		newFileInput.style.display = 'none';
 
-        if (currentFileInput.parentNode) {
-            currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
-        }
+		newFileInput.addEventListener('change', handleFileChange);
 
-        fileInputRef.current = newFileInput;
-    };
+		if (currentFileInput.parentNode) {
+			currentFileInput.parentNode.replaceChild(newFileInput, currentFileInput);
+		}
 
-    return (
-        <>
-            <span onClick={ e => handleButtonClick(e)}>
-                {children}
-                <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
-            </span>
-        </>
-    );
+		fileInputRef.current = newFileInput;
+	};
+
+	return (
+		<>
+			<span onClick={(e) => handleButtonClick(e)}>
+				{children}
+				<input type='file' ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
+			</span>
+		</>
+	);
 }
