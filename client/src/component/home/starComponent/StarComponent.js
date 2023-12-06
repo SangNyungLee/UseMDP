@@ -41,16 +41,6 @@ export default function StarComponent() {
             }
         }
 
-<<<<<<< HEAD
-        async function getLike() {
-            const result = await getLikesAxios();
-            if (result.status === 200) {
-                dispatch(likeActions.setLikesInit(result.data));
-            } else {
-                requestFail('좋아요 불러오기');
-            }
-        }
-=======
 		async function getLike() {
 			const result = await getLikesAxios();
 			if (result.status === 200) {
@@ -59,7 +49,6 @@ export default function StarComponent() {
 				requestFail('좋아요 불러오기');
 			}
 		}
->>>>>>> aa8cef2ae7e5c32eb9bb245f0aa5d7d17f4bba05
 
         getData();
         getLike();

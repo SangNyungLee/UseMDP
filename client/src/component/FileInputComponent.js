@@ -43,19 +43,6 @@ export default function FileInputComponent({ children, setState }) {
         }
     }
 
-	const readPlannerData = async (data, specified) => {
-		const result = await readPlanner(data, specified);
-		if (result) {
-			const { plannerId } = result;
-			dispatch(plannerListActions.addPlanner(result));
-			if (plannerList.length === 0) {
-				dispatch(calendarActions.setAll([plannerId]));
-			}
-		} else {
-			requestFail('데이터');
-		}
-	};
-
 	const handleButtonClick = (e) => {
 		e.stopPropagation();
 		fileInputRef.current.click();
