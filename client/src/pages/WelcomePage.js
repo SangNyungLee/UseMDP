@@ -77,12 +77,18 @@ export default function WelcomePage() {
 								Bring your storage to our online tool, or save locally with the desktop app.
 							</_Subtitle>
 						</_TitleStack>
-						<_ButtonStack direction={isMobile ? 'vertical' : 'horizontal'} gap={5}>
-							<_Button onClick={(e) => handleNavigation(e)} variant='dark' size='lg'>
+						<_ButtonStack
+							direction={isMobile ? 'horizontal' : 'horizontal'}
+							gap={5}
+							className='justify-content-center justify-content-md-start'>
+							<_Button
+								onClick={(e) => handleNavigation(e)}
+								size='lg'
+								style={{ width: isMobile ? '150px' : 'auto' }}>
 								시작하기
 							</_Button>
 							<FileInputComponent setState={setReadFile}>
-								<_Button className='mx-2' variant='dark' size='lg'>
+								<_Button style={{ width: isMobile ? '150px' : 'auto' }} size='lg'>
 									불러오기
 								</_Button>
 							</FileInputComponent>
@@ -96,3 +102,5 @@ export default function WelcomePage() {
 		</_PageWrapper>
 	);
 }
+
+// direction={isMobile ? 'vertical' : 'horizontal'}
