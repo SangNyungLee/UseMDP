@@ -34,3 +34,12 @@ export const _ComponentTitle = styled.h1`
 		margin: 1rem 0 2rem 3rem;
 	}
 `;
+
+export const _TitleContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+export const _FilterSelect = styled.select`
+	margin: 1rem 0 0 0;
+`;
