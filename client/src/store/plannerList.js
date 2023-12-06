@@ -20,6 +20,7 @@ const plannerListSlice = createSlice({
             return state;
         },
         delPlanner(state, action) {
+            console.log('check', action.payload);
             state = state.filter((planner) => planner.plannerId !== action.payload);
             return state;
         },
