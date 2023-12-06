@@ -91,7 +91,6 @@ export default function FileImageInputComponent({ setState }) {
 
             let newWidth, newHeight;
 
-            // Check if the aspect ratio is taller or wider
             if (crop.width / crop.height > aspectRatio) {
                 newWidth = crop.width;
                 newHeight = crop.width / aspectRatio;
@@ -102,14 +101,8 @@ export default function FileImageInputComponent({ setState }) {
             canvas.width = newWidth;
             canvas.height = newHeight;
 
-            // canvas.width = crop.width;
-
-            // canvas.height = crop.height;
-
             const context = canvas.getContext('2d');
             context.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, newWidth, newHeight);
-            // context.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
-            // .replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
             const croppedBase64 = canvas.toDataURL('image/webp');
             setState(croppedBase64);
             setCompletedCrop({});
@@ -121,7 +114,9 @@ export default function FileImageInputComponent({ setState }) {
     };
 
     const handleCropClick = () => {
-        makeClientCrop(completedCrop);
+        if(completedCrop.width){
+            makeClientCrop(completedCrop);
+        }
         setCompletedCrop({});
         setSrc();
         setCrop({});
@@ -132,23 +127,6 @@ export default function FileImageInputComponent({ setState }) {
         setSrc();
         setCrop({});
     }
-
-    // const handleCropRatio = () => {
-    //     const currentRatio = crop.width / crop.height;
-    //     if (currentRatio < aspectRatio) {
-    //         if ( crop.height * aspectRatio < size.width){
-    //             setCrop( prev => ({...prev, width: prev.height * aspectRatio }))
-    //         } else {
-    //             setCrop( prev => ({...prev, height: prev.width / aspectRatio }))
-    //         }
-    //     } else if (currentRatio > aspectRatio) {
-    //         if ( crop.width / aspectRatio < size.height){
-    //             setCrop( prev => ({...prev, height: prev.width / aspectRatio }))
-    //         } else {
-    //             setCrop( prev => ({...prev, width: prev.height * aspectRatio }))
-    //         }
-    //     }
-    // }
 
     return (
         <>
@@ -167,10 +145,7 @@ export default function FileImageInputComponent({ setState }) {
                             onChange={(newCrop) => setCrop(newCrop)}
                             onComplete={handleCropComplete}
                             keepSelection={false}
-                            style={{
-                                // maxWidth: '100%',
-                                // maxHeight: '100%',
-                            }}
+                            style={{}}
                         >
                             <img src={src} style={{
                                 maxWidth: "400px",

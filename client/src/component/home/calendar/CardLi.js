@@ -27,13 +27,6 @@ const _CardLi = styled.li`
   &:hover {
     cursor: pointer;
   }
-
-  /* &::before {
-    content: ">";
-    margin-right: 8px;
-    display: inline-block;
-    transform-origin: center;
-  } */
 `;
 
 const _DelButton = styled.button`

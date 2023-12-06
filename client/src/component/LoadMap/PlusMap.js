@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import base64Str from "../../constant/ImageBase64";
@@ -31,7 +30,6 @@ export default function PlusMap(props) {
   ) => {
     console.log(editedCreator, editedTitle, editedPlannerAccess);
 
-    // axios로 planner를 생성하자.
     const data = {
       creator: creatorInput,
       title: titleInput,
@@ -61,14 +59,12 @@ export default function PlusMap(props) {
         })
       );
 
-      // SweetAlert을 이용하여 성공 메시지를 보여줌
       Swal.fire({
         icon: "success",
         title: "플래너 생성 성공!",
         text: "플래너가 성공적으로 생성되었습니다.",
       });
     } catch (error) {
-      // SweetAlert을 이용하여 에러 메시지를 보여줌
       Swal.fire({
         icon: "error",
         title: "플래너 생성 실패",
@@ -78,7 +74,6 @@ export default function PlusMap(props) {
   };
 
   const handleClick = async (e) => {
-    // SweetAlert을 이용하여 입력 폼을 보여줌
     e.stopPropagation();
     const result = await Swal.fire({
       title: "플래너 생성",
@@ -102,16 +97,12 @@ export default function PlusMap(props) {
     });
 
     if (result.isConfirmed) {
-      // 입력값을 가져와서 상태 업데이트
       const titleInput = Swal.getPopup().querySelector("#swal-input1").value;
       const creatorInput = Swal.getPopup().querySelector("#swal-input2").value;
       const plannerAccessInput = result.value;
-      console.log("title", titleInput, creatorInput, plannerAccessInput);
       setEditedTitle(titleInput);
       setEditedCreator(creatorInput);
       setEditedPlannerAccess(plannerAccessInput);
-
-      // 확인 버튼 클릭 시 플래너 생성 함수 호출
       handleSaveChanges(titleInput, creatorInput, plannerAccessInput);
     }
   };

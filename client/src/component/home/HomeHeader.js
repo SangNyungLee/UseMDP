@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Nav, Navbar, Container, Button, Modal } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
@@ -20,7 +20,6 @@ export default function HomeHeader() {
   const [show, setShow] = useState(false);
   //   const [isLogin, setIsLogin] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   //sweetAlert라이브러리
   const MySwal = withReactContent(Swal);
@@ -34,15 +33,6 @@ export default function HomeHeader() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 로컬스토리지에 저장된 isLogin을 가져와서 변수에 저장해놓음
-  // useEffect(() => {
-  //   const checkIsLogin = localStorage.getItem("isLogin");
-  //   if (checkIsLogin) {
-  //     dispatch(siteActions.setIsLogin(checkIsLogin === "true"));
-  //   }
-  // }, [dispatch]);
-
-  // 반응형으로 모바일 화면일때 헤더 버튼 크기 줄이기
   const isMobile = useMediaQuery({
     query: "(max-width: 576px)",
   });

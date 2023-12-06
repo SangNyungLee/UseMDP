@@ -2,13 +2,6 @@ import { v4 } from 'uuid';
 
 const grid = 8;
 
-// 가짜 데이터 생성기, coverColor, title이 있음.
-//title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
-// getItems = (count, offset=0) => {}  :   count랑 offset을 변수로 받되 offset은 기본값을 0으로
-// Array.from({ length: count }, (v, k) => k) : 길이가 count인 배열을 생성하는데
-// (v,k) => k 를 적어 넣으면 k 값을 0부터 count - 1 까지 for문 돌리듯 대응시킨다 (관용적으로 쓴다 봐도 될듯)
-// 가짜 데이터 생성기, coverColor, title이 있음.
-//title이야 content 바꿔쓰면 되지만, coverColor를 제공하는 것을 해볼것.
 export function getItems(count, offset = 0, separatorStr = 'TODO') {
     return Array.from({ length: count }, (v, k) => k).map((k) => {
         const r1 = Math.floor(Math.random() * 31);
@@ -32,7 +25,6 @@ export function getItems(count, offset = 0, separatorStr = 'TODO') {
 
 export function getItemStyle(isDragging, draggableStyle) {
     return {
-        // some basic styles to make the items look a bit nicer
         userSelect: 'none',
         padding: `0 0 ${grid * 2}px 0`,
         margin: `0 0 ${grid}px 0`,
@@ -40,10 +32,7 @@ export function getItemStyle(isDragging, draggableStyle) {
         borderTopLeftRadius: '10px',
         borderBottomRightRadius: '10px',
         borderBottomLeftRadius: '10px',
-        // change background colour if dragging
         background: isDragging ? 'lightgreen' : 'white',
-
-        // styles we need to apply on draggables
         ...draggableStyle,
     };
 }
@@ -55,8 +44,7 @@ export function getListStyle(isDraggingOver) {
         width: '25%',
         marginLeft: '5px',
         borderRadius: '10px',
-        // marginRight: '50px',
-        minHeight: 'auto', // Set minHeight to 'auto' to adjust the height based on content
+        minHeight: 'auto',
         maxHeight: '80vh'
     };
 }

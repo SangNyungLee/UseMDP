@@ -22,8 +22,6 @@ export default function useDefaultCheck() {
 
 	const dispatch = useDispatch();
 
-	// location.pathname.startsWith('/home')
-
 	const pathCheckArr = [
 		"/home",
 		"/planner",
@@ -56,10 +54,6 @@ export default function useDefaultCheck() {
 			}
 		};
 	}, [site]);
-
-	const pathCheck = () => {
-		pathCheckArr.some( path => location.pathname.startsWith(path) )
-	}
 
     const getMyPlannerAndDispatch = async () => {
         const result = await getMyPlanner();

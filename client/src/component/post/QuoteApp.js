@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import QuoteHeader from './QuoteHeader';
 import QuoteSpinner from './QuoteSpinner';
 import DroppableComponent from './DroppableComponent';
-import useLocalStorage from 'use-local-storage';
 import sky from '../../constant/img/sky.jpg';
 import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
@@ -37,7 +36,6 @@ const _QuoteContainer = styled.div`
 const _Thumbnail = styled.div`
     display: flex;
     width: 100%;
-    /* height: 80vh; */
 `;
 
 export default function QuoteApp() {
@@ -61,12 +59,10 @@ export default function QuoteApp() {
     let plannerInfo;
 
     function sortByIntOrder(data) {
-        // intOrder를 기준으로 오름차순 정렬
         const tmp = [[], [], []];
         for (let i = 0; i < 3; i++) {
             tmp[i] = data[i].slice().sort((a, b) => a.intOrder - b.intOrder);
         }
-        // 새로운 배열 반환
         return tmp;
     }
 
@@ -109,7 +105,6 @@ export default function QuoteApp() {
             }
         }
         if (!site.isData) {
-            // isData가 false면, 전부 재로딩한다.
             fetchData();
         }
     }, [site.isData]);
@@ -124,14 +119,11 @@ export default function QuoteApp() {
         } else {
             requestFail('카드 정보');
         }
-        // setSelectedCard(planner[ind][index]);
     }
 
-    //dnd에서는, dragend와 onclick이 구분되게 됨.
     function onDragEnd(result, provided) {
         const { source, destination } = result;
 
-        // dropped outside the list
         if (!destination) {
             return;
         }
@@ -192,22 +184,17 @@ export default function QuoteApp() {
             );
         }
     }
-    // ...state, getItems(1)
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
-
-        // Attach the event listener on component mount
         window.addEventListener('resize', handleResize);
-
-        // Clean up the event listener on component unmount
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
 
-    // If the window width is greater than or equal to 800px, hide the calendar
     const isCalendarVisible = windowWidth > 1024;
 
     if (!planner) {
@@ -218,7 +205,6 @@ export default function QuoteApp() {
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerInfo={plannerInfo} setSwitch={setSwitchContext} />
                 <_QuoteAppContainer $image={plannerThumbnail ? plannerThumbnail : sky}>
                     <_Thumbnail ref={thumnnailRef}>
-                        {/* 1024보다 클때 -> 모두 출력 */}
                         {isCalendarVisible ? (
                             <>
                                 <_QuoteContainer>

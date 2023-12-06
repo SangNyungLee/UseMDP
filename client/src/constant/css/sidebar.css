@@ -16,11 +16,9 @@
     grid-template-areas: "sidebar content";
   }
 }
-/* SIDEBAR */
+
 .sidebar {
-  /* display: flex; */
   flex-direction: column;
-  /* justify-content: space-between; */
   position: fixed;
   width: 9rem !important;
   z-index: 9999;

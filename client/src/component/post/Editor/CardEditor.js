@@ -52,11 +52,8 @@ export default function CardEditor(props) {
                 <CKEditor
                     editor={ClassicEditor}
                     config={{
-                        // (4)
                         extraPlugins: [Base64UploaderPlugin],
-                        //  toolbar: ['heading', '|', 'bold', 'italic', 'codeBlock', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
                     }}
-                    //뭔가 쓰고 싶으면 html 형식으로
                     data={props.post}
                     onReady={(editor) => {
                         editor.editing.view.change((writer) => {
@@ -66,10 +63,6 @@ export default function CardEditor(props) {
                     onChange={(event, editor) => {
                         const data = editor.getData();
                         setEditArea(data);
-                    }}
-                    onBlur={(event, editor) => {
-                    }}
-                    onFocus={(event, editor) => {
                     }}
                 />
             </div>
