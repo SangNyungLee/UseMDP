@@ -74,14 +74,10 @@ export default function StarComponent() {
 			) : (
 				<CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
 			)}
-			{/* plan을 4개씩 출력함. 그런데 idx가 3에서 더보기 버튼을 만들고, 아래는 가려진 상태로 만든다.
-                7,11이 되면 Container를 만들고  */}
 
+			<_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
 
-            <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
-
-            <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
-        </div>
-    );
-
+			<CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
+		</_ComponentContainer>
+	);
 }
