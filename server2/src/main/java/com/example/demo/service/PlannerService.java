@@ -372,12 +372,12 @@ public class PlannerService {
 
         //현재 시간 - 복사할 플래너가 생성된 시간 (밀리초 값으로 변환 후 계산)
         long currentTime = timestamp.getTime();
-        long plannerTime = copiedPlannerEntity.getCreatedAt().getTime();
+        long plannerTime = plannerEntity.getCreatedAt().getTime();
 
         long calTime = currentTime - plannerTime;
 
-        for (CardEntity cardEntity : cardEntities) {
 
+        for (CardEntity cardEntity : cardEntities) {
             //위에서 구한 차이를 이용하여 카드의 startDate와 endDate를 구한 후 반영한다
             long startDate = cardEntity.getStartDate().getTime();
             long endDate = cardEntity.getEndDate().getTime();
