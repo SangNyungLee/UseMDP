@@ -234,8 +234,6 @@ export default function QuoteApp() {
 
     // If the window width is greater than or equal to 800px, hide the calendar
     const isCalendarVisible = windowWidth > 1024;
-    console.log('isCalendarVisible', isCalendarVisible);
-    console.log('plannerList', plannerList);
 
     if (!planner) {
         return <QuoteSpinner />;
