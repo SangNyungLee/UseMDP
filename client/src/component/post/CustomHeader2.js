@@ -5,7 +5,7 @@ import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
-import { getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
+import { deleteTagList, getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import FileImageInputComponent from '../FileImageInputComponent';
@@ -48,7 +48,7 @@ function CustomHeader2(props) {
         if (plannerInfo) {
             const { title, taglist } = plannerInfo;
             titleRef.current.innerText = title;
-            const tmp = taglist.filter((i) => i != null).map((item) => item.value);
+            const tmp = taglist.filter((i) => i != null);
             const initialTags = tags2.filter((tagValue) => {
                 return tmp.includes(tagValue.value);
             });
@@ -134,10 +134,11 @@ function CustomHeader2(props) {
             dispatch(
                 plannerListActions.updateTags({
                     plannerId: plannerInfo.plannerId,
-                    taglist: selectTag,
+                    taglist: selectTag.map((item) => item.value),
                 })
             );
         } else {
+            const result = await deleteTagList(plannerInfo.plannerId);
             setShowModal(false);
         }
     };
