@@ -319,7 +319,7 @@ function CustomHeader2(props) {
                             isMulti
                         />
                     </div>
-                    <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag) => <img style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
+                    <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag,id) => <img key={id} style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModalWithoutSave}>
