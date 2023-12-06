@@ -79,33 +79,8 @@ export default function StarComponent() {
                 7,11이 되면 Container를 만들고  */}
 
             <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
-            {plannerList.length == 0 ? (
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        minHeight: '20vh',
-                    }}
-                >
-                    <img style={{ width: '200px', height: '200px', marginRight: '10px' }} src={noResult} />
-                    <div>
-                        <div style={{ fontSize: '25px' }}> 아직 로드맵을 생성하지 않았어요.</div>
-                        <div
-                            style={{
-                                fontSize: '20px',
-                                fontWeight: '300',
-                                color: 'gray',
-                                marginTop: '10px',
-                            }}
-                        >
-                            데이터를 추가하시겠어요?
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
-            )}
+
+            <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
         </div>
     );
 }

@@ -187,7 +187,7 @@ export default function SearchComponent() {
                         //label custom 해주는거임
                         formatOptionLabel={(tag) => (
                             <div className="tag-option">
-                                <img src={tag.image} alt={tag.label} />
+                                <img style={{ height: '23px' }} src={tag.image} alt={tag.label} />
                             </div>
                         )}
                         onChange={setSelectTag} //값이 바뀌면 setState되게
