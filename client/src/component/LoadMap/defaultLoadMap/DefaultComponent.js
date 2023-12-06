@@ -60,8 +60,9 @@ export default function DefaultComponent() {
 
 	return (
 		<>
-			<_ComponentContainer onClick={handlePoint} $fluid>
+			<_ComponentContainer onClick={handlePoint} $fluid id='_ComponentContainerDEFAULT'>
 				<_ComponentTitle>Templates</_ComponentTitle>
+
 				{data.length == 0 ? (
 					<NoContent />
 				) : (

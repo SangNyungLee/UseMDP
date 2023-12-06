@@ -4,44 +4,41 @@ import { _Row, _Col, _Container } from '../../../constant/css/styledComponents/_
 import { useEffect, useState } from 'react';
 
 export default function CustomList(props) {
+	const data = props.datas;
+	const [sortedData, setSortedData] = useState([]);
+	const sortOption = props.sortOption;
 
-    const data = props.datas;
-    const [ sortedData, setSortedData ] = useState([]);
-    const sortOption = props.sortOption
+	useEffect(() => {
+		if (data) {
+			setSortedData(sortedItems(data, sortOption));
+		}
+	}, [data, sortOption]);
 
-    useEffect(()=>{
-        if(data){
-            setSortedData(sortedItems(data,sortOption));
-        }
-    },[data,sortOption])
+	const sortedItems = (data, option) => {
+		switch (option) {
+			case 'title':
+				return data.slice().sort((a, b) => a.title.localeCompare(b.title));
+			case 'createdAt':
+				return data.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+			case 'updatedAt':
+				return data.slice().sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+			default:
+				return data.slice();
+		}
+	};
 
-    const sortedItems = (data,option) => {
-        switch(option){
-            case 'title':
-                return data.slice().sort((a, b) => a.title.localeCompare(b.title));
-            case 'createdAt':
-                return data.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-            case 'updatedAt':
-                return data.slice().sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-            default:
-                return data.slice();
-        }
-    };
-
-    const noPlus = props.noPlus;
-    console.log('custom data', data);
-
+	const noPlus = props.noPlus;
+	console.log('custom data', data);
 
 	const CustomLoadMap = props.loadMap;
-
 
 	return (
 		<_Container $fluid id={'CustomList'}>
 			<Fade direction={'up'} duration={500} cascade triggerOnce>
-				<_Row xs={'auto'} xl={4}>
+				<_Row xs={'auto'} xl={4} id={'ROW'}>
 					{data.map((planner, idx) => {
 						return (
-							<_Col key={idx + 1}>
+							<_Col id='_Col' key={idx + 1}>
 								<CustomLoadMap datas={planner} />
 							</_Col>
 						);

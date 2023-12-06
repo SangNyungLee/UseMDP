@@ -12,6 +12,7 @@ export const _RenderComponent = styled(Container)`
 	}
 
 	@media screen and (max-width: 575px) {
+		margin: 4rem 0 0 0;
 		padding: 0 0 20% 0;
 		width: 100%;
 	}
