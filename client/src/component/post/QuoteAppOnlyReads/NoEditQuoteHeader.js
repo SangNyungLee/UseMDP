@@ -74,15 +74,29 @@ export default function NoEditQuoteHeader(props) {
                         <FaStar style={{ fontSize: '12px', color: 'white' }} />
                     </button>
 
-                    <button type="button" className="button-style-header">
-                        <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
-                        <span className="private-text">Private</span>
-                    </button>
+                    {plannerInfo.plannerAccess == 'PRIVATE' ? (
+                        <button type="button" className="button-style-right">
+                            <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                            <span className="private-text">Private</span>
+                        </button>
+                    ) : (
+                        <button type="button" className="button-style-header">
+                            <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                            <span className="private-text">Private</span>
+                        </button>
+                    )}
 
-                    <button type="button" className="button-style-header">
-                        <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
-                        <span className="private-text">Public</span>
-                    </button>
+                    {plannerInfo.plannerAccess == 'PUBLIC' ? (
+                        <button type="button" className="button-style-right">
+                            <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                            <span className="private-text">Public</span>
+                        </button>
+                    ) : (
+                        <button type="button" className="button-style-header">
+                            <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                            <span className="private-text">Public</span>
+                        </button>
+                    )}
                 </div>
                 {isMobile ? (
                     <div className="content-header-right">
