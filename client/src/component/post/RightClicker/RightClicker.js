@@ -66,6 +66,7 @@ const RightClicker = (props) => {
 
         setPoint([-1, -1]);
         // //이름을 받아서 지운다
+
         // const removeProperties = (obj, ...propsToRemove) => {
         //     const newObj = { ...obj };
         //     propsToRemove.forEach((prop) => delete newObj[prop]);
