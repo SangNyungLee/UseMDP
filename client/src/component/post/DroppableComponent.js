@@ -24,7 +24,7 @@ const _CardListContainer = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
-`
+`;
 
 export default function DroppableComponent(props) {
     const isMobile = useMediaQuery({
