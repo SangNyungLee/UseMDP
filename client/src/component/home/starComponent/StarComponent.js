@@ -44,7 +44,7 @@ export default function StarComponent() {
 		async function getLike() {
 			const result = await getLikesAxios();
 			if (result.status === 200) {
-				dispatch(likeActions.setLikesInit(result.data));
+				dispatch(likeActions.setLikesInit(result.data.data));
 			} else {
 				requestFail('좋아요 불러오기');
 			}

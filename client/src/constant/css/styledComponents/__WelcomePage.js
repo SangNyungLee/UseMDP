@@ -22,10 +22,7 @@ export const _Row = styled(Row)``;
 
 export const _LeftCol = styled(Col)``;
 
-export const _RightCol = styled(Col)`
-	display: flex;
-	justify-content: center;
-`;
+export const _RightCol = styled(Col)``;
 
 export const _TitleStack = styled(Stack)``;
 
@@ -46,5 +43,5 @@ export const _Subtitle = styled.p`
 export const _Button = styled(Button)``;
 
 export const _Image = styled(Image)`
-    max-width: 100%;
+	max-width: 100%;
 `;

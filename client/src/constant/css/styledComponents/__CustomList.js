@@ -4,6 +4,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 export const _Container = styled(Container)`
 	padding: 0;
 	margin: 0;
+	overflow-y: hidden;
 `;
 
 export const _Row = styled(Row)`

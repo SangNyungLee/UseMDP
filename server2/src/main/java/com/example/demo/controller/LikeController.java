@@ -26,9 +26,9 @@ public class LikeController {
     private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/api/getLikes")
-    public ResponseEntity<APIResponseDTO<Long>> getLikes(@CookieValue(name = "auth", required = false) String token) {
+    public ResponseEntity<APIResponseDTO<List<Long>>> getLikes(@CookieValue(name = "auth", required = false) String token) {
         if(token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<List<Long>>builder()
                     .resultCode("401")
                     .message("로그인 되지 않은 사용자입니다")
                     .data(null)
@@ -37,7 +37,7 @@ public class LikeController {
 
         boolean tokenExpired = JwtTokenUtil.isExpired(token, jwtTokenUtil.getSecretKey());
         if(tokenExpired) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<Long>builder()
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(APIResponseDTO.<List<Long>>builder()
                     .resultCode("401")
                     .message("만료된 토큰입니다. 다시 로그인하세요")
                     .data(null)
@@ -45,19 +45,21 @@ public class LikeController {
         }
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
-        long result = likeService.getPlanner(memberId);
-        if(result == 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponseDTO.<Long>builder()
-                    .resultCode("400")
-                    .message("좋아요 불러오기 실패")
+        try {
+            List<Long> result = likeService.getPlanner(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<List<Long>>builder()
+                    .resultCode("200")
+                    .message("memberId가 좋아요한 plannerId 리스트 반환 성공")
                     .data(result)
                     .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponseDTO.<List<Long>>builder()
+                    .resultCode("200")
+                    .message("memberId가 존재하지 않음")
+                    .data(null)
+                    .build());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(APIResponseDTO.<Long>builder()
-                .resultCode("200")
-                .message("좋아요 불러오기 완료")
-                .data(result)
-                .build());
     }
 
 }
