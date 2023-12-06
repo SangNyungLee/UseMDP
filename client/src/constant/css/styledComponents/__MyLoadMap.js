@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Button, Card } from 'react-bootstrap';
 import { IoMdLock, IoMdUnlock, IoMdDownload } from 'react-icons/io';
 import { LiaEdit } from 'react-icons/lia';
+import { MdDelete } from 'react-icons/md';
 
 export const _CardContainer = styled(Card)`
 	border: none;
@@ -69,7 +70,7 @@ export const _CardDownloadButton = styled(Button)`
 	padding: 0;
 	margin: 0;
 	position: absolute;
-	bottom: 5%;
+	top: 26%;
 	right: 4%;
 `;
 
@@ -101,6 +102,23 @@ export const _DownloadIcon = styled(IoMdDownload)`
 `;
 
 export const _EditIcon = styled(LiaEdit)`
+	color: white;
+	font-size: 1rem;
+
+	&:hover {
+		scale: 1.2;
+	}
+`;
+
+export const _CardDeleteButton = styled(Button)`
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	bottom: 5%;
+	right: 4%;
+`;
+
+export const _DeleteIcon = styled(MdDelete)`
 	color: white;
 	font-size: 1rem;
 
