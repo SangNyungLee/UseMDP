@@ -15,7 +15,6 @@ export default function DefaultComponent() {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [point, setPoint] = useState([-1, -1]);
-	const like = useSelector((state) => state.like);
 	const plannerList = useSelector((state) => state.plannerList);
 	useDefaultCheck(HOME);
 	console.log('플래너', plannerList, data);
@@ -48,7 +47,7 @@ export default function DefaultComponent() {
 		async function getLike() {
 			const result = await getLikesAxios();
             if (result.status === 200) {
-                dispatch(likeActions.setLikesInit(result.data));
+                dispatch(likeActions.setLikesInit(result.data.data));
             } else {
                 requestFail('좋아요 불러오기');
             }
