@@ -198,7 +198,7 @@ function CustomHeader2(props) {
                     {/* <button onClick={homeNavigate} type="button" className="button-style">
                         <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
                     </button> */}
-                    <button type="button" className="button-style-right">
+                    <button onClick={homeNavigate} type="button" className="button-style-right">
                         <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
                 </div>
