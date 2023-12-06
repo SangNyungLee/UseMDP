@@ -35,7 +35,7 @@ export default function CustomList(props) {
 		<_Container $fluid id={'CustomList'}>
 			<Fade direction={'up'} duration={500} cascade triggerOnce>
 				<_Row xs={'auto'} xl={4} id={'ROW'}>
-					{data.map((planner, idx) => {
+					{sortedData.map((planner, idx) => {
 						return (
 							<_Col id='_Col' key={idx + 1}>
 								<CustomLoadMap datas={planner} />
