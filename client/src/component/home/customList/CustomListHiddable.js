@@ -31,7 +31,7 @@ export default function CustomListHiddable(props) {
                     <_Row xxs={2} xs={2} sm={2} md={2} lg={3} xl={4} xxl={4}>
                         {data.map((planner, idx) => {
                             return (
-                                <_Col key={idx + 1}>
+                                <_Col key={planner.title}>
                                     <div onContextMenu={(e) => handleRightClick(e, planner.title, planner.plannerId)}>
                                         <CustomLoadMap datas={planner} isLike={like} />
                                     </div>

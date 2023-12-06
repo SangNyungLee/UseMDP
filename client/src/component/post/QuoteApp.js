@@ -82,6 +82,11 @@ export default function QuoteApp() {
         };
     }
 
+    //planner가 바뀔때마다, localStoage에 저장하는 코드.
+
+    // useEffect(() => {
+    //     console.log('HI', localdata);
+    // }, [localdata, localQuote]);
     useEffect(() => {
         async function fetchData() {
             const result = await getPlannerBtoA(btoa(plannerId));
@@ -101,18 +106,20 @@ export default function QuoteApp() {
                 dispatch(siteActions.setIsData(true));
             } else {
                 requestFail('플래너 불러오기');
-                navi("/home")
+                navi('/home');
             }
         }
         if (!site.isData) {
             fetchData();
         }
+        console.log('Check site');
     }, [site.isData]);
 
     async function cardClick(ind, index) {
         const result = await getCardAxios(planner[ind][index].cardId);
         if (result.status === 200) {
             const cardResult = result.data.data;
+            console.log('cardResult', cardResult);
 
             setSelectedCard(cardResult);
             setVisible(true);
@@ -122,6 +129,7 @@ export default function QuoteApp() {
     }
 
     function onDragEnd(result, provided) {
+        console.log(result, provided);
         const { source, destination } = result;
 
         if (!destination) {

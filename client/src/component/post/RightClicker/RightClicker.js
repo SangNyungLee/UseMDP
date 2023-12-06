@@ -56,20 +56,20 @@ const RightClicker = (props) => {
         e.stopPropagation();
         const result1 = await postCopyPlanners(plannerId);
         if (result1.status !== 201) {
-            requestFail("플래너 복사")
+            requestFail('플래너 복사');
             return;
         }
-        
+
         const btoaId = btoa(result1.data.data);
 
         const result2 = await getPlannerBtoA(btoaId);
-        if (result2.status !== 200){
-            requestFail("복사된 플래너 불러오기")
+        if (result2.status !== 200) {
+            requestFail('복사된 플래너 불러오기');
             return;
         }
 
         const planner = plannerCardStatusDevide(result2.data.data);
-        dispatch(plannerListActions.addPlanner(planner))
+        dispatch(plannerListActions.addPlanner(planner));
         setPoint([-1, -1]);
     };
 

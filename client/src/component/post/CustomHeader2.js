@@ -1,16 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-	FaTrello,
-	FaPlus,
-	FaStar,
-	FaLock,
-	FaLockOpen,
-	FaEllipsisH,
-	FaDownload,
-	FaUser,
-	FaArrowLeft,
-	FaTags,
-} from 'react-icons/fa';
+import { FaTrello, FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft, FaTags } from 'react-icons/fa';
 
 import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
@@ -26,7 +15,6 @@ import { useMediaQuery } from 'react-responsive';
 import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
-
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
@@ -60,17 +48,9 @@ function CustomHeader2(props) {
         if (plannerInfo) {
             const { title, taglist } = plannerInfo;
             titleRef.current.innerText = title;
-
-            const initialTags = taglist.map((tagValue) => {
-                const foundTag = tags2.find((tag) => tag.value === tagValue);
-                if (foundTag) {
-                    return {
-                        value: foundTag.value,
-                        label: foundTag.label,
-                        image: foundTag.image,
-                    };
-                }
-                return { image: tagValue, label: tagValue, image: tagValue };
+            const tmp = taglist.map((item) => item.value);
+            const initialTags = tags2.filter((tagValue) => {
+                return tmp.includes(tagValue.value);
             });
             setSelectTag(initialTags);
         }
@@ -100,25 +80,7 @@ function CustomHeader2(props) {
             })
         );
     };
-    const handlePublic = async () => {
-        const data = {
-            ...plannerInfo,
-            plannerAccess: 'PUBLIC',
-        };
-        const res = await patchPlanner(data);
-        if (res.status !== 200) {
-            requestFail('플래너 상태 저장');
-            return;
-        }
-        dispatch(
-            plannerListActions.updatePlannerAccess({
-                plannerId: plannerInfo.plannerId,
-                plannerAccess: 'PUBLIC',
-            })
-        );
-    };
-
-    const handlePrivate = async () => {
+    const handleToPrivate = async () => {
         const data = {
             ...plannerInfo,
             plannerAccess: 'PRIVATE',
@@ -132,6 +94,24 @@ function CustomHeader2(props) {
             plannerListActions.updatePlannerAccess({
                 plannerId: plannerInfo.plannerId,
                 plannerAccess: 'PRIVATE',
+            })
+        );
+    };
+
+    const handleToPublic = async () => {
+        const data = {
+            ...plannerInfo,
+            plannerAccess: 'PUBLIC',
+        };
+        const res = await patchPlanner(data);
+        if (res.status !== 200) {
+            requestFail('플래너 상태 저장');
+            return;
+        }
+        dispatch(
+            plannerListActions.updatePlannerAccess({
+                plannerId: plannerInfo.plannerId,
+                plannerAccess: 'PUBLIC',
             })
         );
     };
@@ -186,7 +166,6 @@ function CustomHeader2(props) {
             })
         );
     };
-
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -235,24 +214,24 @@ function CustomHeader2(props) {
                 </button>
 
                 {plannerInfo.plannerAccess == 'PRIVATE' ? (
-                    <button onClick={handlePrivate} type="button" className="button-style-right">
+                    <button type="button" className="button-style-right">
                         <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                         <span className="private-text">Private</span>
                     </button>
                 ) : (
-                    <button onClick={handlePrivate} type="button" className="button-style-header">
+                    <button onClick={handleToPrivate} type="button" className="button-style-header">
                         <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                         <span className="private-text">Private</span>
                     </button>
                 )}
 
                 {plannerInfo.plannerAccess == 'PUBLIC' ? (
-                    <button onClick={handlePublic} type="button" className="button-style-right">
+                    <button type="button" className="button-style-right">
                         <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                         <span className="private-text">Public</span>
                     </button>
                 ) : (
-                    <button onClick={handlePublic} type="button" className="button-style-header">
+                    <button onClick={handleToPublic} type="button" className="button-style-header">
                         <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                         <span className="private-text">Public</span>
                     </button>
@@ -311,7 +290,7 @@ function CustomHeader2(props) {
                             isMulti
                         />
                     </div>
-                    <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag,id) => <img key={id} style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
+                    <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag, id) => <img key={id} style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModalWithoutSave}>
@@ -324,7 +303,6 @@ function CustomHeader2(props) {
             </Modal>
         </div>
     );
-
 }
 
 export default CustomHeader2;
