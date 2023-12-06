@@ -320,11 +320,13 @@ export default function MyCalendar() {
               [],
               [],
             ],
-            taglist: [{
-              title: "DEFAULT",
-              valuer: "DEFAULT",
-              thumbnail: "/svg/css.svg"
-            }]
+            taglist: [
+              {
+                title: "DEFAULT",
+                valuer: "DEFAULT",
+                thumbnail: "/svg/css.svg",
+              },
+            ],
           })
         );
 
@@ -393,6 +395,9 @@ export default function MyCalendar() {
           style={{
             flex: 1,
             height: "80vh",
+            background: "#393e46",
+            padding: "10px",
+            borderRadius: "5px",
           }}
           eventPropGetter={eventStyleGetter}
           components={{
