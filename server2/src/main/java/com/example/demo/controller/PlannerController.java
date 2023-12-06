@@ -223,7 +223,7 @@ public class PlannerController implements SwaggerPlannerAPI {
 
         String memberId = JwtTokenUtil.getMemberId(token, jwtTokenUtil.getSecretKey());
         long result = plannerService.postPlannerCopy(requestPostPlannerCopyDTO, memberId);
-        if (result == -1) {
+        if (result == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponseDTO.<Long>builder()
                     .resultCode("400")
                     .message("플래너 복사 및 생성 실패")
