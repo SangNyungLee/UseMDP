@@ -324,7 +324,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ backgroundColor: '#091E420F' }}>
-                    {/*여기에 overDue되면   */}
                     {startDate.getTime() < new Date().getTime() && endDate.getTime() < new Date().getTime() ? <DefaultBtn style={{ width: 'auto', height: '40px' }}>기간이 지났습니다.</DefaultBtn> : null}
                     <TitleEdit>
                         <div>
