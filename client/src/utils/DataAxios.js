@@ -232,13 +232,14 @@ export async function deleteMyPlanner(plannerId) {
 
 export async function patchPlanner(plannerData) {
     const { taglist } = plannerData;
+    const newTagList = taglist.map((tag) => tag.value);
     try {
         const res = await axios({
             method: 'PATCH',
             url: getURL(`/api/patchPlanner`),
             data: {
                 ...plannerData,
-                taglist: taglist ? taglist : [],
+                taglist: newTagList ? newTagList : [],
             },
             withCredentials: true,
         });
