@@ -7,18 +7,21 @@ import { getPlannerBtoA, postCopyPlanners } from '../../../utils/DataAxios';
 import { calendarActions } from '../../../store/calendar';
 import { plannerListActions } from '../../../store/plannerList';
 import { requestFail } from '../../etc/SweetModal';
+import { pointActions } from '../../../store/pointer';
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
 const RightClicker = (props) => {
     //실제 예제에서는 여러 방법으로 Ref를 가져와야함.
     //혹은 html을 줘야함.
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const setPoint = props.setPoint;
     const [plannerTitle, plannerId] = props.rightClickData;
+    console.log('rightclickData', props.rightClickData);
     //일단 로컬에 저장.
     const saveState = async (e) => {
         e.stopPropagation();
         const btoaId = btoa(plannerId);
+        console.log('bta', btoaId);
         const result = await getPlannerBtoA(btoaId);
         // const result = await axios(`/plannerTest`);
         if (result.status === 200) {
@@ -26,11 +29,14 @@ const RightClicker = (props) => {
         } else {
             requestFail('데이터 다운로드');
         }
+        setPoint([-1, -1]);
     };
 
     const toPlannerLink = async (e) => {
         e.stopPropagation();
         const btoaId = btoa(plannerId);
+
+        console.log('bta', btoaId);
         const result = await getPlannerBtoA(btoaId);
         if (result.status === 200) {
             const cardList = result.data.data.cards;
@@ -50,6 +56,8 @@ const RightClicker = (props) => {
         } else {
             requestFail('플래너 불러오기');
         }
+
+        setPoint([-1, -1]);
     };
 
     const toMyLoadMap = async (e) => {
@@ -60,6 +68,7 @@ const RightClicker = (props) => {
             console.log(result.data);
         }
 
+        setPoint([-1, -1]);
         // //이름을 받아서 지운다
         // const removeProperties = (obj, ...propsToRemove) => {
         //     const newObj = { ...obj };
