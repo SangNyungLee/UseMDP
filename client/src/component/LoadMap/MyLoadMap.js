@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPlannerBtoA, patchPlanner, deleteMyPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
 
-//Styled Components with React Bootstrap
 import {
 	_CardContainer,
 	_CardHeader,
@@ -33,51 +32,38 @@ import skyImg from '../../constant/img/sky.jpg';
 import { requestFail } from '../etc/SweetModal';
 import '../../constant/css/sweetAlert.css';
 export default function MyLoadMap(props) {
-	const [isLoading, setIsLoading] = useState(true);
 	const dispatch = useDispatch();
-	const state = useSelector((state) => state.plannerList);
 	const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } =
 		props.datas;
 	const navigate = useNavigate();
 	const handleClick = async (e) => {
 		e.stopPropagation();
-		//모달이 꺼져있으면
-		if (!showModal) {
-			const btoaId = btoa(plannerId);
-			const result = await getPlannerBtoA(btoaId);
-			if (result.status === 200) {
-				const cardList = result.data.data.cards;
-				const cards = [[], [], []];
-				for (let i = 0; i < cardList.length; i++) {
-					if (cardList[i].cardStatus === 'TODO') {
-						cards[0].push(cardList[i]);
-					} else if (cardList[i].cardStatus === 'DOING') {
-						cards[1].push(cardList[i]);
-					} else if (cardList[i].cardStatus === 'DONE') {
-						cards[2].push(cardList[i]);
-					}
+		const btoaId = btoa(plannerId);
+		const result = await getPlannerBtoA(btoaId);
+		if (result.status === 200) {
+			const cardList = result.data.data.cards;
+			const cards = [[], [], []];
+			for (let i = 0; i < cardList.length; i++) {
+				if (cardList[i].cardStatus === 'TODO') {
+					cards[0].push(cardList[i]);
+				} else if (cardList[i].cardStatus === 'DOING') {
+					cards[1].push(cardList[i]);
+				} else if (cardList[i].cardStatus === 'DONE') {
+					cards[2].push(cardList[i]);
 				}
-				dispatch(calendarActions.setQuote([plannerId]));
-				dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-
-				navigate(`/planner?id=${btoaId}`);
-			} else {
-				requestFail('플래너 불러오기');
 			}
+			dispatch(calendarActions.setQuote([plannerId]));
+			dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
+			navigate(`/planner?id=${btoaId}`);
+		} else {
+			requestFail('플래너 불러오기');
 		}
 	};
-	const [starClick, setStarClick] = useState(false);
-
-	// 모달 보여주기
-	const [showModal, setShowModal] = useState(false);
-
-	// 모달폼
 	const [editedTitle, setEditedTitle] = useState(title);
 	const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
 
 	const handleShareIcon = (e) => {
 		e.stopPropagation();
-		//RightClicker 보내주자.
 		DataDownload(editedTitle, {
 			plannerId,
 			creator,
@@ -91,43 +77,7 @@ export default function MyLoadMap(props) {
 		});
 	};
 
-	const changeDataByButton = (e) => {
-		e.stopPropagation();
-		setShowModal(true);
-	};
-	//모달끄기
-	const handleCloseModal = (e) => {
-		e.stopPropagation();
-		setShowModal(false);
-		setEditedTitle(title);
-		setEditedPlannerAccess(plannerAccess);
-	};
-
-	//저장
-	const handleSaveChanges = async (e) => {
-		e.stopPropagation();
-
-		const plannerData = {
-			plannerId,
-			creator,
-			title: editedTitle,
-			likePlanner,
-			thumbnail,
-			isDefault,
-			plannerAccess: editedPlannerAccess,
-			taglist: [],
-		};
-
-		const result = await patchPlanner(plannerData);
-		if (result.status === 200) {
-			setShowModal(false);
-		} else {
-			requestFail('플래너 저장');
-		}
-	};
-	//sweetAlert창
 	const sweetModal = async (e) => {
-		// SweetAlert을 이용하여 입력 폼을 보여줌
 		e.stopPropagation();
 		const result = await Swal.fire({
 			title: '플래너 수정',
@@ -146,7 +96,6 @@ export default function MyLoadMap(props) {
 				}
 			},
 			preConfirm: async () => {
-				// 확인을 눌렀을 때의 로직
 				const inputValue = document.getElementById('swal-input1').value;
 				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
 
@@ -157,7 +106,7 @@ export default function MyLoadMap(props) {
 					likePlanner,
 					thumbnail,
 					isDefault,
-					plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
+					plannerAccess: radioValue,
 					taglist: [],
 				};
 
@@ -183,7 +132,6 @@ export default function MyLoadMap(props) {
 	const [isHovering, setIsHovering] = useState(false);
 
 	const deleteThisPlanner = async (e) => {
-		// e.stopPropagation();
 		const result = await deleteMyPlanner(plannerId);
 		if (result.status === 200) {
 			dispatch(plannerListActions.delPlanner(plannerId));

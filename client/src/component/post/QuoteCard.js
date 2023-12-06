@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import trash from '../../constant/img/trash.svg';
 const _CardHeader = styled.div`
     position: relative;
-    background-color: ${(props) => props.color}; // lowercase를 쓰래서 color로 수정
+    background-color: ${(props) => props.color};
     height: 20px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;

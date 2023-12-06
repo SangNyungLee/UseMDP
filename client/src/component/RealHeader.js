@@ -1,9 +1,5 @@
 import '../constant/css/RealHeader.css';
-
-//추가된거
-
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { GoogleLoginButton, GithubLoginButton } from 'react-social-login-buttons';
@@ -12,7 +8,6 @@ import { siteActions } from '../store/site';
 import { logoutModal, requestFail } from './etc/SweetModal';
 import { postLogout } from '../utils/DataAxios';
 import { MdOutlineFileUpload } from 'react-icons/md';
-
 import FileInputComponent from './FileInputComponent';
 
 export default function RealHeader() {
@@ -21,17 +16,11 @@ export default function RealHeader() {
 	const githubLoginId = process.env.REACT_APP_GITHUB_LOGIN_CLIENT_ID;
 	const MySwal = withReactContent(Swal);
 
-	//유저 이미지, 이름 저장
 	const HeaderUserImage = localStorage.getItem('userImage');
 	const HeaderUserName = localStorage.getItem('userName');
-	//Redux에서 isLogin상태 가져오는거
 	const isLoginRedux = useSelector((state) => state.site.isLogin);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
-	const isMobile = useMediaQuery({
-		query: '(max-width: 576px)',
-	});
 
 	const googleLogin = async (e) => {
 		e.stopPropagation();
@@ -43,7 +32,6 @@ export default function RealHeader() {
 		window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
 	};
 
-	//로그아웃
 	const Logout = async (e) => {
 		e.stopPropagation();
 		const res = await postLogout();
@@ -84,7 +72,6 @@ export default function RealHeader() {
 					clickLogo(e);
 				}}>
 				<img src='/images/004.png' width='60px' height='40px' />
-				{/* useMDP */}
 			</div>
 
 			{isLoginRedux ? (
@@ -95,7 +82,7 @@ export default function RealHeader() {
 								<MdOutlineFileUpload />
 							</FileInputComponent>
 						</div>
-						<div className='dark-light'>{/* <CiDark /> */}</div>
+						<div className='dark-light'></div>
 						<div className='user-menu' onClick={(e) => Logout(e)}>
 							로그아웃
 						</div>

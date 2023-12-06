@@ -3,12 +3,11 @@ import { useDispatch } from "react-redux";
 import { plannerListActions } from "../store/plannerList";
 import { calendarActions } from "../store/calendar";
 import { validateUnspecifiedPlannerData } from "../utils/DataValidate";
-import { readPlanner, readPlannerList } from "../utils/DataAxiosParsing";
-import { HOME } from "../constant/constant";
+import { readPlanner } from "../utils/DataAxiosParsing";
 import { requestFail } from "../component/etc/SweetModal";
 import { useSelector } from "react-redux";
 
-export default function useRead(target){
+export default function useRead(){
     const plannerList = useSelector( state => state.plannerList);
 
     const [ readData, setReadData ] = useState();
@@ -34,22 +33,6 @@ export default function useRead(target){
             dispatch(plannerListActions.addPlanner(result))
             if(plannerList.length === 0){
                 dispatch(calendarActions.setAll([plannerId]))
-            }
-        } else {
-            requestFail("데이터")
-        }
-    }
-
-    const readPlannerListData = async (data,specified) => {
-        const plannerList = await readPlannerList(data,specified);
-        if(plannerList){
-            const plannerId = plannerList[0].plannerId
-            dispatch(plannerListActions.addPlannerList(plannerList))
-            if(target === HOME){
-                dispatch(calendarActions.setSelect({
-                    target,
-                    value: [plannerId]
-                }))
             }
         } else {
             requestFail("데이터")

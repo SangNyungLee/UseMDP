@@ -40,14 +40,6 @@ const _Flex = styled.div`
       display: none;
     }
   }
-  /* @media screen and (max-width: 700px) {
-    & {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  } */
 `;
 
 const _Container = styled.div`
@@ -104,10 +96,6 @@ export default function CalendarSelect({ target }) {
     setIsClick((prev) => !prev);
     setIsVisible((prev) => !prev);
   };
-
-  // const plannerTitleClick = (value) => {
-  //   setIsVisible(value);
-  // };
 
   return (
     <_Flex>

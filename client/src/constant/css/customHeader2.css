@@ -21,12 +21,10 @@ textarea {
 
 .nav-bar {
   background-color: #222831;
-  /* background: url(https://d2k1ftgv7pobq7.cloudfront.net/meta/p/res/images/trello-header-logos/af7af6ed478d3460709d715d9b3f74a4/trello-logo-white.svg); */
   background-size: 80px;
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: 0 0px 2px 0 #222831;
-  /* height: 18px; */
   padding: 6px 10px 10px 10px;
   display: flex;
   justify-content: space-between;
@@ -61,7 +59,6 @@ textarea {
   font-size: 16px;
   color: white;
   margin: 4px 4px 5px 5px;
-  /* float: right; */
 }
 
 .input-style {
@@ -78,7 +75,6 @@ textarea {
 }
 
 .right-bar > * {
-  /* padding: 4px 6px; */
   margin-left: 10px;
 }
 

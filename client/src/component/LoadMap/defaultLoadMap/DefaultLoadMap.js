@@ -5,11 +5,7 @@ import StarComponent from '../../home/starComponent/StarComponent';
 import MyCalendar from '../../home/MyCalendar';
 import SearchComponent from '../../home/searchComponent/SearchComponent';
 import HomeComponent from '../../home/HomeComponent';
-
-// 서타일
 import { _RenderComponent } from '../../../constant/css/styledComponents/__DefaultLoadMap';
-
-//사이드바 css
 import '../../../constant/css/sidebar.css';
 import { HiTemplate } from 'react-icons/hi';
 import { FaFire } from 'react-icons/fa6';

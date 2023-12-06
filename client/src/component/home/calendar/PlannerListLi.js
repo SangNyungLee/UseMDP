@@ -26,7 +26,6 @@ const _PlannerDiv = styled.div`
   border-radius: 5px;
   padding: 10px;
   margin: 5px;
-  /* box-shadow: 1px 1px 1px 1px lightgrey; */
   align-items: center;
   background-color: white;
 
@@ -43,7 +42,7 @@ const _PlannerDiv = styled.div`
     transform: ${({ $visible }) =>
       $visible
         ? "rotate(90deg)"
-        : "none"}; /* visible이 true일 때 회전, 그 외에는 회전하지 않음 */
+        : "none"};
     transform-origin: center;
   }
 `;
@@ -88,7 +87,6 @@ export default function PlannerListLi({ planner }) {
     return filteredEvents;
   };
 
-  // const checklist = defaultLoad(plan.cards);
   const { cards, plannerId, title } = planner;
 
   const handleClick = (e) => {

@@ -34,7 +34,6 @@ export default function DefaultComponent() {
 						return newItem;
 					});
 					setData(newData);
-					// setData([]);
 				} else {
 					requestFail('기본 플래너 불러오기');
 				}
