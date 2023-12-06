@@ -359,6 +359,7 @@ public class PlannerService {
                         .cards(responseCardDTOList)
                         .build();
 
+                Set<TagEntity> responsePlannerTagEntities = responsePlannerDTO.getTaglist();
 
                 //플래너 복제
                 PlannerEntity copyPlannerEntity = PlannerEntity.builder()
@@ -368,7 +369,7 @@ public class PlannerService {
                         .thumbnail(responsePlannerDTO.getThumbnail())
                         .isDefault(0)
                         .memberEntity(member.get())
-                        .taglist(tagEntities)
+                        .taglist()
                         .build();
                 plannerRepository.save(copyPlannerEntity);
 
