@@ -28,7 +28,7 @@ export default function CustomListHiddable(props) {
         <>
             {point[0] !== -1 && point[1] !== -1 ? <RightClicker rightClickData={rightClickData} point={point} setPoint={setPoint}></RightClicker> : null}
 
-            <_Container fluid>
+            <_Container $fluid>
                 <Fade direction={'up'} duration={500} cascade triggerOnce>
                     <_Row xxs={2} xs={2} sm={2} md={2} lg={3} xl={4} xxl={4}>
                         {data.map((planner, idx) => {

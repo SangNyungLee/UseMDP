@@ -56,7 +56,7 @@ export default function WelcomePage() {
     };
 
     return (
-        <_PageWrapper fluid>
+        <_PageWrapper $fluid>
             <_PageContainer>
                 <_Row xs={1} lg={2}>
                     <_LeftCol>
@@ -76,7 +76,7 @@ export default function WelcomePage() {
                         </_ButtonStack>
                     </_LeftCol>
                     <_RightCol>
-                        <_Image src="https://picsum.photos/600/400" rounded fluid></_Image>
+                        <_Image src="https://picsum.photos/600/400" rounded $fluid></_Image>
                     </_RightCol>
                 </_Row>
             </_PageContainer>

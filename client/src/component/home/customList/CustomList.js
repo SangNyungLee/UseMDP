@@ -33,7 +33,7 @@ export default function CustomList(props) {
 	const CustomLoadMap = props.loadMap;
 
 	return (
-		<_Container fluid id={'CustomList'}>
+		<_Container $fluid id={'CustomList'}>
 			<Fade direction={'up'} duration={500} cascade triggerOnce>
 				<_Row xs={'auto'} xl={4} id={'ROW'}>
 					{data.map((planner, idx) => {

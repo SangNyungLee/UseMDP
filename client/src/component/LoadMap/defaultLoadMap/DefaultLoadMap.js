@@ -89,7 +89,7 @@ export default function DefaultLoadMap() {
 					</a>
 				</nav>
 			</aside>
-			<_RenderComponent id='_RenderComponent' fluid>
+			<_RenderComponent id='_RenderComponent' $fluid>
 				{renderComponent()}
 			</_RenderComponent>
 		</>
