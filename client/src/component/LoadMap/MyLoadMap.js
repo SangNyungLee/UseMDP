@@ -1,35 +1,39 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DataDownload from '../../utils/DataDownload';
-import { calendarActions } from '../../store/calendar';
-import { plannerListActions } from '../../store/plannerList';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteCardById, getPlannerBtoA, patchPlanner } from '../../utils/DataAxios';
-import Swal from 'sweetalert2';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DataDownload from "../../utils/DataDownload";
+import { calendarActions } from "../../store/calendar";
+import { plannerListActions } from "../../store/plannerList";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteCardById,
+  getPlannerBtoA,
+  patchPlanner,
+} from "../../utils/DataAxios";
+import Swal from "sweetalert2";
 
 //Styled Components with React Bootstrap
 import {
-	_CardContainer,
-	_CardHeader,
-	_CardFooter,
-	_CardImg,
-	_CardImgOverlay,
-	_CardBody,
-	_CardTitle,
-	_CardSubtitle,
-	_CardText,
-	_CardLink,
-	_CardDownloadButton,
-	_CardEditButton,
-	_IconContainer,
-	_LockedIcon,
-	_UnlockedIcon,
-	_DownloadIcon,
-	_EditIcon,
-} from '../../constant/css/styledComponents/__MyLoadMap';
-import skyImg from '../../constant/img/sky.jpg';
-import { requestFail } from '../etc/SweetModal';
-
+  _CardContainer,
+  _CardHeader,
+  _CardFooter,
+  _CardImg,
+  _CardImgOverlay,
+  _CardBody,
+  _CardTitle,
+  _CardSubtitle,
+  _CardText,
+  _CardLink,
+  _CardDownloadButton,
+  _CardEditButton,
+  _IconContainer,
+  _LockedIcon,
+  _UnlockedIcon,
+  _DownloadIcon,
+  _EditIcon,
+} from "../../constant/css/styledComponents/__MyLoadMap";
+import skyImg from "../../constant/img/sky.jpg";
+import { requestFail } from "../etc/SweetModal";
+import "../../constant/css/sweetAlert.css";
 export default function MyLoadMap(props) {
 	const [isLoading, setIsLoading] = useState(true);
 	const dispatch = useDispatch();
@@ -58,162 +62,174 @@ export default function MyLoadMap(props) {
 				dispatch(calendarActions.setQuote([plannerId]));
 				dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
 
-				navigate(`/planner?id=${btoaId}`);
-			} else {
-				requestFail('플래너 불러오기');
-			}
-		}
-	};
-	const [starClick, setStarClick] = useState(false);
+        navigate(`/planner?id=${btoaId}`);
+      } else {
+        requestFail("플래너 불러오기");
+      }
+    }
+  };
+  const [starClick, setStarClick] = useState(false);
 
-	// 모달 보여주기
-	const [showModal, setShowModal] = useState(false);
+  // 모달 보여주기
+  const [showModal, setShowModal] = useState(false);
 
-	// 모달폼
-	const [editedTitle, setEditedTitle] = useState(title);
-	const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
+  // 모달폼
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
 
-	const handleShareIcon = (e) => {
-		e.stopPropagation();
-		//RightClicker 보내주자.
-		DataDownload(editedTitle, {
-			plannerId,
-			creator,
-			title: editedTitle,
-			likePlanner,
-			thumbnail,
-			isDefault,
-			createdAt,
-			updatedAt,
-			plannerAccess: editedPlannerAccess,
-		});
-	};
+  const handleShareIcon = (e) => {
+    e.stopPropagation();
+    //RightClicker 보내주자.
+    DataDownload(editedTitle, {
+      plannerId,
+      creator,
+      title: editedTitle,
+      likePlanner,
+      thumbnail,
+      isDefault,
+      createdAt,
+      updatedAt,
+      plannerAccess: editedPlannerAccess,
+    });
+  };
 
-	const changeDataByButton = (e) => {
-		e.stopPropagation();
-		setShowModal(true);
-	};
-	//모달끄기
-	const handleCloseModal = (e) => {
-		e.stopPropagation();
-		setShowModal(false);
-		setEditedTitle(title);
-		setEditedPlannerAccess(plannerAccess);
-	};
+  const changeDataByButton = (e) => {
+    e.stopPropagation();
+    setShowModal(true);
+  };
+  //모달끄기
+  const handleCloseModal = (e) => {
+    e.stopPropagation();
+    setShowModal(false);
+    setEditedTitle(title);
+    setEditedPlannerAccess(plannerAccess);
+  };
 
-	//저장
-	const handleSaveChanges = async (e) => {
-		e.stopPropagation();
+  //저장
+  const handleSaveChanges = async (e) => {
+    e.stopPropagation();
 
-		const plannerData = {
-			plannerId,
-			creator,
-			title: editedTitle,
-			likePlanner,
-			thumbnail,
-			isDefault,
-			plannerAccess: editedPlannerAccess,
-			taglist: [],
-		};
+    const plannerData = {
+      plannerId,
+      creator,
+      title: editedTitle,
+      likePlanner,
+      thumbnail,
+      isDefault,
+      plannerAccess: editedPlannerAccess,
+      taglist: [],
+    };
 
-		const result = await patchPlanner(plannerData);
-		if (result.status === 200) {
-			setShowModal(false);
-		} else {
-			requestFail('플래너 저장');
-		}
-	};
-	//sweetAlert창
-	const sweetModal = async (e) => {
-		// SweetAlert을 이용하여 입력 폼을 보여줌
-		e.stopPropagation();
-		const result = await Swal.fire({
-			title: '플래너 수정',
-			html: `
+    const result = await patchPlanner(plannerData);
+    if (result.status === 200) {
+      setShowModal(false);
+    } else {
+      requestFail("플래너 저장");
+    }
+  };
+  //sweetAlert창
+  const sweetModal = async (e) => {
+    // SweetAlert을 이용하여 입력 폼을 보여줌
+    e.stopPropagation();
+    const result = await Swal.fire({
+      title: "플래너 수정",
+      html: `
       <input id="swal-input1" class="swal2-input" placeholder="제목" value="${editedTitle}">
     `,
-			input: 'radio',
-			inputOptions: {
-				PUBLIC: 'Public',
-				PRIVATE: 'Private',
-			},
-			inputValue: editedPlannerAccess,
-			inputValidator: (value) => {
-				if (!value) {
-					return '공개범위를 선택하세요.';
-				}
-			},
-			preConfirm: async () => {
-				// 확인을 눌렀을 때의 로직
-				const inputValue = document.getElementById('swal-input1').value;
-				const radioValue = document.querySelector('input[name="swal2-radio"]:checked').value;
-				// axios 요청을 보내고 모달을 닫음
+      input: "radio",
+      inputOptions: {
+        PUBLIC: "Public",
+        PRIVATE: "Private",
+      },
+      inputValue: editedPlannerAccess,
+      inputValidator: (value) => {
+        if (!value) {
+          return "공개범위를 선택하세요.";
+        }
+      },
+      preConfirm: async () => {
+        // 확인을 눌렀을 때의 로직
+        const inputValue = document.getElementById("swal-input1").value;
+        const radioValue = document.querySelector(
+          'input[name="swal2-radio"]:checked'
+        ).value;
 
-				const plannerData = {
-					plannerId,
-					creator,
-					title: inputValue,
-					likePlanner,
-					thumbnail,
-					isDefault,
-					plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
-					taglist: [],
-				};
+        const plannerData = {
+          plannerId,
+          creator,
+          title: inputValue,
+          likePlanner,
+          thumbnail,
+          isDefault,
+          plannerAccess: radioValue, // SweetAlert에서 선택한 값 사용
+          taglist: [],
+        };
 
-				const axiosResult = await patchPlanner(plannerData);
-				if (axiosResult.status !== 200) {
-					requestFail('플래너 저장');
-				}
-				return { editedTitle: inputValue, editedPlannerAccess: radioValue };
-			},
-			confirmButtonText: '확인',
-			showCancelButton: true,
-		});
+        const axiosResult = await patchPlanner(plannerData);
+        if (axiosResult.status !== 200) {
+          requestFail("플래너 저장");
+        }
+        return { editedTitle: inputValue, editedPlannerAccess: radioValue };
+      },
+      confirmButtonText: "확인",
+      confirmButtonColor: "black",
+      cancelButtonText: "취소",
+      showCancelButton: true,
+    });
 
-		if (result.isConfirmed) {
-			const { editedTitle, editedPlannerAccess } = result.value;
-			setEditedTitle(editedTitle || '');
-			setEditedPlannerAccess(editedPlannerAccess || '');
-		}
-	};
+    if (result.isConfirmed) {
+      const { editedTitle, editedPlannerAccess } = result.value;
+      setEditedTitle(editedTitle || "");
+      setEditedPlannerAccess(editedPlannerAccess || "");
+    }
+  };
 
-	const [isHovering, setIsHovering] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   const deleteThisPlanner = async () => {
     const result = await deleteCardById(plannerId);
     if (result.status === 200) {
-        dispatch(plannerListActions.delPlanner(plannerId));
-        requestFail('플래너 삭제');
+      dispatch(plannerListActions.delPlanner(plannerId));
+      requestFail("플래너 삭제");
     }
-};
-  
-	return (
-		<_CardContainer
-			id={'CardContainer'}
-			onClick={(e) => handleClick(e)}
-			onMouseOver={() => setIsHovering(true)}
-			onMouseLeave={() => setIsHovering(false)}>
-			<_CardImg src={thumbnail ? thumbnail : skyImg} alt='planner thumbnail' />
-			<_CardImgOverlay>
-				<_CardBody>
-					<_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
-					{isHovering ? (
-						<>
-							<_CardDownloadButton onClick={(e) => handleShareIcon(e)} size='sm' variant='none'>
-								<_DownloadIcon />
-							</_CardDownloadButton>
-							<_CardEditButton onClick={(e) => sweetModal(e)} size='sm' variant='none'>
-								<_EditIcon />
-							</_CardEditButton>
-						</>
-					) : null}
-					{editedPlannerAccess === 'PRIVATE' ? (
-						<_IconContainer>
-							<_LockedIcon />
-						</_IconContainer>
-					) : null}
-				</_CardBody>
-			</_CardImgOverlay>
-		</_CardContainer>
-	);
+  };
+
+  return (
+    <_CardContainer
+      id={"CardContainer"}
+      onClick={(e) => handleClick(e)}
+      onMouseOver={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <_CardImg src={thumbnail ? thumbnail : skyImg} alt="planner thumbnail" />
+      <_CardImgOverlay>
+        <_CardBody>
+          <_CardTitle as={"h5"}>{editedTitle}</_CardTitle>
+          {isHovering ? (
+            <>
+              <_CardDownloadButton
+                onClick={(e) => handleShareIcon(e)}
+                size="sm"
+                variant="none"
+              >
+                <_DownloadIcon />
+              </_CardDownloadButton>
+              <_CardEditButton
+                onClick={(e) => sweetModal(e)}
+                size="sm"
+                variant="none"
+              >
+                <_EditIcon />
+              </_CardEditButton>
+            </>
+          ) : null}
+          {editedPlannerAccess === "PRIVATE" ? (
+            <_IconContainer>
+              <_LockedIcon />
+            </_IconContainer>
+          ) : null}
+        </_CardBody>
+      </_CardImgOverlay>
+    </_CardContainer>
+  );
 }

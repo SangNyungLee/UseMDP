@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import CustomList from '../customList/CustomList';
 import CustomListHiddable from '../customList/CustomListHiddable';
@@ -6,6 +7,7 @@ import LoadMap from '../../LoadMap/LoadMap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLikesAxios, getPlannerByTrend } from '../../../utils/DataAxios';
 import { likeActions } from '../../../store/like';
+import noResult from "../../../constant/img/searchFail.svg";
 import { _ComponentContainer, _ComponentTitle } from '../../../constant/css/styledComponents/__StarComponent';
 import { requestFail } from '../../etc/SweetModal';
 import { HOME } from '../../../constant/constant';
@@ -38,29 +40,36 @@ export default function StarComponent() {
                 setData([]);
             }
         }
+    }
 
-		async function getLike() {
-			const result = await getLikesAxios();
-			if (result.status === 200) {
-				dispatch(likeActions.setLikesInit(result.data.data));
-			} else {
-				requestFail('좋아요 불러오기');
-			}
-		}
+    async function getLike() {
+      const result = await getLikesAxios();
+      if (result.status === 200) {
+        dispatch(likeActions.setLikesInit(result.data.data));
+      } else {
+        requestFail("좋아요 불러오기");
+      }
+    }
 
-        getData();
-        getLike();
-    }, []);
+    getData();
+    getLike();
+  }, []);
 
-    return (
-        <_ComponentContainer fluid onClick={handlePoint}>
-            <_ComponentTitle>TRENDING</_ComponentTitle>
+  return (
+    <_ComponentContainer fluid onClick={handlePoint}>
+      <_ComponentTitle>TRENDING</_ComponentTitle>
 
-            <CustomListHiddable datas={data} loadMap={LoadMap} points={[point, setPoint]} />
+      <CustomListHiddable
+        datas={data}
+        loadMap={LoadMap}
+        points={[point, setPoint]}
+      />
 
-            <_ComponentTitle style={{ marginTop: '50px' }}>My Planners</_ComponentTitle>
+      <_ComponentTitle style={{ marginTop: "50px" }}>
+        My Planners
+      </_ComponentTitle>
 
-            <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
-        </_ComponentContainer>
-    );
+      <CustomList datas={plannerList} loadMap={MyLoadMap}></CustomList>
+    </_ComponentContainer>
+  );
 }
