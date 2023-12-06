@@ -48,7 +48,9 @@ function CustomHeader2(props) {
         if (plannerInfo) {
             const { title, taglist } = plannerInfo;
             titleRef.current.innerText = title;
-            const tmp = taglist.map((item) => item.value);
+            console.log(taglist);
+
+            const tmp = taglist.filter((i) => i != null).map((item) => item.value);
             const initialTags = tags2.filter((tagValue) => {
                 return tmp.includes(tagValue.value);
             });
