@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import { readPlanner } from '../utils/DataAxiosParsing';
 import { plannerListActions } from '../store/plannerList';
-import { requestFail } from './etc/SweetModal';
+import { jsonDataReadSucess, requestFail } from './etc/SweetModal';
 import { useSelector } from 'react-redux';
 import { calendarActions } from '../store/calendar';
 
@@ -28,15 +28,18 @@ export default function FileInputComponent({ children, setState }) {
     },[readData])
     
     const readPlannerData = async (data,specified) => {
-        const result = await readPlanner(data,specified);
-        if(result){
-            const { plannerId } = result
-            dispatch(plannerListActions.addPlanner(result))
-            if(plannerList.length === 0){
-                dispatch(calendarActions.setAll([plannerId]))
+        const newData = await jsonDataReadSucess(data)
+        if(newData){
+            const result = await readPlanner(newData,specified);
+            if(result){
+                const { plannerId } = result
+                dispatch(plannerListActions.addPlanner(result))
+                if(plannerList.length === 0){
+                    dispatch(calendarActions.setAll([plannerId]))
+                }
+            } else {
+                requestFail("데이터")
             }
-        } else {
-            requestFail("데이터")
         }
     }
 

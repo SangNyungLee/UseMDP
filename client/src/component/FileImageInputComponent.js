@@ -175,8 +175,8 @@ export default function FileImageInputComponent({ setState }) {
                             }}
                         >
                             <img src={src} style={{
-                                maxWidth: "600px",
-                                maxHeight: "600px",
+                                maxWidth: "400px",
+                                maxHeight: "400px",
                              }} />
                         </ReactCrop>
                         <_ButtonContainer>
