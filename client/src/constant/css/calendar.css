@@ -1,18 +1,18 @@
-.rbc-calendar {
-    /* box-sizing: border-box;
+.my-calendar {
+  /* box-sizing: border-box;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   width: 100%;
   height: 80%; */
-    color: white;
+  color: white;
 }
 
-.rbc-today {
-    background-color: #00adb5;
+.my-calendar .rbc-today {
+  background-color: #00adb5;
 }
 
-.rbc-off-range-bg {
-    background: #393e46;
+.my-calendar .rbc-off-range-bg {
+  background: #393e46;
 }

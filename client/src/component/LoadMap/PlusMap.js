@@ -47,7 +47,11 @@ export default function PlusMap(props) {
 				...data,
 				plannerId: newPlannerId,
 				cards: [[],[],[]],
-				taglist:[]
+				taglist: [{
+					title: "DEFAULT",
+					valuer: "DEFAULT",
+					thumbnail: "/svg/css.svg"
+				}]
 			}))
 
 			// SweetAlert을 이용하여 성공 메시지를 보여줌

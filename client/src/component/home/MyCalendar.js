@@ -24,12 +24,13 @@ import { HOME } from "../../constant/constant";
 import { requestFail } from "../etc/SweetModal";
 import "../../constant/css/calendar.css";
 
+moment.locale("ko-KR");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const _Container = styled.div`
   display: flex;
-  margin-top: 90px;
+  margin-top: 40px;
 `;
 
 const _Toolbar = styled.div`
@@ -47,13 +48,14 @@ const _ToGoButton = styled.div`
   background: none;
   font-size: 20px;
   width: 30px;
+  height: 30px;
   text-align: center;
   border-radius: 50%;
   color: white;
 
   &:hover {
     cursor: pointer;
-    background-color: #ccc;
+    background-color: #393e46;
   }
 `;
 
@@ -273,8 +275,8 @@ export default function MyCalendar() {
     delete newEvent.startDate;
     delete newEvent.endDate;
 
-    const startDate = moment(slotInfo.start).toISOString();
-    const endDate = moment(slotInfo.end).toISOString();
+    const startDate = new Date(slotInfo.start).toISOString();
+    const endDate = new Date(slotInfo.end).toISOString();
 
     if (plannerList.length === 0) {
       const newPlannerData = {
@@ -318,6 +320,11 @@ export default function MyCalendar() {
               [],
               [],
             ],
+            taglist: [{
+              title: "DEFAULT",
+              valuer: "DEFAULT",
+              thumbnail: "/svg/css.svg"
+            }]
           })
         );
 
@@ -370,6 +377,7 @@ export default function MyCalendar() {
           plannerId={plannerId}
         />
         <DnDCalendar
+          className="my-calendar"
           defaultDate={moment().toDate()}
           defaultView="month"
           startAccessor="startDate"

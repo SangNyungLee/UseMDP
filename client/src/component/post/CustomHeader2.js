@@ -19,12 +19,12 @@ function CustomHeader2(props) {
     const plannerInfo = props.plannerInfo;
 
     const [readThumbnail, setReadThumbnail] = useState();
-  
+
     const [tags2, setTags] = useState([]);
     const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
-  
+
     const titleRef = useRef();
-  
+
     const [showModal, setShowModal] = useState(false);
     const selectInputRef = useRef();
 
@@ -245,16 +245,15 @@ function CustomHeader2(props) {
         <div className="nav-main">
             <div className="nav-bar">
                 <div className="left-bar">
-                    <button onClick={homeNavigate} type="button" className="button-style">
+                    {/* <button onClick={homeNavigate} type="button" className="button-style">
                         <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
+                    </button> */}
+                    <button onClick={homeNavigate} type="button" className="button-style-right">
+                        <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
                 </div>
 
                 <div className="right-bar">
-                    <button onClick={homeNavigate} type="button" className="button-style-right">
-                        <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
-                    </button>
-
                     <button onClick={handleTagModal} type="button" className="button-style-right">
                         <FaTags style={{ fontSize: '16px', color: 'white' }} />
                     </button>
@@ -300,8 +299,8 @@ function CustomHeader2(props) {
                     <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                     <span className="private-text">Public</span>
                 </button>
-                
-                <FileImageInputComponent setState={setReadThumbnail}/>
+
+                <FileImageInputComponent setState={setReadThumbnail} />
             </div>
 
             <div className="content-header-right">
