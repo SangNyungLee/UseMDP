@@ -1,5 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaTrello, FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft, FaTags } from 'react-icons/fa';
+import {
+	FaTrello,
+	FaPlus,
+	FaStar,
+	FaLock,
+	FaLockOpen,
+	FaEllipsisH,
+	FaDownload,
+	FaUser,
+	FaArrowLeft,
+	FaTags,
+} from 'react-icons/fa';
+
 import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -7,8 +19,6 @@ import { plannerListActions } from '../../store/plannerList';
 import { getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
-import { readPlanner } from '../../utils/DataAxiosParsing';
-import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
 import FileImageInputComponent from '../FileImageInputComponent';
 import Select from 'react-select'; //라이브러리 import
 import { Modal, Button } from 'react-bootstrap';
@@ -16,6 +26,7 @@ import { useMediaQuery } from 'react-responsive';
 import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
+
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
@@ -37,7 +48,6 @@ function CustomHeader2(props) {
         async function getTag() {
             const result = await getTags();
             if (result.status === 200) {
-                console.log('태그 데이터 받아온 결과 : ', result.data);
                 setTags(result.data.data);
             } else {
                 requestFail('태그 불러오기');
@@ -64,7 +74,7 @@ function CustomHeader2(props) {
                 }
 
                 // 찾은 태그 정보가 없으면 tagValue를 그대로 반환
-                return tagValue;
+                return { image: tagValue, label: tagValue, image: tagValue };
             });
             setSelectTag(initialTags);
         }
@@ -99,7 +109,6 @@ function CustomHeader2(props) {
             ...plannerInfo,
             plannerAccess: 'PUBLIC',
         };
-        console.log('handlepublic', data);
         const res = await patchPlanner(data);
         if (res.status !== 200) {
             requestFail('플래너 상태 저장');
@@ -118,7 +127,6 @@ function CustomHeader2(props) {
             ...plannerInfo,
             plannerAccess: 'PRIVATE',
         };
-        console.log('handlepublic', data);
         const res = await patchPlanner(data);
         if (res.status !== 200) {
             requestFail('플래너 상태 저장');
@@ -145,9 +153,7 @@ function CustomHeader2(props) {
                 ...plannerInfo,
                 taglist: selectTag.map((item) => item.value),
             };
-            console.log('selected Tag', data);
             const result = await patchPlanner(data);
-            console.log(result);
             setShowModal(false);
             dispatch(
                 plannerListActions.updateTags({
@@ -156,7 +162,6 @@ function CustomHeader2(props) {
                 })
             );
         } else {
-            console.log('정보 없음');
             setShowModal(false);
         }
     };
@@ -169,13 +174,11 @@ function CustomHeader2(props) {
         if (res.status !== 200) {
             requestFail('다운로드 실패');
         }
-        console.log('다운로드', plannerInfo.plannerId, res.data.data);
         DataDownload(plannerInfo.title, res.data.data);
     };
 
     const patchPlannerAndDispatch = async (thumbnail) => {
         const data = { ...plannerInfo, thumbnail: thumbnail };
-        console.log('patchPlannerAndDispatch', data);
         const res = await patchPlanner(data);
         if (res.status !== 200) {
             requestFail('플래너 상태 저장');
@@ -238,15 +241,29 @@ function CustomHeader2(props) {
                     <FaStar style={{ fontSize: '12px', color: 'white' }} />
                 </button>
 
-                <button onClick={handlePrivate} type="button" className="button-style-header">
-                    <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
-                    <span className="private-text">Private</span>
-                </button>
+                {plannerInfo.plannerAccess == 'PRIVATE' ? (
+                    <button onClick={handlePrivate} type="button" className="button-style-right">
+                        <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Private</span>
+                    </button>
+                ) : (
+                    <button onClick={handlePrivate} type="button" className="button-style-header">
+                        <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Private</span>
+                    </button>
+                )}
 
-                <button onClick={handlePublic} type="button" className="button-style-header">
-                    <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
-                    <span className="private-text">Public</span>
-                </button>
+                {plannerInfo.plannerAccess == 'PUBLIC' ? (
+                    <button onClick={handlePublic} type="button" className="button-style-right">
+                        <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Public</span>
+                    </button>
+                ) : (
+                    <button onClick={handlePublic} type="button" className="button-style-header">
+                        <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Public</span>
+                    </button>
+                )}
 
                 <FileImageInputComponent setState={setReadThumbnail} />
             </div>
@@ -315,6 +332,7 @@ function CustomHeader2(props) {
             </Modal>
         </div>
     );
+
 }
 
 export default CustomHeader2;

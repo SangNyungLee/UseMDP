@@ -35,45 +35,32 @@ import skyImg from "../../constant/img/sky.jpg";
 import { requestFail } from "../etc/SweetModal";
 import "../../constant/css/sweetAlert.css";
 export default function MyLoadMap(props) {
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state.plannerList);
-  const {
-    plannerId,
-    title,
-    creator,
-    likePlanner,
-    thumbnail,
-    createdAt,
-    updatedAt,
-    plannerAccess,
-    isDefault,
-  } = props.datas;
-  // console.log(props);
-  const navigate = useNavigate();
-  const handleClick = async (e) => {
-    e.stopPropagation();
-    //모달이 꺼져있으면
-    if (!showModal) {
-      const btoaId = btoa(plannerId);
-      const result = await getPlannerBtoA(btoaId);
-      if (result.status === 200) {
-        console.log("click", result.data);
-        const cardList = result.data.data.cards;
-        const cards = [[], [], []];
-        for (let i = 0; i < cardList.length; i++) {
-          if (cardList[i].cardStatus === "TODO") {
-            cards[0].push(cardList[i]);
-          } else if (cardList[i].cardStatus === "DOING") {
-            cards[1].push(cardList[i]);
-          } else if (cardList[i].cardStatus === "DONE") {
-            cards[2].push(cardList[i]);
-          }
-        }
-        dispatch(calendarActions.setQuote([plannerId]));
-        dispatch(
-          plannerListActions.replaceCards({ id: plannerId, cards: cards })
-        );
+	const [isLoading, setIsLoading] = useState(true);
+	const dispatch = useDispatch();
+	const state = useSelector((state) => state.plannerList);
+	const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } =
+		props.datas;
+	const navigate = useNavigate();
+	const handleClick = async (e) => {
+		e.stopPropagation();
+		//모달이 꺼져있으면
+		if (!showModal) {
+			const btoaId = btoa(plannerId);
+			const result = await getPlannerBtoA(btoaId);
+			if (result.status === 200) {
+				const cardList = result.data.data.cards;
+				const cards = [[], [], []];
+				for (let i = 0; i < cardList.length; i++) {
+					if (cardList[i].cardStatus === 'TODO') {
+						cards[0].push(cardList[i]);
+					} else if (cardList[i].cardStatus === 'DOING') {
+						cards[1].push(cardList[i]);
+					} else if (cardList[i].cardStatus === 'DONE') {
+						cards[2].push(cardList[i]);
+					}
+				}
+				dispatch(calendarActions.setQuote([plannerId]));
+				dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
 
         navigate(`/planner?id=${btoaId}`);
       } else {
@@ -166,8 +153,6 @@ export default function MyLoadMap(props) {
         const radioValue = document.querySelector(
           'input[name="swal2-radio"]:checked'
         ).value;
-        console.log("inputValue", inputValue);
-        // axios 요청을 보내고 모달을 닫음
 
         const plannerData = {
           plannerId,
@@ -193,8 +178,6 @@ export default function MyLoadMap(props) {
     });
 
     if (result.isConfirmed) {
-      // 값이 없을 경우 빈 문자열로 설정
-      console.log("result", result);
       const { editedTitle, editedPlannerAccess } = result.value;
       setEditedTitle(editedTitle || "");
       setEditedPlannerAccess(editedPlannerAccess || "");

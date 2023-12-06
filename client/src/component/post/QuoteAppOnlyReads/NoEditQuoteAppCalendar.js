@@ -143,7 +143,7 @@ export default function NoEditQuoteAppCalendar(props) {
         setSelectedCard(event);
         setVisible(true);
     };
-    console.log('event', events, cardStatus, plannerList);
+
     return (
         <>
             <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />

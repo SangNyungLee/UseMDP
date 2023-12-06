@@ -9,7 +9,6 @@ const LeftClicker = (props) => {
     //혹은 html을 줘야함.
     const dispatch = useDispatch();
     const index = props.index;
-    console.log(props);
     const pid = props.pid;
 
     const saveState = async (e) => {
@@ -19,7 +18,6 @@ const LeftClicker = (props) => {
 
     const toPlannerLink = async (e) => {
         e.stopPropagation();
-        console.log(pid, index);
         dispatch(calendarActions.setQuote([pid, index]));
         dispatch(pointActions.clearPoint());
     };

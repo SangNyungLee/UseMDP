@@ -70,6 +70,7 @@ const LikeButton = (props) => {
     }
   };
 
+<<<<<<< HEAD
   const isStarCilckUnLike = async (e) => {
     e.stopPropagation();
     const isLiked = likes.some((like) => like === plannerId);
@@ -88,6 +89,23 @@ const LikeButton = (props) => {
       return;
     }
   };
+=======
+    const isStarCilckUnLike = async (e) => {
+        e.stopPropagation();
+        const isLiked = likes.some((like) => like === plannerId);
+        if (isLiked) {
+            dispatch(likeActions.delPlannerLike(plannerId));
+            const res = await deletePlannerUnlike(plannerId);
+            if (res.status !== 200) {
+                requestFail('플래너 좋아요 삭제');
+            }
+            return;
+        } else {
+            requestFail('좋아요 취소', '좋아요가 되어있지 않아요');
+            return;
+        }
+    };
+>>>>>>> develop
 
   return (
     <>

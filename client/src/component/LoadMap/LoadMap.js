@@ -29,7 +29,7 @@ export default function LoadMap(props) {
     const [isHovering, setIsHovering] = useState(false);
 
     const { plannerId, title, thumbnail } = props.datas;
-    // console.log(props);
+
     const isLike = props.isLike;
 
     const handleClick = (e) => {

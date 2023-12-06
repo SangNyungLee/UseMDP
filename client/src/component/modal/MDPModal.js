@@ -28,7 +28,7 @@ const _TitleInput = styled.input`
     outline: none;
     padding: none;
     background-color: ${(props) => props.color};
-    color: ${(props) => props.textcolor || "black"};
+    color: ${(props) => props.textcolor || 'black'};
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
@@ -157,7 +157,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const [editorHide, setEditorHide] = useState(false);
     //내부에서 쓰는 로직 밖으로 내보내지 않음.
     const Edits = [post, setPost];
-    const [editingIndex, setEditingIndex] = useState(null);
+    const [editingIndex, setEditingIndex] = useState('');
     const [progress, setProgress] = useState(0);
     const [tmpEdit, setTmpEdit] = useState('');
     const [deletedCheckList, setDeletedCheckList] = useState([]);
@@ -183,18 +183,16 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             endDate: endDate.toISOString(),
             coverColor,
         };
-        console.log('MODAL에서 보내는 item', newCardItem);
         try {
             const result = await patchCard(newCardItem);
-            if(result.status !== 200) {
-                requestFail("카드 데이터 저장")
+            if (result.status !== 200) {
+                requestFail('카드 데이터 저장');
             }
-            console.log('deletedCheckList', deletedCheckList);
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {
                     const res = await deleteCheckList(id);
-                    if(res.status !== 200){
-                        requestFail("체크리스트 삭제")
+                    if (res.status !== 200) {
+                        requestFail('체크리스트 삭제');
                         continue;
                     }
                 }
@@ -304,8 +302,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setDeletedCheckList((prev) => [...prev, checklists[index].checklistId]);
         setChecklists((prev) => prev.filter((_, id) => id !== index));
     };
+    const handleEditChange = (i, v) => {
+        setEditingIndex(i);
+        setTmpEdit(v);
+    };
 
-    console.log(checklists, IsBackGroundDark(coverColor));
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave} size="lg">
@@ -367,14 +368,14 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
 
                                           {editingIndex === index ? (
                                               <>
-                                                  <_TextInput type="text" value={item.title} onChange={(e) => setTmpEdit(e.target.value)} />
+                                                  <_TextInput type="text" value={tmpEdit} onChange={(e) => setTmpEdit(e.target.value)} />
                                                   <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                                       <AcceptButton onClick={(e) => checkTitleEdit(index)}>저장</AcceptButton>
                                                       <CancelButton onClick={editClose}>취소</CancelButton>
                                                   </div>
                                               </>
                                           ) : (
-                                              <div style={{ marginLeft: '5px', width: '87%' }} onClick={() => setEditingIndex(index)}>
+                                              <div style={{ marginLeft: '5px', width: '87%' }} onClick={() => handleEditChange(index, item.title)}>
                                                   {item.checked == 1 ? <strike>{item.title}</strike> : item.title}
                                               </div>
                                           )}
