@@ -333,161 +333,6 @@ public class PlannerService {
     //플래너 복제하기
     public long postPlannerCopy(RequestPostPlannerCopyDTO requestPostPlannerCopyDTO, String memberId) {
 
-//<<<<<<< HEAD
-//        Optional<MemberEntity> member = memberRepository.findById(memberId);
-//
-//        if(member.isPresent()){
-//
-//            Optional<PlannerEntity> result = plannerRepository.findById(requestPostPlannerCopyDTO.getPlannerId());
-//            if(result.isPresent()) {
-//                PlannerEntity planner = result.get();
-//                Set<TagEntity> tagEntities = planner.getTaglist();
-//                List<String> taglist = tagEntities.stream().map(TagEntity::getTitle).toList();
-//                List<CardEntity> cards = planner.getCards();
-//                List<ResponseCardDTO> responseCardDTOList = new ArrayList<>();
-//
-//                ResponsePlannerDTO responsePlannerDTO = ResponsePlannerDTO.builder()
-//                        .plannerId(planner.getPlannerId())
-//                        .creator(planner.getCreator())
-//                        .title(planner.getTitle())
-//                        .likePlanner(planner.getLikePlanner())
-//                        .thumbnail(planner.getThumbnail())
-//                        .plannerAccess(planner.getPlannerAccess())
-//                        .isDefault(planner.getIsDefault())
-//                        .createdAt(planner.getCreatedAt())
-//                        .updatedAt(planner.getUpdatedAt())
-//                        .taglist(taglist)
-//                        .cards(responseCardDTOList)
-//                        .build();
-//
-//                //플래너 복제
-//                PlannerEntity copyPlannerEntity = PlannerEntity.builder()
-//                        .creator(member.get().getSocialNickname())
-//                        .title(responsePlannerDTO.getTitle())
-//                        .likePlanner(0)
-//                        .thumbnail(responsePlannerDTO.getThumbnail())
-//                        .isDefault(0)
-//                        .memberEntity(member.get())
-//                        .taglist(tagEntities)
-//                        .build();
-//                plannerRepository.save(copyPlannerEntity);
-//
-//                for(CardEntity card : cards) {
-//
-//                    List<ChecklistEntity> checklistEntityList = card.getChecklists();
-//                    List<ResponseChecklistDTO> checklistDTOList = new ArrayList<>();
-//
-//
-//                    ResponseCardDTO responseCardDTO = ResponseCardDTO.builder()
-//                            .cardId(card.getCardId())
-//                            .cardStatus(card.getCardStatus())
-//                            .title(card.getTitle())
-//                            .coverColor(card.getCoverColor())
-//                            .post(card.getPost())
-//                            .intOrder(card.getIntOrder())
-//                            .startDate(card.getStartDate())
-//                            .endDate(card.getEndDate())
-//                            .checklists(checklistDTOList)
-//                            .build();
-//                    responseCardDTOList.add(responseCardDTO);
-
-
-
-                    //시작 날짜 계산 -> 복사할 카드의 날짜 변환
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//
-//                    String DateString = dateFormat.format(responsePlannerDTO.getCreatedAt());
-//
-//
-//
-//                    int Year = Integer.parseInt(DateString.substring(0,4));
-//                    int Month =  Integer.parseInt(DateString.substring(5,7));
-//                    int Day =  Integer.parseInt(DateString.substring(8,10));
-//
-//
-//
-//                    //플래너의 createdAt - 현재 날짜
-//                    LocalDate date1 = LocalDate.of(Year, Month, Day);
-//
-//
-//                    //날짜 차이 구하기
-//                    Period periodStart = Period.between(date1, LocalDate.now());
-//
-//
-//                    //Period.of(년,월,일) -> 년,월,일 별로 더할 차이값 선언
-//                    Period periodAdd = Period.of(periodStart.getYears(), periodStart.getMonths(), periodStart.getDays());
-//
-//
-//                    //localdate 타입을 date타입으로 변환(차이값을 더해주기 위함)
-//                    LocalDate startLocalDate = new java.sql.Date(responseCardDTO.getStartDate().getTime()).toLocalDate();
-//                    LocalDate endLocalDate = new java.sql.Date(responseCardDTO.getEndDate().getTime()).toLocalDate();
-//
-//                    //cardDTO의 startDate, endDate에 차이값을 더해줌
-//                    LocalDate startDate = startLocalDate.plus(periodAdd);
-//                    LocalDate endDate = endLocalDate.plus(periodAdd);
-//
-//                    //localDate인 startDate와 endDate 사용을 위해 타입을 Date 타입으로 변환
-//                    Date startDateValue = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//
-//                    Date endDateValue = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-                    //현재 시간을 timestamp 타입으로 설정
-//                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//
-//                    //현재 시간 - 복사할 플래너가 생성된 시간 (밀리초 값으로 변환 후 계산)
-//                    long currentTime = timestamp.getTime();
-//                    long plannerTime = responsePlannerDTO.getCreatedAt().getTime();
-//
-//                    long calTime = currentTime - plannerTime;
-//
-//                    //위에서 구한 차이를 이용하여 카드의 startDate와 endDate를 구한 후 반영한다
-//                    long startDate = responseCardDTO.getStartDate().getTime();
-//                    long endDate = responseCardDTO.getEndDate().getTime();
-//
-//                    Date resultStartDate = addDateAndTimestamp(startDate, calTime);
-//                    Date resultEndDate = addDateAndTimestamp(endDate, calTime);
-
-                    //card 복사하여 레포지토리에 저장
-//                    CardEntity copyCard = CardEntity.builder()
-//                            .cardStatus(responseCardDTO.getCardStatus())
-//                            .title(responseCardDTO.getTitle())
-//                            .coverColor(responseCardDTO.getCoverColor())
-//                            .post(responseCardDTO.getPost())
-//                            .intOrder(responseCardDTO.getIntOrder())
-//                            .startDate(resultStartDate)
-//                            .endDate(resultEndDate)
-//                            .plannerEntity(copyPlannerEntity)
-//                            .build();
-//
-//                    cardRepository.save(copyCard);
-//
-//                    for(ChecklistEntity checklistEntity : checklistEntityList) {
-//                        ResponseChecklistDTO checklistDTO = ResponseChecklistDTO.builder()
-//                                .checked(checklistEntity.getChecked())
-//                                .title(checklistEntity.getTitle())
-//                                .build();
-//                        checklistDTOList.add(checklistDTO);
-//
-//                        //체크리스트 복사하여 레포지토리에 저장
-//                        ChecklistEntity checklistEntityCopy = ChecklistEntity.builder()
-//                                .checked(0)
-//                                .title(checklistDTO.getTitle())
-//                                .cardEntity(copyCard)
-//                                .build();
-//
-//                        checklistRepository.save(checklistEntityCopy);
-//                    }
-//                }
-//
-//                return copyPlannerEntity.getPlannerId();
-//
-//            }else{
-//                return -1;
-//            }
-//        }else {
-//            return -1;
-//=======
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
         if(optionalMemberEntity.isEmpty()) {
             return 0;
@@ -522,7 +367,23 @@ public class PlannerService {
 
         copiedPlannerEntity = plannerRepository.save(copiedPlannerEntity);
 
+        //현재 시간을 timestamp 타입으로 설정
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        //현재 시간 - 복사할 플래너가 생성된 시간 (밀리초 값으로 변환 후 계산)
+        long currentTime = timestamp.getTime();
+        long plannerTime = copiedPlannerEntity.getCreatedAt().getTime();
+
+        long calTime = currentTime - plannerTime;
+
         for (CardEntity cardEntity : cardEntities) {
+
+            //위에서 구한 차이를 이용하여 카드의 startDate와 endDate를 구한 후 반영한다
+            long startDate = cardEntity.getStartDate().getTime();
+            long endDate = cardEntity.getEndDate().getTime();
+
+            Date resultStartDate = addDateAndTimestamp(startDate, calTime);
+            Date resultEndDate = addDateAndTimestamp(endDate, calTime);
 
             CardEntity copiedCardEntity = CardEntity.builder()
                     .title(cardEntity.getTitle())
@@ -530,6 +391,8 @@ public class PlannerService {
                     .post(cardEntity.getPost())
                     .intOrder(cardEntity.getIntOrder())
                     .cardStatus(cardEntity.getCardStatus())
+                    .startDate(resultStartDate)
+                    .endDate(resultEndDate)
                     .plannerEntity(copiedPlannerEntity)
                     .build();
             copiedCardEntity = cardRepository.save(copiedCardEntity);
@@ -547,147 +410,6 @@ public class PlannerService {
         }
         return copiedPlannerEntity.getPlannerId();
 
-//        Optional<MemberEntity> member = memberRepository.findById(memberId);
-//
-//        if(member.isPresent()){
-//
-//            Optional<PlannerEntity> result = plannerRepository.findById(requestPostPlannerCopyDTO.getPlannerId());
-//            if(result.isPresent()) {
-//                PlannerEntity planner = result.get();
-//                Set<TagEntity> tagEntities = planner.getTaglist();
-//                List<String> taglist = tagEntities.stream().map(TagEntity::getTitle).toList();
-//                List<CardEntity> cards = planner.getCards();
-//                List<ResponseCardDTO> responseCardDTOList = new ArrayList<>();
-//
-//                ResponsePlannerDTO responsePlannerDTO = ResponsePlannerDTO.builder()
-//                        .plannerId(planner.getPlannerId())
-//                        .creator(planner.getCreator())
-//                        .title(planner.getTitle())
-//                        .likePlanner(planner.getLikePlanner())
-//                        .thumbnail(planner.getThumbnail())
-//                        .plannerAccess(planner.getPlannerAccess())
-//                        .isDefault(planner.getIsDefault())
-//                        .createdAt(planner.getCreatedAt())
-//                        .updatedAt(planner.getUpdatedAt())
-//                        .taglist(taglist)
-//                        .cards(responseCardDTOList)
-//                        .build();
-//
-//
-//                //플래너 복제
-//                PlannerEntity copyPlannerEntity = PlannerEntity.builder()
-//                        .creator(member.get().getSocialNickname())
-//                        .title(responsePlannerDTO.getTitle())
-//                        .likePlanner(0)
-//                        .thumbnail(responsePlannerDTO.getThumbnail())
-//                        .isDefault(0)
-//                        .memberEntity(member.get())
-//                        .taglist(tagEntities)
-//                        .build();
-//                plannerRepository.save(copyPlannerEntity);
-//
-//                for(CardEntity card : cards) {
-//
-//                    List<ChecklistEntity> checklistEntityList = card.getChecklists();
-//                    List<ResponseChecklistDTO> checklistDTOList = new ArrayList<>();
-//
-//
-//                    ResponseCardDTO responseCardDTO = ResponseCardDTO.builder()
-//                            .cardId(card.getCardId())
-//                            .cardStatus(card.getCardStatus())
-//                            .title(card.getTitle())
-//                            .coverColor(card.getCoverColor())
-//                            .post(card.getPost())
-//                            .intOrder(card.getIntOrder())
-//                            .startDate(card.getStartDate())
-//                            .endDate(card.getEndDate())
-//                            .checklists(checklistDTOList)
-//                            .build();
-//                    responseCardDTOList.add(responseCardDTO);
-//
-//
-//
-//                    //시작 날짜 계산 -> 복사할 카드의 날짜 변환
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//
-//                    String DateString = dateFormat.format(responsePlannerDTO.getCreatedAt());
-//
-//
-//
-//                    int Year = Integer.parseInt(DateString.substring(0,4));
-//                    int Month =  Integer.parseInt(DateString.substring(5,7));
-//                    int Day =  Integer.parseInt(DateString.substring(8,10));
-//
-//
-//
-//                    //플래너의 createdAt - 현재 날짜
-//                    LocalDate date1 = LocalDate.of(Year, Month, Day);
-//
-//
-//                    //날짜 차이 구하기
-//                    Period periodStart = Period.between(date1, LocalDate.now());
-//
-//
-//                    //Period.of(년,월,일) -> 년,월,일 별로 더할 차이값 선언
-//                    Period periodAdd = Period.of(periodStart.getYears(), periodStart.getMonths(), periodStart.getDays());
-//
-//
-//                    //localdate 타입을 date타입으로 변환(차이값을 더해주기 위함)
-//                    LocalDate startLocalDate = new java.sql.Date(responseCardDTO.getStartDate().getTime()).toLocalDate();
-//                    LocalDate endLocalDate = new java.sql.Date(responseCardDTO.getEndDate().getTime()).toLocalDate();
-//
-//                    //cardDTO의 startDate, endDate에 차이값을 더해줌
-//                    LocalDate startDate = startLocalDate.plus(periodAdd);
-//                    LocalDate endDate = endLocalDate.plus(periodAdd);
-//
-//                    //localDate인 startDate와 endDate 사용을 위해 타입을 Date 타입으로 변환
-//                    Date startDateValue = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//
-//                    Date endDateValue = Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//
-//
-//
-//                    //card 복사하여 레포지토리에 저장
-//                    CardEntity copyCard = CardEntity.builder()
-//                            .cardStatus(responseCardDTO.getCardStatus())
-//                            .title(responseCardDTO.getTitle())
-//                            .coverColor(responseCardDTO.getCoverColor())
-//                            .post(responseCardDTO.getPost())
-//                            .intOrder(responseCardDTO.getIntOrder())
-//                            .startDate(startDateValue)
-//                            .endDate(endDateValue)
-//                            .plannerEntity(copyPlannerEntity)
-//                            .build();
-//
-//                    cardRepository.save(copyCard);
-//
-//                    for(ChecklistEntity checklistEntity : checklistEntityList) {
-//                        ResponseChecklistDTO checklistDTO = ResponseChecklistDTO.builder()
-//                                .checked(checklistEntity.getChecked())
-//                                .title(checklistEntity.getTitle())
-//                                .build();
-//                        checklistDTOList.add(checklistDTO);
-//
-//                        //체크리스트 복사하여 레포지토리에 저장
-//                        ChecklistEntity checklistEntityCopy = ChecklistEntity.builder()
-//                                .checked(0)
-//                                .title(checklistDTO.getTitle())
-//                                .cardEntity(copyCard)
-//                                .build();
-//
-//                        checklistRepository.save(checklistEntityCopy);
-//                    }
-//                }
-//
-//                return copyPlannerEntity.getPlannerId();
-//
-//            }else{
-//                return -1;
-//            }
-//        }else {
-//            return -1;
-//        }
     }
 
     //날짜 더하기
