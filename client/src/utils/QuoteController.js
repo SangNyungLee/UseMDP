@@ -28,7 +28,6 @@ export function reorder(list, startIndex, endIndex) {
 //시작지에서는 droppableSource로 접근하고, index초과인 친구들의 intOrder를 -1하면 된다.
 // 도착지에서는 droppableid로 접근하고, index초과인 친구들의 intOrder를 +1하면 된다.
 export function move(source, destination, droppableSource, droppableDestination) {
-    console.log('move : ', source, destination, droppableSource, droppableDestination);
     const sourceClone = copy(source);
     const destClone = copy(destination);
     //시작지에서는 droppableSource로 접근하고, index초과인 친구들의 intOrder를 -1하면 된다.

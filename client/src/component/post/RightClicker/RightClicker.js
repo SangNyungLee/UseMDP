@@ -16,12 +16,10 @@ const RightClicker = (props) => {
     const dispatch = useDispatch();
     const setPoint = props.setPoint;
     const [plannerTitle, plannerId] = props.rightClickData;
-    console.log('rightclickData', props.rightClickData);
     //일단 로컬에 저장.
     const saveState = async (e) => {
         e.stopPropagation();
         const btoaId = btoa(plannerId);
-        console.log('bta', btoaId);
         const result = await getPlannerBtoA(btoaId);
         // const result = await axios(`/plannerTest`);
         if (result.status === 200) {
@@ -35,8 +33,6 @@ const RightClicker = (props) => {
     const toPlannerLink = async (e) => {
         e.stopPropagation();
         const btoaId = btoa(plannerId);
-
-        console.log('bta', btoaId);
         const result = await getPlannerBtoA(btoaId);
         if (result.status === 200) {
             const cardList = result.data.data.cards;

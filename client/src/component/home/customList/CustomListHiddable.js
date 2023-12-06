@@ -1,4 +1,3 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import RightClicker from '../../post/RightClicker/RightClicker';
 import { useSelector } from 'react-redux';
@@ -14,7 +13,6 @@ export default function CustomListHiddable(props) {
     const like = useSelector((state) => state.like);
 
     const data = props.datas;
-    console.log('custom list hiddable data', data);
 
     const [point, setPoint] = props.points;
 

@@ -27,7 +27,6 @@ export default function Redirection({ provider }) {
               { withCredentials: true }
             )
             .then((res) => {
-              console.log(res);
 
               //이름이랑 이미지 사진 로컬 스토리지에 저장
               localStorage.setItem("userName", res.data.data.socialNickname);
@@ -53,7 +52,6 @@ export default function Redirection({ provider }) {
               { withCredentials: true }
             )
             .then((res) => {
-              console.log(res);
 
               //이름이랑 이미지 사진 로컬 스토리지에 저장
               localStorage.setItem("userName", res.data.data.socialNickname);

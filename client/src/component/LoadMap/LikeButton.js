@@ -65,9 +65,6 @@ const LikeButton = (props) => {
     const isStarCilckUnLike = async (e) => {
         e.stopPropagation();
         const isLiked = likes.some((like) => like === plannerId);
-        console.log('likes', likes);
-        console.log('plannerId', plannerId);
-        console.log('isLiked', isLiked);
         if (isLiked) {
             dispatch(likeActions.delPlannerLike(plannerId));
             const res = await deletePlannerUnlike(plannerId);

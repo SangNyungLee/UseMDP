@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { siteActions } from '../store/site';
 import { logoutModal, requestFail } from './etc/SweetModal';
 import { postLogout } from '../utils/DataAxios';
-import { FaFileUpload } from 'react-icons/fa';
 import { MdOutlineFileUpload } from 'react-icons/md';
 
 import FileInputComponent from './FileInputComponent';
@@ -56,17 +55,6 @@ export default function RealHeader() {
 		logoutModal();
 		navigate('/');
 	};
-	// //로그아웃 버튼 누를경우 실행되서 서버에 쿠키 삭제 요청하는 함수
-	// const axiosLogout = async () => {
-	//   try {
-	//     const res = await postLogout();
-	//     if (res.status !== 200){
-	//       requestFail("로그아웃")
-	//     }
-	//   } catch (error) {
-	//     console.log(error);
-	//   }
-	// };
 
 	const showLoginModal = (e) => {
 		e.stopPropagation();

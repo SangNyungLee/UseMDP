@@ -40,7 +40,6 @@ export default function PlusMap(props) {
     };
 
     try {
-      console.log("myData", data);
       const result = await postPlanner(data);
       if (result.status !== 201) {
         requestFail("플래너 생성");

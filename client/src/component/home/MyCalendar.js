@@ -229,7 +229,6 @@ export default function MyCalendar() {
       const selectedEvents = getNestedElement(plannerList, home);
       if (selectedEvents) {
         const parsedEvents = dateParsing(selectedEvents);
-        console.log("parsedEvents", parsedEvents);
         setEvents(parsedEvents);
       } else {
         const plannerId = plannerList[0].plannerId;
@@ -302,8 +301,6 @@ export default function MyCalendar() {
 
         const newCardId = await postCard(newCardData);
 
-        console.log("newCardId", newCardId);
-
         dispatch(
           plannerListActions.addPlanner({
             ...newPlannerData,
@@ -365,8 +362,6 @@ export default function MyCalendar() {
     setSelectedCard(event);
     setVisible(true);
   };
-
-  console.log("events", events);
 
   return (
     <_Flex>

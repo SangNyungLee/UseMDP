@@ -28,7 +28,6 @@ export default function CustomList(props) {
 	};
 
 	const noPlus = props.noPlus;
-	console.log('custom data', data);
 
 	const CustomLoadMap = props.loadMap;
 

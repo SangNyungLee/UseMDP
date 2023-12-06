@@ -12,28 +12,3 @@ export default function DataDownload(title,content){
     URL.revokeObjectURL(url);
     document.body.removeChild(a);
 }
-
-// export function lzutf8ImgCompress(img){
-//     console.log(img)
-//     const textDecoder = new TextDecoder('utf-8'); // 또는 다른 인코딩 설정 가능
-//     const decodedString = textDecoder.decode(img);
-//     console.log(decodedString.length);
-//     const compressedString = LZUTF8.compress(decodedString,{outputEncoding: "Base64"});
-//     const twoCompressedString = LZUTF8.compress(compressedString,{outputEncoding: "Base64"});
-//     console.log(compressedString.length);
-//     return compressedString;
-// }
-
-// export function lzutf8Compress(originArr){
-//     // 객체 배열 압축 참고용
-//     const jsonString = JSON.stringify(originArr);
-//     const compressedString = LZUTF8.compress(jsonString,{outputEncoding: "Base64"});
-//     return compressedString;
-// }
-
-// export function lzutf8Decompress(compressedString){
-//     // 객체 배열 압축 해제 참고용
-//     const decompressedString = LZUTF8.decompress(compressedString,{inputEncoding:"Base64"});
-//     const originArr = JSON.parse(decompressedString)
-//     return originArr;
-// }

@@ -25,9 +25,6 @@ export default function HomeComponent() {
 	const calendar = useSelector((state) => state.calendar);
 	useDefaultCheck(HOME);
 
-	console.log('hom component calendar', calendar);
-	console.log('home component', plannerList);
-
 	const [sortOption, setSortOption] = useState('title');
 
 	const handleSortChange = (event) => {
