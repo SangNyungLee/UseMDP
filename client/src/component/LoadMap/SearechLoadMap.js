@@ -40,7 +40,7 @@ export default function SearchLoadMap(props) {
     return (
         <>
             <_CardContainer text="white" onClick={(e) => handleClick(e)} onMouseOver={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <_CardImg src={thumbnail ? thumbnail : skyImg} alt="planner thumbnail" />
+                <_CardImg src={thumbnail && thumbnail != 'string' ? thumbnail : skyImg} alt="planner thumbnail" />
                 <_CardImgOverlay>
                     <_CardBody>
                         <_CardTitle as={'h5'}>{title}</_CardTitle>
