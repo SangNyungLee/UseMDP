@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import CustomList from '../customList/CustomList';
 import CustomListHiddable from '../customList/CustomListHiddable';
@@ -7,7 +6,6 @@ import LoadMap from '../../LoadMap/LoadMap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLikesAxios, getPlannerByTrend } from '../../../utils/DataAxios';
 import { likeActions } from '../../../store/like';
-import noResult from "../../../constant/img/searchFail.svg";
 import { _ComponentContainer, _ComponentTitle } from '../../../constant/css/styledComponents/__StarComponent';
 import { requestFail } from '../../etc/SweetModal';
 import { HOME } from '../../../constant/constant';
@@ -40,20 +38,19 @@ export default function StarComponent() {
                 setData([]);
             }
         }
-    }
 
-    async function getLike() {
-      const result = await getLikesAxios();
-      if (result.status === 200) {
-        dispatch(likeActions.setLikesInit(result.data.data));
-      } else {
-        requestFail("좋아요 불러오기");
-      }
-    }
+		async function getLike() {
+			const result = await getLikesAxios();
+			if (result.status === 200) {
+				dispatch(likeActions.setLikesInit(result.data.data));
+			} else {
+				requestFail("좋아요 불러오기");
+			}
+		}
 
-    getData();
-    getLike();
-  }, []);
+		getData();
+		getLike();
+	}, []);
 
   return (
     <_ComponentContainer fluid onClick={handlePoint}>
