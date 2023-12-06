@@ -183,13 +183,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             endDate: endDate.toISOString(),
             coverColor,
         };
-        console.log('MODAL에서 보내는 item', newCardItem);
         try {
             const result = await patchCard(newCardItem);
             if (result.status !== 200) {
                 requestFail('카드 데이터 저장');
             }
-            console.log('deletedCheckList', deletedCheckList);
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {
                     const res = await deleteCheckList(id);
@@ -309,7 +307,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         setTmpEdit(v);
     };
 
-    console.log(checklists, IsBackGroundDark(coverColor));
     return (
         <>
             <Modal show={show} onHide={handleCloseWithoutSave} size="lg">

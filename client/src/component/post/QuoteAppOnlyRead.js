@@ -47,15 +47,12 @@ export default function QuoteAppOnlyRead() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const location = useLocation();
-    console.log("location data",location.state?.sourceData)
-    //데이터 초기화. 새로고침을 하던, 뭘하던 받아서 axios받아서 noEditPlanner 초기화
 
     useEffect(() => {
         async function fetchData() {
             const btoaid = searchParams.get('id');
             if(btoaid){
                 const data = await getPlannerBtoA(btoaid);
-                console.log('initData', data.data);
                 let tmp = plannerCardStatusDevide(data.data.data);
                 tmp = { ...tmp, quote: 1 };
                 dispatch(noEditPlannerAction.setPlansInit(tmp));
@@ -71,7 +68,6 @@ export default function QuoteAppOnlyRead() {
         fetchData();
     }, [location]);
 
-    console.log('noEditPlanner', noEditPlanner);
 
     let planner;
     let plannerId;
@@ -90,7 +86,6 @@ export default function QuoteAppOnlyRead() {
 
     if (noEditPlanner["cards"]) {
         const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list, ...rest } = noEditPlanner;
-        console.log("noEditPlanner cards",cards)
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
@@ -106,7 +101,6 @@ export default function QuoteAppOnlyRead() {
     }
 
     async function cardClick(ind, index) {
-        console.log('cardResult', planner[ind][index]);
         setSelectedCard(planner[ind][index]);
         setVisible(true);
     }

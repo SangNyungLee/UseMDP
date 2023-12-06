@@ -6,7 +6,6 @@ const RightClickerForPlanner = (props) => {
     //실제 예제에서는 여러 방법으로 Ref를 가져와야함.
     //혹은 html을 줘야함.
 
-    console.log(props);
 
     return (
         <ListGroup style={{ position: 'fixed', zIndex: 99, top: props.point[0], left: props.point[1] }}>

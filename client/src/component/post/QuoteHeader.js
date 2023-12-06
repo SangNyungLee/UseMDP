@@ -13,13 +13,11 @@ export default function QuoteHeader(props) {
     const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo, setSwitch } = props;
     const [plannerId, setPlannerId] = useState();
     const [plannerTitle, setPlannerTitle] = useState();
-    const [readData, setReadData] = useState();
     const [readThumbnail, setReadThumbnail] = useState();
 
     const dispatch = useDispatch();
 
     function handleThumbnailDownload() {
-        console.log('download', thumnnailRef.current);
         ThumbnailMaker(thumnnailRef);
     }
 
@@ -48,7 +46,6 @@ export default function QuoteHeader(props) {
 
     const patchPlannerAndDispatch = async (thumbnail) => {
         const data = { ...plannerInfo, thumbnail: thumbnail };
-        console.log('patchPlannerAndDispatch', data);
         const res = await patchPlanner(data);
         if (res.status !== 200) {
             requestFail('플래너 상태 저장');
@@ -68,12 +65,6 @@ export default function QuoteHeader(props) {
             setPlannerTitle(title);
         }
     }, [plannerInfo]);
-
-    useEffect(() => {
-        if (readData) {
-            console.log('readData', readData);
-        }
-    }, [readData]);
 
     useEffect(() => {
         if (readThumbnail) {

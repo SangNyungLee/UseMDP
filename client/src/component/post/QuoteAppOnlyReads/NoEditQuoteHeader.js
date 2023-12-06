@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DataDownload from '../../../utils/DataDownload';
 import ThumbnailMaker from '../RightClicker/ThumbnailMaker';
 import { useDispatch } from 'react-redux';
-import { plannerListActions } from '../../../store/plannerList';
 import NoEditMDPmodal from './NoEditMDPmodal';
 import { useNavigate } from 'react-router-dom';
-import { FaTrello, FaSearch, FaPlus, FaInfo, FaBell, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft } from 'react-icons/fa';
+import { FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
 
 export default function NoEditQuoteHeader(props) {
@@ -21,7 +20,6 @@ export default function NoEditQuoteHeader(props) {
     const dispatch = useDispatch();
 
     function handleThumbnailDownload() {
-        console.log('download', thumnnailRef.current);
         ThumbnailMaker(thumnnailRef);
     }
     const Addplanner = () => {};

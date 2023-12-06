@@ -2,11 +2,8 @@ import Select from 'react-select'; //라이브러리 import
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import CustomList from '../customList/CustomList';
-import LoadMap from '../../LoadMap/LoadMap';
-import { getLikesAxios, getPlannerByTrend, getPlanners, getTags } from '../../../utils/DataAxios';
+import { getLikesAxios, getPlanners, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
-import noResult from '../../../constant/img/searchFail.svg';
 import { useDispatch } from 'react-redux';
 import { likeActions } from '../../../store/like';
 import { requestFail } from '../../etc/SweetModal';
@@ -67,7 +64,6 @@ export default function SearchComponent() {
             let data;
             try {
                 const response = await getPlanners();
-                console.log('res', response);
                 if (response.status === 200) {
                     const newData = response.data.data.map((item, idx) => {
                         const newItem = { ...item, cards: item.cards ? item.cards : [] };
@@ -79,7 +75,6 @@ export default function SearchComponent() {
                 }
                 const result = await getTags();
                 if (result.status === 200) {
-                    console.log('태그 데이터 받아온 결과 : ', result.data);
                     setTags(result.data.data);
                 } else {
                     requestFail('태그 불러오기');
@@ -87,7 +82,6 @@ export default function SearchComponent() {
             } catch {
                 const result = await getTags();
                 if (result.status === 200) {
-                    console.log('태그 데이터 받아온 결과 : ', result.data);
                     setTags(result.data.data);
                 } else {
                     requestFail('태그 불러오기');
@@ -103,7 +97,6 @@ export default function SearchComponent() {
             const Title = [];
             // uniqueTitles에도 값을 넣어서, 값을 체크하는 메커니즘.
             const Author = [];
-            console.log('data', data);
             if (!data || data.length === 0) {
                 setAuthor(nullOptions);
                 setTitle(nullOptions);
@@ -121,7 +114,6 @@ export default function SearchComponent() {
                 });
                 setAuthor(Author);
                 setTitle(Title);
-                console.log('uniqueTitles : ', Author);
             }
 
             // setTitle(data.map((item) => ({ value: item.title, label: item.title })));
@@ -136,7 +128,6 @@ export default function SearchComponent() {
         setOption(v);
     };
     const handleSelectTag = (v) => {
-        console.log('타겟', v);
         setSelectTag(v);
     };
     const handleSearch = (e) => {
