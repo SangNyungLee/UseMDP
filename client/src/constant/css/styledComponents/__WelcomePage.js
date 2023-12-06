@@ -24,7 +24,9 @@ export const _LeftCol = styled(Col)``;
 
 export const _RightCol = styled(Col)``;
 
-export const _TitleStack = styled(Stack)``;
+export const _TitleStack = styled(Stack)`
+	margin-bottom: 10%;
+`;
 
 export const _ButtonStack = styled(Stack)`
 	margin-bottom: 10%;
@@ -40,7 +42,13 @@ export const _Subtitle = styled.p`
 	color: #393e46;
 `;
 
-export const _Button = styled(Button)``;
+export const _Button = styled(Button)`
+	background-color: #222831;
+	border: none;
+	&:hover {
+		background-color: #393e46;
+	}
+`;
 
 export const _Image = styled(Image)`
 	max-width: 100%;
