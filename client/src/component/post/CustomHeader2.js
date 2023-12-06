@@ -228,15 +228,29 @@ function CustomHeader2(props) {
                     <FaStar style={{ fontSize: '12px', color: 'white' }} />
                 </button>
 
-                <button onClick={handlePrivate} type="button" className="button-style-header">
-                    <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
-                    <span className="private-text">Private</span>
-                </button>
+                {plannerInfo.plannerAccess == 'PRIVATE' ? (
+                    <button onClick={handlePrivate} type="button" className="button-style-right">
+                        <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Private</span>
+                    </button>
+                ) : (
+                    <button onClick={handlePrivate} type="button" className="button-style-header">
+                        <FaLock style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Private</span>
+                    </button>
+                )}
 
-                <button onClick={handlePublic} type="button" className="button-style-header">
-                    <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
-                    <span className="private-text">Public</span>
-                </button>
+                {plannerInfo.plannerAccess == 'PUBLIC' ? (
+                    <button onClick={handlePublic} type="button" className="button-style-right">
+                        <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Public</span>
+                    </button>
+                ) : (
+                    <button onClick={handlePublic} type="button" className="button-style-header">
+                        <FaLockOpen style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
+                        <span className="private-text">Public</span>
+                    </button>
+                )}
 
                 <FileImageInputComponent setState={setReadThumbnail} />
             </div>
