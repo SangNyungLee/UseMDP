@@ -8,6 +8,7 @@ import { calendarActions } from '../../../store/calendar';
 import { plannerListActions } from '../../../store/plannerList';
 import { requestFail } from '../../etc/SweetModal';
 import { pointActions } from '../../../store/pointer';
+import { plannerCardStatusDevide } from '../../../utils/DataParsing';
 //props로 position을 줄것. 그럼 list그룹의 위치를 조절할 수 있다.
 const RightClicker = (props) => {
     //실제 예제에서는 여러 방법으로 Ref를 가져와야함.
@@ -58,11 +59,23 @@ const RightClicker = (props) => {
 
     const toMyLoadMap = async (e) => {
         e.stopPropagation();
-        const btoaId = btoa(plannerId);
-        const result = await postCopyPlanners(plannerId);
-        if (result.status === 201) {
-            console.log(result.data);
+        const result1 = await postCopyPlanners(plannerId);
+        if (result1.status !== 201) {
+            requestFail("플래너 복사")
+            return;
         }
+        
+        const btoaId = btoa(result1.data.data);
+
+        const result2 = await getPlannerBtoA(btoaId);
+        if (result2.status !== 200){
+            requestFail("복사된 플래너 불러오기")
+            return;
+        }
+
+        const planner = plannerCardStatusDevide(result2.data.data);
+        dispatch(plannerListActions.addPlanner(planner))
+
 
         setPoint([-1, -1]);
         // //이름을 받아서 지운다
