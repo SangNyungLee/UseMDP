@@ -43,7 +43,6 @@ const _FaStar2 = styled(FaRegStar)`
 const LikeButton = (props) => {
     const likes = useSelector((state) => state.like);
     const plannerId = props.plannerId;
-    console.log("LikeButton likes",likes)
     const isLike = likes.includes(plannerId);
     const dispatch = useDispatch();
 

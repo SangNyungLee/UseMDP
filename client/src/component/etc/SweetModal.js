@@ -80,3 +80,82 @@ export const requestDeleteSucess = () => {
         text: `플래너 삭제 완료`,
     });
 };
+
+function formatDateString(dateString) {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short',
+    };
+  
+    const formattedDate = new Date(dateString).toLocaleString('ko-KR', options);
+    return formattedDate;
+  }
+
+export const jsonDataReadSucess = async (originalData) => {
+    const { title, creator, plannerAccess, updatedAt} = originalData;
+    const formattedDate = formatDateString(updatedAt);
+    const { value: newData } = await Swal.fire({
+        title: '대상혁',
+        html:`
+        <div class="swal-content">
+            <div class="swal-item">
+                <label>제목:</label>
+                <input id="title" class="swal2-input" placeholder="제목" value="${title}">
+            </div>
+            <div class="swal-item">
+                <label>작성자:</label>
+                <input id="creator" class="swal2-input" placeholder="작성자" value="${creator}">
+            </div>
+            <br/>
+            <div class="swal-item">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="plannerAccess" class="swal2-checkbox" ${plannerAccess === 'PUBLIC' ? 'checked' : ''}>
+                    <label for="plannerAccess">공개</label>
+                    <input type="checkbox" id="plannerAccessPrivate" class="swal2-checkbox" ${plannerAccess === 'PRIVATE' ? 'checked' : ''}>
+                    <label for="plannerAccessPrivate">비공개</label>
+                </div>
+            </div>
+            <br/>
+            <div class="swal-item">
+                <label>마지막 수정일:</label>
+                <div id="formattedDate">${formattedDate}</div>
+            </div>
+        </div>
+      `,
+        showCancelButton: true,
+        focusConfirm: false,
+        preConfirm: () => {
+            const isPublic = document.getElementById('plannerAccess').checked;
+            return {
+                title: document.getElementById('title').value,
+                creator: document.getElementById('creator').value,
+                plannerAccess: isPublic ? 'PUBLIC' : 'PRIVATE',
+            };
+        },
+      });
+    
+      if (newData) {
+        Swal.fire({
+          title: 'Data Updated!',
+          icon: 'success',
+        });
+        const { title, creator, plannerAccess } = newData;
+        return {
+            ...originalData,
+            title,
+            creator,
+            plannerAccess,
+        };
+      } else {
+        Swal.fire({
+          title: 'Edit Canceled',
+          icon: 'info',
+        });
+        return null;
+      }
+}
