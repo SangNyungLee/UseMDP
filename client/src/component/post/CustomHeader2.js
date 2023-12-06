@@ -12,9 +12,13 @@ import { validateUnspecifiedPlannerData } from '../../utils/DataValidate';
 import FileImageInputComponent from '../FileImageInputComponent';
 import Select from 'react-select'; //라이브러리 import
 import { Modal, Button } from 'react-bootstrap';
+import { useMediaQuery } from 'react-responsive';
 import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
+    const isMobile = useMediaQuery({
+        query: '(max-width: 1024px)',
+    });
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const plannerInfo = props.plannerInfo;
@@ -246,21 +250,22 @@ function CustomHeader2(props) {
 
                 <FileImageInputComponent setState={setReadThumbnail} />
             </div>
-
-            <div className="content-header-right">
-                <button
-                    type="button"
-                    onClick={() => {
-                        props.setSwitch((prev) => {
-                            return prev == 0 ? 1 : 0;
-                        });
-                    }}
-                    className="button-style-header-right"
-                >
-                    <FaEllipsisH style={{ fontSize: '12px', color: 'white' }} />
-                    <span className="menu-text">Switch</span>
-                </button>
-            </div>
+            {isMobile ? (
+                <div className="content-header-right">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            props.setSwitch((prev) => {
+                                return prev == 0 ? 1 : 0;
+                            });
+                        }}
+                        className="button-style-header-right"
+                    >
+                        <FaEllipsisH style={{ fontSize: '12px', color: 'white' }} />
+                        <span className="menu-text">Switch</span>
+                    </button>
+                </div>
+            ) : null}
 
             <Modal size="lg" show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
