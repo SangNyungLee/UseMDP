@@ -41,11 +41,18 @@ const _FaStar2 = styled(FaRegStar)`
   z-index: 5;
 `;
 const LikeButton = (props) => {
+<<<<<<< HEAD
   const likes = useSelector((state) => state.like);
   const plannerId = props.plannerId;
   console.log("LikeButton likes", likes);
   const isLike = likes.includes(plannerId);
   const dispatch = useDispatch();
+=======
+    const likes = useSelector((state) => state.like);
+    const plannerId = props.plannerId;
+    const isLike = likes.includes(plannerId);
+    const dispatch = useDispatch();
+>>>>>>> develop
 
   const isStarCilckLike = async (e) => {
     e.stopPropagation();
