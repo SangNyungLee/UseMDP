@@ -4,17 +4,40 @@ import { Row, Col, Container } from 'react-bootstrap';
 export const _Container = styled(Container)`
     padding: 0;
     margin: 0;
-    width: 100%;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
+
 export const _Row = styled(Row)`
-    width: 100%;
-    height: 100%;
-    padding: 0 3% 0 3%;
+    justify-content: flex-start;
+    padding: 0;
     margin: 0;
+
+    @media screen and (max-width: 850px) {
+    }
+
+    @media screen and (max-width: 575px) {
+        justify-content: center;
+    }
 `;
 export const _Col = styled(Col)`
-    display: flex;
-    justify-content: center;
     padding: 0;
-    margin: 0 0 4% 0;
+    margin: 0 3rem 3rem 0;
+    width: 240px;
+    height: 120px;
+    max-width: 240px;
+    max-height: 120px;
+    min-width: 240px;
+    min-height: 120px;
+
+    @media screen and (max-width: 850px) {
+    }
+
+    @media screen and (max-width: 686px) {
+        margin: 0 1rem 1rem 0;
+    }
+
+    @media screen and (max-width: 575px) {
+    }
 `;

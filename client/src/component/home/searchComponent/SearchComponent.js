@@ -14,6 +14,7 @@ import SearchCustomList from '../customList/SearchCustomList';
 import SearchLoadMap from '../../LoadMap/SearechLoadMap';
 import { useMediaQuery } from 'react-responsive';
 import NoContent from '../../NoContent';
+import { _ComponentContainer } from '../../../constant/css/styledComponents/__StarComponent';
 const SearchContainer = styled.div`
     width: 100%;
     display: flex;
@@ -49,7 +50,7 @@ export default function SearchComponent() {
     const [title, setTitle] = useState([]);
     const [datas, setDatas] = useState([]);
     const [filteredDatas, setFilteredDatas] = useState([]);
-    const [selectTag, setSelectTag] = useState(tags[0]);
+    const [selectTag, setSelectTag] = useState([]);
     const [option, setOption] = useState(options[0]);
     const [tags2, setTags] = useState([]);
 
@@ -94,7 +95,7 @@ export default function SearchComponent() {
                 data = [];
             }
             setDatas(data);
-            setFilteredDatas(data);
+            setFilteredDatas([]);
 
             //셋을 만들어서, 중복을 방지한다.
             const uniqueTitles = new Set();
@@ -134,7 +135,10 @@ export default function SearchComponent() {
         selectInputRef.current.clearValue();
         setOption(v);
     };
-
+    const handleSelectTag = (v) => {
+        console.log('타겟', v);
+        setSelectTag(v);
+    };
     const handleSearch = (e) => {
         // 버튼 클릭 시, option에 따라 데이터 필터링
         e.stopPropagation();
@@ -146,9 +150,8 @@ export default function SearchComponent() {
             setFilteredDatas(datas.filter((item) => selectTag.some((title) => item.title.includes(title.value))));
         }
     };
-
     return (
-        <div style={{ padding: '15px' }}>
+        <_ComponentContainer>
             <_ComponentTitle>로드맵 검색</_ComponentTitle>
             <SearchContainer>
                 <div>
@@ -173,14 +176,19 @@ export default function SearchComponent() {
                     <_MediaSelect
                         ref={selectInputRef}
                         styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
+                            control: (base) => ({
+                                ...base,
                                 width: '50vw',
-                                flex: 3,
+                                whiteSpace: 'nowrap',
+                            }),
+                            valueContainer: (base) => ({
+                                ...base,
+                                height: '37px',
+                                overflowX: 'hidden',
                             }),
                             multiValue: (baseStyles) => ({
                                 ...baseStyles,
-                                // backgroundColor: "lightblue", // 선택된 항목의 배경색
+                                display: 'none',
                             }),
                         }}
                         options={tags2} //위에서 만든 배열을 select로 넣기
@@ -190,8 +198,12 @@ export default function SearchComponent() {
                                 <img style={{ height: '23px' }} src={tag.image} alt={tag.label} />
                             </div>
                         )}
-                        onChange={setSelectTag} //값이 바뀌면 setState되게
+                        onChange={(v) => {
+                            handleSelectTag(v);
+                        }} //값이 바뀌면 setState되게
                         isMulti
+                        menuPlacement="auto"
+                        maxMenuHeight={'250px'}
                         // defaultValue={tags[0]}
                     />
                 ) : option.value === 'author' ? (
@@ -209,8 +221,12 @@ export default function SearchComponent() {
                             }),
                         }}
                         options={author} //위에서 만든 배열을 select로 넣기
-                        onChange={setSelectTag} //값이 바뀌면 setState되게
+                        onChange={(e, v) => {
+                            handleSelectTag(e, v);
+                        }} //값이 바뀌면 setState되게
                         isMulti
+                        menuPlacement="auto"
+                        maxMenuHeight={'250px'}
                         // defaultValue={tags[0]}
                     />
                 ) : (
@@ -229,6 +245,8 @@ export default function SearchComponent() {
                         options={title} //위에서 만든 배열을 select로 넣기
                         onChange={setSelectTag} //값이 바뀌면 setState되게
                         isMulti
+                        menuPlacement="auto"
+                        maxMenuHeight={'250px'}
                         // defaultValue={tags[0]}
                     />
                 )}
@@ -237,9 +255,16 @@ export default function SearchComponent() {
                     검색
                 </Button>
             </SearchContainer>
+
+            {option.value == 'stack' && (
+                <>
+                    <_ComponentTitle style={{ marginTop: '30px', marginBottom: '10px' }}>선택한 태그</_ComponentTitle> <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag) => <img style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
+                </>
+            )}
+
             <_ComponentTitle style={{ marginTop: '30px', marginBottom: '10px' }}>검색결과</_ComponentTitle>
             {filteredDatas.length == 0 ? <NoContent /> : <SearchCustomList datas={filteredDatas} loadMap={SearchLoadMap} />}
-        </div>
+        </_ComponentContainer>
     );
     // }
 }
