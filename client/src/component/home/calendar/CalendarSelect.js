@@ -130,6 +130,7 @@ export default function CalendarSelect({ target }) {
               key={planner.plannerId}
               planner={planner}
               setIsVisible={setIsVisible}
+              setIsClickPlanner={setIsClick}
               target={target}
               index={id}
             />

@@ -14,5 +14,9 @@
 }
 
 .my-calendar .rbc-off-range-bg {
-  background: #393e46;
+  background: #e7e7e7;
+}
+
+.my-calendar .rbc-off-range {
+  color: #474747;
 }
