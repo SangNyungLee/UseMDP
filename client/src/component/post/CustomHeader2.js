@@ -198,7 +198,7 @@ function CustomHeader2(props) {
                     {/* <button onClick={homeNavigate} type="button" className="button-style">
                         <FaTrello style={{ fontSize: '16px', color: 'white', marginBottom: '6px' }} />
                     </button> */}
-                    <button type="button" className="button-style-right">
+                    <button onClick={homeNavigate} type="button" className="button-style-right">
                         <FaArrowLeft style={{ fontSize: '16px', color: 'white' }} />
                     </button>
                 </div>
@@ -319,7 +319,7 @@ function CustomHeader2(props) {
                             isMulti
                         />
                     </div>
-                    <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag) => <img style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
+                    <div style={{ marginTop: '10px' }}> {selectTag.length > 0 ? selectTag.map((tag,id) => <img key={id} style={{ margin: '3px' }} src={tag.image} alt={tag.label}></img>) : null}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModalWithoutSave}>

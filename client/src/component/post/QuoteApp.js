@@ -16,6 +16,7 @@ import useLocalStorage from 'use-local-storage';
 import sky from '../../constant/img/sky.jpg';
 import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
+import { useNavigate } from 'react-router';
 
 const _QuoteAppContainer = styled.div`
     display: flex;
@@ -48,9 +49,8 @@ export default function QuoteApp() {
     const thumnnailRef = useRef(null);
     const [selectedCard, setSelectedCard] = useState(getOneCard(0, 'TODO'));
     const [visible, setVisible] = useState(false);
-    const [localdata, setLocalData] = useLocalStorage('List', []);
-    const [localQuote, setLocalQuote] = useLocalStorage('Quote', []);
     const dispatch = useDispatch();
+    const navi = useNavigate();
 
     let planner;
     let plannerId = quote[0];
@@ -70,6 +70,7 @@ export default function QuoteApp() {
         console.log('sort: ', tmp);
         return tmp;
     }
+
     if (plannerList.length > 0 && plannerList[0]) {
         const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
         planner = sortByIntOrder(cards);
@@ -84,14 +85,6 @@ export default function QuoteApp() {
             plannerAccess: access,
             taglist: list ? list : [],
         };
-    } else if (localdata.length > 0) {
-        console.log('local in if', localdata);
-        const { cards, plannerId: id, title, ...rest } = localdata[0];
-        dispatch(plannerListActions.setPlannersInit(localdata));
-        dispatch(calendarActions.setQuote([id]));
-        planner = cards;
-        plannerId = id;
-        plannerTitle = title;
     }
 
     //planner가 바뀔때마다, localStoage에 저장하는 코드.
@@ -118,6 +111,7 @@ export default function QuoteApp() {
                 dispatch(siteActions.setIsData(true));
             } else {
                 requestFail('플래너 불러오기');
+                navi('/home');
             }
         }
         if (!site.isData) {
@@ -126,16 +120,6 @@ export default function QuoteApp() {
         }
         console.log('Check site');
     }, [site.isData]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (plannerList.length > 0) {
-                setLocalData(plannerList);
-                setLocalQuote(quote);
-            }
-        };
-        fetchData();
-    }, [plannerList]);
 
     async function cardClick(ind, index) {
         const result = await getCardAxios(planner[ind][index].cardId);
