@@ -1,5 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft, FaTags } from 'react-icons/fa';
+import {
+	FaTrello,
+	FaPlus,
+	FaStar,
+	FaLock,
+	FaLockOpen,
+	FaEllipsisH,
+	FaDownload,
+	FaUser,
+	FaArrowLeft,
+	FaTags,
+} from 'react-icons/fa';
+
 import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -14,6 +26,7 @@ import { useMediaQuery } from 'react-responsive';
 import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
+
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
@@ -61,7 +74,7 @@ function CustomHeader2(props) {
                 }
 
                 // 찾은 태그 정보가 없으면 tagValue를 그대로 반환
-                return tagValue;
+                return { image: tagValue, label: tagValue, image: tagValue };
             });
             setSelectTag(initialTags);
         }
@@ -319,6 +332,7 @@ function CustomHeader2(props) {
             </Modal>
         </div>
     );
+
 }
 
 export default CustomHeader2;

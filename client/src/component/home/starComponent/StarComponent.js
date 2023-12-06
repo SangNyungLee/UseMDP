@@ -11,6 +11,7 @@ import { requestFail } from '../../etc/SweetModal';
 import { HOME } from '../../../constant/constant';
 import useDefaultCheck from '../../../hook/useDefaultCheck';
 export default function StarComponent() {
+
     const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [point, setPoint] = useState([-1, -1]);
@@ -51,6 +52,7 @@ export default function StarComponent() {
 		getData();
 		getLike();
 	}, []);
+
 
   return (
     <_ComponentContainer fluid onClick={handlePoint}>
