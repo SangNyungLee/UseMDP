@@ -12,6 +12,8 @@ import { siteActions } from '../store/site';
 import { logoutModal, requestFail } from './etc/SweetModal';
 import { postLogout } from '../utils/DataAxios';
 import { FaFileUpload } from 'react-icons/fa';
+import { MdOutlineFileUpload } from 'react-icons/md';
+
 import FileInputComponent from './FileInputComponent';
 
 export default function RealHeader() {
@@ -102,7 +104,7 @@ export default function RealHeader() {
 					<div className='user-settings'>
 						<div className='uploadIcon user-menu'>
 							<FileInputComponent>
-								<FaFileUpload />
+								<MdOutlineFileUpload />
 							</FileInputComponent>
 						</div>
 						<div className='dark-light'>{/* <CiDark /> */}</div>

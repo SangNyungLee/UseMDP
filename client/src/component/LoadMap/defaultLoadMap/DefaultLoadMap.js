@@ -87,14 +87,6 @@ export default function DefaultLoadMap() {
 						<FaSearch className='menu__icon ' />
 						<span className='menu__text'>검색</span>
 					</a>
-					{/* <a className='menu__item'>
-						<i className='menu__icon fa fa-trophy'></i>
-						<span className='menu__text'>성과</span>
-					</a>
-					<a className='menu__item'>
-						<i className='menu__icon fa fa-sliders'></i>
-						<span className='menu__text'>통계</span>
-					</a> */}
 				</nav>
 			</aside>
 			<_RenderComponent id='_RenderComponent' fluid>
