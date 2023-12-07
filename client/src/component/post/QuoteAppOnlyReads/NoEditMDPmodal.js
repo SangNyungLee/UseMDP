@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-
 import DatePicker from 'react-datepicker';
 import { darken } from 'polished';
 import description from '../../../constant/img/description.svg';
@@ -11,6 +10,7 @@ import list1 from '../../../constant/img/list.svg';
 import calendarImg from '../../../constant/img/calendar.svg';
 import parse from 'html-react-parser';
 import IsBackGroundDark from '../../../utils/IsBackGroundDark';
+
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -26,23 +26,6 @@ const _TitleInput = styled.input`
     &:focus {
         background-color: ${(props) => darken(0.1, props.color)};
     }
-`;
-
-const _TodoAddButton = styled.button`
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #091e420f;
-    border: 3px #091e420f;
-    border-radius: 3px;
-    &:hover {
-        background-color: #091e424f;
-    }
-    margin-bottom: 10px;
-`;
-
-const _ColorPickerModal = styled.div`
-    position: fixed;
-    z-index: 1;
 `;
 
 const _ChecklistContainer = styled.div`
@@ -63,25 +46,6 @@ const _CheckBox = styled.input`
     width: 15px;
 `;
 
-const _TextInput = styled.input`
-    height: 35px;
-    width: 87%;
-    margin-left: 5px;
-    border: 1px solid #091e420f;
-    border-radius: 3px;
-    outline: none;
-    /* border-bottom: 1px solid #ccc; */
-    &:focus {
-        border: 2px solid #007bff;
-    }
-`;
-
-const _DeleteButton = styled.button`
-    border: none;
-    background: none;
-    display: flex;
-`;
-
 const TitleEdit = styled.div`
     display: flex;
     justify-content: space-between;
@@ -99,18 +63,6 @@ const ParseContainer = styled.div`
     margin-left: 35px;
 `;
 
-const DefaultBtn = styled.button`
-    width: 50px;
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #091e420f;
-    border: 3px #091e420f;
-    border-radius: 3px;
-    &:hover {
-        background-color: #091e424f;
-    }
-`;
-
 const AcceptButton = styled.button`
     background-color: #007bff !important;
     color: white;
@@ -124,31 +76,14 @@ const AcceptButton = styled.button`
     margin-right: 5px;
 `;
 
-const CancelButton = styled.button`
-    width: 50px;
-    font-size: 12px;
-    font-weight: bold;
-    height: 35px;
-    background-color: #091e420f;
-    border: 3px #091e420f;
-    border-radius: 3px;
-    background-color: '#091E420F';
-    &:hover {
-        background: #ccc;
-    }
-`;
-export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, plannerId }) {
-    //구조 분해할당
+export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose }) {
     const [show, setShow] = useState(false);
-
     const [title, setTitle] = useState('');
     const [post, setPost] = useState('');
     const [checklists, setChecklists] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [coverColor, setCoverColor] = useState('');
-    const [cardStatus, setCardStatus] = useState('');
-    //내부에서 쓰는 로직 밖으로 내보내지 않음.
 
     const handleCloseWithoutSave = () => {
         modalClose();
@@ -163,13 +98,12 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
     };
 
     useEffect(() => {
-        const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
+        const { title, post, startDate, endDate, coverColor, checklists } = selectedCard;
         setTitle(title);
         setPost(post);
         setStartDate(new Date(startDate));
         setEndDate(new Date(endDate));
         setCoverColor(coverColor);
-        setCardStatus(cardStatus);
         setChecklists(checklists);
         setShow(modalStatus);
     }, [modalStatus]);
@@ -206,7 +140,6 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
                                 <IconImg src={list2}></IconImg>Check List
                             </div>
                         </TitleEdit>
-                        {/* <_Title>Check List</_Title> */}
                         <div>
                             {checklists
                                 ? checklists.map((item, index) => {
@@ -238,7 +171,7 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose, 
                             <div>
                                 <IconImg src={calendarImg}></IconImg> <_Span>End Date</_Span>
                                 <div>
-                                    <DatePicker selected={startDate} dateFormat="yyyy-MM-dd" />
+                                    <DatePicker selected={endDate} dateFormat="yyyy-MM-dd" />
                                 </div>
                             </div>
                         </FlexContainer>

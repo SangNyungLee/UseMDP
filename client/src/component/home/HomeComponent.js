@@ -2,12 +2,10 @@ import CustomList from './customList/CustomList';
 import MyLoadMap from '../LoadMap/MyLoadMap';
 import useDefaultCheck from '../../hook/useDefaultCheck';
 import { HOME } from '../../constant/constant';
-import { useSelector } from 'react-redux';
 import { _ComponentContainer, _ComponentTitle, _TitleContainer, _FilterSelect } from '../../constant/css/styledComponents/__HomeComponent';
 import { useState } from 'react';
 
 export default function HomeComponent() {
-    const plannerList = useSelector((state) => state.plannerList);
     useDefaultCheck(HOME);
 
     const [sortOption, setSortOption] = useState('title');

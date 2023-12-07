@@ -5,15 +5,15 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 export default function CustomList(props) {
-    const data = useSelector((state) => state.plannerList);
+    const plannerList = useSelector((state) => state.plannerList);
     const [sortedData, setSortedData] = useState([]);
     const sortOption = props.sortOption;
 
     useEffect(() => {
-        if (data) {
-            setSortedData(sortedItems(data, sortOption));
+        if (plannerList) {
+            setSortedData(sortedItems(plannerList, sortOption));
         }
-    }, [data, sortOption]);
+    }, [plannerList, sortOption]);
 
     const sortedItems = (data, option) => {
         switch (option) {
@@ -43,7 +43,7 @@ export default function CustomList(props) {
                             </_Col>
                         );
                     })}
-                    {noPlus ? null : (
+                    { !noPlus && (
                         <_Col>
                             <PlusMap />
                         </_Col>

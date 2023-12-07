@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import DataDownload from '../../utils/DataDownload';
 import { calendarActions } from '../../store/calendar';
 import { plannerListActions } from '../../store/plannerList';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getPlannerBtoA, patchPlanner, deleteMyPlanner } from '../../utils/DataAxios';
 import Swal from 'sweetalert2';
-
 import {
     _CardContainer,
     _CardHeader,
@@ -31,6 +30,7 @@ import {
 import skyImg from '../../constant/img/sky.jpg';
 import { requestFail } from '../etc/SweetModal';
 import '../../constant/css/sweetAlert.css';
+
 export default function MyLoadMap(props) {
     const dispatch = useDispatch();
     const { plannerId, title, creator, likePlanner, thumbnail, createdAt, updatedAt, plannerAccess, isDefault } = props.datas;
@@ -144,7 +144,7 @@ export default function MyLoadMap(props) {
             <_CardImgOverlay>
                 <_CardBody>
                     <_CardTitle as={'h5'}>{editedTitle}</_CardTitle>
-                    {isHovering ? (
+                    {isHovering && (
                         <>
                             <_CardDownloadButton onClick={(e) => handleShareIcon(e)} size="sm" variant="none">
                                 <_DownloadIcon />
@@ -156,12 +156,12 @@ export default function MyLoadMap(props) {
                                 <_DeleteIcon />
                             </_CardDeleteButton>
                         </>
-                    ) : null}
-                    {editedPlannerAccess === 'PRIVATE' ? (
+                    )}
+                    { editedPlannerAccess === 'PRIVATE' && (
                         <_IconContainer>
                             <_LockedIcon />
                         </_IconContainer>
-                    ) : null}
+                    ) }
                 </_CardBody>
             </_CardImgOverlay>
         </_CardContainer>

@@ -73,7 +73,6 @@ export default function CalendarSelectList({
   planner,
   setIsVisible,
   target,
-  index,
   setIsClickPlanner,
 }) {
   const [isClick, setIsClick] = useState(false);
@@ -107,7 +106,7 @@ export default function CalendarSelectList({
     <>
       <_PlannerContainer>
         <_SelectContainer>
-          {isClick ? (
+          { isClick ? (
             <_SelectArrow onClick={(e) => selectClick(e)}>
               <div>{"▼"}</div>
             </_SelectArrow>
@@ -118,7 +117,7 @@ export default function CalendarSelectList({
           )}
           <_PlannerTitle onClick={(e) => handleClick(e)}>{title}</_PlannerTitle>
         </_SelectContainer>
-        {isClick ? (
+        { isClick && (
           <_CardsContainer>
             {cards.map((cardStatusArr, id) => (
               <CardStatusSelectList
@@ -132,8 +131,6 @@ export default function CalendarSelectList({
               />
             ))}
           </_CardsContainer>
-        ) : (
-          <></>
         )}
       </_PlannerContainer>
     </>

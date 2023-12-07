@@ -8,7 +8,7 @@ import { requestFail } from '../etc/SweetModal';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
 
-export default function PlusMap(props) {
+export default function PlusMap() {
     const [editedCreator, setEditedCreator] = useState('');
     const [editedTitle, setEditedTitle] = useState('');
     const [editedPlannerAccess, setEditedPlannerAccess] = useState('PUBLIC');

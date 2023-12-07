@@ -67,13 +67,11 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
 
   const delCard = async (e, cardId) => {
     e.stopPropagation();
-    await deleteCardById(cardId);
     dispatch(plannerListActions.delCard(cardId));
-    if (home.length > 1) {
-      if (cardId === home[2]) {
-        dispatch(calendarActions.setHome([home[0], home[1]]));
-      }
+    if (home.length > 1 && cardId === home[2]) {
+      dispatch(calendarActions.setHome([home[0], home[1]]));
     }
+    await deleteCardById(cardId);
   };
 
   return (

@@ -104,10 +104,6 @@ const _CalendarContainer = styled.div`
   position: relative;
 `;
 
-const _CalendarSelectContainer = styled.div``;
-
-const _ToolbarContainer = styled.div``;
-
 const CustomToolbar = ({ label, onNavigate, onView }) => {
   const goToToday = (e) => {
     e.stopPropagation();
@@ -160,10 +156,10 @@ const CustomToolbar = ({ label, onNavigate, onView }) => {
         <_ToGoButton onClick={(e) => goToNext(e)}>{">"}</_ToGoButton>
       </div>
       <_CalendarContainer>
-        <_CalendarSelectContainer>
+        <div>
           <CalendarSelect target={HOME} />
-        </_CalendarSelectContainer>
-        <_ToolbarContainer>
+        </div>
+        <div>
           <_SwitchButton onClick={(e) => switchToMonthView(e)}>
             Month
           </_SwitchButton>
@@ -174,7 +170,7 @@ const CustomToolbar = ({ label, onNavigate, onView }) => {
           <_SwitchButton onClick={(e) => switchToAgendaView(e)}>
             Agenda
           </_SwitchButton>
-        </_ToolbarContainer>
+        </div>
       </_CalendarContainer>
     </_Toolbar>
   );

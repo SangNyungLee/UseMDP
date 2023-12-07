@@ -16,19 +16,17 @@ import { logoutModal, requestFail } from "../etc/SweetModal";
 import { postLogout } from "../../utils/DataAxios";
 
 export default function HomeHeader() {
-  // 모달창 보여주기, 숨기기 상태
   const [show, setShow] = useState(false);
-  //   const [isLogin, setIsLogin] = useState(false);
   const handleClose = () => setShow(false);
 
-  //sweetAlert라이브러리
+
   const MySwal = withReactContent(Swal);
-  //로그인 env
+
   const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
   const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
   const githubLoginId = process.env.REACT_APP_GITHUB_LOGIN_CLIENT_ID;
 
-  //Redux에서 isLogin상태 가져오는거
+
   const isLoginRedux = useSelector((state) => state.site.isLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,7 +35,7 @@ export default function HomeHeader() {
     query: "(max-width: 576px)",
   });
 
-  //로그인 모달창
+
   const showLoginModal = (e) => {
     e.stopPropagation();
     MySwal.fire({
@@ -53,7 +51,6 @@ export default function HomeHeader() {
     });
   };
 
-  ///////로그인버튼///////
   const googleLogin = (e) => {
     e.stopPropagation();
     window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
@@ -64,7 +61,6 @@ export default function HomeHeader() {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
   };
 
-  //로그아웃
   const Logout = async (e) => {
     e.stopPropagation();
     dispatch(siteActions.setIsLogin(false));

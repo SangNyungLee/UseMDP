@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import PlannerListLi from "./PlannerListLi";
 import useRead from "../../../hook/useRead";
-import { HOME } from "../../../constant/constant";
 
 const _Container = styled.div`
   border-radius: 5px;
@@ -36,8 +35,8 @@ const _Title = styled.div`
 `;
 
 export default function CalendarSideBar() {
-  const plannerList = useSelector((state) => state.plannerList);
-  const readerRegister = useRead(HOME);
+  const plannerList = useSelector( state => state.plannerList );
+  const readerRegister = useRead();
 
   return (
     <>
