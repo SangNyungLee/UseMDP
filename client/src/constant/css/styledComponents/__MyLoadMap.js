@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { Button, Card } from 'react-bootstrap';
+
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import { IoMdLock, IoMdUnlock, IoMdDownload } from 'react-icons/io';
 import { LiaEdit } from 'react-icons/lia';
 import { MdDelete } from 'react-icons/md';
