@@ -53,9 +53,10 @@ export default function WelcomePage() {
 			<_PageContainer fluid>
 				<_Row xs={1} md={2}>
 					<_LeftCol>
-						<_Title>Security-first diagramming for teams.</_Title>
+						<_Title>칸반보드로 개발일정을 관리하고, 기록합니다.</_Title>
+						<br />
 						<_Subtitle>
-							Bring your storage to our online tool, or save locally with the desktop app.
+							바로 시작, 혹은 이미 저장된 칸반보드 JSON 파일을 불러와서 작업할 수 있습니다.
 						</_Subtitle>
 						<_ButtonRow>
 							<_StartButtonCol>
