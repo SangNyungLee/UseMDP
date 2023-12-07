@@ -10,21 +10,21 @@ export const _PageWrapper = styled(Container)`
 	margin: 0;
 	padding: 0;
 	background-color: #eeeeee;
-	min-width: 320px;
 `;
 
 export const _PageContainer = styled(Container)`
+	display: flex;
+	justify-content: center;
 	margin-top: 4rem;
-	padding: 6rem 6rem 0 6rem;
+	padding: 8rem 4rem 10rem 4rem;
 	background-color: #eeeeee;
 	min-width: 320px;
-	min-height: 100vh;
 	font-family: 'Roboto', sans-serif;
 `;
 
 export const _ButtonRow = styled(Row)`
 	width: 80%;
-	margin-top: 4rem;
+	margin-top: 3rem;
 	margin-bottom: 4rem;
 
 	@media screen and (width <= 767px) {
@@ -33,7 +33,9 @@ export const _ButtonRow = styled(Row)`
 	}
 `;
 
-export const _Row = styled(Row)``;
+export const _Row = styled(Row)`
+	justify-content: space-between;
+`;
 
 export const _StartButtonCol = styled(Col)`
 	flex: 0 0;
@@ -48,6 +50,8 @@ export const _LeftCol = styled(Col)`
 `;
 
 export const _RightCol = styled(Col)`
+	max-width: 600px;
+	flex: 1 0 auto;
 	padding: 0;
 `;
 
@@ -61,7 +65,7 @@ export const _Title = styled.h1`
 `;
 
 export const _Subtitle = styled.p`
-	font-weight: 500;
+	font-weight: 600;
 	color: #393e46;
 `;
 

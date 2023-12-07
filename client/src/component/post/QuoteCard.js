@@ -10,9 +10,9 @@ const _CardHeader = styled.div`
 `;
 
 const _CardBody = styled.div`
+    position: relative;
     padding-top: 8px;
     display: flex;
-    position: relative;
 `;
 
 const DelDiv = styled.div`
