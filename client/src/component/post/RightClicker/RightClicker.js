@@ -30,26 +30,7 @@ const RightClicker = (props) => {
     const toPlannerLink = async (e) => {
         e.stopPropagation();
         const btoaId = btoa(plannerId);
-        const result = await getPlannerBtoA(btoaId);
-        if (result.status === 200) {
-            const cardList = result.data.data.cards;
-            const cards = [[], [], []];
-            for (let i = 0; i < cardList.length; i++) {
-                if (cardList[i].cardStatus === 'TODO') {
-                    cards[0].push(cardList[i]);
-                } else if (cardList[i].cardStatus === 'DOING') {
-                    cards[1].push(cardList[i]);
-                } else if (cardList[i].cardStatus === 'DONE') {
-                    cards[2].push(cardList[i]);
-                }
-            }
-            dispatch(calendarActions.setQuote([plannerId]));
-            dispatch(plannerListActions.replaceCards({ id: plannerId, cards: cards }));
-            navigate(`/planner?id=${btoaId}`);
-        } else {
-            requestFail('플래너 불러오기');
-            return;
-        }
+        navigate(`/plannerNoEdit?id=${btoaId}`);
 
         setPoint([-1, -1]);
     };
