@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
 import { useDispatch } from 'react-redux';
 import { getLikesAxios, getPlannerByBasic } from '../../../utils/DataAxios';
-import { useSelector } from 'react-redux';
 import { likeActions } from '../../../store/like';
 import { HOME } from '../../../constant/constant';
 import useDefaultCheck from '../../../hook/useDefaultCheck';
@@ -15,7 +14,6 @@ export default function DefaultComponent() {
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [point, setPoint] = useState([-1, -1]);
-	const plannerList = useSelector((state) => state.plannerList);
 	useDefaultCheck(HOME);
 
 	const handlePoint = () => {
@@ -29,10 +27,7 @@ export default function DefaultComponent() {
 			try {
 				const response = await getPlannerByBasic();
 				if (response.status === 200) {
-					const newData = response.data.data.map((item, idx) => {
-						const newItem = { ...item, cards: item.cards ? item.cards : [] };
-						return newItem;
-					});
+					const newData = response.data.data.map(item => ({ ...item, cards: item.cards ? item.cards : [] }));
 					setData(newData);
 				} else {
 					requestFail('기본 플래너 불러오기');

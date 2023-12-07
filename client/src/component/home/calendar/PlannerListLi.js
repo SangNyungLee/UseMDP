@@ -70,22 +70,10 @@ const _DelButton = styled.button`
 `;
 
 export default function PlannerListLi({ planner }) {
-  const { home } = useSelector((state) => state.calendar);
-  const plannerList = useSelector((state) => state.plannerList);
+  const { home } = useSelector( state => state.calendar );
+  const plannerList = useSelector( state => state.plannerList );
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
-
-  const defaultLoad = (planner) => {
-    const currentTime = new Date();
-    const filteredEvents = planner.map((plan) => {
-      return plan.filter((event) => {
-        const startDate = new Date(event.startDate);
-        const endDate = new Date(event.endDate);
-        return startDate <= currentTime && currentTime <= endDate;
-      });
-    });
-    return filteredEvents;
-  };
 
   const { cards, plannerId, title } = planner;
 

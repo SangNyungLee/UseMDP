@@ -5,7 +5,6 @@ import { _Container, _Row, _Col } from '../../../constant/css/styledComponents/_
 import { Fade } from 'react-awesome-reveal';
 
 export default function CustomListHiddable(props) {
-    const [hide, setHide] = useState(true);
     const [rightClickData, setRightClickData] = useState([]);
 
     const CustomLoadMap = props.loadMap;
@@ -29,7 +28,7 @@ export default function CustomListHiddable(props) {
             <_Container $fluid>
                 <Fade direction={'up'} duration={500} cascade triggerOnce>
                     <_Row xxs={2} xs={2} sm={2} md={2} lg={3} xl={4} xxl={4}>
-                        {data.map((planner, idx) => {
+                        {data.map(planner => {
                             return (
                                 <_Col key={planner.title}>
                                     <div onContextMenu={(e) => handleRightClick(e, planner.title, planner.plannerId)}>

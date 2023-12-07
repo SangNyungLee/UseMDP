@@ -151,7 +151,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [coverColor, setCoverColor] = useState('');
-    const [cardStatus, setCardStatus] = useState('');
     const [editorHide, setEditorHide] = useState(false);
     const Edits = [post, setPost];
     const [editingIndex, setEditingIndex] = useState('');
@@ -226,13 +225,12 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     };
 
     useEffect(() => {
-        const { title, post, startDate, endDate, coverColor, checklists, cardStatus } = selectedCard;
+        const { title, post, startDate, endDate, coverColor, checklists } = selectedCard;
         setTitle(title);
         setPost(post);
         setStartDate(new Date(startDate));
         setEndDate(new Date(endDate));
         setCoverColor(coverColor);
-        setCardStatus(cardStatus);
         setChecklists(checklists);
         setShow(modalStatus);
         setModalOpen(false);
@@ -245,7 +243,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         } else {
             setProgress(0);
         }
-        // const checklist = getCheckListAxios();
     }, [modalStatus]);
 
     useEffect(() => {
@@ -399,7 +396,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                             <_Span>Start Date</_Span>
                             <MyDayPicker date={startDate} setDate={setStartDate} />
                         </div>
-                        {/* <_Span>~</_Span> */}
                         <div>
                             <IconImg src={calendarImg}></IconImg> <_Span>End Date</_Span>
                             <MyDayPicker date={endDate} setDate={setEndDate} />
@@ -414,7 +410,3 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
         </>
     );
 }
-//
-const ChildrenComponent = () => {
-    return <></>;
-};

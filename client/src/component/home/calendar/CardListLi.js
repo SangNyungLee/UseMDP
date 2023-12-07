@@ -41,7 +41,7 @@ const _CardStatus = styled.div`
 
 export default function CardListLi({ cardList, plannerId, cardStatus }) {
   const [visible, setVisible] = useState(false);
-  const { home } = useSelector((state) => state.calendar);
+  const { home } = useSelector( state => state.calendar );
   const dispatch = useDispatch();
   const [cardListFocus, setCardListFocus] = useState(false);
 
@@ -55,7 +55,7 @@ export default function CardListLi({ cardList, plannerId, cardStatus }) {
 
   const cardListHandleClick = (e) => {
     e.stopPropagation();
-    setVisible((prev) => !prev);
+    setVisible( prev => !prev );
     dispatch(calendarActions.setHome([plannerId, cardStatus]));
   };
 

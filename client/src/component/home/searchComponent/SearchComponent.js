@@ -11,28 +11,26 @@ import SearchCustomList from '../customList/SearchCustomList';
 import SearchLoadMap from '../../LoadMap/SearechLoadMap';
 import NoContent from '../../NoContent';
 import { _ComponentContainer } from '../../../constant/css/styledComponents/__StarComponent';
+
 const SearchContainer = styled.div`
     width: 100%;
     display: flex;
     margin: auto;
     justify-content: center;
 `;
-const tags = [
-    { value: 'Spring', label: 'Spring', image: '/svg/.svg' },
-    { value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' },
-    { value: 'CSS', label: 'CSS', image: '/svg/css.svg' },
-    { value: 'JS', label: 'JS', image: '/svg/JS.svg' },
-];
+
 const options = [
     { value: 'stack', label: '스택' },
     { value: 'author', label: '작성자' },
     { value: 'title', label: '제목' },
 ];
+
 const nullOptions = [
     { value: 'null', label: '해당하는 결과가 없습니다' },
 ];
 
 const _MediaSelect = styled(Select)``;
+
 export default function SearchComponent() {
     const dispatch = useDispatch();
     const selectInputRef = useRef();

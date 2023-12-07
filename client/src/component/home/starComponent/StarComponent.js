@@ -10,35 +10,38 @@ import { _ComponentContainer, _ComponentTitle } from '../../../constant/css/styl
 import { requestFail } from '../../etc/SweetModal';
 import { HOME } from '../../../constant/constant';
 import useDefaultCheck from '../../../hook/useDefaultCheck';
-export default function StarComponent() {
 
-    const dispatch = useDispatch();
-    const [data, setData] = useState([]);
-    const [point, setPoint] = useState([-1, -1]);
-    const plannerList = useSelector((state) => state.plannerList);
-    useDefaultCheck(HOME);
-    const handlePoint = () => {
-        if (point[0] !== -1 && point[1] !== -1) {
-            setPoint([-1, -1]);
+export default function StarComponent() {
+  const dispatch = useDispatch();
+  const [data, setData] = useState([]);
+  const [point, setPoint] = useState([-1, -1]);
+  const plannerList = useSelector( state => state.plannerList );
+
+  useDefaultCheck(HOME);
+
+  const handlePoint = () => {
+    if (point[0] !== -1 && point[1] !== -1) {
+      setPoint([-1, -1]);
+    }
+  };
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const response = await getPlannerByTrend();
+        if (response.status === 200) {
+          const newData = response.data.data.map((item, idx) => {
+            const newItem = { ...item, cards: item.cards ? item.cards : [] };
+            return newItem;
+          });
+          setData(newData);
+        } else {
+          requestFail('트랜드 플래너 불러오기');
         }
-    };
-    useEffect(() => {
-        async function getData() {
-            try {
-                const response = await getPlannerByTrend();
-                if (response.status === 200) {
-                    const newData = response.data.data.map((item, idx) => {
-                        const newItem = { ...item, cards: item.cards ? item.cards : [] };
-                        return newItem;
-                    });
-                    setData(newData);
-                } else {
-                    requestFail('트랜드 플래너 불러오기');
-                }
-            } catch {
-                setData([]);
-            }
-        }
+      } catch {
+        setData([]);
+      }
+    }
 
 		async function getLike() {
 			const result = await getLikesAxios();

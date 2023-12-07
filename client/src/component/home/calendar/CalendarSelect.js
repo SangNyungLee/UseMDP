@@ -113,14 +113,13 @@ export default function CalendarSelect({ target }) {
       </_SelectContainer>
       {isVisible ? (
         <_Container>
-          {plannerList.map((planner, id) => (
+          {plannerList.map( planner => (
             <CalendarSelectList
               key={planner.plannerId}
               planner={planner}
               setIsVisible={setIsVisible}
               setIsClickPlanner={setIsClick}
               target={target}
-              index={id}
             />
           ))}
         </_Container>

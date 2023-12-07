@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import NoEditMDPmodal from './NoEditMDPmodal';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { eventStyleGetter, getNestedElement } from '../../../utils/CalendarController';
+import { eventStyleGetter } from '../../../utils/CalendarController';
 import { getOneCard } from '../../../utils/QuoteSetting';
 import { dateParsing } from '../../../utils/DataParsing';
 import styled from 'styled-components';
@@ -14,14 +13,8 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const _Toolbar = styled.div`
-    /* width: 55vw; */
     margin-bottom: 10px;
     margin-top: 10px;
-    @media screen and (max-width: 1300px) {
-        & {
-            /* width: 65vw; */
-        }
-    }
 `;
 
 const _ToGoButton = styled.div`
@@ -121,7 +114,7 @@ const CustomToolbar = ({ label, onNavigate, onView, onDrillDown }) => {
     );
 };
 
-export default function NoEditQuoteAppCalendar(props) {
+export default function NoEditQuoteAppCalendar() {
     const plannerList = useSelector((state) => state.noEditPlanner);
     const quote = plannerList.quote;
 
@@ -129,8 +122,6 @@ export default function NoEditQuoteAppCalendar(props) {
     const [selectedCard, setSelectedCard] = useState(getOneCard(0, 'TODO'));
     const [visible, setVisible] = useState(false);
 
-    //plannerId를 안쓰니까, 단축하겠음.
-    //QUOTE 하나만 쓰고, 여러개를 보여줄 생각이 없다.
     const cardStatusIndex = quote ? quote : 0;
     const cardStatus = cardStatusIndex ? (cardStatusIndex === 0 ? 'TODO' : cardStatusIndex === 1 ? 'DOING' : 'DONE') : 'ALL';
 
