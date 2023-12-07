@@ -33,20 +33,20 @@ export default function DroppableComponent(props) {
     });
     const { quote } = useSelector((state) => state.calendar);
     const { cardList, cardStatusIndex, planner, handleClick, plannerId } = props;
-
+    const pointer = useSelector((state) => state.pointer);
     const dispatch = useDispatch();
 
     const deleteCard = (e, id, card) => {
         e.stopPropagation();
-        
+
         const newState = copy(planner);
-        
+
         for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {
             newState[cardStatusIndex][i].intOrder--;
         }
-        
+
         newState[cardStatusIndex].splice(id, 1);
-        
+
         dispatch(
             plannerListActions.updatePlanner({
                 plannerId: quote[0],
@@ -63,11 +63,11 @@ export default function DroppableComponent(props) {
         card.checklists = [{ checked: 0, title: 'done' }];
 
         const result = await postCard(card);
-        if(result.status !== 201){
-            requestFail("카드 저장")
+        if (result.status !== 201) {
+            requestFail('카드 저장');
             return;
         }
-        
+
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],
