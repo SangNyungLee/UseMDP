@@ -22,7 +22,6 @@ function CustomHeader2(props) {
     const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
     const [showModal, setShowModal] = useState(false);
     
-    
     const titleRef = useRef();
     const selectInputRef = useRef();
     
@@ -65,19 +64,24 @@ function CustomHeader2(props) {
     }, [readThumbnail]);
 
     const handleBlur = async (e) => {
+        const title = e.target.innerText;
+
         const data = {
             ...plannerInfo,
-            title: e.target.innerText,
+            title,
         };
+
         const res = await patchPlanner(data);
+
         if (res.status !== 200) {
             requestFail('플래너 제목 수정');
             return;
         }
+
         dispatch(
             plannerListActions.updatePlannerTitle({
                 plannerId: plannerInfo.plannerId,
-                title: e.target.innerText,
+                title,
             })
         );
     };
@@ -179,6 +183,36 @@ function CustomHeader2(props) {
             })
         );
     };
+
+    const moveCursorToEnd = (e) => {
+        e.preventDefault();
+      
+        const contentEditable = titleRef.current;
+      
+        if (contentEditable) {
+          setTimeout(() => {
+            const range = document.createRange();
+            const selection = window.getSelection();
+      
+            range.selectNodeContents(contentEditable);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          });
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === ' ' || e.keyCode === 32) {
+            e.preventDefault();
+            moveCursorToEnd(e);
+        } else if (e.key === 'Enter' || e.keyCode === 13) {
+            e.preventDefault();
+            handleBlur(e);
+        }
+    };
+
+
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -215,6 +249,8 @@ function CustomHeader2(props) {
                         className="main-board"
                         style={{ color: 'white' }}
                         contentEditable
+                        onKeyDown={(e) => handleKeyDown(e)}
+                        onClick={e => moveCursorToEnd(e)}
                         onBlur={(e) => {
                             handleBlur(e);
                         }}
