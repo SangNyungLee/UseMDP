@@ -14,7 +14,7 @@ import { FaSearch } from 'react-icons/fa';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
 export default function DefaultLoadMap() {
-	const [menuNumber, setMenuNumber] = useState(1);
+	const [menuNumber, setMenuNumber] = useState(3);
 	const navigate = useNavigate();
 	const renderComponent = () => {
 		switch (menuNumber) {
