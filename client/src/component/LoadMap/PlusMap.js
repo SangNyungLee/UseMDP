@@ -58,7 +58,7 @@ export default function PlusMap() {
         e.stopPropagation();
         const result = await Swal.fire({
             title: '플래너 생성',
-            html: '<input id="swal-input1" class="swal2-input" placeholder="제목">' + '<input id="swal-input2" class="swal2-input" placeholder="작성자">',
+            html: '<input id="swal-input1" class="swal2-input" placeholder="제목">',
             input: 'radio',
             inputOptions: {
                 PUBLIC: 'Public',

@@ -13,7 +13,7 @@ html {
     background-color: #222831;
 }
 
-.ck-content figure.image.my-contact-side-image {
-    float: right;
+.image > img {
     width: 240px;
+    height: auto;
 }

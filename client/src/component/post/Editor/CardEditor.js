@@ -53,11 +53,7 @@ export default function CardEditor(props) {
                     editor={ClassicEditor}
                     config={{
                         extraPlugins: [Base64UploaderPlugin],
-                        image: [
-                            {
-                                className: 'my-contact-side-image',
-                            },
-                        ],
+                        image: [],
                     }}
                     data={props.post}
                     onReady={(editor) => {

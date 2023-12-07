@@ -86,22 +86,17 @@ export default function FileImageInputComponent({ setState }) {
             const image = new Image();
             image.src = src;
 
+            const widthRatio = image.width / crop.width;
+            const heightRatio = image.height / crop.height;
+
             const canvas = document.createElement('canvas');
 
-            let newWidth, newHeight;
-
-            if (crop.width / crop.height > aspectRatio) {
-                newWidth = crop.width;
-                newHeight = crop.width / aspectRatio;
-            } else {
-                newWidth = crop.height * aspectRatio;
-                newHeight = crop.height;
-            }
-            canvas.width = newWidth;
-            canvas.height = newHeight;
-
+            // canvas.width = newWidth * widthRatio;
+            // canvas.height = newHeight * heightRatio;
+            canvas.width = crop.width * widthRatio;
+            canvas.height = crop.height * heightRatio;
             const context = canvas.getContext('2d');
-            context.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, newWidth, newHeight);
+            context.drawImage(image, crop.x, crop.y, canvas.width, canvas.height);
             const croppedBase64 = canvas.toDataURL('image/webp');
             setState(croppedBase64);
             setCompletedCrop({});
@@ -143,8 +138,8 @@ export default function FileImageInputComponent({ setState }) {
                             <img
                                 src={src}
                                 style={{
-                                    maxWidth: '400px',
-                                    maxHeight: '400px',
+                                    maxWidth: '600px',
+                                    maxHeight: '600px',
                                 }}
                             />
                         </ReactCrop>
