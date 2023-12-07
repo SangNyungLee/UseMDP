@@ -1,16 +1,22 @@
 import styled from 'styled-components';
 import menuicon from '../../../constant/img/menu.svg';
-import LeftClicker from '../RightClicker/LeftClicker';
-import { pointActions } from '../../../store/pointer';
 import { useDispatch, useSelector } from 'react-redux';
 import { calendarActions } from '../../../store/calendar';
-
+import { FaWandMagic } from 'react-icons/fa6';
 const HeaderDiv = styled.div`
     text-align: left;
     margin: 10px;
     font-weight: 700;
 `;
 const MenuImg = styled.img`
+    height: 20px;
+    margin: 10px;
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+const MenuWand = styled(FaWandMagic)`
     height: 20px;
     margin: 10px;
     &:hover {
@@ -39,7 +45,8 @@ export default function CardListHeader(props) {
                 <>
                     <FlexContainer>
                         <HeaderDiv>TODO</HeaderDiv>
-                        <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
+                        <MenuWand onClick={(e) => handleLeftClicker(e)} />
+                        {/* <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg> */}
                     </FlexContainer>
                 </>
             );
@@ -47,21 +54,21 @@ export default function CardListHeader(props) {
             return (
                 <FlexContainer>
                     <HeaderDiv>DOING</HeaderDiv>
-                    <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
+                    <MenuWand onClick={(e) => handleLeftClicker(e)} />
                 </FlexContainer>
             );
         case '2':
             return (
                 <FlexContainer>
                     <HeaderDiv>DONE</HeaderDiv>
-                    <MenuImg src={menuicon} onClick={(e) => handleLeftClicker(e)}></MenuImg>
+                    <MenuWand onClick={(e) => handleLeftClicker(e)} />
                 </FlexContainer>
             );
         default:
             return (
                 <FlexContainer>
                     <HeaderDiv>TODO</HeaderDiv>
-                    <MenuImg src={menuicon}></MenuImg>
+                    <MenuWand src={menuicon}></MenuWand>
                 </FlexContainer>
             );
     }
