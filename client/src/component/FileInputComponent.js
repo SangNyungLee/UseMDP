@@ -48,9 +48,19 @@ export default function FileInputComponent({ children, setState }) {
 
 	const handleFileChange = (event) => {
 		const file = event.target.files[0];
+		
 		if (!file) {
 			return;
 		}
+
+		const fileName = file.name.toLowerCase();
+
+		if (!fileName.endsWith('.json')) {
+			requestFail("데이터","올바른 형식의 파일이 아닙니다")
+			resetFileInput();
+			return;
+		}
+
 		const reader = new FileReader();
 		reader.onload = (e) => {
 			const fileContents = e.target.result;
