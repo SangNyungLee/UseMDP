@@ -37,15 +37,15 @@ export default function DroppableComponent(props) {
 
     const deleteCard = (e, id, card) => {
         e.stopPropagation();
-        
+
         const newState = copy(planner);
-        
+
         for (let i = id + 1; i < newState[cardStatusIndex].length; i++) {
             newState[cardStatusIndex][i].intOrder--;
         }
-        
+
         newState[cardStatusIndex].splice(id, 1);
-        
+
         dispatch(
             plannerListActions.updatePlanner({
                 plannerId: quote[0],
@@ -61,7 +61,6 @@ export default function DroppableComponent(props) {
         card.plannerId = plannerId;
         card.checklists = [{ checked: 0, title: 'done' }];
 
-        
         dispatch(
             plannerListActions.addCard({
                 plannerId: quote[0],
