@@ -16,9 +16,8 @@ export const _PageContainer = styled(Container)`
 	display: flex;
 	justify-content: center;
 	margin-top: 4rem;
-	padding: 8rem 4rem 10rem 4rem;
+	padding: 8rem 0 10rem 0;
 	background-color: #eeeeee;
-	min-width: 320px;
 	font-family: 'Roboto', sans-serif;
 `;
 
@@ -28,13 +27,18 @@ export const _ButtonRow = styled(Row)`
 	margin-bottom: 4rem;
 
 	@media screen and (width <= 767px) {
-		width: 100%;
+		width: auto;
 		justify-content: center;
 	}
 `;
 
 export const _Row = styled(Row)`
-	justify-content: space-between;
+	justify-content: space-evenly;
+	padding: 0;
+	width: 100vw;
+	@media screen and (width <= 767px) {
+		justify-content: center;
+	}
 `;
 
 export const _StartButtonCol = styled(Col)`
@@ -46,13 +50,13 @@ export const _FileInputButtonCol = styled(Col)`
 `;
 
 export const _LeftCol = styled(Col)`
-	padding: 0;
+	padding: 0 1rem 0 1rem;
 `;
 
 export const _RightCol = styled(Col)`
 	max-width: 600px;
 	flex: 1 0 auto;
-	padding: 0;
+	padding: 0 1rem 0 1rem;
 `;
 
 export const _ButtonContainer = styled(Container)`
@@ -62,14 +66,23 @@ export const _ButtonContainer = styled(Container)`
 export const _Title = styled.h1`
 	font-weight: 600;
 	color: #222831;
+
+	@media screen and (width <= 767px) {
+		text-align: center;
+	}
 `;
 
 export const _Subtitle = styled.p`
 	font-weight: 600;
 	color: #393e46;
+
+	@media screen and (width <= 767px) {
+		text-align: center;
+	}
 `;
 
 export const _Button = styled(Button)`
+	color: #eeeeee;
 	min-width: 100px;
 	background-color: #222831;
 	border: none;

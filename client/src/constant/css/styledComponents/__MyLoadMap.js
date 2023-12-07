@@ -58,6 +58,7 @@ export const _CardBody = styled(Card.Body)`
 `;
 
 export const _CardTitle = styled(Card.Title)`
+	width: 80%;
 	font-size: 1rem;
 	color: whitesmoke;
 `;
