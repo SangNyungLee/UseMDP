@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import LikeButton from './LikeButton';
 import skyImg from '../../constant/img/sky.jpg';
@@ -25,9 +24,7 @@ import {
 export default function SearchLoadMap(props) {
     const navigate = useNavigate();
 
-    const [isHovering, setIsHovering] = useState(false);
-
-    const { plannerId, title, creator, likePlanner, thumbnail, createAt, description } = props.datas;
+    const { plannerId, title, thumbnail } = props.datas;
 
     const isLike = props.isLike;
 
@@ -39,7 +36,7 @@ export default function SearchLoadMap(props) {
 
     return (
         <>
-            <_CardContainer text="white" onClick={(e) => handleClick(e)} onMouseOver={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <_CardContainer text="white" onClick={(e) => handleClick(e)}>
                 <_CardImg src={thumbnail && thumbnail != 'string' ? thumbnail : skyImg} alt="planner thumbnail" />
                 <_CardImgOverlay>
                     <_CardBody>

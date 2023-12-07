@@ -2,17 +2,8 @@ import { getItemStyle, getItems, getListStyle } from '../../../utils/QuoteSettin
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import NoEditQuoteCard from './NoEditQuoteCard';
 import styled from 'styled-components';
-import CardListHeader from '../CardListHeader/CardListHeader';
 import { useMediaQuery } from 'react-responsive';
 import NoEditCardListHeader from './NoEditCardListHeader';
-const DivButton = styled.div`
-    text-align: center;
-    background-color: '#f1f3f5';
-    text-size-adjust: 16px;
-    &:hover {
-        cursor: pointer;
-    }
-`;
 
 const _CardListContainer = styled.div`
     max-height: 70vh;
@@ -26,7 +17,7 @@ export default function NoEditDroppableComponent(props) {
     const isMobile = useMediaQuery({
         query: '(max-width: 768px)',
     });
-    const { cardList, cardStatusIndex, planner, handleClick, plannerId } = props;
+    const { cardList, cardStatusIndex, handleClick, plannerId } = props;
     const droppableComponentRegister = (provided, snapshot) => ({
         ...provided.droppableProps,
         ref: provided.innerRef,

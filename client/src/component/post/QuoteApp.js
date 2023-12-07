@@ -4,7 +4,6 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import QuoteAppCalendar from './QuoteAppCalendar';
 import { plannerListActions } from '../../store/plannerList';
-import { calendarActions } from '../../store/calendar';
 import { siteActions } from '../../store/site';
 import { getOneCard } from '../../utils/QuoteSetting';
 import { reorder, move } from '../../utils/QuoteController';
@@ -52,10 +51,8 @@ export default function QuoteApp() {
 
     let planner;
     let plannerId = quote[0];
-
     let plannerTitle;
     let plannerThumbnail;
-
     let plannerInfo;
 
     function sortByIntOrder(data) {
@@ -67,7 +64,7 @@ export default function QuoteApp() {
     }
 
     if (plannerList.length > 0 && plannerList[0]) {
-        const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list, ...rest } = plannerList.find((planner) => planner.plannerId === quote[0]);
+        const { cards, plannerId: id, creator, title, thumbnail, plannerAccess: access, taglist: list } = plannerList.find((planner) => planner.plannerId === quote[0]);
         planner = sortByIntOrder(cards);
         plannerId = id;
         plannerTitle = title;
@@ -82,11 +79,6 @@ export default function QuoteApp() {
         };
     }
 
-    //planner가 바뀔때마다, localStoage에 저장하는 코드.
-
-    // useEffect(() => {
-    //     console.log('HI', localdata);
-    // }, [localdata, localQuote]);
     useEffect(() => {
         async function fetchData() {
             const result = await getPlannerBtoA(btoa(plannerId));
@@ -112,24 +104,21 @@ export default function QuoteApp() {
         if (!site.isData) {
             fetchData();
         }
-        console.log('Check site');
     }, [site.isData]);
 
     async function cardClick(ind, index) {
         const result = await getCardAxios(planner[ind][index].cardId);
         if (result.status === 200) {
             const cardResult = result.data.data;
-            console.log('cardResult', cardResult);
-
             setSelectedCard(cardResult);
             setVisible(true);
         } else {
             requestFail('카드 정보');
+            return;
         }
     }
 
     function onDragEnd(result, provided) {
-        console.log(result, provided);
         const { source, destination } = result;
 
         if (!destination) {
@@ -153,7 +142,6 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-            const result2 = patchMoveCards(data);
             const items = reorder(planner[sInd], source.index, destination.index);
             const newState = [...planner];
             newState[sInd] = items;
@@ -164,6 +152,7 @@ export default function QuoteApp() {
                     planner: newState,
                 })
             );
+            patchMoveCards(data);
         } else {
             const mapper = {
                 0: 'TODO',
@@ -178,7 +167,6 @@ export default function QuoteApp() {
                 destinationCardOrder: destination.index,
                 destinationCardStatus: mapper[destination.droppableId],
             };
-            const result2 = patchMoveCards(data);
             const result = move(planner[sInd], planner[dInd], source, destination);
             const newState = [...planner];
             newState[sInd] = result[sInd];
@@ -190,6 +178,7 @@ export default function QuoteApp() {
                     planner: newState,
                 })
             );
+            patchMoveCards(data);
         }
     }
 
@@ -206,7 +195,7 @@ export default function QuoteApp() {
     const isCalendarVisible = windowWidth > 1024;
 
     if (!planner) {
-        return <QuoteSpinner />;
+        return <QuoteSpinner/>;
     } else {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>

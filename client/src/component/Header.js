@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { siteActions } from '../store/site';
 import { logoutModal, nyanCat, requestFail } from './etc/SweetModal';
 import { postLogout } from '../utils/DataAxios';
+
 export default function Header() {
     const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
     const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
@@ -37,6 +38,7 @@ export default function Header() {
         const res = await postLogout();
         if (res.status !== 200) {
             requestFail('로그아웃');
+            return;
         }
         dispatch(siteActions.setAllFalse());
         localStorage.removeItem('isLogin');

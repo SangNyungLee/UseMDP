@@ -37,6 +37,7 @@ export default function RealHeader() {
 		const res = await postLogout();
 		if (res.status !== 200) {
 			requestFail('로그아웃');
+			return;
 		}
 		dispatch(siteActions.setAllFalse());
 		localStorage.removeItem('isLogin');

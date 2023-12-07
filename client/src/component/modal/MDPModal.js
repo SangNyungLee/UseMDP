@@ -17,6 +17,7 @@ import calendarImg from '../../constant/img/calendar.svg';
 import parse from 'html-react-parser';
 import IsBackGroundDark from '../../utils/IsBackGroundDark';
 import { requestFail } from '../etc/SweetModal';
+
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -142,9 +143,9 @@ const CancelButton = styled.button`
         background: #ccc;
     }
 `;
+
 export default function MDPModal({ selectedCard, modalStatus, modalClose, plannerId }) {
     const [show, setShow] = useState(false);
-
     const [title, setTitle] = useState('');
     const [post, setPost] = useState('');
     const [checklists, setChecklists] = useState([]);
@@ -179,10 +180,12 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             endDate: endDate.toISOString(),
             coverColor,
         };
+        console.log("newcard",newCardItem)
         try {
             const result = await patchCard(newCardItem);
             if (result.status !== 200) {
                 requestFail('카드 데이터 저장');
+                return;
             }
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {
@@ -373,7 +376,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                                           )}
 
                                           <_DeleteButton type="button" onClick={() => deleteCheck(index)}>
-                                              <i class="material-icons" style={{ fontSize: '20px', color: '#ccc' }}>
+                                              <i className="material-icons" style={{ fontSize: '20px', color: '#ccc' }}>
                                                   delete
                                               </i>
                                           </_DeleteButton>

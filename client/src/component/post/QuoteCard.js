@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import trash from '../../constant/img/trash.svg';
+
 const _CardHeader = styled.div`
     position: relative;
     background-color: ${(props) => props.color};

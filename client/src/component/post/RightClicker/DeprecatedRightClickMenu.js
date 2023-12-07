@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
 import ThumbnailMaker from './ThumbnailMaker';
+
 const RightClicked = styled.ul`
     display: flex;
     flex-direction: column;

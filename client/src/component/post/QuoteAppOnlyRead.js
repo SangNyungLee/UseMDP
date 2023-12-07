@@ -140,7 +140,7 @@ export default function QuoteAppOnlyRead() {
                                         }}
                                     >
                                         {planner.map((cardList, index) => (
-                                            <NoEditDroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} noEdit={true} />
+                                            <NoEditDroppableComponent key={index} cardList={cardList} cardStatusIndex={index} handleClick={cardClick} plannerId={plannerId} noEdit={true} />
                                         ))}
                                     </DragDropContext>
                                 </_QuoteContainer>
@@ -154,7 +154,7 @@ export default function QuoteAppOnlyRead() {
                                     }}
                                 >
                                     {planner.map((cardList, index) => (
-                                        <NoEditDroppableComponent key={index} cardList={cardList} cardStatusIndex={index} planner={planner} handleClick={cardClick} plannerId={plannerId} />
+                                        <NoEditDroppableComponent key={index} cardList={cardList} cardStatusIndex={index} handleClick={cardClick} plannerId={plannerId} />
                                     ))}
                                 </DragDropContext>
                             </_QuoteContainer>

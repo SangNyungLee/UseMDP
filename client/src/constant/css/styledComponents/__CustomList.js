@@ -14,9 +14,6 @@ export const _Row = styled(Row)`
 	padding: 0;
 	margin: 0;
 
-	@media screen and (max-width: 850px) {
-	}
-
 	@media screen and (max-width: 575px) {
 		justify-content: center;
 	}
@@ -31,13 +28,8 @@ export const _Col = styled(Col)`
 	min-width: 240px;
 	min-height: 120px;
 
-	@media screen and (max-width: 850px) {
-	}
-
 	@media screen and (max-width: 686px) {
 		margin: 0 1rem 1rem 0;
 	}
 
-	@media screen and (max-width: 575px) {
-	}
 `;
