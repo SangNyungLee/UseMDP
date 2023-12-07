@@ -85,7 +85,7 @@ export default function CardLi({ plannerId, cardId, cardStatus, title }) {
         <_CardTitle>{title}</_CardTitle>
         <_DelButton onClick={(e) => delCard(e, cardId)}>
           <i
-            class="material-icons"
+            className="material-icons"
             style={{ fontSize: "15px", color: "white" }}
           >
             remove

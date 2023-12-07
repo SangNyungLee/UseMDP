@@ -9,12 +9,30 @@ import { getMyPlanner, postLogout } from '../utils/DataAxios';
 import { useLocation, useNavigate } from 'react-router';
 import { calendarActions } from '../store/calendar';
 import { cookieFail, loginCheckFail, requestFail } from '../component/etc/SweetModal';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { GoogleLoginButton, GithubLoginButton } from 'react-social-login-buttons';
 
 export default function useDefaultCheck() {
 	const site = useSelector((state) => state.site);
 	const navi = useNavigate();
 	const location = useLocation();
 	const { isLogin, isData } = site;
+	const MySwal = withReactContent(Swal);
+
+	const googleLoginId = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
+	const googleRedirectUri = process.env.REACT_APP_GOOGLE_LOCAL_REDIRECT_URI;
+	const githubLoginId = process.env.REACT_APP_GITHUB_LOGIN_CLIENT_ID;
+
+	const googleLogin = async (e) => {
+		e.stopPropagation();
+		window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${googleLoginId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`;
+	};
+
+	const githubLogin = (e) => {
+		e.stopPropagation();
+		window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubLoginId}`;
+	};
 
 	const [cookies] = useCookies();
 
@@ -83,16 +101,30 @@ export default function useDefaultCheck() {
 
 
 	const naviCookieCheck = (e) => {
+		let flag = true;
 		if (!isLogin) {
 			e.preventDefault();
 			loginCheckFail('이동');
-			return false;
+			flag = false
 		} else if (!authCookie) {
 			e.preventDefault();
 			cookieFail('이동');
-			return false;
+			flag = false;
 		}
-		return true;
+		if(!flag){
+			MySwal.fire({
+				title: 'LogIn',
+				html: (
+					<div>
+						<GoogleLoginButton onClick={(e) => googleLogin(e)} />
+						<GithubLoginButton onClick={(e) => githubLogin(e)} />
+					</div>
+				),
+				showCloseButton: true,
+				showConfirmButton: false,
+			});
+		}
+		return flag;
 	};
 
 	const cookieCheckCallback = (e, callback) => {

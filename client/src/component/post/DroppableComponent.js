@@ -10,6 +10,7 @@ import CardListHeader from './CardListHeader/CardListHeader';
 import { postCard, deleteCardById } from '../../utils/DataAxios';
 import { useMediaQuery } from 'react-responsive';
 import { requestFail } from '../etc/SweetModal';
+
 const DivButton = styled.div`
     text-align: center;
     background-color: '#f1f3f5';
