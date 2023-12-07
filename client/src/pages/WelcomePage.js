@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useDefaultCheck from '../hook/useDefaultCheck';
 import FileInputComponent from '../component/FileInputComponent';
 import { requestFail } from '../component/etc/SweetModal';
-import { validateUnspecifiedPlannerData } from '../utils/DataValidate';
+import { validateSpecifiedPlannerData, validateUnspecifiedPlannerData } from '../utils/DataValidate';
 import {
 	_PageWrapper,
 	_PageContainer,
@@ -19,6 +19,7 @@ import {
 	_Title,
 	_Subtitle,
 } from '../constant/css/styledComponents/__WelcomePage';
+import { plannerCardStatusDevide } from '../utils/DataParsing';
 
 export default function WelcomePage() {
 	const { naviCookieCheck } = useDefaultCheck();
@@ -33,6 +34,12 @@ export default function WelcomePage() {
 				navi('/plannerNoEdit', {
 					state: {
 						sourceData: data,
+					},
+				});
+			} else if (validateSpecifiedPlannerData(data)){
+				navi('/plannerNoEdit', {
+					state: {
+						sourceData: plannerCardStatusDevide(data),
 					},
 				});
 			} else {
