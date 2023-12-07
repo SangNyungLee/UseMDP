@@ -15,9 +15,8 @@ import sky from '../../constant/img/sky.jpg';
 import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
 import { useNavigate } from 'react-router';
-import { calendarActions } from '../../store/calendar';
 import LeftClicker from './RightClicker/LeftClicker';
-
+import copy from 'fast-copy';
 const _QuoteAppContainer = styled.div`
     display: flex;
     flex: 3;
@@ -144,7 +143,7 @@ export default function QuoteApp() {
                 destinationCardStatus: mapper[destination.droppableId],
             };
             const items = reorder(planner[sInd], source.index, destination.index);
-            const newState = [...planner];
+            const newState = copy(planner);
             newState[sInd] = items;
             dispatch(
                 plannerListActions.updatePlanner({

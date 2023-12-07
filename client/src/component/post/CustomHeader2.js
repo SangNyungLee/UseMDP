@@ -16,16 +16,15 @@ import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
     const plannerInfo = props.plannerInfo;
-    
+
     const [readThumbnail, setReadThumbnail] = useState();
     const [tags2, setTags] = useState([]);
     const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
     const [showModal, setShowModal] = useState(false);
-    
-    
+
     const titleRef = useRef();
     const selectInputRef = useRef();
-    
+
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
@@ -137,17 +136,17 @@ function CustomHeader2(props) {
                     plannerId: plannerInfo.plannerId,
                     taglist: selectTag.map((item) => item.value),
                 })
-                );
+            );
             const result = await patchPlanner(data);
-            if(result.status !== 200){
-                requestFail("플래너 저장")
+            if (result.status !== 200) {
+                requestFail('플래너 저장');
                 return;
             }
         } else {
             setShowModal(false);
             const result = await deleteTagList(plannerInfo.plannerId);
-            if(result.status !== 200){
-                requestFail("태그 삭제")
+            if (result.status !== 200) {
+                requestFail('태그 삭제');
                 return;
             }
         }

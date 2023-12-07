@@ -180,7 +180,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             endDate: endDate.toISOString(),
             coverColor,
         };
-        console.log("newcard",newCardItem)
         try {
             const result = await patchCard(newCardItem);
             if (result.status !== 200) {

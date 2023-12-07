@@ -57,7 +57,8 @@ export default function CardEditor(props) {
                     data={props.post}
                     onReady={(editor) => {
                         editor.editing.view.change((writer) => {
-                            writer.setStyle('min-height', '300px', editor.editing.view.document.getRoot());
+                            writer.setStyle('height', '300px', editor.editing.view.document.getRoot());
+                            writer.setStyle('overflow', 'auto', editor.editing.view.document.getRoot());
                         });
                     }}
                     onChange={(event, editor) => {
