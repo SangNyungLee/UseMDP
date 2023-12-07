@@ -58,13 +58,15 @@ export default function WelcomePage() {
 						<_Subtitle>
 							바로 시작, 혹은 이미 저장된 칸반보드 JSON 파일을 불러와서 작업할 수 있습니다.
 						</_Subtitle>
-						<_ButtonRow>
+						<_ButtonRow xs={2}>
 							<_StartButtonCol>
-								<_Button onClick={(e) => handleNavigation(e)}>시작하기</_Button>
+								<_Button onClick={(e) => handleNavigation(e)} variant='dark'>
+									시작하기
+								</_Button>
 							</_StartButtonCol>
 							<_FileInputButtonCol>
 								<FileInputComponent setState={setReadFile}>
-									<_Button>불러오기</_Button>
+									<_Button variant='dark'>불러오기</_Button>
 								</FileInputComponent>
 							</_FileInputButtonCol>
 						</_ButtonRow>

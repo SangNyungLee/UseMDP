@@ -208,7 +208,7 @@ public class PlannerService {
 
         PlannerEntity newPlannerEntity = PlannerEntity.builder()
                 .plannerId(plannerEntity.getPlannerId())
-                .creator(requestPatchPlannerDTO.getCreator())
+                .creator(memberEntity.getSocialNickname())
                 .title(requestPatchPlannerDTO.getTitle())
                 .thumbnail(requestPatchPlannerDTO.getThumbnail())
                 .plannerAccess(requestPatchPlannerDTO.getPlannerAccess())
