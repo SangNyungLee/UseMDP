@@ -15,7 +15,8 @@ const MyDayPicker = ({ date, setDate }) => {
       <DatePicker
         selected={date}
         onChange={(date) => setDate(date)}
-        dateFormat="yyyy-MM-dd"
+        dateFormat="yyyy-MM-dd HH:mm"
+        showTimeInput
       />
     </_Font>
   );
