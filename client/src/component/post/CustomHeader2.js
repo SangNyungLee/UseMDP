@@ -19,7 +19,7 @@ function CustomHeader2(props) {
 
     const [readThumbnail, setReadThumbnail] = useState();
     const [tags2, setTags] = useState([]);
-    const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
+    const [selectTag, setSelectTag] = useState([{}]);
     const [showModal, setShowModal] = useState(false);
     const titleRef = useRef();
     const selectInputRef = useRef();
@@ -47,13 +47,15 @@ function CustomHeader2(props) {
         if (plannerInfo) {
             const { title, taglist } = plannerInfo;
             titleRef.current.innerText = title;
+
             const tmp = taglist.filter((i) => i != null);
+
             const initialTags = tags2.filter((tagValue) => {
                 return tmp.includes(tagValue.value);
             });
             setSelectTag(initialTags);
         }
-    }, [plannerInfo, tags2]);
+    }, [tags2]);
 
     useEffect(() => {
         if (readThumbnail) {
@@ -210,7 +212,10 @@ function CustomHeader2(props) {
             handleBlur(e);
         }
     };
-
+    const handleSelectTag = (e) => {
+        console.log('E', e);
+        setSelectTag(e);
+    };
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -333,7 +338,9 @@ function CustomHeader2(props) {
                                 </div>
                             )}
                             value={selectTag}
-                            onChange={setSelectTag}
+                            onChange={(e) => {
+                                handleSelectTag(e);
+                            }}
                             isMulti
                         />
                     </div>
