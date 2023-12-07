@@ -166,9 +166,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     };
 
     const handleClose = async () => {
-        const newChecklist = checklists.map((item) => {
+        console.log("checklists",checklists)
+        const newChecklist = checklists? checklists.map((item) => {
             return item.isNew == 1 ? { title: item.title, checked: item.checked } : item;
-        });
+        }) : [{ title: "done", checked: 0 }];
+
         const newCardItem = {
             ...selectedCard,
             title,
