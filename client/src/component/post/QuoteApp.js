@@ -12,6 +12,8 @@ import QuoteHeader from './QuoteHeader';
 import QuoteSpinner from './QuoteSpinner';
 import DroppableComponent from './DroppableComponent';
 import sky from '../../constant/img/sky.jpg';
+import sky1 from '../../constant/img/sky1.jpg';
+import sky2 from '../../constant/img/sky2.jpg';
 import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
 import { useNavigate } from 'react-router';
@@ -200,7 +202,7 @@ export default function QuoteApp() {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerInfo={plannerInfo} setSwitch={setSwitchContext} />
-                <_QuoteAppContainer $image={plannerThumbnail ? plannerThumbnail : sky}>
+                <_QuoteAppContainer $image={plannerId % 3 == 0 ? sky : plannerId % 3 == 1 ? sky1 : sky2}>
                     {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker index={quote[1]} point={pointer} pid={quote[0]}></LeftClicker> : null}
                     <_Thumbnail ref={thumnnailRef}>
                         {isCalendarVisible ? (
