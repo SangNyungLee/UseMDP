@@ -11,9 +11,6 @@ export const _PageWrapper = styled(Container)`
 	padding: 0;
 	background-color: #eeeeee;
 	min-width: 320px;
-
-	@media screen and (width <= 576px) {
-	}
 `;
 
 export const _PageContainer = styled(Container)`
@@ -22,11 +19,7 @@ export const _PageContainer = styled(Container)`
 	background-color: #eeeeee;
 	min-width: 320px;
 	min-height: 100vh;
-
 	font-family: 'Roboto', sans-serif;
-
-	@media screen and (width <= 576px) {
-	}
 `;
 
 export const _ButtonRow = styled(Row)`

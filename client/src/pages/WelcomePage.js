@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
 import { useEffect, useState } from 'react';
 import useDefaultCheck from '../hook/useDefaultCheck';
 import FileInputComponent from '../component/FileInputComponent';
@@ -22,10 +21,6 @@ import {
 } from '../constant/css/styledComponents/__WelcomePage';
 
 export default function WelcomePage() {
-	// const isMobile = useMediaQuery({
-	// 	query: '(max-width: 576px)',
-	// });
-
 	const { naviCookieCheck } = useDefaultCheck();
 
 	const [readFile, setReadFile] = useState();
@@ -43,6 +38,7 @@ export default function WelcomePage() {
 			} else {
 				requestFail('플래너 불러오기', '데이터가 올바르지 않습니다');
 			}
+			setReadFile();
 		}
 	}, [readFile]);
 

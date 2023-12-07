@@ -183,6 +183,7 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             const result = await patchCard(newCardItem);
             if (result.status !== 200) {
                 requestFail('카드 데이터 저장');
+                return;
             }
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {

@@ -22,6 +22,7 @@ const RightClicker = (props) => {
             DataDownload(plannerTitle, result.data.data);
         } else {
             requestFail('데이터 다운로드');
+            return;
         }
         setPoint([-1, -1]);
     };
@@ -47,6 +48,7 @@ const RightClicker = (props) => {
             navigate(`/planner?id=${btoaId}`);
         } else {
             requestFail('플래너 불러오기');
+            return;
         }
 
         setPoint([-1, -1]);

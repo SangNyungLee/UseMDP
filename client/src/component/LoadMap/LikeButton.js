@@ -36,8 +36,8 @@ const LikeButton = (props) => {
       const res = await postPlannerLike(plannerId);
       if (res.status !== 200) {
         requestFail("플래너 좋아요");
+        return;
       }
-      return;
     }
   };
 
@@ -49,8 +49,8 @@ const LikeButton = (props) => {
       const res = await deletePlannerUnlike(plannerId);
       if (res.status !== 200) {
         requestFail("플래너 좋아요 삭제");
+        return;
       }
-      return;
     } else {
       requestFail("좋아요 취소", "좋아요가 되어있지 않아요");
       return;

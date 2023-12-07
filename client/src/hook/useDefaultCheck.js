@@ -73,6 +73,7 @@ export default function useDefaultCheck() {
                 const res = await postLogout();
                 if(res.status !== 200){
                     requestFail("로그아웃")
+					return;
                 }
             } catch (error) {
                 console.log(error)
@@ -100,6 +101,7 @@ export default function useDefaultCheck() {
 			callback();
 		}
 	};
+
 
 	return {
 		isLogin,

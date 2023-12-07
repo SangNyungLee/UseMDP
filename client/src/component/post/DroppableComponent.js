@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import CardListHeader from './CardListHeader/CardListHeader';
 import { postCard, deleteCardById } from '../../utils/DataAxios';
 import { useMediaQuery } from 'react-responsive';
+import { requestFail } from '../etc/SweetModal';
 const DivButton = styled.div`
     text-align: center;
     background-color: '#f1f3f5';
@@ -71,6 +72,10 @@ export default function DroppableComponent(props) {
         );
         dispatch(siteActions.setIsData(false));
         const result = await postCard(card);
+        if(result.status !== 201){
+            requestFail("카드 저장")
+            return;
+        }
     };
 
     const droppableComponentRegister = (provided, snapshot) => ({

@@ -1,7 +1,4 @@
-import { useState } from 'react';
 import DataDownload from '../../../utils/DataDownload';
-import ThumbnailMaker from '../RightClicker/ThumbnailMaker';
-import { useDispatch } from 'react-redux';
 import NoEditMDPmodal from './NoEditMDPmodal';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft } from 'react-icons/fa';
@@ -11,20 +8,13 @@ export default function NoEditQuoteHeader(props) {
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
-    const { selectedCard, thumnnailRef, visible, setVisible, plannerList, plannerInfo, setSwitch } = props;
-    const [plannerId, setPlannerId] = useState();
-    const [plannerTitle, setPlannerTitle] = useState();
-    const [readData, setReadData] = useState();
+    const { selectedCard, visible, setVisible, plannerList, plannerInfo } = props;
+    const { title } = plannerInfo
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
-    function handleThumbnailDownload() {
-        ThumbnailMaker(thumnnailRef);
-    }
-    const Addplanner = () => {};
     const handleDownLoad = () => {
-        DataDownload(plannerTitle, plannerList);
+        DataDownload(title, plannerList);
     };
 
     const homeNavigate = () => {
@@ -47,7 +37,7 @@ export default function NoEditQuoteHeader(props) {
                     </div>
 
                     <div className="right-bar">
-                        <button onClick={Addplanner} type="button" className="button-style-right">
+                        <button type="button" className="button-style-right">
                             <FaPlus style={{ fontSize: '16px', color: 'white' }} />
                         </button>
 
@@ -96,7 +86,7 @@ export default function NoEditQuoteHeader(props) {
                         </button>
                     )}
                 </div>
-                {isMobile ? (
+                {isMobile && (
                     <div className="content-header-right">
                         <button
                             onClick={() => {
@@ -111,9 +101,9 @@ export default function NoEditQuoteHeader(props) {
                             <span className="menu-text">Switch</span>
                         </button>
                     </div>
-                ) : null}
+                )}
             </div>
-            <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} plannerId={plannerId} modalClose={() => setVisible(false)} />
+            <NoEditMDPmodal selectedCard={selectedCard} modalStatus={visible} modalClose={() => setVisible(false)} />
         </>
     );
 }

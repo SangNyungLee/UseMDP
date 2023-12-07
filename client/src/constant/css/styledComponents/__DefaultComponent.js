@@ -13,9 +13,6 @@ export const _ComponentContainer = styled(Container)`
 		padding: 1rem 0 0 2rem;
 	}
 
-	@media screen and (max-width: 686px) {
-	}
-
 	@media screen and (max-width: 622px) {
 		padding: 1rem 0 0 1rem;
 	}

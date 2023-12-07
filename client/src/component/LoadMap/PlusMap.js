@@ -29,6 +29,7 @@ export default function PlusMap() {
             const result = await postPlanner(data);
             if (result.status !== 201) {
                 requestFail('플래너 생성');
+                return;
             }
 
             const newPlannerId = result.data.data;

@@ -36,6 +36,7 @@ export default function useRead(){
             }
         } else {
             requestFail("데이터")
+            return;
         }
     }
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 const _CardHeader = styled.div`
     position: relative;
     background-color: ${(props) => props.color};

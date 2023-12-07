@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import CustomListHiddable from '../../home/customList/CustomListHiddable';
-import { useDispatch } from 'react-redux';
-import { getLikesAxios, getPlannerByBasic } from '../../../utils/DataAxios';
-import { likeActions } from '../../../store/like';
+import { getPlannerByBasic } from '../../../utils/DataAxios';
 import { HOME } from '../../../constant/constant';
 import useDefaultCheck from '../../../hook/useDefaultCheck';
 import { requestFail } from '../../etc/SweetModal';
 import { _ComponentContainer, _ComponentTitle } from '../../../constant/css/styledComponents/__DefaultComponent';
 import LoadMap from '../LoadMap';
 import NoContent from '../../NoContent';
+import useGetData from '../../../hook/useGetData';
 
 export default function DefaultComponent() {
-	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
 	const [point, setPoint] = useState([-1, -1]);
 	useDefaultCheck(HOME);
@@ -21,6 +19,8 @@ export default function DefaultComponent() {
 			setPoint([-1, -1]);
 		}
 	};
+
+	const { getLikeAndDispatch } = useGetData()
 
 	useEffect(() => {
 		async function getData() {
@@ -36,17 +36,9 @@ export default function DefaultComponent() {
 				setData([]);
 			}
 		}
-		async function getLike() {
-			const result = await getLikesAxios();
-            if (result.status === 200) {
-                dispatch(likeActions.setLikesInit(result.data.data));
-            } else {
-                requestFail('좋아요 불러오기');
-            }
-		}
 
+		getLikeAndDispatch()
 		getData();
-		getLike();
 	}, []);
 
 	return (

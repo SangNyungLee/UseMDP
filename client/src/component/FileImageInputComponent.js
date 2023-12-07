@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { FaImage } from 'react-icons/fa';
-
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import styled from 'styled-components';
