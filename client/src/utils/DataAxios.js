@@ -22,7 +22,6 @@ export async function postPlannerCards(unspecifiedplanner) {
             data: unspecifiedplanner,
             withCredentials: true,
         });
-        console.log('post planner cards', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -37,7 +36,6 @@ export async function getCardAxios(cardId) {
             url: getURL(`/api/getCard/${cardId}`),
             withCredentials: true,
         });
-        console.log('get card axios', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -52,7 +50,6 @@ export async function getTags() {
             url: getURL(`/api/getTags`),
             withCredentials: true,
         });
-        console.log('getTags', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -67,7 +64,6 @@ export async function getPlannerBtoA(btoaId) {
             url: getURL(`/api/getPlanner/${btoaId}`),
             withCredentials: true,
         });
-        console.log('get planner btoa', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -82,7 +78,6 @@ export async function getPlannerByTrend() {
             url: getURL(`/api/getPlanner/trending`),
             withCredentials: true,
         });
-        console.log('get planner trending', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -97,7 +92,6 @@ export async function getPlannerByBasic() {
             url: getURL(`/api/getPlanner/default`),
             withCredentials: true,
         });
-        console.log('get planner default', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -111,7 +105,6 @@ export async function getPlanners() {
             url: getURL(`/api/getPlanners`),
             withCredentials: true,
         });
-        console.log('get planners', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -127,7 +120,6 @@ export async function postCopyPlanners(plannerId) {
             data: { plannerId },
             withCredentials: true,
         });
-        console.log('post planner copy', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -143,7 +135,6 @@ export async function patchCard(data) {
             data,
             withCredentials: true,
         });
-        console.log('patch card', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -160,7 +151,6 @@ export function patchMoveCards(data) {
             data,
             withCredentials: true,
         });
-        console.log('patch move cards', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -176,7 +166,6 @@ export function deleteCardById(cardId) {
             url: getURL(`/api/deleteCard/${cardId}`),
             withCredentials: true,
         });
-        console.log('delete card by id', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -192,7 +181,6 @@ export async function postCard(data) {
             data,
             withCredentials: true,
         });
-        console.log('post card', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -206,8 +194,6 @@ export async function getMyPlanner() {
             url: getURL('/api/getMyPlanner'),
             withCredentials: true,
         });
-
-        console.log('get my planner', res);
         return res;
     } catch (error) {
         console.log(error);
@@ -222,7 +208,6 @@ export async function deleteMyPlanner(plannerId) {
             url: getURL(`/api/deletePlanner/${plannerId}`),
             withCredentials: true,
         });
-        console.log('delete planner', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -242,7 +227,6 @@ export async function patchPlanner(plannerData) {
             },
             withCredentials: true,
         });
-        console.log('patch planner', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -256,7 +240,6 @@ export async function deleteCheckList(id) {
             url: getURL(`/api/deleteCheckList/${id}`),
             withCredentials: true,
         });
-        console.log('delete checklist', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -272,7 +255,6 @@ export async function getLikesAxios() {
             url: getURL('/api/getLikes'),
             withCredentials: true,
         });
-        console.log('get likes', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -290,7 +272,6 @@ export async function postPlannerLike(plannerId) {
             },
             withCredentials: true,
         });
-        console.log('plannerLike', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -306,7 +287,6 @@ export async function deletePlannerUnlike(plannerId) {
             data: { plannerId },
             withCredentials: true,
         });
-        console.log('delete planner like', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -321,7 +301,6 @@ export async function postLogout() {
             url: getURL('/api/logout'),
             withCredentials: true,
         });
-        console.log('logout', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -337,7 +316,6 @@ export async function postPlanner(data) {
             data,
             withCredentials: true,
         });
-        console.log('post planner', res);
         return res;
     } catch (error) {
         console.log('error', error);
@@ -352,7 +330,6 @@ export async function deleteTagList(data) {
             url: getURL(`/api/deleteTaglist/${data}`),
             withCredentials: true,
         });
-        console.log('del planner', res);
         return res;
     } catch (error) {
         console.log('error', error);

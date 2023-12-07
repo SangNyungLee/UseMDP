@@ -16,8 +16,6 @@ export default function PlusMap() {
     const dispatch = useDispatch();
 
     const handleSaveChanges = async (titleInput, creatorInput, plannerAccessInput) => {
-        console.log(editedCreator, editedTitle, editedPlannerAccess);
-
         const data = {
             creator: creatorInput,
             title: titleInput,
