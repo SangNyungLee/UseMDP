@@ -24,23 +24,20 @@ const DelDiv = styled.div`
         background-color: #ccc;
     }
 `;
-
 const _TitleDiv = styled.div`
-    margin-left:20px;
+    margin-left: 20px;
     max-width: 100px;
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-`
+`;
 
 export default function QuoteCard({ card, deleteCard, cardIndex }) {
     return (
         <>
             <_CardHeader color={card.coverColor} />
             <_CardBody>
-                <_TitleDiv>
-                    {card.title}
-                </_TitleDiv>
+                <_TitleDiv>{card.title}</_TitleDiv>
                 <DelDiv onClick={(e) => deleteCard(e, cardIndex, card)}>
                     <img style={{ margin: '3px' }} src={trash} alt="trashicon" />
                 </DelDiv>

@@ -167,9 +167,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     };
 
     const handleClose = async () => {
-        const newChecklist = checklists? checklists.map((item) => {
-            return item.isNew == 1 ? { title: item.title, checked: item.checked } : item;
-        }) : [{ title: "done", checked: 0 }];
+        const newChecklist = checklists
+            ? checklists.map((item) => {
+                  return item.isNew == 1 ? { title: item.title, checked: item.checked } : item;
+              })
+            : [{ title: 'done', checked: 0 }];
 
         const newCardItem = {
             ...selectedCard,
@@ -182,8 +184,6 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             endDate: endDate.toISOString(),
             coverColor,
         };
-
-
         try {
             const result = await patchCard(newCardItem);
             if (result.status !== 200) {
@@ -192,11 +192,11 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
             }
             dispatch(
                 plannerListActions.updateCard({
-                  cardId: selectedCard.cardId,
-                  startDate: startDate.toISOString(),
-                  endDate: endDate.toISOString(),
+                    cardId: selectedCard.cardId,
+                    startDate: startDate.toISOString(),
+                    endDate: endDate.toISOString(),
                 })
-              );
+            );
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {
                     const res = await deleteCheckList(id);

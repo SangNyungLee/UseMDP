@@ -6,11 +6,11 @@ import styled from 'styled-components';
 
 const _CropBackground = styled.div`
     position: fixed;
-    width:100vw;
+    width: 100vw;
     height: 90vh;
     z-index: 90;
     background-color: rgba(0, 0, 0, 0.7);
-`
+`;
 
 const _CropContainer = styled.div`
     position: absolute;
@@ -113,7 +113,7 @@ export default function FileImageInputComponent({ setState }) {
     };
 
     const handleCropClick = () => {
-        if(completedCrop.width){
+        if (completedCrop.width) {
             makeClientCrop(completedCrop);
         }
         setCompletedCrop({});
@@ -125,12 +125,12 @@ export default function FileImageInputComponent({ setState }) {
         setCompletedCrop({});
         setSrc();
         setCrop({});
-    }
+    };
 
     return (
         <>
             <button onClick={handleButtonClick} type="button" className="button-style-header">
-                <FaImage style={{ fontSize: '12px', color: 'white', marginRight: '5px' }}/>
+                <FaImage style={{ fontSize: '12px', color: 'white', marginRight: '5px' }} />
                 <span className="private-text">Thumbnail</span>
             </button>
 
@@ -139,17 +139,14 @@ export default function FileImageInputComponent({ setState }) {
             {src && (
                 <_CropBackground>
                     <_CropContainer width={size.width} height={size.height}>
-                        <ReactCrop
-                            crop={crop}
-                            onChange={(newCrop) => setCrop(newCrop)}
-                            onComplete={handleCropComplete}
-                            keepSelection={false}
-                            style={{}}
-                        >
-                            <img src={src} style={{
-                                maxWidth: "400px",
-                                maxHeight: "400px",
-                             }} />
+                        <ReactCrop crop={crop} onChange={(newCrop) => setCrop(newCrop)} onComplete={handleCropComplete} keepSelection={false} style={{}}>
+                            <img
+                                src={src}
+                                style={{
+                                    maxWidth: '400px',
+                                    maxHeight: '400px',
+                                }}
+                            />
                         </ReactCrop>
                         <_ButtonContainer>
                             <button onClick={handleCropClick}>결정</button>

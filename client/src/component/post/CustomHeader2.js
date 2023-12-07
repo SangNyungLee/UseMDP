@@ -16,15 +16,14 @@ import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
     const plannerInfo = props.plannerInfo;
-    
+
     const [readThumbnail, setReadThumbnail] = useState();
     const [tags2, setTags] = useState([]);
-    const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
+    const [selectTag, setSelectTag] = useState([{}]);
     const [showModal, setShowModal] = useState(false);
-    
     const titleRef = useRef();
     const selectInputRef = useRef();
-    
+
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
@@ -48,13 +47,15 @@ function CustomHeader2(props) {
         if (plannerInfo) {
             const { title, taglist } = plannerInfo;
             titleRef.current.innerText = title;
+
             const tmp = taglist.filter((i) => i != null);
+
             const initialTags = tags2.filter((tagValue) => {
                 return tmp.includes(tagValue.value);
             });
             setSelectTag(initialTags);
         }
-    }, [plannerInfo, tags2]);
+    }, [tags2]);
 
     useEffect(() => {
         if (readThumbnail) {
@@ -141,17 +142,17 @@ function CustomHeader2(props) {
                     plannerId: plannerInfo.plannerId,
                     taglist: selectTag.map((item) => item.value),
                 })
-                );
+            );
             const result = await patchPlanner(data);
-            if(result.status !== 200){
-                requestFail("플래너 저장")
+            if (result.status !== 200) {
+                requestFail('플래너 저장');
                 return;
             }
         } else {
             setShowModal(false);
             const result = await deleteTagList(plannerInfo.plannerId);
-            if(result.status !== 200){
-                requestFail("태그 삭제")
+            if (result.status !== 200) {
+                requestFail('태그 삭제');
                 return;
             }
         }
@@ -186,19 +187,19 @@ function CustomHeader2(props) {
 
     const moveCursorToEnd = (e) => {
         e.preventDefault();
-      
+
         const contentEditable = titleRef.current;
-      
+
         if (contentEditable) {
-          setTimeout(() => {
-            const range = document.createRange();
-            const selection = window.getSelection();
-      
-            range.selectNodeContents(contentEditable);
-            range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
-          });
+            setTimeout(() => {
+                const range = document.createRange();
+                const selection = window.getSelection();
+
+                range.selectNodeContents(contentEditable);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            });
         }
     };
 
@@ -211,8 +212,10 @@ function CustomHeader2(props) {
             handleBlur(e);
         }
     };
-
-
+    const handleSelectTag = (e) => {
+        console.log('E', e);
+        setSelectTag(e);
+    };
     return (
         <div className="nav-main">
             <div className="nav-bar">
@@ -250,7 +253,7 @@ function CustomHeader2(props) {
                         style={{ color: 'white' }}
                         contentEditable
                         onKeyDown={(e) => handleKeyDown(e)}
-                        onClick={e => moveCursorToEnd(e)}
+                        onClick={(e) => moveCursorToEnd(e)}
                         onBlur={(e) => {
                             handleBlur(e);
                         }}
@@ -335,7 +338,9 @@ function CustomHeader2(props) {
                                 </div>
                             )}
                             value={selectTag}
-                            onChange={setSelectTag}
+                            onChange={(e) => {
+                                handleSelectTag(e);
+                            }}
                             isMulti
                         />
                     </div>
