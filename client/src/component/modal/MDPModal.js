@@ -17,6 +17,7 @@ import calendarImg from '../../constant/img/calendar.svg';
 import parse from 'html-react-parser';
 import IsBackGroundDark from '../../utils/IsBackGroundDark';
 import { requestFail } from '../etc/SweetModal';
+import { plannerListActions } from '../../store/plannerList';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -166,9 +167,13 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
     };
 
     const handleClose = async () => {
-        const newChecklist = checklists.map((item) => {
-            return item.isNew == 1 ? { title: item.title, checked: item.checked } : item;
-        });
+        console.log('checklists', checklists);
+        const newChecklist = checklists
+            ? checklists.map((item) => {
+                  return item.isNew == 1 ? { title: item.title, checked: item.checked } : item;
+              })
+            : [{ title: 'done', checked: 0 }];
+
         const newCardItem = {
             ...selectedCard,
             title,
@@ -186,6 +191,13 @@ export default function MDPModal({ selectedCard, modalStatus, modalClose, planne
                 requestFail('카드 데이터 저장');
                 return;
             }
+            dispatch(
+                plannerListActions.updateCard({
+                    cardId: selectedCard.cardId,
+                    startDate: startDate.toISOString(),
+                    endDate: endDate.toISOString(),
+                })
+            );
             for (let id of deletedCheckList) {
                 if (!isNaN(id)) {
                     const res = await deleteCheckList(id);

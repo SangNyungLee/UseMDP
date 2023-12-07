@@ -18,6 +18,7 @@ import CalendarSelect from "../home/calendar/CalendarSelect";
 import { QUOTE } from "../../constant/constant";
 import { requestFail } from "../etc/SweetModal";
 
+moment.locale("ko-KR");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
@@ -158,12 +159,16 @@ export default function QuoteAppCalendar() {
     const startDate = start.toISOString();
     const endDate = end.toISOString();
     const card = events.find((e) => e.cardId === cardId);
+    
+    console.log("update events",events)
     const requestData = {
       ...card,
       startDate,
       endDate,
       plannerId,
+      checklists: card.checklists? card.checklists : [{ checked: 0, title: "done" }],
     };
+
     dispatch(
       plannerListActions.updateCard({
         cardId,
