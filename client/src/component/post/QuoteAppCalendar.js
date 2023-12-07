@@ -160,7 +160,6 @@ export default function QuoteAppCalendar() {
     const endDate = end.toISOString();
     const card = events.find((e) => e.cardId === cardId);
     
-    console.log("update events",events)
     const requestData = {
       ...card,
       startDate,
