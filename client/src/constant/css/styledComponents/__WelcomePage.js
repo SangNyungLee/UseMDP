@@ -16,10 +16,9 @@ export const _PageContainer = styled(Container)`
 	display: flex;
 	justify-content: center;
 	margin-top: 4rem;
-	padding: 8rem 4rem 0 4rem;
+	padding: 8rem 4rem 10rem 4rem;
 	background-color: #eeeeee;
 	min-width: 320px;
-	min-height: 100vh;
 	font-family: 'Roboto', sans-serif;
 `;
 
