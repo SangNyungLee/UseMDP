@@ -6,7 +6,6 @@ import { siteActions } from "../store/site";
 import { loginFail, loginSuccess } from "../component/etc/SweetModal";
 
 export default function Redirection({ provider }) {
-  //쿼리스트링에서 code값만 가져와서 변수에 저장
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get("code");

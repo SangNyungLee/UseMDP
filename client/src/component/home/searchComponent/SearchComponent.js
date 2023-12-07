@@ -2,15 +2,15 @@ import Select from 'react-select';
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import { getLikesAxios, getPlanners, getTags } from '../../../utils/DataAxios';
+import { getPlanners, getTags } from '../../../utils/DataAxios';
 import { _ComponentTitle } from '../../../constant/css/styledComponents/__HomeComponent';
 import { useDispatch } from 'react-redux';
-import { likeActions } from '../../../store/like';
 import { requestFail } from '../../etc/SweetModal';
 import SearchCustomList from '../customList/SearchCustomList';
 import SearchLoadMap from '../../LoadMap/SearechLoadMap';
 import NoContent from '../../NoContent';
 import { _ComponentContainer } from '../../../constant/css/styledComponents/__StarComponent';
+import useGetData from '../../../hook/useGetData';
 
 const SearchContainer = styled.div`
     width: 100%;
@@ -32,7 +32,6 @@ const nullOptions = [
 const _MediaSelect = styled(Select)``;
 
 export default function SearchComponent() {
-    const dispatch = useDispatch();
     const selectInputRef = useRef();
     const [author, setAuthor] = useState([]);
     const [title, setTitle] = useState([]);
@@ -42,33 +41,27 @@ export default function SearchComponent() {
     const [option, setOption] = useState(options[0]);
     const [tags2, setTags] = useState([]);
 
+    const { getLikeAndDispatch } = useGetData();
+
     useEffect(() => {
-        async function getLike() {
-            const result = await getLikesAxios();
-            if (result.status === 200) {
-                dispatch(likeActions.setLikesInit(result.data.data));
-            } else {
-                requestFail('좋아요 불러오기');
-            }
-        }
+        getLikeAndDispatch()
         async function fetchData() {
             let data;
             try {
                 const response = await getPlanners();
                 if (response.status === 200) {
-                    const newData = response.data.data.map((item, idx) => {
-                        const newItem = { ...item, cards: item.cards ? item.cards : [] };
-                        return newItem;
-                    });
+                    const newData = response.data.data.map( item => ({ ...item, cards: item.cards ? item.cards : [] }));
                     data = newData;
                 } else {
                     requestFail('트랜드 플래너 불러오기');
+                    return;
                 }
                 const result = await getTags();
                 if (result.status === 200) {
                     setTags(result.data.data);
                 } else {
                     requestFail('태그 불러오기');
+                    return;
                 }
             } catch {
                 const result = await getTags();
@@ -76,6 +69,7 @@ export default function SearchComponent() {
                     setTags(result.data.data);
                 } else {
                     requestFail('태그 불러오기');
+                    return;
                 }
                 data = [];
             }
@@ -106,7 +100,6 @@ export default function SearchComponent() {
             }
         }
         fetchData();
-        getLike();
     }, []);
 
     const changeOption = (v) => {

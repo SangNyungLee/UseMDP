@@ -56,8 +56,10 @@ export default function MyLoadMap(props) {
             navigate(`/planner?id=${btoaId}`);
         } else {
             requestFail('플래너 불러오기');
+			return;
         }
     };
+
     const [editedTitle, setEditedTitle] = useState(title);
     const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
 
@@ -112,7 +114,9 @@ export default function MyLoadMap(props) {
                 const axiosResult = await patchPlanner(plannerData);
                 if (axiosResult.status !== 200) {
                     requestFail('플래너 저장');
+					return { editedTitle: "", editedPlannerAccess: "" }
                 }
+
                 return { editedTitle: inputValue, editedPlannerAccess: radioValue };
             },
             confirmButtonText: '확인',

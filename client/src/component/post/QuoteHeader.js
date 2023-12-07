@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import MDPModal from '../modal/MDPModal';
 import { useDispatch } from 'react-redux';
 import { plannerListActions } from '../../store/plannerList';
-
 import CustomHeader2 from './CustomHeader2';
 import { patchPlanner } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
@@ -19,6 +18,7 @@ export default function QuoteHeader(props) {
         const res = await patchPlanner(data);
         if (res.status !== 200) {
             requestFail('플래너 상태 저장');
+            return;
         }
         dispatch(
             plannerListActions.updatePlannerThumbnail({

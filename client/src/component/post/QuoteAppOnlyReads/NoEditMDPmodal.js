@@ -109,6 +109,7 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose }
     }, [modalStatus]);
 
     let progress = checklists ? handleProgessBar() : 0;
+    
     if (Object.keys(selectedCard).includes('status')) {
         return <></>;
     } else {

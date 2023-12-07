@@ -128,7 +128,7 @@ const CustomToolbar = ({ label, onNavigate, onView }) => {
   );
 };
 
-export default function QuoteAppCalendar(props) {
+export default function QuoteAppCalendar() {
   const plannerList = useSelector((state) => state.plannerList);
   const { quote } = useSelector((state) => state.calendar);
   const dispatch = useDispatch();
@@ -175,6 +175,7 @@ export default function QuoteAppCalendar(props) {
     const result = await patchCard(requestData);
     if (result.status !== 200) {
       requestFail("카드 데이터 저장");
+      return;
     }
   };
 

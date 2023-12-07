@@ -69,6 +69,7 @@ export default function HomeHeader() {
     const res = await postLogout();
     if (res.status !== 200) {
       requestFail("로그아웃");
+      return;
     }
     navigate("/");
   };

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaTrello, FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft, FaTags } from 'react-icons/fa';
+import { FaPlus, FaStar, FaLock, FaLockOpen, FaEllipsisH, FaDownload, FaUser, FaArrowLeft, FaTags } from 'react-icons/fa';
 
 import '../../constant/css/customHeader2.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { plannerListActions } from '../../store/plannerList';
-import { deleteTagList, getPlannerBtoA, getTags, patchPlanner, postPlanner } from '../../utils/DataAxios';
+import { deleteTagList, getPlannerBtoA, getTags, patchPlanner } from '../../utils/DataAxios';
 import DataDownload from '../../utils/DataDownload';
 import { requestFail } from '../etc/SweetModal';
 import FileImageInputComponent from '../FileImageInputComponent';
@@ -15,22 +15,23 @@ import { useMediaQuery } from 'react-responsive';
 import FileInputComponent from '../FileInputComponent';
 
 function CustomHeader2(props) {
+    const plannerInfo = props.plannerInfo;
+    
+    const [readThumbnail, setReadThumbnail] = useState();
+    const [tags2, setTags] = useState([]);
+    const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
+    const [showModal, setShowModal] = useState(false);
+    
+    
+    const titleRef = useRef();
+    const selectInputRef = useRef();
+    
     const isMobile = useMediaQuery({
         query: '(max-width: 1024px)',
     });
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const plannerInfo = props.plannerInfo;
-
-    const [readThumbnail, setReadThumbnail] = useState();
-
-    const [tags2, setTags] = useState([]);
-    const [selectTag, setSelectTag] = useState([{ value: 'HTML', label: 'HTML', image: '/svg/HTML.svg' }]);
-
-    const titleRef = useRef();
-
-    const [showModal, setShowModal] = useState(false);
-    const selectInputRef = useRef();
 
     useEffect(() => {
         async function getTag() {
@@ -80,6 +81,7 @@ function CustomHeader2(props) {
             })
         );
     };
+
     const handleToPrivate = async () => {
         const data = {
             ...plannerInfo,
@@ -129,17 +131,25 @@ function CustomHeader2(props) {
                 ...plannerInfo,
                 taglist: selectTag.map((item) => item.value),
             };
-            const result = await patchPlanner(data);
             setShowModal(false);
             dispatch(
                 plannerListActions.updateTags({
                     plannerId: plannerInfo.plannerId,
                     taglist: selectTag.map((item) => item.value),
                 })
-            );
+                );
+            const result = await patchPlanner(data);
+            if(result.status !== 200){
+                requestFail("플래너 저장")
+                return;
+            }
         } else {
-            const result = await deleteTagList(plannerInfo.plannerId);
             setShowModal(false);
+            const result = await deleteTagList(plannerInfo.plannerId);
+            if(result.status !== 200){
+                requestFail("태그 삭제")
+                return;
+            }
         }
     };
     const handleCloseModalWithoutSave = () => {
@@ -150,6 +160,7 @@ function CustomHeader2(props) {
         const res = await getPlannerBtoA(btoa(plannerInfo.plannerId));
         if (res.status !== 200) {
             requestFail('다운로드 실패');
+            return;
         }
         DataDownload(plannerInfo.title, res.data.data);
     };
@@ -159,6 +170,7 @@ function CustomHeader2(props) {
         const res = await patchPlanner(data);
         if (res.status !== 200) {
             requestFail('플래너 상태 저장');
+            return;
         }
         dispatch(
             plannerListActions.updatePlannerThumbnail({
