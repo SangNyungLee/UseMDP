@@ -19,6 +19,8 @@ export function validateUnspecifiedPlannerData(data) {
             cards: {
                 type: 'array',
                 items: {
+                    type:'array',
+                    items:{
                         type: 'object',
                         properties: {
                             cardId: { type: 'string' },
@@ -38,6 +40,7 @@ export function validateUnspecifiedPlannerData(data) {
                             sourceResource: { type: 'null' },
                         },
                         required: [ 'cardId', 'post' ,'title', 'coverColor', 'startDate', 'endDate', 'cardStatus', 'intOrder'],
+                    }
                 },
             },
         },
@@ -50,6 +53,6 @@ export function validateUnspecifiedPlannerData(data) {
     const validate = ajv.compile(schema);
   
     const isValid = validate(data);
-
+    
     return isValid
 };

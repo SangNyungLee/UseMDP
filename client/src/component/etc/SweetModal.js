@@ -107,7 +107,7 @@ export const jsonDataReadSucess = async (originalData) => {
   const { title, creator, plannerAccess, updatedAt } = originalData;
   const formattedDate = formatDateString(updatedAt);
   const { value: newData } = await Swal.fire({
-    title: "대상혁",
+    title: "플래너 설정",
     html: `
         <div class="swal-content">
             <div class="swal-item">
