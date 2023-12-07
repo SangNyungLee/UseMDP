@@ -1,35 +1,64 @@
-import { Container, Image, Row, Col, Button, Stack } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+
 import styled from 'styled-components';
 
 export const _PageWrapper = styled(Container)`
-	width: 100vw;
 	margin: 0;
 	padding: 0;
 	background-color: #eeeeee;
-	max-width: none;
+	min-width: 320px;
+
+	@media screen and (width <= 576px) {
+	}
 `;
 
 export const _PageContainer = styled(Container)`
-	padding: 14% 10% 0 10%;
-
+	margin-top: 4rem;
+	padding: 6rem 6rem 0 6rem;
 	background-color: #eeeeee;
+	min-width: 320px;
+
 	font-family: 'Roboto', sans-serif;
-	height: 100vh;
-	max-width: none;
+
+	@media screen and (width <= 576px) {
+	}
+`;
+
+export const _ButtonRow = styled(Row)`
+	width: 80%;
+	margin-top: 4rem;
+	margin-bottom: 4rem;
+
+	@media screen and (width <= 767px) {
+		width: 100%;
+		justify-content: center;
+	}
 `;
 
 export const _Row = styled(Row)``;
 
-export const _LeftCol = styled(Col)``;
-
-export const _RightCol = styled(Col)``;
-
-export const _TitleStack = styled(Stack)`
-	margin-bottom: 10%;
+export const _StartButtonCol = styled(Col)`
+	flex: 0 0;
 `;
 
-export const _ButtonStack = styled(Stack)`
-	margin-bottom: 10%;
+export const _FileInputButtonCol = styled(Col)`
+	flex: 0 0;
+`;
+
+export const _LeftCol = styled(Col)`
+	padding: 0;
+`;
+
+export const _RightCol = styled(Col)`
+	padding: 0;
+`;
+
+export const _ButtonContainer = styled(Container)`
+	display: flex;
 `;
 
 export const _Title = styled.h1`
@@ -43,6 +72,7 @@ export const _Subtitle = styled.p`
 `;
 
 export const _Button = styled(Button)`
+	min-width: 100px;
 	background-color: #222831;
 	border: none;
 	&:hover {
