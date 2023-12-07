@@ -33,7 +33,7 @@ export default function DroppableComponent(props) {
     });
     const { quote } = useSelector((state) => state.calendar);
     const { cardList, cardStatusIndex, planner, handleClick, plannerId } = props;
-
+    const pointer = useSelector((state) => state.pointer);
     const dispatch = useDispatch();
 
     const deleteCard = (e, id, card) => {

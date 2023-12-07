@@ -15,6 +15,8 @@ import sky from '../../constant/img/sky.jpg';
 import { getCardAxios, getPlannerBtoA, patchMoveCards } from '../../utils/DataAxios';
 import { requestFail } from '../etc/SweetModal';
 import { useNavigate } from 'react-router';
+import { calendarActions } from '../../store/calendar';
+import LeftClicker from './RightClicker/LeftClicker';
 
 const _QuoteAppContainer = styled.div`
     display: flex;
@@ -42,19 +44,18 @@ export default function QuoteApp() {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const plannerList = useSelector((state) => state.plannerList);
     const { quote } = useSelector((state) => state.calendar);
+    const pointer = useSelector((state) => state.pointer);
     const site = useSelector((state) => state.site);
     const thumnnailRef = useRef(null);
     const [selectedCard, setSelectedCard] = useState(getOneCard(0, 'TODO'));
     const [visible, setVisible] = useState(false);
     const dispatch = useDispatch();
     const navi = useNavigate();
-
     let planner;
     let plannerId = quote[0];
     let plannerTitle;
     let plannerThumbnail;
     let plannerInfo;
-
     function sortByIntOrder(data) {
         const tmp = [[], [], []];
         for (let i = 0; i < 3; i++) {
@@ -195,12 +196,13 @@ export default function QuoteApp() {
     const isCalendarVisible = windowWidth > 1024;
 
     if (!planner) {
-        return <QuoteSpinner/>;
+        return <QuoteSpinner />;
     } else {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <QuoteHeader selectedCard={selectedCard} thumnnailRef={thumnnailRef} visible={visible} setVisible={setVisible} plannerList={plannerList} plannerInfo={plannerInfo} setSwitch={setSwitchContext} />
                 <_QuoteAppContainer $image={plannerThumbnail ? plannerThumbnail : sky}>
+                    {pointer[0] !== -1 && pointer[1] !== -1 ? <LeftClicker index={quote[1]} point={pointer} pid={quote[0]}></LeftClicker> : null}
                     <_Thumbnail ref={thumnnailRef}>
                         {isCalendarVisible ? (
                             <>
