@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { plannerListActions } from "../store/plannerList";
 import { calendarActions } from "../store/calendar";
-import { validateUnspecifiedPlannerData } from "../utils/DataValidate";
+import { validateSpecifiedPlannerData, validateUnspecifiedPlannerData } from "../utils/DataValidate";
 import { readPlanner } from "../utils/DataAxiosParsing";
 import { requestFail } from "../component/etc/SweetModal";
 import { useSelector } from "react-redux";
@@ -19,6 +19,8 @@ export default function useRead(){
             const data = JSON.parse(readData)
             if (validateUnspecifiedPlannerData(data)) {
                 readPlannerData(data,false);
+            } else if (validateSpecifiedPlannerData(data)){
+                readPlannerData(data,true)
             } else {
                 requestFail("플래너 데이터 읽기", "올바르지 않은 형식")
             }
