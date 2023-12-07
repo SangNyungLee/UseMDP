@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^40.0.0",
-    "@ckeditor/ckeditor5-code-block": "^40.1.0",
     "@ckeditor/ckeditor5-react": "^6.1.0",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.2",

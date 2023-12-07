@@ -6,7 +6,6 @@ import LoadMap from '../LoadMap/LoadMap';
 
 export default function CustomList(props) {
     const data = props.datas;
-
     return (
         <div>
             <PlusMap/>

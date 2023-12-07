@@ -3,6 +3,7 @@ import menuicon from '../../../constant/img/menu.svg';
 import LeftClicker from '../RightClicker/LeftClicker';
 import { pointActions } from '../../../store/pointer';
 import { useDispatch, useSelector } from 'react-redux';
+
 const HeaderDiv = styled.div`
     text-align: left;
     margin: 10px;
