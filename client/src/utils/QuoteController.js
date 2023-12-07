@@ -2,6 +2,8 @@ import copy from 'fast-copy';
 
 export function reorder(list, startIndex, endIndex) {
     const newList = copy(list);
+    console.log("startIndex",startIndex)
+    console.log("endIndex",endIndex)
     if (startIndex < endIndex) {
         newList[startIndex].intOrder = endIndex;
         for (let i = startIndex + 1; i <= endIndex; i++) {
@@ -9,8 +11,8 @@ export function reorder(list, startIndex, endIndex) {
         }
     } else {
         newList[startIndex].intOrder = endIndex;
-        for (let i = endIndex + 1; i <= startIndex; i++) {
-            newList[i].intOrder++;
+        for (let i = endIndex; i < startIndex; i++) {
+          newList[i].intOrder++;
         }
     }
     const result = Array.from(newList);
