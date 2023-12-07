@@ -35,6 +35,7 @@ const _ButtonContainer = styled.div`
 `;
 
 export default function FileImageInputComponent({ setState }) {
+    const imgRef = useRef();
     const aspectRatio = 3 / 2;
     const fileInputRef = useRef();
     const [src, setSrc] = useState(null);
@@ -89,7 +90,8 @@ export default function FileImageInputComponent({ setState }) {
             const canvas = document.createElement('canvas');
 
             let newWidth, newHeight;
-
+            const widthRatio = image.width / imgRef.current.width;
+            const heightRatio = image.height / imgRef.current.height;
             if (crop.width / crop.height > aspectRatio) {
                 newWidth = crop.width;
                 newHeight = crop.width / aspectRatio;
@@ -101,7 +103,17 @@ export default function FileImageInputComponent({ setState }) {
             canvas.height = newHeight;
 
             const context = canvas.getContext('2d');
-            context.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, newWidth, newHeight);
+            context.drawImage(
+                image,
+                crop.x * widthRatio, // X-coordinate of the starting point in the image
+                crop.y * heightRatio, // Y-coordinate of the starting point in the image
+                crop.width * widthRatio, // Width of the cropped region in the image
+                crop.height * heightRatio, // Height of the cropped region in the image
+                0,
+                0,
+                newWidth,
+                newHeight
+            );
             const croppedBase64 = canvas.toDataURL('image/webp');
             setState(croppedBase64);
             setCompletedCrop({});
@@ -141,6 +153,7 @@ export default function FileImageInputComponent({ setState }) {
                     <_CropContainer width={size.width} height={size.height}>
                         <ReactCrop crop={crop} onChange={(newCrop) => setCrop(newCrop)} onComplete={handleCropComplete} keepSelection={false} style={{}}>
                             <img
+                                ref={imgRef}
                                 src={src}
                                 style={{
                                     maxWidth: '400px',
