@@ -70,7 +70,7 @@ export default function WelcomePage() {
 						</_ButtonRow>
 					</_LeftCol>
 					<_RightCol>
-						<_Image src='https://picsum.photos/600/400' rounded fluid />
+						<_Image src='/images/PlannerEdit.gif' rounded fluid />
 					</_RightCol>
 				</_Row>
 			</_PageContainer>
