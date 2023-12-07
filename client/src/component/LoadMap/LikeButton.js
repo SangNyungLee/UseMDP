@@ -19,7 +19,7 @@ const _Star = styled.img`
   z-index: 5;
 `;
 
-const LikeButton = (props) => {
+export default function LikeButton (props){
   const likes = useSelector((state) => state.like);
   const plannerId = props.plannerId;
   const isLike = likes.includes(plannerId);
@@ -32,12 +32,12 @@ const LikeButton = (props) => {
       requestFail("좋아요 추가", "이미 존재하는 좋아요");
       return;
     } else {
-      dispatch(likeActions.addPlannerLike(plannerId));
       const res = await postPlannerLike(plannerId);
       if (res.status !== 200) {
         requestFail("플래너 좋아요");
         return;
       }
+      dispatch(likeActions.addPlannerLike(plannerId));
     }
   };
 
@@ -45,12 +45,12 @@ const LikeButton = (props) => {
     e.stopPropagation();
     const isLiked = likes.some((like) => like === plannerId);
     if (isLiked) {
-      dispatch(likeActions.delPlannerLike(plannerId));
       const res = await deletePlannerUnlike(plannerId);
       if (res.status !== 200) {
         requestFail("플래너 좋아요 삭제");
         return;
       }
+      dispatch(likeActions.delPlannerLike(plannerId));
     } else {
       requestFail("좋아요 취소", "좋아요가 되어있지 않아요");
       return;
@@ -67,5 +67,3 @@ const LikeButton = (props) => {
     </>
   );
 };
-
-export default LikeButton;
