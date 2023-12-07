@@ -21,6 +21,7 @@ export const _PageContainer = styled(Container)`
 	padding: 6rem 6rem 0 6rem;
 	background-color: #eeeeee;
 	min-width: 320px;
+	min-height: 100vh;
 
 	font-family: 'Roboto', sans-serif;
 
