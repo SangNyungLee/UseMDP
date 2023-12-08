@@ -39,7 +39,10 @@ export default function WelcomePage() {
 			} else if (validateSpecifiedPlannerData(data)){
 				navi('/plannerNoEdit', {
 					state: {
-						sourceData: plannerCardStatusDevide(data),
+						sourceData: {
+							...data,
+							cards: data.cards.flat()
+						},
 					},
 				});
 			} else {
