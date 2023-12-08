@@ -64,19 +64,16 @@ export default function MyLoadMap(props) {
 	const [editedTitle, setEditedTitle] = useState(title);
 	const [editedPlannerAccess, setEditedPlannerAccess] = useState(plannerAccess);
 
-	const handleShareIcon = (e) => {
+	const handleShareIcon = async (e) => {
 		e.stopPropagation();
-		DataDownload(editedTitle, {
-			plannerId,
-			creator,
-			title: editedTitle,
-			likePlanner,
-			thumbnail,
-			isDefault,
-			createdAt,
-			updatedAt,
-			plannerAccess: editedPlannerAccess,
-		});
+		const btoaId = btoa(plannerId);
+        const result = await getPlannerBtoA(btoaId);
+        if (result.status === 200) {
+            DataDownload(editedTitle, result.data.data);
+        } else {
+            requestFail('데이터 다운로드');
+            return;
+        }
 	};
 
 	const sweetModal = async (e) => {
