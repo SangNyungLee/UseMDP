@@ -9,6 +9,7 @@ import { getOneCard } from '../../../utils/QuoteSetting';
 import { dateParsing } from '../../../utils/DataParsing';
 import styled from 'styled-components';
 
+moment.locale("ko-KR");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
