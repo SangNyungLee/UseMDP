@@ -166,13 +166,13 @@ export default function NoEditMDPmodal({ selectedCard, modalStatus, modalClose }
                                 <IconImg src={calendarImg}></IconImg>
                                 <_Span>Start Date</_Span>
                                 <div>
-                                    <DatePicker selected={startDate} dateFormat="yyyy-MM-dd" />
+                                    <DatePicker selected={startDate} dateFormat="yyyy-MM-dd HH:mm" />
                                 </div>
                             </div>
                             <div>
                                 <IconImg src={calendarImg}></IconImg> <_Span>End Date</_Span>
                                 <div>
-                                    <DatePicker selected={endDate} dateFormat="yyyy-MM-dd" />
+                                    <DatePicker selected={endDate} dateFormat="yyyy-MM-dd HH:mm" />
                                 </div>
                             </div>
                         </FlexContainer>
