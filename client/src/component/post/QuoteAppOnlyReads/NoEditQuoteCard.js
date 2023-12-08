@@ -13,6 +13,10 @@ const _CardBody = styled.div`
     display: flex;
     justify-content: flex-start;
     padding: 10px 30px 0 30px;
+    max-width: 100px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export default function NoEditQuoteCard({ card }) {
