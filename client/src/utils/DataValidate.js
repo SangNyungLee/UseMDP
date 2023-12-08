@@ -51,8 +51,6 @@ export function validateUnspecifiedPlannerData(data) {
   
     const isValid = validate(data);
 
-    console.log("unspe validate",validate.errors)
-
     return isValid
 };
 
@@ -112,8 +110,6 @@ export function validateSpecifiedPlannerData(data) {
     const validate = ajv.compile(schema);
   
     const isValid = validate(data);
-
-    console.log("spe validate",validate.errors)
     
     return isValid
 };
